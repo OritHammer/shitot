@@ -18,7 +18,7 @@
 		<Label layoutX="40.0" layoutY="193.0" text="B" />
 		<Label layoutX="39.0" layoutY="156.0" text="A" />
 		<Label layoutX="412.0" layoutY="128.0" text="correct answer" />
-		<Button fx:id="button" layoutX="170.0" layoutY="324.0" mnemonicParsing="false" onAction="#updateCorrectAnswer" text="update">
+		<Button fx:id="update" layoutX="170.0" layoutY="324.0" mnemonicParsing="false" onAction="#updateCorrectAnswer" text="update">
          <textFill>
             <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
                <stops>
@@ -27,7 +27,7 @@
                </stops>
             </RadialGradient>
          </textFill></Button>
-		<ComboBox fx:id="questionsComboBox" layoutX="34.0" layoutY="65.0" onAction="#showAnswers" prefHeight="25.0" prefWidth="505.0" promptText="Choose question" />
+		<ComboBox fx:id="questionsComboBox" layoutX="34.0" layoutY="65.0" onAction="#askForQuestionDetails" prefHeight="25.0" prefWidth="505.0" promptText="Choose question" />
 		<RadioButton id="1" fx:id="right1" layoutX="440.0" layoutY="156.0" mnemonicParsing="false">
 			<toggleGroup>
 				<ToggleGroup fx:id="group" />
@@ -47,7 +47,9 @@
          </textFill>
       </Button>
       <ComboBox fx:id="subjectsComboBox" layoutX="34.0" layoutY="31.0" onAction="#loadQuestions" prefWidth="150.0" promptText="choose subject" />
-      <TextField fx:id="teacherName" layoutX="82.0" layoutY="103.0" text="teacher's name" />
-      <TextField fx:id="questionNum" layoutX="278.0" layoutY="103.0" text="question number" />
+      <TextField fx:id="teacherName" editable="false" layoutX="69.0" layoutY="116.0" />
+      <TextField fx:id="questionNum" editable="false" layoutX="238.0" layoutY="116.0" />
+      <Label layoutX="75.0" layoutY="95.0" prefHeight="17.0" prefWidth="85.0" text="teacher's name" />
+      <Label layoutX="248.0" layoutY="95.0" text="question number" />
 	</children>
 </AnchorPane>

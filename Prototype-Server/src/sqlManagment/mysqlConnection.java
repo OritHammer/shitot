@@ -11,10 +11,16 @@ import java.util.Scanner;
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 public class mysqlConnection {
+	
+/************************** Class Parameters **********************************/
 	private String serverName ;
 	private String userPassword ;
 	private String DBname  ;
+	private Question questionDetails=new Question(); 
 	static Connection conn;
+	
+	
+/************************** Class Constructor ********************************/
 	public mysqlConnection() {
 	Scanner sc = new Scanner(System.in);
 	System.out.println("enter your DB name: ");
@@ -24,6 +30,8 @@ public class mysqlConnection {
 	System.out.println("enter your password: ");
 	DBname = sc.nextLine();
 }
+
+/**************************** Class Methods **********************************/
 	public void runDB() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -73,8 +81,8 @@ public class mysqlConnection {
 		Statement stmt;
 		try {
 			 stmt = conn.createStatement();
-			 ResultSet rs = stmt.executeQuery("SELECT Question_Text FROM questions "	+ "WHERE Question_id like "+"\""+subject+"%\""+";" );
-			// ResultSet rs = stmt.executeQuery("SELECT Question_Text FROM questions WHERE Question_id like \""+subject+"\" ;");
+			 ResultSet rs = stmt.executeQuery("SELECT Question_Text FROM questions"
+					 						+ " WHERE Question_id like "+"\""+subject+"%\""+";" );
 			while (rs.next())
 				questionList.add(rs.getString(1));
 			rs.close();
@@ -84,29 +92,48 @@ public class mysqlConnection {
 		return questionList;
 	}
 
-	public ArrayList<String> getAnswers(String quest) {
+	public ArrayList<String> getQuestionDetails(String quest, ArrayList<String> DetailsList) {
 		int i;
-		ArrayList<String> answerList = new ArrayList<String>();
+		//ArrayList<String> answerList = new ArrayList<String>();
 		Statement stmt;
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(
-					"SELECT answer1, answer2, answer3, answer4, correct_answer FROM questions where question_text=\""
-							+ quest + "\";");
-			rs.next();
-			for (i = 1; i < 5; i++)
+			//Query return all the details of specific question
+			ResultSet rs = stmt.executeQuery("SELECT Question_id,Teacher_Name,answer1,answer2,answer3,answer4,Correct_Answer FROM questions "
+											+ "WHERE Question_Text=\""+ quest + "\";");
+			//The next commands get the returned details from DB and insert them to question object 
+			
+			rs.next(); 
+			//inserting the data to String List , order by the same order in DB  
+			for(i=1;i<8;i++)
+				DetailsList.add(rs.getString(i));
+			
+			rs.close();
+			
+			/*FOR CHANGING TO QUESTION OBJECT IF IT POSSIBLE !!!
+			questionDetails.setId(rs.getString(1));
+			//rs.next();
+			questionDetails.setTeacherName(rs.getString(2));
+			//rs.next();
+			questionDetails.setQuestionContent(quest);
+			for (i = 4; i < 8 ; i++)
 				answerList.add(rs.getString(i));
-			answerList.add(Integer.toString(rs.getInt(5)));
+			
+			questionDetails.setAnswers(answerList);
+
+			questionDetails.setTrueAnswer((rs.getString(i)));*/
+			//end insert details	
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return answerList;
+		return DetailsList;
 	}
 
-	public void updateAnswer(String question, String newAnswer) throws SQLException {
+	public void updateAnswer(String questionID, String newAnswer) throws SQLException {
 		Statement stmt;
 		stmt = conn.createStatement();
-		stmt.executeUpdate("UPDATE questions SET correct_answer=\"" + Integer.parseInt(newAnswer)
-				+ "\" WHERE question_text=\"" + question + "\";");
+		//query update on DB the correct answer of question that have the given questionID from client
+		stmt.executeUpdate("UPDATE questions SET Correct_answer=\"" + newAnswer
+							+ "\" WHERE Question_id=\"" + questionID + "\";");
 	}
 }

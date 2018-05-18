@@ -28,7 +28,7 @@ public class ChatClient extends AbstractClient
   ChatIF clientUI; 
 
   
-  //Constructors ****************************************************
+  //********************* Constructors **************************//
   
   /**
    * Constructs an instance of the chat client.
@@ -38,8 +38,7 @@ public class ChatClient extends AbstractClient
    * @param clientUI The interface type variable.
    */
   
-  public ChatClient(String host, int port, ChatIF clientUI) 
-    throws IOException 
+  public ChatClient(String host, int port, ChatIF clientUI) throws IOException 
   {
     super(host, port); //Call the superclass constructor
     this.clientUI = clientUI;
@@ -54,6 +53,7 @@ public class ChatClient extends AbstractClient
    *
    * @param msg The message from the server.
    */
+  
   public void handleMessageFromServer(Object msg) 
   {
 	System.out.println("Receive a message");
@@ -65,7 +65,7 @@ public class ChatClient extends AbstractClient
    *
    * @param message The message from the UI.    
    */
-  public void handleMessageFromClientUI(String message)  
+  public void handleMessageFromClientUI(String[] message)  
   {
     try
     {

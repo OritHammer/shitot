@@ -1,5 +1,5 @@
 package gui;
-
+//123
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -8,6 +8,8 @@ import java.util.ResourceBundle;
 
 import client.ChatClient;
 import common.ChatIF;
+import logic.Question;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,18 +21,19 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
-public class QuestionController implements Initializable,ChatIF {
-	
-	private int flag;
-	private String ip="192.168.175.50";//server ip
-	String quest;
+public class QuestionController implements Initializable, ChatIF {
+
+	private Boolean trueAnsFlag=false;// 
+	String selectedQuestion;
 	String subject;
+	Question questionDetails;
+	String[] messageToServer=new String[3];
+	/* connections variables */
+	private String ip = "192.168.177.31";// server ip
 	final public static int DEFAULT_PORT = 5555;
 	ChatClient chat;
-	
-	@FXML
-	private ToggleGroup group;
 
+	/* fxml variables */
 	@FXML
 	private TextField text;
 
@@ -43,124 +46,148 @@ public class QuestionController implements Initializable,ChatIF {
 	@FXML
 	private TextField answer4;
 	@FXML
-	private TextField questionNum;
+	private TextField questionID;
 	@FXML
 	private TextField teacherName;
-	
-
+/*buttons of display the correct answer*/
 	@FXML
-	private RadioButton right1;
+	private RadioButton correctAns1;
 	@FXML
-	private RadioButton right2;
+	private RadioButton correctAns2;
 	@FXML
-	private RadioButton right3;
+	private RadioButton correctAns3;
 	@FXML
-	private RadioButton right4;
-
+	private RadioButton correctAns4;
 	@FXML
-	private Button button;
+	private ToggleGroup group;
 
 	@FXML
 	private ComboBox<String> questionsComboBox;
 	@FXML
 	private ComboBox<String> subjectsComboBox;
-
-	public void loadQuestions(ActionEvent e) throws IOException {
+/*initialized the update Question window*/
+	public void initialize(URL arg0, ResourceBundle arg1) {
 		connect();
-		subject = subjectsComboBox.getValue();
-		chat.handleMessageFromClientUI("getQuestions "+subject);
-		questionsComboBox.getSelectionModel().clearSelection();
+		messageToServer[0]="getSubjects";
+		messageToServer[1]=null;
+		messageToServer[2]=null;
+		chat.handleMessageFromClientUI(messageToServer);
 	}
-	
-	public void showAnswers(ActionEvent e) throws IOException {
-		/*flag = 1;
-		quest = questionsComboBox.getValue();
-		ArrayList<String> answerList = myDB.getAnswers(quest);
-
-		answer1.setText(answerList.get(0));
-		answer2.setText(answerList.get(1));
-		answer3.setText(answerList.get(2));
-		answer4.setText(answerList.get(3));
-		
-		switch (answerList.get(4)) {
-			case("1"):{
-				right1.setSelected(true);
-				break;
-			}
-			case("2"):{
-				right2.setSelected(true);
-				break;
-			}
-			case("3"):{
-				right3.setSelected(true);
-				break;
-			}
-			case("4"):{
-				right4.setSelected(true);
-				break;
-			}
-		}*/
+	public void loadQuestions(ActionEvent e) throws IOException {
+		connect(); // connecting to server
+		subject = subjectsComboBox.getValue(); // get the subject code
+		messageToServer[0]="getQuestions";
+		messageToServer[1]=subject;
+		messageToServer[2]=null;
+		chat.handleMessageFromClientUI(messageToServer); // ask from sever the list of question of this subject
+		questionsComboBox.getSelectionModel().clearSelection(); // clear the question combobox
 	}
 
+	public void askForQuestionDetails(ActionEvent e) throws IOException {
+		connect(); // connecting to server
+		selectedQuestion = questionsComboBox.getValue(); // get the selected question
+		messageToServer[0]="getQuestionDetails";
+		messageToServer[1]=selectedQuestion;
+		messageToServer[2]=null;
+		chat.handleMessageFromClientUI(messageToServer);//  separate code
+	}
 
+	/* this method show the subjects list on the combobox */
 	public void showSubjects(ArrayList<String> subjectList) {
 		ObservableList<String> observableList = FXCollections.observableArrayList(subjectList);
-		//subjectsComboBox.getSelectionModel().clearSelection();
 		subjectsComboBox.setItems(observableList);
 	}
-	
+
+	/* this method show the questions list on the combobox */
 	public void showQuestions(ArrayList<String> questionsList) {
 		ObservableList<String> observableList = FXCollections.observableArrayList(questionsList);
 		questionsComboBox.setItems(observableList);
 	}
 
-	  public void connect() 
-	  {
-		    try 
-		    {
-		      chat= new ChatClient(ip, DEFAULT_PORT, this);
-		    } 
-		    catch(IOException exception) 
-		    {
-		      System.out.println("Error: Can't setup connection!"
-		                + " Terminating client.");
-		      System.exit(1);
-		    }
-	  }
-		public void updateCorrectAnswer(ActionEvent e) throws IOException, SQLException {
-			if (flag == 1) {
-				RadioButton selected = (RadioButton) group.getSelectedToggle();
-				String newAnswer = selected.getId();
-				//myDB.updateAnswer(quest, newAnswer);
-			}
+	/* this method show the question details to user*/
+	public void showQuestionDetails(ArrayList<String> q){
+		trueAnsFlag=true;// Permit to user change the correct answer
+		questionID.setText(q.get(0));
+		teacherName.setText(q.get(1));
+		answer1.setText(q.get(2));
+		answer2.setText(q.get(3));
+		answer3.setText(q.get(4));
+		answer4.setText(q.get(5));
+		/*set up the correct answer button*/
+		switch (""+q.get(6)+"") {
+		case ("1"): {
+			correctAns1.setSelected(true);
+			break;
 		}
-	  
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		connect();
-		chat.handleMessageFromClientUI("getSubjects");
+		case ("2"): {
+			correctAns2.setSelected(true);
+			break;
+		}
+		case ("3"): {
+			correctAns3.setSelected(true);
+			break;
+		}
+		case ("4"): {
+			correctAns4.setSelected(true);
+			break;
+		}
+		}
+		
 	}
 
-	  public void checkMessage(Object message) 
-	  {
-		  try {
+	/* this method connected between client and server */
+	public void connect(){
+		try {
+			chat = new ChatClient(ip, DEFAULT_PORT, this);
+		} catch (IOException exception) {
+			System.out.println("Error: Can't setup connection!" + " Terminating client.");
+			System.exit(1);
+		}
+	}
+/*send to server request for update correct answer*/
+	public void updateCorrectAnswer(ActionEvent e) throws IOException, SQLException {
+		if (trueAnsFlag) {
+			RadioButton selected = (RadioButton)group.getSelectedToggle();
+			messageToServer[0]="updateCorrectAnswer";
+			messageToServer[1]=questionID.getText();
+			messageToServer[2]= selected.getId();
+			chat.handleMessageFromClientUI(messageToServer); //
+		}
+	}
+	
+
+	/* check the content message from server */
+	public void checkMessage(Object message) {
+		try {
 			chat.closeConnection();
+
+			Object[] msg = (Object[]) message;
+			switch (msg[0].toString()) {
+			case ("getSubjects"): /* get the subjects list from server */
+			{
+				showSubjects((ArrayList<String>) msg[1]);
+				break;
+			}
+			case ("getQuestions"): /* get the questions list from server */
+			{
+				showQuestions((ArrayList<String>) msg[1]);
+				break;
+			}
+			case ("getQuestionDetails"): /* get the subject list from server */
+			{
+				showQuestionDetails((ArrayList<String>) msg[1]);
+				break;
+			}
+			default:{
+				System.out.println("Error in input");
+			}
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
 		}
-		  Object [] msg=(Object[]) message;
-		  switch(msg[0].toString()) {
-			  case("getSubjects"):
-			  	{
-				  showSubjects((ArrayList<String>)msg[1]);
-				  break;
-			  	}
-			  case("getQuestions"):
-			  {
-				  showQuestions((ArrayList<String>)msg[1]);
-				  break;
-			  }
-		  }
-	  }
-	  
+	}
+
 }

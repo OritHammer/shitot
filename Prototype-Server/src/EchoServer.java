@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory.Default;
 
 import ocsf.server.*;
+import sqlManagment.Question;
 import sqlManagment.mysqlConnection;
 
 /**
@@ -34,6 +35,7 @@ public class EchoServer extends AbstractServer {
 	final public static int DEFAULT_PORT = 5555;
 	mysqlConnection con=new mysqlConnection();
 	ArrayList<String> objectList = new ArrayList<String>();
+	//Question questionDetails = new Question();
 	Object[] serverMessage=new Object[2];
 	// Constructors ****************************************************
 
@@ -66,8 +68,10 @@ public class EchoServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		
 		con.runDB();
-		String[] message = ((String) msg).split(" ");/* split the msg to 2 strings (message[0]=operator,message[1]=idetifitier */
+		//String[] message = ((String) msg).split(" ");
+		String[] message = (String[])msg; // message = message returned from Client
 		System.out.println("Message received: " + msg + " from " + client);
+		// split the msg to 2 strings (message[0]=the name of the method the server need to call,message[1]=search key to work with in SQL 
 		serverMessage[0] = message[0];
 		serverMessage[1] =objectList;
 		switch (message[0]) {
@@ -77,11 +81,18 @@ public class EchoServer extends AbstractServer {
 			System.out.println("arraylist to deliver");
 			break;
 		}
-		case "getQuestions": {
+		case "getQuestions": {/*client request all all the questions under some subject*/
 			objectList = con.getQuestionList(message[1],objectList);
 			this.sendToAllClients(serverMessage);
 			break;
 		}
+			case "getQuestionDetails" :
+			{
+				//questionDetails=con.getQuestionDetails(message[1],questionDetails); + changing the method
+				objectList=con.getQuestionDetails(message[1],objectList);
+				this.sendToAllClients(serverMessage);
+				break;
+			}
 		case "updateAnswer": {
 			try {
 				con.updateAnswer(message[1], message[2]);
