@@ -14,7 +14,7 @@ import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory.Default;
 
 import ocsf.server.*;
 import sqlManagment.Question;
-import sqlManagment.mysqlConnection;
+import sqlManagment.MysqlConnection;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
@@ -33,7 +33,7 @@ public class EchoServer extends AbstractServer {
 	 * The default port to listen on.
 	 */
 	final public static int DEFAULT_PORT = 5555;
-	mysqlConnection con=new mysqlConnection();
+	MysqlConnection con=new MysqlConnection();
 	ArrayList<String> objectList = new ArrayList<String>();
 	//Question questionDetails = new Question();
 	Object[] serverMessage=new Object[2];

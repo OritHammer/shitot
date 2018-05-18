@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
-public class mysqlConnection {
+public class MysqlConnection {
 	
 /************************** Class Parameters **********************************/
 	private String serverName ;
@@ -21,7 +21,7 @@ public class mysqlConnection {
 	
 	
 /************************** Class Constructor ********************************/
-	public mysqlConnection() {
+	public MysqlConnection() {
 	Scanner sc = new Scanner(System.in);
 	System.out.println("enter your DB name: ");
 	serverName = sc.nextLine();

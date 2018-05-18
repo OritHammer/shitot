@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import client.ChatClient;
-import common.ChatIF;
+import common.UserControl;
 import logic.Question;
 
 import javafx.collections.FXCollections;
@@ -21,17 +21,15 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
-public class QuestionController implements Initializable, ChatIF {
+public class TeacherController extends  UserControl implements Initializable  {
 
 	private Boolean trueAnsFlag=false;// 
 	String selectedQuestion;
 	String subject;
 	Question questionDetails;
 	String[] messageToServer=new String[3];
-	/* connections variables */
-	private String ip = "192.168.1.70";// server ip
-	final public static int DEFAULT_PORT = 5555;
-	ChatClient chat;
+	
+	
 
 	/* fxml variables */
 	@FXML
@@ -79,7 +77,7 @@ public class QuestionController implements Initializable, ChatIF {
 		messageToServer[0]="getQuestions";
 		messageToServer[1]=subject;
 		messageToServer[2]=null;
-		chat.handleMessageFromClientUI(messageToServer); // ask from sever the list of question of this subject
+		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 		questionsComboBox.getSelectionModel().clearSelection(); // clear the question combobox
 	}
 
@@ -135,15 +133,7 @@ public class QuestionController implements Initializable, ChatIF {
 		
 	}
 
-	/* this method connected between client and server */
-	public void connect(){
-		try {
-			chat = new ChatClient(ip, DEFAULT_PORT, this);
-		} catch (IOException exception) {
-			System.out.println("Error: Can't setup connection!" + " Terminating client.");
-			System.exit(1);
-		}
-	}
+	
 /*send to server request for update correct answer*/
 	public void updateCorrectAnswer(ActionEvent e) throws IOException, SQLException {
 		if (trueAnsFlag) {
