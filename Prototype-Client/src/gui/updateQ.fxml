@@ -28,14 +28,14 @@
             </RadialGradient>
          </textFill></Button>
 		<ComboBox fx:id="questionsComboBox" layoutX="34.0" layoutY="65.0" onAction="#askForQuestionDetails" prefHeight="25.0" prefWidth="505.0" promptText="Choose question" />
-		<RadioButton id="1" fx:id="right1" layoutX="440.0" layoutY="156.0" mnemonicParsing="false">
+		<RadioButton id="1" fx:id="correctAns1" layoutX="440.0" layoutY="156.0" mnemonicParsing="false">
 			<toggleGroup>
 				<ToggleGroup fx:id="group" />
 			</toggleGroup>
 		</RadioButton>
-		<RadioButton id="2" fx:id="right2" layoutX="440.0" layoutY="193.0" mnemonicParsing="false" toggleGroup="$group" />
-		<RadioButton id="3" fx:id="right3" layoutX="440.0" layoutY="230.0" mnemonicParsing="false" toggleGroup="$group" />
-		<RadioButton id="4" fx:id="right4" layoutX="440.0" layoutY="264.0" mnemonicParsing="false" toggleGroup="$group" />
+		<RadioButton id="2" fx:id="correctAns2" layoutX="440.0" layoutY="193.0" mnemonicParsing="false" toggleGroup="$group" />
+		<RadioButton id="3" fx:id="correctAns3" layoutX="440.0" layoutY="230.0" mnemonicParsing="false" toggleGroup="$group" />
+		<RadioButton id="4" fx:id="correctAns4" layoutX="440.0" layoutY="264.0" mnemonicParsing="false" toggleGroup="$group" />
       <Button cancelButton="true" graphicTextGap="0.0" layoutX="262.0" layoutY="324.0" mnemonicParsing="false" text="cancel">
          <textFill>
             <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
@@ -48,7 +48,7 @@
       </Button>
       <ComboBox fx:id="subjectsComboBox" layoutX="34.0" layoutY="31.0" onAction="#loadQuestions" prefWidth="150.0" promptText="choose subject" />
       <TextField fx:id="teacherName" editable="false" layoutX="69.0" layoutY="116.0" />
-      <TextField fx:id="questionNum" editable="false" layoutX="238.0" layoutY="116.0" />
+      <TextField fx:id="questionID" editable="false" layoutX="238.0" layoutY="116.0" />
       <Label layoutX="75.0" layoutY="95.0" prefHeight="17.0" prefWidth="85.0" text="teacher's name" />
       <Label layoutX="248.0" layoutY="95.0" text="question number" />
 	</children>

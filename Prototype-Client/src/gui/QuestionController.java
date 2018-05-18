@@ -1,5 +1,5 @@
 package gui;
-//123
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -29,7 +29,7 @@ public class QuestionController implements Initializable, ChatIF {
 	Question questionDetails;
 	String[] messageToServer=new String[3];
 	/* connections variables */
-	private String ip = "192.168.177.31";// server ip
+	private String ip = "192.168.1.70";// server ip
 	final public static int DEFAULT_PORT = 5555;
 	ChatClient chat;
 

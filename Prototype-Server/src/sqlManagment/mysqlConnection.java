@@ -39,7 +39,7 @@ public class mysqlConnection {
 			/* handle the error */}
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/sys","root","Braude");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/sys","root","123456");
 			System.out.println("SQL connection succeed");
 			// createTableQuestion();
 		} catch (SQLException ex) {/* handle any errors */

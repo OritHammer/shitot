@@ -86,7 +86,7 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-			case "getQuestionDetails" :
+		case "getQuestionDetails" :
 			{
 				//questionDetails=con.getQuestionDetails(message[1],questionDetails); + changing the method
 				objectList=con.getQuestionDetails(message[1],objectList);
