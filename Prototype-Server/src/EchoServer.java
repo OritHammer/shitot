@@ -93,7 +93,7 @@ public class EchoServer extends AbstractServer {
 				this.sendToAllClients(serverMessage);
 				break;
 			}
-		case "updateAnswer": {
+		case "updateCorrectAnswer": {
 			try {
 				con.updateAnswer(message[1], message[2]);
 			} catch (SQLException e) {

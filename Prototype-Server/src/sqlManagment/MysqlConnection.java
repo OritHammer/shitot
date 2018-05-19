@@ -124,6 +124,7 @@ public class MysqlConnection {
 			questionDetails.setTrueAnswer((rs.getString(i)));*/
 			//end insert details	
 		} catch (SQLException e) {
+			System.out.println("erooooooooooooooooooooooooooooooooo");
 			e.printStackTrace();
 		}
 		return DetailsList;

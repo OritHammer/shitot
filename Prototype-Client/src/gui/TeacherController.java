@@ -74,11 +74,13 @@ public class TeacherController extends  UserControl implements Initializable  {
 	public void loadQuestions(ActionEvent e) throws IOException {
 		connect(); // connecting to server
 		subject = subjectsComboBox.getValue(); // get the subject code
+		
 		messageToServer[0]="getQuestions";
 		messageToServer[1]=subject;
 		messageToServer[2]=null;
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 		questionsComboBox.getSelectionModel().clearSelection(); // clear the question combobox
+		
 	}
 
 	public void askForQuestionDetails(ActionEvent e) throws IOException {
@@ -87,7 +89,9 @@ public class TeacherController extends  UserControl implements Initializable  {
 		messageToServer[0]="getQuestionDetails";
 		messageToServer[1]=selectedQuestion;
 		messageToServer[2]=null;
+		clearForm();
 		chat.handleMessageFromClientUI(messageToServer);//  separate code
+		
 	}
 
 	/* this method show the subjects list on the combobox */
@@ -136,13 +140,22 @@ public class TeacherController extends  UserControl implements Initializable  {
 	
 /*send to server request for update correct answer*/
 	public void updateCorrectAnswer(ActionEvent e) throws IOException, SQLException {
+		connect();
 		if (trueAnsFlag) {
+			String qID=questionID.getText();
+		
 			RadioButton selected = (RadioButton)group.getSelectedToggle();
+			String selectedId=selected.getId();
 			messageToServer[0]="updateCorrectAnswer";
-			messageToServer[1]=questionID.getText();
-			messageToServer[2]= selected.getId();
-			chat.handleMessageFromClientUI(messageToServer); //
+			messageToServer[1]=qID;
+			messageToServer[2]= selectedId;
+			chat.handleMessageFromClientUI(messageToServer); 
 		}
+	}
+	/*cancel button was pressed*/
+	public void cancel(ActionEvent e) throws IOException, SQLException {
+		System.exit(0);/*close the program (of client only)*/
+		
 	}
 	
 
@@ -178,6 +191,21 @@ public class TeacherController extends  UserControl implements Initializable  {
 		}catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
+	}
+	/*clear all the text field*/
+	public void clearForm()
+	{
+	
+	answer1.setText("");
+	answer2.setText("");
+	answer3.setText("");
+	answer4.setText("");
+	questionID.setText("");
+	teacherName.setText("");
+	correctAns1.setSelected(false);
+	correctAns2.setSelected(false);
+	correctAns3.setSelected(false);
+	correctAns4.setSelected(false);
 	}
 
 }

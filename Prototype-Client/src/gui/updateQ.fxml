@@ -36,7 +36,7 @@
 		<RadioButton id="2" fx:id="correctAns2" layoutX="440.0" layoutY="193.0" mnemonicParsing="false" toggleGroup="$group" />
 		<RadioButton id="3" fx:id="correctAns3" layoutX="440.0" layoutY="230.0" mnemonicParsing="false" toggleGroup="$group" />
 		<RadioButton id="4" fx:id="correctAns4" layoutX="440.0" layoutY="264.0" mnemonicParsing="false" toggleGroup="$group" />
-      <Button cancelButton="true" graphicTextGap="0.0" layoutX="262.0" layoutY="324.0" mnemonicParsing="false" text="cancel">
+      <Button cancelButton="true" graphicTextGap="0.0" layoutX="262.0" layoutY="324.0" mnemonicParsing="false" onAction="#cancel" text="cancel">
          <textFill>
             <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
                <stops>
