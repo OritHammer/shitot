@@ -101,8 +101,7 @@ public class MysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			//Query return all the details of specific question
-			ResultSet rs = stmt.executeQuery("SELECT Question_id,Teacher_Name,answer1,answer2,answer3,answer4,Correct_Answer FROM questions "
-											+ "WHERE Question_Text=\""+ quest + "\";");
+			ResultSet rs = stmt.executeQuery("SELECT Question_id,Teacher_Name,answer1,answer2,answer3,answer4,Correct_Answer FROM questions " + "WHERE Question_Text=\""+ quest + "\";");
 			//The next commands get the returned details from DB and insert them to question object 
 			
 			rs.next(); 
@@ -126,8 +125,9 @@ public class MysqlConnection {
 			questionDetails.setTrueAnswer((rs.getString(i)));*/
 			//end insert details	
 		} catch (SQLException e) {
-			System.out.println("erooooooooooooooooooooooooooooooooo");
-			e.printStackTrace();
+			
+			
+			//e.printStackTrace();
 		}
 		return DetailsList;
 	}

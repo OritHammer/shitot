@@ -18,7 +18,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
-public class TeacherController extends  UserControl implements Initializable  {
+public class TeacherControl extends  UserControl implements Initializable  {
 
 	private Boolean trueAnsFlag=false;// 
 	String selectedQuestion;
@@ -69,24 +69,30 @@ public class TeacherController extends  UserControl implements Initializable  {
 		chat.handleMessageFromClientUI(messageToServer);
 	}
 	public void loadQuestions(ActionEvent e) throws IOException {
-		connect(); // connecting to server
+		questionsComboBox.getSelectionModel().clearSelection(); 
+		clearForm();
 		subject = subjectsComboBox.getValue(); // get the subject code
-		
+		if(subject==null)
+			return;
+		connect(); //connecting to server
 		messageToServer[0]="getQuestions";
 		messageToServer[1]=subject;
 		messageToServer[2]=null;
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
-		questionsComboBox.getSelectionModel().clearSelection(); // clear the question combobox
+
 		
 	}
 
 	public void askForQuestionDetails(ActionEvent e) throws IOException {
-		connect(); // connecting to server
+		
 		selectedQuestion = questionsComboBox.getValue(); // get the selected question
+		if(selectedQuestion==null)
+			return;
+		connect(); // connecting to server
 		messageToServer[0]="getQuestionDetails";
 		messageToServer[1]=selectedQuestion;
 		messageToServer[2]=null;
-		clearForm();
+		
 		chat.handleMessageFromClientUI(messageToServer);//  separate code
 		
 	}
@@ -192,13 +198,14 @@ public class TeacherController extends  UserControl implements Initializable  {
 	/*clear all the text field*/
 	public void clearForm()
 	{
-	
-	answer1.setText("");
-	answer2.setText("");
-	answer3.setText("");
-	answer4.setText("");
-	questionID.setText("");
-	teacherName.setText("");
+		
+	questionsComboBox.getSelectionModel().clearSelection(); // clear the question combobox
+	answer1.clear();
+	answer2.clear();
+	answer3.clear();
+	answer4.clear();
+	questionID.clear();
+	teacherName.clear();
 	correctAns1.setSelected(false);
 	correctAns2.setSelected(false);
 	correctAns3.setSelected(false);
