@@ -1,4 +1,4 @@
-package logic;
+package control;
 
 
 
@@ -15,7 +15,7 @@ public class Main extends Application {
 	
 	public void start(Stage primaryStage) {
 		try {
-		Parent root = FXMLLoader.load(getClass().getResource("/gui/updateQ.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/boundary/updateQ.fxml"));
 		Scene scene = new Scene(root);
 		primaryStage.setTitle("Update question");
 		primaryStage.setScene(scene);

@@ -1,9 +1,7 @@
 
-package common;
+package control;
 
 import java.io.IOException;
-
-import client.ChatClient;
 
 
 public abstract class UserControl 

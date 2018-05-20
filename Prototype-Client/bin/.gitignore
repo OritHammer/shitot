@@ -1,1 +1,7 @@
+/client/
+/common/
 /gui/
+/logic/
+/control/
+/boundary/
+/entity/
