@@ -1,4 +1,4 @@
-package sqlManagment;
+package control;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
+
+import entity.Question;
 
 public class MysqlConnection {
 	

@@ -1,4 +1,4 @@
-package sqlManagment;
+package entity;
 
 import java.util.ArrayList;
 

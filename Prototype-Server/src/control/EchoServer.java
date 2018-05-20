@@ -1,3 +1,4 @@
+package control;
 
 // This file contains material supporting section 3.7 of the textbook:
 // "Object Oriented Software Engineering" and is issued under the open-source
@@ -12,9 +13,8 @@ import java.util.ArrayList;
 
 import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory.Default;
 
+import entity.Question;
 import ocsf.server.*;
-import sqlManagment.Question;
-import sqlManagment.MysqlConnection;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
