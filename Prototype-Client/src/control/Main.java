@@ -2,7 +2,7 @@ package control;
 
 
 
-import java.util.ArrayList;
+
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +15,8 @@ public class Main extends Application {
 	
 	public void start(Stage primaryStage) {
 		try {
-		Parent root = FXMLLoader.load(getClass().getResource("/boundary/updateQ.fxml"));
+			/*display update question UI*/
+		Parent root = FXMLLoader.load(getClass().getResource("/boundary/updateQuestion.fxml"));
 		Scene scene = new Scene(root);
 		primaryStage.setTitle("Update question");
 		primaryStage.setScene(scene);

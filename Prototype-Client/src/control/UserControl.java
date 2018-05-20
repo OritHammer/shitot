@@ -8,7 +8,8 @@ public abstract class UserControl
 {
 	protected ChatClient chat;
 	/* connections variables */
-	private String ip = "192.168.1.70";// server ip
+	protected String ip ;// server ip
+	
 	final public static int DEFAULT_PORT = 5555;
   public abstract void checkMessage(Object message);
   

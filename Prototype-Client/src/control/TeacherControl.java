@@ -5,6 +5,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 import entity.Question;
 import javafx.collections.FXCollections;
@@ -12,7 +13,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -62,13 +62,19 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private ComboBox<String> subjectsComboBox;
 /*initialized the update Question window*/
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("enter server ip");
+		this.ip=sc.nextLine();
+		sc.close();
+		/*ask for the subjects from the server*/
 		connect();
 		messageToServer[0]="getSubjects";
 		messageToServer[1]=null;
 		messageToServer[2]=null;
-		chat.handleMessageFromClientUI(messageToServer);
+		chat.handleMessageFromClientUI(messageToServer);//send the message to server
 	}
 	public void loadQuestions(ActionEvent e) throws IOException {
+		/*ask for the qustions text*/
 		questionsComboBox.getSelectionModel().clearSelection(); 
 		clearForm();
 		subject = subjectsComboBox.getValue(); // get the subject code
@@ -92,25 +98,32 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		messageToServer[0]="getQuestionDetails";
 		messageToServer[1]=selectedQuestion;
 		messageToServer[2]=null;
-		
-		chat.handleMessageFromClientUI(messageToServer);//  separate code
+		clearForm();
+		if(selectedQuestion!=null)
+		chat.handleMessageFromClientUI(messageToServer);// ask for details of specific question
 		
 	}
 
 	/* this method show the subjects list on the combobox */
 	public void showSubjects(ArrayList<String> subjectList) {
+		
 		ObservableList<String> observableList = FXCollections.observableArrayList(subjectList);
 		subjectsComboBox.setItems(observableList);
 	}
 
 	/* this method show the questions list on the combobox */
-	public void showQuestions(ArrayList<String> questionsList) {
+	public void showQuestions(ArrayList<String> questionsList) 
+	{
+		try {
 		ObservableList<String> observableList = FXCollections.observableArrayList(questionsList);
 		questionsComboBox.setItems(observableList);
+		}
+		catch(Exception e) {}
 	}
 
 	/* this method show the question details to user*/
 	public void showQuestionDetails(ArrayList<String> q){
+		try {
 		trueAnsFlag=true;// Permit to user change the correct answer
 		questionID.setText(q.get(0));
 		teacherName.setText(q.get(1));
@@ -119,7 +132,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		answer3.setText(q.get(4));
 		answer4.setText(q.get(5));
 		/*set up the correct answer button*/
-		switch (""+q.get(6)+"") {
+		switch (""+q.get(6)+"") {/*The number of the correct answers*/
 		case ("1"): {
 			correctAns1.setSelected(true);
 			break;
@@ -137,22 +150,25 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			break;
 		}
 		}
-		
+		}
+		catch(Exception e) {}
 	}
 
 	
 /*send to server request for update correct answer*/
 	public void updateCorrectAnswer(ActionEvent e) throws IOException, SQLException {
-		connect();
-		if (trueAnsFlag) {
-			String qID=questionID.getText();
 		
+		
+		if (trueAnsFlag) {//if there is permission to update the question
+			String qID=questionID.getText();
 			RadioButton selected = (RadioButton)group.getSelectedToggle();
 			String selectedId=selected.getId();
 			messageToServer[0]="updateCorrectAnswer";
 			messageToServer[1]=qID;
 			messageToServer[2]= selectedId;
-			chat.handleMessageFromClientUI(messageToServer); 
+			connect();
+			chat.handleMessageFromClientUI(messageToServer); //send the request to the server
+			chat.closeConnection();
 		}
 	}
 	/*cancel button was pressed*/
@@ -163,9 +179,10 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	
 
 	/* check the content message from server */
+	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
 		try {
-			chat.closeConnection();
+			chat.closeConnection();//close the connection
 
 			Object[] msg = (Object[]) message;
 			switch (msg[0].toString()) {
@@ -195,11 +212,9 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			e.printStackTrace();
 		}
 	}
-	/*clear all the text field*/
+	/*clear all the text fields and radio buttons*/
 	public void clearForm()
 	{
-		
-	questionsComboBox.getSelectionModel().clearSelection(); // clear the question combobox
 	answer1.clear();
 	answer2.clear();
 	answer3.clear();

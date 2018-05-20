@@ -11,6 +11,7 @@ public class Question {
 	
 	public Question() {
 		answers= new ArrayList<String>();
+		
 	}
 
 	public String getId() {
