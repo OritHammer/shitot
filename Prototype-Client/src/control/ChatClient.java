@@ -15,7 +15,6 @@ public class ChatClient extends AbstractClient
   /**
    * The interface type variable.  It allows the implementation of 
    * the display method in the client.
-   * kaki
    */
   UserControl clientUI; 
 

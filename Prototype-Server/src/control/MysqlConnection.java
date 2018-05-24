@@ -29,7 +29,7 @@ static Connection conn;
 			/* handle the error */}
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/sys","root","Braude");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/shitot","root","1234");
 			System.out.println("SQL connection succeed");
 			// createTableQuestion();
 		} catch (SQLException ex) {/* handle any errors */
