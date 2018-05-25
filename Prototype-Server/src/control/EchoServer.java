@@ -98,7 +98,6 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		
 			
 			default:{
 				System.out.println("Error on switch case ");
