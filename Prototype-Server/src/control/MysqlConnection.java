@@ -30,7 +30,7 @@ private Statement stmt;
 			/* handle the error */}
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/sys","root","Braude");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/shitot","root","1234");
 			System.out.println("SQL connection succeed");
 			// createTableQuestion();
 		} catch (SQLException ex) {/* handle any errors */
@@ -43,7 +43,7 @@ private Statement stmt;
 		try {
 			stmt = conn.createStatement();
 			//query check existent of such details base on  user name and password
-			ResultSet rs = stmt.executeQuery("SELECT UserID,userName,role FROM questions"
+			ResultSet rs = stmt.executeQuery("SELECT UserID,userName,role FROM users"
 															  + "WHERE userID=\""+userID+"\" AND password=\""+userPass+"\";");
 			//if there is no user with given details
 			if(rs == null)
