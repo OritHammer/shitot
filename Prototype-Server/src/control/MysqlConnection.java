@@ -11,7 +11,7 @@ static Connection conn;
 private Statement stmt;
 /************************** Class Constructor ********************************/
 	public MysqlConnection() {
-		/*used to enter server details
+	/*used to enter server details
 	Scanner sc = new Scanner(System.in);
 	System.out.println("enter your DB name: ");
 	serverName = sc.nextLine();
