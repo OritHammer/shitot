@@ -73,7 +73,7 @@ public class UserControl implements Initializable
 		try {
 			chat.closeConnection();// close the connection
 			Object[] msg = (Object[]) message;
-			if (msg[0].toString() == "checkUserDetails") {
+			if (msg[0].toString().equals("checkUserDetails")) {
 				ArrayList<String> userDetails = (ArrayList<String>) msg[1];
 				if (userDetails == null) {
 					noUser.setDisable(false);
