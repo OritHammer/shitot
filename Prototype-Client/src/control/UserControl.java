@@ -21,7 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
 
-public abstract class UserControl implements Initializable
+public class UserControl implements Initializable
 {
 	@FXML
 	private TextField userName;
@@ -50,9 +50,9 @@ public abstract class UserControl implements Initializable
 	final public static int DEFAULT_PORT = 5555;
   
   /* this method connected between client and server */
-	public void connect(){
+	public void connect(UserControl user){
 		try {
-			chat = new ChatClient(ip, DEFAULT_PORT, this);
+			chat = new ChatClient(ip, DEFAULT_PORT, user);
 		} catch (IOException exception) {
 			System.out.println("Error: Can't setup connection!" + " Terminating client.");
 			System.exit(1);
@@ -61,11 +61,11 @@ public abstract class UserControl implements Initializable
 	
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		/*Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner(System.in);
 		System.out.println("enter server ip");
 		this.ip = sc.nextLine();
 		sc.close();
-		connect();*/
+		connect(this);
 	}
 	
 	

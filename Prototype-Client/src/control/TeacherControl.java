@@ -62,16 +62,17 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private ComboBox<String> subjectsComboBox;
 /*initialized the update Question window*/
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		/*Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner(System.in);
 		System.out.println("enter server ip");
 		this.ip=sc.nextLine();
-		sc.close();  */
+		sc.close();  
 		/*ask for the subjects from the server*/
-	//connect(); 
+		connect(this); 
 		messageToServer[0]="getSubjects";
 		messageToServer[1]=null;
 		messageToServer[2]=null;
 		chat.handleMessageFromClientUI(messageToServer);//send the message to server
+	
 	}
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/*ask for the qustions text*/
@@ -80,7 +81,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		subject = subjectsComboBox.getValue(); // get the subject code
 		if(subject==null)
 			return;
-		connect(); //connecting to server
+		connect(this); //connecting to server
 		messageToServer[0]="getQuestions";
 		messageToServer[1]=subject;
 		messageToServer[2]=null;
@@ -94,7 +95,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		selectedQuestion = questionsComboBox.getValue(); // get the selected question
 		if(selectedQuestion==null)
 			return;
-		connect(); // connecting to server
+		connect(this); // connecting to server
 		messageToServer[0]="getQuestionDetails";
 		messageToServer[1]=selectedQuestion;
 		messageToServer[2]=null;
@@ -166,7 +167,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			messageToServer[0]="updateCorrectAnswer";
 			messageToServer[1]=qID;
 			messageToServer[2]= selectedId;
-			connect();
+			connect(this);
 			chat.handleMessageFromClientUI(messageToServer); //send the request to the server
 			chat.closeConnection();
 		}
