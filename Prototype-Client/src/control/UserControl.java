@@ -3,6 +3,7 @@ package control;
 
 import java.io.IOException;
 
+
 public abstract class UserControl 
 {
 	protected ChatClient chat;
