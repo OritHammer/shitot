@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 public class MysqlConnection {
 static Connection conn;
+private Statement stmt;
 /************************** Class Constructor ********************************/
 	public MysqlConnection() {
 		/*used to enter server details
@@ -29,7 +30,7 @@ static Connection conn;
 			/* handle the error */}
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/shitot","root","1234");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/sys","root","Braude");
 			System.out.println("SQL connection succeed");
 			// createTableQuestion();
 		} catch (SQLException ex) {/* handle any errors */
@@ -38,7 +39,26 @@ static Connection conn;
 			System.out.println("VendorError: " + ex.getErrorCode());
 		}
 	}
-
+	public ArrayList<String> checkUserDetails(ArrayList<String> userDetails,String userID,String userPass) {
+		try {
+			stmt = conn.createStatement();
+			//query check existent of such details base on  user name and password
+			ResultSet rs = stmt.executeQuery("SELECT UserID,userName,role FROM questions"
+															  + "WHERE userID=\""+userID+"\" AND password=\""+userPass+"\";");
+			//if there is no user with given details
+			if(rs == null)
+				return null ;
+			else {
+				while(rs.next()) {
+					userDetails.add(rs.getString(1));
+					//in the end userDetails will have the UserID,userName,role
+				}
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return userDetails;
+	}
 	public ArrayList<String> getSubjectList(ArrayList<String> subjectList) {
 		/*
 		 * This function separate the subject id from the whole Question id for 
@@ -46,7 +66,7 @@ static Connection conn;
 		 */
 		
 		String subjectID = "";
-		Statement stmt;
+		//Statement stmt;
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT Question_id FROM questions;");//questions is the name on the DB
@@ -68,7 +88,7 @@ static Connection conn;
 		/*
 		 * The function return the question list by the given subject code
 		 */
-		Statement stmt;
+		//Statement stmt;
 		try {
 			 stmt = conn.createStatement();
 			 ResultSet rs = stmt.executeQuery("SELECT Question_Text FROM questions"
@@ -85,7 +105,7 @@ static Connection conn;
 	public ArrayList<String> getQuestionDetails(String quest, ArrayList<String> DetailsList) {
 		int i;
 		//ArrayList<String> answerList = new ArrayList<String>();
-		Statement stmt;
+		//Statement stmt;
 		try {
 			stmt = conn.createStatement();
 			//Query return all the details of specific question
@@ -109,7 +129,7 @@ static Connection conn;
 	}
 
 	public void updateAnswer(String questionID, String newAnswer) throws SQLException {
-		Statement stmt;
+		//Statement stmt;
 		stmt = conn.createStatement();
 		//query update on DB the correct answer of question that have the given questionID from client
 		stmt.executeUpdate("UPDATE questions SET Correct_answer=\"" + newAnswer

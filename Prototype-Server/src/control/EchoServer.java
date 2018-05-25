@@ -60,7 +60,7 @@ public class EchoServer extends AbstractServer {
 
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		
-		con.runDB();
+		con.runDB(); 
 		//String[] message = ((String) msg).split(" ");
 		String[] message = (String[])msg; // message = message returned from Client
 		System.out.println("Message received: " + msg + " from " + client);
@@ -81,7 +81,6 @@ public class EchoServer extends AbstractServer {
 		}
 		case "getQuestionDetails" :
 			{
-				//questionDetails=con.getQuestionDetails(message[1],questionDetails); + changing the method
 				objectList=con.getQuestionDetails(message[1],objectList);
 				this.sendToAllClients(serverMessage);
 				break;
@@ -94,6 +93,11 @@ public class EchoServer extends AbstractServer {
 			}
 			break;
 		}
+		case "checkUserDetails": {
+			objectList=con.checkUserDetails(objectList, message[1], message[2]);
+			this.sendToAllClients(serverMessage);
+		}
+			
 			default:{
 				System.out.println("Error on switch case ");
 			}
