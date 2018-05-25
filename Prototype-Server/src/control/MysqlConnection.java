@@ -43,14 +43,14 @@ private Statement stmt;
 		try {
 			stmt = conn.createStatement();
 			//query check existent of such details base on  user name and password
-			ResultSet rs = stmt.executeQuery("SELECT UserID,userName,role FROM users"
-															  + "WHERE userID=\""+userID+"\" AND password=\""+userPass+"\";");
+			ResultSet rs = stmt.executeQuery("SELECT userID,userName,role FROM users WHERE userID=\""+userID+"\" AND password=\""+userPass+"\";");
 			//if there is no user with given details
 			if(rs == null)
 				return null ;
 			else {
-				while(rs.next()) {
-					userDetails.add(rs.getString(1));
+					rs.next();
+					for(int i=1;i<4;i++) {
+					userDetails.add(rs.getString(i));
 					//in the end userDetails will have the UserID,userName,role
 				}
 			}
@@ -91,8 +91,7 @@ private Statement stmt;
 		//Statement stmt;
 		try {
 			 stmt = conn.createStatement();
-			 ResultSet rs = stmt.executeQuery("SELECT Question_Text FROM questions"
-					 						+ " WHERE Question_id like "+"\""+subject+"%\""+";" );
+			 ResultSet rs = stmt.executeQuery("SELECT Question_Text FROM questions"+ " WHERE Question_id like "+"\""+subject+"%\""+";" );
 			while (rs.next())
 				questionList.add(rs.getString(1));
 			rs.close();

@@ -96,6 +96,7 @@ public class EchoServer extends AbstractServer {
 		case "checkUserDetails": {
 			objectList=con.checkUserDetails(objectList, message[1], message[2]);
 			this.sendToAllClients(serverMessage);
+			break;
 		}
 			
 			default:{
