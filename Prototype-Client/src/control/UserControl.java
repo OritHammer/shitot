@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -19,6 +20,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 
 public class UserControl implements Initializable
@@ -42,6 +45,7 @@ public class UserControl implements Initializable
 	private ImageView LoginButton;
 	
 	protected ChatClient chat;
+	private ActionEvent eventSave;
 	
 	String[] messageToServer = new String[3];
 	/* connections variables */
@@ -80,9 +84,23 @@ public class UserControl implements Initializable
 				} else {
 					switch (userDetails.get(2).toLowerCase()) {
 					case "teacher": {
-						Parent teacherWin = FXMLLoader.load(getClass().getResource("/boundary/TeacherWindow.fxml"));
+						/*Parent teacherWin = FXMLLoader.load(getClass().getResource("/boundary/TeacherWindow.fxml"));
 						Scene teacherGUI = new Scene(teacherWin);
-						Main.window.setScene(teacherGUI);
+						Main.window.setScene(teacherGUI);*/
+						
+						(((Node) eventSave.getSource()).getScene()).getWindow().hide(); //hiding primary window
+						Stage primaryStage = new Stage();
+						FXMLLoader loader = new FXMLLoader();
+						Pane root = loader.load(getClass().getResource("/gui/HomeScreenTeacher.fxml").openStream());
+						
+						TeacherControl studentFormController = loader.getController();		
+						//TeacherControl.loadStudent(Main.students.get(itemIndex));
+						
+						Scene scene = new Scene(root);			
+						
+						primaryStage.setScene(scene);		
+						primaryStage.show();
+						
 						break;
 					}
 					case "student": {
@@ -103,7 +121,7 @@ public class UserControl implements Initializable
 		}
 	}
 	public void loginPressed(ActionEvent e) throws IOException {
-
+		eventSave=e;
 		if (userName.getText() == null || password.getText() == null)
 			loginError.setDisable(false);
 		else if (userName.getText().length() < 4)
