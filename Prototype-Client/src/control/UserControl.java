@@ -47,12 +47,18 @@ public class UserControl implements Initializable
 	
 	@FXML private javafx.scene.control.Button closeButton;
 
-	@FXML
-	private void closeButtonAction(){
+	public void closeButtonAction(ActionEvent e) throws IOException{
 	    // get a handle to the stage
-	    Stage stage = (Stage) closeButton.getScene().getWindow();
+	    //Stage stage = (Stage) closeButton.getScene().getWindow();
+		  ((Node)e.getSource()).getScene().getWindow().hide(); //hiding primary window
+		  Stage primaryStage = new Stage();
+		  FXMLLoader loader = new FXMLLoader();
+		  Pane root = loader.load(getClass().getResource("/boundary/HomeScreenTeacher.fxml").openStream());
+		  Scene scene = new Scene(root);   
+		  primaryStage.setScene(scene);  
+		  primaryStage.show();
 	    // do what you have to do
-	    stage.close();
+	    //stage.close();
 	}
 	
 	protected ChatClient chat;
@@ -94,7 +100,7 @@ public class UserControl implements Initializable
 				} else {
 					switch (userDetails.get(2).toLowerCase()) {
 					case "teacher": {
-						Platform.exit();
+						//Platform.exit();
 						break;
 					}
 					case "student": {

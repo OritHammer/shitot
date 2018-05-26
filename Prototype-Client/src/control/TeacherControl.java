@@ -26,8 +26,6 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	Question questionDetails;
 	String[] messageToServer=new String[3];
 	
-	
-
 	/* fxml variables */
 	@FXML
 	private TextField text;
