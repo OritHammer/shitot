@@ -95,10 +95,6 @@ public class UserControl implements Initializable
 					switch (userDetails.get(2).toLowerCase()) {
 					case "teacher": {
 						Platform.exit();
-						  FXMLLoader loader = new FXMLLoader();
-						  Pane root = loader.load(getClass().getResource("/boundary/HomeScreenTeacher.fxml").openStream());
-						  Scene scene = new Scene(root);   
-
 						break;
 					}
 					case "student": {
