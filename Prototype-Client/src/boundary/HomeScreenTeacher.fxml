@@ -10,11 +10,18 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button layoutX="150.0" layoutY="149.0" mnemonicParsing="false" text="Update question" />
+      <ImageView disable="true" fitHeight="734.0" fitWidth="455.0" layoutX="-7.0" layoutY="-165.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../Desktop/6d74cf612b1de7a98f372753d134f9b4--spider.jpg" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </ImageView>
       <Button layoutX="153.0" layoutY="184.0" mnemonicParsing="false" text="Create question" />
+      <Button layoutX="150.0" layoutY="149.0" mnemonicParsing="false" text="Update question" />
       <Button layoutX="159.0" layoutY="256.0" mnemonicParsing="false" text="Create exam" />
       <Button layoutX="159.0" layoutY="221.0" mnemonicParsing="false" text="View reports" />
       <Button layoutX="160.0" layoutY="291.0" mnemonicParsing="false" text="Check exam" />
