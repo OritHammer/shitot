@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,8 +45,17 @@ public class UserControl implements Initializable
 	@FXML
 	private ImageView LoginButton;
 	
+	@FXML private javafx.scene.control.Button closeButton;
+
+	@FXML
+	private void closeButtonAction(){
+	    // get a handle to the stage
+	    Stage stage = (Stage) closeButton.getScene().getWindow();
+	    // do what you have to do
+	    stage.close();
+	}
+	
 	protected ChatClient chat;
-	private ActionEvent eventSave;
 	
 	String[] messageToServer = new String[3];
 	/* connections variables */
@@ -84,13 +94,11 @@ public class UserControl implements Initializable
 				} else {
 					switch (userDetails.get(2).toLowerCase()) {
 					case "teacher": {
-						  ((Node)eventSave.getSource()).getScene().getWindow().hide(); //hiding primary window
-						  Stage primaryStage = new Stage();
+						Platform.exit();
 						  FXMLLoader loader = new FXMLLoader();
 						  Pane root = loader.load(getClass().getResource("/boundary/HomeScreenTeacher.fxml").openStream());
 						  Scene scene = new Scene(root);   
-						  primaryStage.setScene(scene);  
-						  primaryStage.show();
+
 						break;
 					}
 					case "student": {
@@ -111,7 +119,6 @@ public class UserControl implements Initializable
 		}
 	}
 	public void loginPressed(ActionEvent e) throws IOException {
-		eventSave=e;
 		if (userName.getText() == null || password.getText() == null)
 			loginError.setDisable(false);
 		else if (userName.getText().length() < 4)

@@ -34,7 +34,7 @@
             <Font name="Book Antiqua Bold" size="24.0" />
          </font>
       </Label>
-      <Button fx:id="LoginBtn" layoutX="252.0" layoutY="225.0" mnemonicParsing="false" onAction="#loginPressed" text="Login">
+      <Button fx:id="LoginBtn" layoutX="286.0" layoutY="225.0" mnemonicParsing="false" onAction="#loginPressed" text="Login">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
@@ -72,7 +72,7 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <Label fx:id="loginError" disable="true" layoutX="316.0" layoutY="229.0" prefHeight="17.0" prefWidth="232.0" text="one or more details are missing" textFill="RED" wrapText="true">
+      <Label fx:id="loginError" disable="true" layoutX="345.0" layoutY="229.0" prefHeight="17.0" prefWidth="232.0" text="one or more details are missing" textFill="RED" wrapText="true">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
@@ -82,5 +82,10 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
+      <Button fx:id="closeButton" layoutX="233.0" layoutY="225.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Close">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
