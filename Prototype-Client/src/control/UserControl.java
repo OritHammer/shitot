@@ -84,23 +84,13 @@ public class UserControl implements Initializable
 				} else {
 					switch (userDetails.get(2).toLowerCase()) {
 					case "teacher": {
-						/*Parent teacherWin = FXMLLoader.load(getClass().getResource("/boundary/TeacherWindow.fxml"));
-						Scene teacherGUI = new Scene(teacherWin);
-						Main.window.setScene(teacherGUI);*/
-						
-						(((Node) eventSave.getSource()).getScene()).getWindow().hide(); //hiding primary window
-						Stage primaryStage = new Stage();
-						FXMLLoader loader = new FXMLLoader();
-						Pane root = loader.load(getClass().getResource("/gui/HomeScreenTeacher.fxml").openStream());
-						
-						TeacherControl studentFormController = loader.getController();		
-						//TeacherControl.loadStudent(Main.students.get(itemIndex));
-						
-						Scene scene = new Scene(root);			
-						
-						primaryStage.setScene(scene);		
-						primaryStage.show();
-						
+						  ((Node)eventSave.getSource()).getScene().getWindow().hide(); //hiding primary window
+						  Stage primaryStage = new Stage();
+						  FXMLLoader loader = new FXMLLoader();
+						  Pane root = loader.load(getClass().getResource("/boundary/HomeScreenTeacher.fxml").openStream());
+						  Scene scene = new Scene(root);   
+						  primaryStage.setScene(scene);  
+						  primaryStage.show();
 						break;
 					}
 					case "student": {
