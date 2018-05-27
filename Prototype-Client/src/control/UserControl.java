@@ -84,7 +84,7 @@ public class UserControl implements Initializable
 		System.out.println("enter server ip");
 		this.ip = sc.nextLine();
 		sc.close();
-		connect(this);
+		
 	}
 	
 	
@@ -125,12 +125,9 @@ public class UserControl implements Initializable
 		}
 	}
 	public void loginPressed(ActionEvent e) throws IOException {
+		connect(this);
 		if (userName.getText() == null || password.getText() == null)
 			loginError.setDisable(false);
-		else if (userName.getText().length() < 4)
-			userNameError.setDisable(false);
-		else if (password.getText().length() < 4)
-			passwordError.setDisable(false);
 		else {
 			messageToServer[0] = "checkUserDetails";
 			messageToServer[1] = userName.getText();
