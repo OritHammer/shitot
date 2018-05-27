@@ -56,8 +56,6 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private ToggleGroup group;
 
 	@FXML
-	private Tab updateQuestionTab;
-	@FXML
 	public void initializeQuestions() {
 		connect(this); 
 		messageToServer[0]="getSubjects";
@@ -92,8 +90,6 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		messageToServer[1]=subject;
 		messageToServer[2]=null;
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
-
-		
 	}
 
 	public void askForQuestionDetails(ActionEvent e) throws IOException {

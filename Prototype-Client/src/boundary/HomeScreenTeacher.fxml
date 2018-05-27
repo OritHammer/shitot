@@ -22,7 +22,7 @@
             </AnchorPane>
          </content>
       </Tab>
-      <Tab fx:id="updateQuestionTab" onSelectionChanged="#initializeQuestions" text="Update question">
+      <Tab onSelectionChanged="#initializeQuestions" text="Update question">
          <content>
             <AnchorPane prefHeight="361.0" prefWidth="707.0">
                <children>
