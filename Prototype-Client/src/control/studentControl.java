@@ -41,5 +41,9 @@ public class studentControl  extends UserControl implements Initializable{
 	
 	
 	
+	/***************Class Methods*******************************/
+	
+	
+	
 	
 }
