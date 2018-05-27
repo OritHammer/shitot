@@ -35,7 +35,7 @@
                   <Label layoutX="40.0" layoutY="193.0" text="B" />
                   <Label layoutX="39.0" layoutY="156.0" text="A" />
                   <Label layoutX="412.0" layoutY="128.0" text="correct answer" />
-                  <Button fx:id="update" layoutX="278.0" layoutY="324.0" mnemonicParsing="false" onAction="#updateCorrectAnswer" text="update">
+                  <Button layoutX="278.0" layoutY="324.0" mnemonicParsing="false" onAction="#updateCorrectAnswer" text="update">
                      <textFill>
                         <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
                            <stops>
@@ -73,20 +73,20 @@
             </AnchorPane>
          </content>
       </Tab>
-      <Tab text="Create question">
+      <Tab fx:id="createQuestion" onSelectionChanged="#initializeQuestions" text="Create question">
          <content>
             <AnchorPane prefHeight="361.0" prefWidth="707.0">
                <children>
-                  <TextField fx:id="answer41" editable="false" layoutX="58.0" layoutY="260.0" prefHeight="25.0" prefWidth="346.0" />
-                  <TextField fx:id="answer31" editable="false" layoutX="58.0" layoutY="226.0" prefHeight="25.0" prefWidth="346.0" />
-                  <TextField fx:id="answer21" editable="false" layoutX="58.0" layoutY="189.0" prefHeight="25.0" prefWidth="346.0" />
-                  <TextField fx:id="answer11" editable="false" layoutX="58.0" layoutY="152.0" prefHeight="25.0" prefWidth="346.0" />
+                  <TextField editable="false" layoutX="58.0" layoutY="260.0" prefHeight="25.0" prefWidth="346.0" />
+                  <TextField editable="false" layoutX="58.0" layoutY="226.0" prefHeight="25.0" prefWidth="346.0" />
+                  <TextField editable="false" layoutX="58.0" layoutY="189.0" prefHeight="25.0" prefWidth="346.0" />
+                  <TextField editable="false" layoutX="58.0" layoutY="152.0" prefHeight="25.0" prefWidth="346.0" />
                   <Label layoutX="40.0" layoutY="264.0" text="D" />
                   <Label layoutX="39.0" layoutY="230.0" text="C" />
                   <Label layoutX="40.0" layoutY="193.0" text="B" />
                   <Label layoutX="39.0" layoutY="156.0" text="A" />
                   <Label layoutX="412.0" layoutY="128.0" text="correct answer" />
-                  <Button fx:id="update1" layoutX="278.0" layoutY="324.0" mnemonicParsing="false" text="update">
+                  <Button layoutX="278.0" layoutY="324.0" mnemonicParsing="false" text="update">
                      <textFill>
                         <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
                            <stops>
@@ -96,15 +96,14 @@
                         </RadialGradient>
                      </textFill>
                   </Button>
-                  <ComboBox fx:id="questionsComboBox1" layoutX="34.0" layoutY="65.0" prefHeight="25.0" prefWidth="505.0" promptText="Choose question" />
-                  <RadioButton id="1" fx:id="correctAns11" layoutX="440.0" layoutY="156.0" mnemonicParsing="false">
+                  <RadioButton id="1" layoutX="440.0" layoutY="156.0" mnemonicParsing="false">
                      <toggleGroup>
                         <ToggleGroup fx:id="group1" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton id="2" fx:id="correctAns21" layoutX="440.0" layoutY="193.0" mnemonicParsing="false" toggleGroup="$group1" />
-                  <RadioButton id="3" fx:id="correctAns31" layoutX="440.0" layoutY="230.0" mnemonicParsing="false" toggleGroup="$group1" />
-                  <RadioButton id="4" fx:id="correctAns41" layoutX="440.0" layoutY="264.0" mnemonicParsing="false" toggleGroup="$group1" />
+                  <RadioButton id="2" layoutX="440.0" layoutY="193.0" mnemonicParsing="false" toggleGroup="$group1" />
+                  <RadioButton id="3" layoutX="440.0" layoutY="230.0" mnemonicParsing="false" toggleGroup="$group1" />
+                  <RadioButton id="4" layoutX="440.0" layoutY="264.0" mnemonicParsing="false" toggleGroup="$group1" />
                   <Button cancelButton="true" graphicTextGap="0.0" layoutX="370.0" layoutY="324.0" mnemonicParsing="false" text="cancel">
                      <textFill>
                         <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
@@ -115,11 +114,11 @@
                         </RadialGradient>
                      </textFill>
                   </Button>
-                  <ComboBox fx:id="subjectsComboBox1" layoutX="34.0" layoutY="31.0" prefWidth="150.0" promptText="choose subject" />
-                  <TextField fx:id="teacherName1" editable="false" layoutX="69.0" layoutY="116.0" />
-                  <TextField fx:id="questionID1" editable="false" layoutX="238.0" layoutY="116.0" />
-                  <Label layoutX="75.0" layoutY="95.0" prefHeight="17.0" prefWidth="85.0" text="teacher's name" />
-                  <Label layoutX="248.0" layoutY="95.0" text="question number" />
+                  <ComboBox fx:id="subjectsComboBoxInCreate" layoutX="58.0" layoutY="51.0" prefWidth="150.0" promptText="choose subject" />
+                  <TextField editable="false" layoutX="69.0" layoutY="112.0" />
+                  <TextField editable="false" layoutX="238.0" layoutY="112.0" />
+                  <Label layoutX="75.0" layoutY="91.0" prefHeight="17.0" prefWidth="85.0" text="teacher's name" />
+                  <Label layoutX="248.0" layoutY="91.0" text="question number" />
                </children>
             </AnchorPane>
          </content>

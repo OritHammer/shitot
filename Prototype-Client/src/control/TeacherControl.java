@@ -54,7 +54,9 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private RadioButton correctAns4;
 	@FXML
 	private ToggleGroup group;
-
+	
+	@FXML
+	private Tab createQuestion;
 	@FXML
 	public void initializeQuestions() {
 		connect(this); 
@@ -63,7 +65,8 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		messageToServer[2]=null;
 		chat.handleMessageFromClientUI(messageToServer);//send the message to server
 	}
-	
+	@FXML
+	private ComboBox<String> subjectsComboBoxInCreate;
 	@FXML
 	private ComboBox<String> questionsComboBox;
 	@FXML
@@ -109,9 +112,13 @@ public class TeacherControl extends  UserControl implements Initializable  {
 
 	/* this method show the subjects list on the combobox */
 	public void showSubjects(ArrayList<String> subjectList) {
-		
 		ObservableList<String> observableList = FXCollections.observableArrayList(subjectList);
-		subjectsComboBox.setItems(observableList);
+		if(createQuestion.isSelected()) {
+			subjectsComboBoxInCreate.setItems(observableList);
+		}
+		else {
+			subjectsComboBox.setItems(observableList);
+		}
 	}
 
 	/* this method show the questions list on the combobox */
