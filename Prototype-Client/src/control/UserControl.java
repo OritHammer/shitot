@@ -21,8 +21,7 @@ import javafx.scene.image.ImageView;
 
 import javafx.stage.Stage;
 
-public class UserControl implements Initializable
-{
+public class UserControl implements Initializable {
 	@FXML
 	private TextField userName;
 	@FXML
@@ -34,35 +33,41 @@ public class UserControl implements Initializable
 	@FXML
 	private Label loginError;
 	@FXML
-	private Label noUser;
+	private Label errorMsg;
+	@FXML
+	private Label errorMsg1;
+	@FXML
+	private Label errorMsg2;
+	@FXML
+	private Label errorMsg3;
 	@FXML
 	private Button LoginBtn;
-	
+
 	@FXML
 	private ImageView LoginButton;
-	
+
 	@FXML
 	private javafx.scene.control.Button closeButton;
 
 	private Parent home_page_parent;
 	private Scene home_page_scene;
 	static Thread th;
-	
-	public void closeButtonAction(ActionEvent e) throws IOException{
-	    Stage stage = (Stage) closeButton.getScene().getWindow();
-	    stage.close();
+
+	public void closeButtonAction(ActionEvent e) throws IOException {
+		Stage stage = (Stage) closeButton.getScene().getWindow();
+		stage.close();
 	}
-	
+
 	protected ChatClient chat;
-	
+
 	String[] messageToServer = new String[3];
 	/* connections variables */
-	protected String ip ;// server ip
-	
+	protected String ip;// server ip
+
 	final public static int DEFAULT_PORT = 5555;
-  
-  /* this method connected between client and server */
-	public void connect(UserControl user){
+
+	/* this method connected between client and server */
+	public void connect(UserControl user) {
 		try {
 			chat = new ChatClient(ip, DEFAULT_PORT, user);
 		} catch (IOException exception) {
@@ -70,52 +75,51 @@ public class UserControl implements Initializable
 			System.exit(1);
 		}
 	}
-	
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("enter server ip");
-		this.ip = "77.138.70.98";
-		//this.ip = sc.nextLine();
+		 this.ip = "77.138.70.98";
+		//this.ip = "localhost";
+		// this.ip = sc.nextLine();
 		sc.close();
 	}
-	
+
 	public void checkMessage(Object message) {
 		try {
 			chat.closeConnection();// close the connection
 			Object[] msg = (Object[]) message;
-			if(msg[1] == null)
-			{
-				System.out.println("no user");
+			if (msg[1] == null) {
+				errorMsg.setVisible(true);
 				return;
 			}
 			if (msg[0].toString().equals("checkUserDetails")) {
 				@SuppressWarnings("unchecked")
 				ArrayList<String> userDetails = (ArrayList<String>) msg[1];
 				if (userDetails == null) {
-					noUser.setDisable(false);
-					
+
 				} else {
 					switch (userDetails.get(2).toLowerCase()) {
 					case "teacher": {
-						//Platform.exit();
-					
+						// Platform.exit();
+
 						System.out.println("teacher screen request");
 						Platform.runLater(new Runnable() {
 
 							@Override
 							public void run() {
 								// TODO Auto-generated method stub
-								 try {
-									home_page_parent = FXMLLoader.load(getClass().getResource("/boundary/HomeScreenTeacher.fxml"));
-								     home_page_scene = new Scene(home_page_parent);
-									  Main.getStage().setScene(home_page_scene);
+								try {
+									home_page_parent = FXMLLoader
+											.load(getClass().getResource("/boundary/HomeScreenTeacher.fxml"));
+									home_page_scene = new Scene(home_page_parent);
+									Main.getStage().setScene(home_page_scene);
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
-								}   
+								}
 							}
-							
+
 						});
 						break;
 					}
@@ -126,14 +130,15 @@ public class UserControl implements Initializable
 							@Override
 							public void run() {
 								// TODO Auto-generated method stub
-								 try {
-									home_page_parent = FXMLLoader.load(getClass().getResource("/boundary/HomeScreenStudent.fxml"));
-								     home_page_scene = new Scene(home_page_parent);
-									  Main.getStage().setScene(home_page_scene);
+								try {
+									home_page_parent = FXMLLoader
+											.load(getClass().getResource("/boundary/HomeScreenStudent.fxml"));
+									home_page_scene = new Scene(home_page_parent);
+									Main.getStage().setScene(home_page_scene);
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
-								} 
+								}
 							}
 						});
 						break;
@@ -145,14 +150,15 @@ public class UserControl implements Initializable
 							@Override
 							public void run() {
 								// TODO Auto-generated method stub
-								 try {
-									home_page_parent = FXMLLoader.load(getClass().getResource("/boundary/HomeScreenDirector.fxml"));
-								     home_page_scene = new Scene(home_page_parent);
-									  Main.getStage().setScene(home_page_scene);
+								try {
+									home_page_parent = FXMLLoader
+											.load(getClass().getResource("/boundary/HomeScreenDirector.fxml"));
+									home_page_scene = new Scene(home_page_parent);
+									Main.getStage().setScene(home_page_scene);
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
-								}				     
+								}
 							}
 						});
 						break;
@@ -165,10 +171,19 @@ public class UserControl implements Initializable
 			e.printStackTrace();
 		}
 	}
-	 public void loginPressed(ActionEvent e) throws IOException {
+
+	public void loginPressed(ActionEvent e) throws IOException {
+		errorMsg.setVisible(false);
+		errorMsg1.setVisible(false);
+		errorMsg2.setVisible(false);
+		errorMsg3.setVisible(false);
 		  connect(this);
-		  if (userName.getText() == null || password.getText() == null)
-		   loginError.setDisable(false);
+		  if (userName.getText().equals("") && password.getText().equals(""))
+			  errorMsg1.setVisible(true);
+		  else if(userName.getText().equals(""))
+			  errorMsg2.setVisible(true);
+			else if(password.getText().equals(""))
+				errorMsg3.setVisible(true);
 		  else {
 		   messageToServer[0] = "checkUserDetails";
 		   messageToServer[1] = userName.getText();
@@ -176,6 +191,4 @@ public class UserControl implements Initializable
 		   chat.handleMessageFromClientUI(messageToServer);
 		  }
 		 }
-	}
-
-
+}

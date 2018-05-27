@@ -76,5 +76,20 @@
          <font>
             <Font size="18.0" />
          </font></Label>
+      <Label fx:id="errorMsg1" layoutX="200.0" layoutY="208.0" prefHeight="17.0" prefWidth="211.0" text="Both feilds are empty." textFill="RED" visible="false">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="errorMsg2" layoutX="182.0" layoutY="208.0" prefHeight="17.0" prefWidth="211.0" text="Username field is empty." textFill="RED" visible="false">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="errorMsg3" layoutX="182.0" layoutY="208.0" prefHeight="17.0" prefWidth="211.0" text="Password field is empty." textFill="RED" visible="false">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
