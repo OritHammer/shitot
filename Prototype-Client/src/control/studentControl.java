@@ -1,5 +1,10 @@
 package control;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -42,7 +47,18 @@ public class studentControl  extends UserControl implements Initializable{
 	
 	
 	/***************Class Methods*******************************/
+	public void  windowUp(String sName) {
+		userNameLabel.setText(sName); // setting student name
+		authorLabel.setText("Student"); // setting authorize
+		//Calendar cal = Calendar.getInstance();
+		//Date todayDate = cal.getTime();
+		Date todayDate = new Date();
+		dateLabel.setText(todayDate.toString());
+		//DateFormat dateForm = new SimpleDateFormat("DD/MM/YY");
+	//	String formatDateString = dateForm.format(todayDate);
 	
+		
+	}
 	
 	
 	
