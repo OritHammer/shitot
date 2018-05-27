@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
@@ -53,25 +54,33 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private RadioButton correctAns4;
 	@FXML
 	private ToggleGroup group;
-
+	
+	@FXML
+	private Tab createQuestion;
+	@FXML
+	public void initializeQuestions() {
+		connect(this); 
+		messageToServer[0]="getSubjects";
+		messageToServer[1]=null;
+		messageToServer[2]=null;
+		chat.handleMessageFromClientUI(messageToServer);//send the message to server
+	}
+	@FXML
+	private ComboBox<String> subjectsComboBoxInCreate;
 	@FXML
 	private ComboBox<String> questionsComboBox;
 	@FXML
 	private ComboBox<String> subjectsComboBox;
 /*initialized the update Question window*/
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("enter server ip");
-		this.ip=sc.nextLine();
-		sc.close();  
-		/*ask for the subjects from the server*/
-		connect(this); 
-		messageToServer[0]="getSubjects";
-		messageToServer[1]=null;
-		messageToServer[2]=null;
-		chat.handleMessageFromClientUI(messageToServer);//send the message to server
-	
+			Scanner sc = new Scanner(System.in);
+			System.out.println("enter server ip");
+			this.ip=sc.nextLine();
+			sc.close();  
+		/*ask for the subjects from the server*/	
 	}
+
+	
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/*ask for the qustions text*/
 		questionsComboBox.getSelectionModel().clearSelection(); 
@@ -84,8 +93,6 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		messageToServer[1]=subject;
 		messageToServer[2]=null;
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
-
-		
 	}
 
 	public void askForQuestionDetails(ActionEvent e) throws IOException {
@@ -105,9 +112,13 @@ public class TeacherControl extends  UserControl implements Initializable  {
 
 	/* this method show the subjects list on the combobox */
 	public void showSubjects(ArrayList<String> subjectList) {
-		
 		ObservableList<String> observableList = FXCollections.observableArrayList(subjectList);
-		subjectsComboBox.setItems(observableList);
+		if(createQuestion.isSelected()) {
+			subjectsComboBoxInCreate.setItems(observableList);
+		}
+		else {
+			subjectsComboBox.setItems(observableList);
+		}
 	}
 
 	/* this method show the questions list on the combobox */
