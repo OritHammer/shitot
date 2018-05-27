@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <AnchorPane prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <TextField layoutX="56.0" layoutY="77.0" prefHeight="74.0" prefWidth="486.0" />
+            <TextField layoutX="108.0" layoutY="181.0" prefHeight="25.0" prefWidth="382.0" />
+            <TextField layoutX="108.0" layoutY="221.0" prefHeight="25.0" prefWidth="382.0" />
+            <TextField layoutX="108.0" layoutY="259.0" prefHeight="25.0" prefWidth="382.0" />
+            <TextField layoutX="107.0" layoutY="297.0" prefHeight="25.0" prefWidth="382.0" />
+            <RadioButton layoutX="82.0" layoutY="185.0" mnemonicParsing="false" />
+            <RadioButton layoutX="82.0" layoutY="225.0" mnemonicParsing="false" />
+            <RadioButton layoutX="82.0" layoutY="263.0" mnemonicParsing="false" />
+            <RadioButton layoutX="82.0" layoutY="300.0" mnemonicParsing="false" />
+            <Label layoutX="82.0" layoutY="39.0" text="Course Name +Code" />
+            <TextField layoutX="451.0" layoutY="29.0" prefHeight="34.0" prefWidth="91.0" text="15 : 13">
+               <font>
+                  <Font name="Footlight MT Light" size="21.0" />
+               </font>
+            </TextField>
+            <Button layoutX="212.0" layoutY="347.0" mnemonicParsing="false" text="previous" />
+            <Button layoutX="285.0" layoutY="347.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="62.0" text="Next" />
+            <Button layoutX="478.0" layoutY="347.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="71.0" text="Finish" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
