@@ -55,7 +55,7 @@ private Statement stmt;
 				}
 			}
 		}catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("this error");
 		}
 		return userDetails;
 	}
