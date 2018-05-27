@@ -36,10 +36,14 @@ public class UserControl implements Initializable
 	private Label passwordError;
 	@FXML
 	private Label loginError;
-	@FXML
-	private Label noUser;
+
 	@FXML
 	private Button LoginBtn;
+	
+	@FXML
+	private Label errorMsg;
+	@FXML
+	private Label bar;
 	
 	@FXML
 	private ImageView LoginButton;
@@ -94,13 +98,14 @@ public class UserControl implements Initializable
 			Object[] msg = (Object[]) message;
 			if(msg[1] == null)
 			{
+				errorMsg.setVisible(true);
 				System.out.println("no user");
 				return;
 			}
 			if (msg[0].toString().equals("checkUserDetails")) {
 				ArrayList<String> userDetails = (ArrayList<String>) msg[1];
 				if (userDetails == null) {
-					noUser.setDisable(false);
+					
 				} else {
 					switch (userDetails.get(2).toLowerCase()) {
 					case "teacher": {
@@ -127,7 +132,11 @@ public class UserControl implements Initializable
 	public void loginPressed(ActionEvent e) throws IOException {
 		connect(this);
 		if (userName.getText() == null || password.getText() == null)
-			loginError.setDisable(false);
+			errorMsg.setText("Both fields are empty.");
+		else if(userName.getText() == null)
+			errorMsg.setText("Username field is empty.");
+		else if(password.getText() == null)
+			errorMsg.setText("password field is empty.");
 		else {
 			messageToServer[0] = "checkUserDetails";
 			messageToServer[1] = userName.getText();

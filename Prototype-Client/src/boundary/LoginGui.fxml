@@ -12,13 +12,13 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="322.0" prefWidth="575.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.UserControl">
    <children>
-      <ImageView fx:id="LoginButton" fitHeight="344.0" fitWidth="575.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="LoginButton" fitHeight="344.0" fitWidth="575.0" focusTraversable="true" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../LoginBG3.jpg" />
          </image>
       </ImageView>
       <PasswordField fx:id="password" layoutX="175.0" layoutY="172.0" prefHeight="25.0" prefWidth="222.0" promptText="password must be 4 chars at least" />
-      <ProgressBar layoutX="158.0" layoutY="275.0" opacity="0.9" prefHeight="18.0" prefWidth="266.0" progress="0.0" />
+      <ProgressBar layoutX="158.0" layoutY="280.0" opacity="0.9" prefHeight="21.0" prefWidth="242.0" progress="0.0" />
       <TextField fx:id="userName" layoutX="175.0" layoutY="116.0" prefHeight="25.0" prefWidth="222.0" promptText="please enter 4 numbers ">
          <cursor>
             <Cursor fx:constant="MOVE" />
@@ -34,7 +34,7 @@
             <Font name="Book Antiqua Bold" size="24.0" />
          </font>
       </Label>
-      <Button fx:id="LoginBtn" layoutX="286.0" layoutY="225.0" mnemonicParsing="false" onAction="#loginPressed" text="Login">
+      <Button fx:id="LoginBtn" layoutX="279.0" layoutY="243.0" mnemonicParsing="false" onAction="#loginPressed" text="Login">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
@@ -62,30 +62,19 @@
             </LinearGradient>
          </textFill>
       </Label>
-      <Label fx:id="userNameError" disable="true" layoutX="403.0" layoutY="94.0" prefHeight="70.0" prefWidth="92.0" text="sorry this is invalid user name" textFill="RED" wrapText="true">
+      <Label fx:id="bar" disable="true" layoutX="163.0" layoutY="290.0" prefHeight="21.0" prefWidth="232.0" textFill="RED" wrapText="true">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="passwordError" disable="true" layoutX="403.0" layoutY="163.0" prefHeight="44.0" prefWidth="104.0" text="sorry this is invalid password" textFill="RED" wrapText="true">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Label>
-      <Label fx:id="loginError" disable="true" layoutX="345.0" layoutY="229.0" prefHeight="17.0" prefWidth="232.0" text="one or more details are missing" textFill="RED" wrapText="true">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </Label>
-      <Label fx:id="noUser" disable="true" layoutX="56.0" layoutY="218.0" prefHeight="44.0" prefWidth="180.0" text="Sorry, one field or more are wrong" textFill="RED" wrapText="true">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </Label>
-      <Button fx:id="closeButton" layoutX="233.0" layoutY="225.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Close">
+      <Button fx:id="closeButton" layoutX="226.0" layoutY="243.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Close">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Button>
+      <Label fx:id="errorMsg" layoutX="216.0" layoutY="208.0" prefHeight="17.0" prefWidth="211.0" text="No user found" textFill="RED" visible="false">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
    </children>
 </AnchorPane>
