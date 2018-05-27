@@ -7,7 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 public class Main extends Application {
-		//
+		
 	public void start(Stage primaryStage) {
 		try {
 			/*display update question UI*/
