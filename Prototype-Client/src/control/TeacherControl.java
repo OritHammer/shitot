@@ -72,10 +72,6 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	@FXML
 	private ComboBox<String> subjectsComboBox;
 /*initialized the update Question window*/
-	public void initialize(URL arg0, ResourceBundle arg1) {
-
-	}
-
 	
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/*ask for the qustions text*/

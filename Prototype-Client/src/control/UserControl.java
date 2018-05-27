@@ -1,4 +1,3 @@
-
 package control;
 
 import java.io.IOException;
@@ -12,7 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -21,7 +19,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class UserControl implements Initializable
@@ -44,25 +41,16 @@ public class UserControl implements Initializable
 	@FXML
 	private ImageView LoginButton;
 	
-	@FXML private javafx.scene.control.Button closeButton;
+	@FXML
+	private javafx.scene.control.Button closeButton;
 
-	Parent home_page_parent;
-	 Scene home_page_scene;
-	 Stage app_stage;
+	private Parent home_page_parent;
+	private Scene home_page_scene;
+	static Thread th;
 	
-	 static Thread th;
 	public void closeButtonAction(ActionEvent e) throws IOException{
-	    // get a handle to the stage
-	    //Stage stage = (Stage) closeButton.getScene().getWindow();
-		  ((Node)e.getSource()).getScene().getWindow().hide(); //hiding primary window
-		  Stage primaryStage = new Stage();
-		  FXMLLoader loader = new FXMLLoader();
-		  Pane root = loader.load(getClass().getResource("/boundary/HomeScreenTeacher.fxml").openStream());
-		  Scene scene = new Scene(root);   
-		  primaryStage.setScene(scene);  
-		  primaryStage.show();
-	    // do what you have to do
-	    //stage.close();
+	    Stage stage = (Stage) closeButton.getScene().getWindow();
+	    stage.close();
 	}
 	
 	protected ChatClient chat;
@@ -102,6 +90,7 @@ public class UserControl implements Initializable
 				return;
 			}
 			if (msg[0].toString().equals("checkUserDetails")) {
+				@SuppressWarnings("unchecked")
 				ArrayList<String> userDetails = (ArrayList<String>) msg[1];
 				if (userDetails == null) {
 					noUser.setDisable(false);
@@ -186,9 +175,7 @@ public class UserControl implements Initializable
 		   messageToServer[2] = password.getText();
 		   chat.handleMessageFromClientUI(messageToServer);
 		  }
-
 		 }
-
 	}
 
 

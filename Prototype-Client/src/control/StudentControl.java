@@ -14,7 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
-public class studentControl  extends UserControl implements Initializable{
+public class StudentControl  extends UserControl implements Initializable{
 
 	@FXML
 	private Label userNameLabel ;
