@@ -73,11 +73,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private ComboBox<String> subjectsComboBox;
 /*initialized the update Question window*/
 	public void initialize(URL arg0, ResourceBundle arg1) {
-			Scanner sc = new Scanner(System.in);
-			System.out.println("enter server ip");
-			this.ip=sc.nextLine();
-			sc.close();  
-		/*ask for the subjects from the server*/	
+			
 	}
 
 	
