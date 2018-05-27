@@ -45,17 +45,16 @@ private Statement stmt;
 			//query check existent of such details base on  user name and password
 			ResultSet rs = stmt.executeQuery("SELECT userID,userName,role FROM users WHERE userID=\""+userID+"\" AND password=\""+userPass+"\";");
 			//if there is no user with given details
-			if(rs == null)
-				return null ;
-			else {
+			
 					rs.next();
 					for(int i=1;i<4;i++) {
 					userDetails.add(rs.getString(i));
 					//in the end userDetails will have the UserID,userName,role
-				}
+				
 			}
 		}catch (SQLException e) {
 			System.out.println("this error");
+			return null;
 		}
 		return userDetails;
 	}
