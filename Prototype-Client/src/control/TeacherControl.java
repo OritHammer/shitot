@@ -141,6 +141,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		answer2.setText(q.get(3));
 		answer3.setText(q.get(4));
 		answer4.setText(q.get(5));
+		
 		/*set up the correct answer button*/
 		switch (""+q.get(6)+"") {/*The number of the correct answers*/
 		case ("1"): {
