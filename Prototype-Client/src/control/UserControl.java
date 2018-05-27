@@ -46,8 +46,6 @@ public class UserControl implements Initializable
 	
 	@FXML private javafx.scene.control.Button closeButton;
 
-	
-	
 	Parent home_page_parent;
 	 Scene home_page_scene;
 	 Stage app_stage;
@@ -92,9 +90,7 @@ public class UserControl implements Initializable
 		this.ip = "77.138.70.98";
 		//this.ip = sc.nextLine();
 		sc.close();
-
 	}
-	
 	
 	public void checkMessage(Object message) {
 		try {
@@ -128,17 +124,10 @@ public class UserControl implements Initializable
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
-								}
-							
-							     
+								}   
 							}
 							
 						});
-						
-						
-
-					    
-
 						break;
 					}
 					case "student": {
@@ -155,13 +144,9 @@ public class UserControl implements Initializable
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
-								}
-							
-							     
+								} 
 							}
-							
 						});
-						
 						break;
 					}
 					case "director": {
@@ -178,16 +163,12 @@ public class UserControl implements Initializable
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
-								}
-							
-							     
+								}				     
 							}
-							
 						});
 						break;
 					}
 					}
-
 				}
 
 			}
