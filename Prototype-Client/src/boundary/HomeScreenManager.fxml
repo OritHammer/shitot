@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <tabs>
+      <Tab text="Home">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        </content>
+      </Tab>
+    <Tab text="Adding Time Requests">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Label layoutX="53.0" layoutY="44.0" prefHeight="17.0" prefWidth="78.0" text="Choose Exam" />
+                  <ComboBox layoutX="143.0" layoutY="40.0" prefHeight="25.0" prefWidth="242.0" />
+                  <Label layoutX="47.0" layoutY="142.0" text="Time added" />
+                  <Label layoutX="47.0" layoutY="98.0" text="Teacher Name" />
+                  <TextField editable="false" layoutX="143.0" layoutY="94.0" />
+                  <TextField editable="false" layoutX="143.0" layoutY="138.0" />
+                  <TextField layoutX="50.0" layoutY="215.0" prefHeight="120.0" prefWidth="481.0" />
+                  <Label layoutX="48.0" layoutY="186.0" text="Reason for adding time" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="Statistic Report">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ComboBox layoutX="237.0" layoutY="26.0" prefHeight="25.0" prefWidth="120.0" />
+                  <BarChart layoutX="74.0" layoutY="97.0" prefHeight="269.0" prefWidth="427.0">
+                    <xAxis>
+                      <CategoryAxis prefHeight="13.0" prefWidth="369.0" side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis prefHeight="210.0" prefWidth="28.0" side="LEFT" />
+                    </yAxis>
+                  </BarChart>
+                  <Label layoutX="108.0" layoutY="30.0" prefHeight="17.0" prefWidth="141.0" text="Get  Statistic Report By" />
+                  <ComboBox layoutX="366.0" layoutY="26.0" prefHeight="25.0" prefWidth="120.0" />
+                  <TextField layoutX="233.0" layoutY="64.0" prefHeight="25.0" prefWidth="49.0" />
+                  <TextField layoutX="356.0" layoutY="64.0" prefHeight="25.0" prefWidth="48.0" />
+                  <Label layoutX="179.0" layoutY="68.0" text="Average" />
+                  <Label layoutX="305.0" layoutY="68.0" text="Median" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
+      <Tab text="System information">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        </content>
+      </Tab>
+  </tabs>
+</TabPane>
