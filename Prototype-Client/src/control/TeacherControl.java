@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
@@ -55,23 +56,30 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private ToggleGroup group;
 
 	@FXML
-	private ComboBox<String> questionsComboBox;
+	private Tab updateQuestionTab;
 	@FXML
-	private ComboBox<String> subjectsComboBox;
-/*initialized the update Question window*/
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("enter server ip");
-		this.ip=sc.nextLine();
-		sc.close();  
-		/*ask for the subjects from the server*/
+	public void initializeQuestions() {
 		connect(this); 
 		messageToServer[0]="getSubjects";
 		messageToServer[1]=null;
 		messageToServer[2]=null;
 		chat.handleMessageFromClientUI(messageToServer);//send the message to server
-	
 	}
+	
+	@FXML
+	private ComboBox<String> questionsComboBox;
+	@FXML
+	private ComboBox<String> subjectsComboBox;
+/*initialized the update Question window*/
+	public void initialize(URL arg0, ResourceBundle arg1) {
+			Scanner sc = new Scanner(System.in);
+			System.out.println("enter server ip");
+			this.ip=sc.nextLine();
+			sc.close();  
+		/*ask for the subjects from the server*/	
+	}
+
+	
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/*ask for the qustions text*/
 		questionsComboBox.getSelectionModel().clearSelection(); 
