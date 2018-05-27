@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
@@ -10,7 +11,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<TabPane prefHeight="392.0" prefWidth="707.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+<TabPane prefHeight="392.0" prefWidth="721.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <tabs>
       <Tab text="Home">
          <content>
@@ -123,14 +124,46 @@
             </AnchorPane>
          </content>
       </Tab>
-      <Tab text="View reports">
+      <Tab text="Statistic Report">
          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ComboBox layoutX="237.0" layoutY="26.0" prefHeight="25.0" prefWidth="120.0" />
+                  <BarChart layoutX="74.0" layoutY="97.0" prefHeight="269.0" prefWidth="427.0">
+                     <xAxis>
+                        <CategoryAxis prefHeight="13.0" prefWidth="369.0" side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis prefHeight="210.0" prefWidth="28.0" side="LEFT" />
+                     </yAxis>
+                  </BarChart>
+                  <Label layoutX="108.0" layoutY="30.0" prefHeight="17.0" prefWidth="141.0" text="Get  Statistic Report By" />
+                  <ComboBox layoutX="366.0" layoutY="26.0" prefHeight="25.0" prefWidth="120.0" />
+                  <TextField layoutX="233.0" layoutY="64.0" prefHeight="25.0" prefWidth="49.0" />
+                  <TextField layoutX="356.0" layoutY="64.0" prefHeight="25.0" prefWidth="48.0" />
+                  <Label layoutX="179.0" layoutY="68.0" text="Average" />
+                  <Label layoutX="305.0" layoutY="68.0" text="Median" />
+               </children>
+            </AnchorPane>
          </content>
       </Tab>
       <Tab text="Create exam">
          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ListView layoutX="138.0" layoutY="45.0" prefHeight="250.0" prefWidth="200.0" />
+                  <Button layoutX="342.0" layoutY="95.0" mnemonicParsing="false" text="&gt;" />
+                  <Button layoutX="342.0" layoutY="131.0" mnemonicParsing="false" text="&lt;" />
+                  <Label layoutX="211.0" layoutY="20.0" text="Questions" />
+                  <Label layoutX="448.0" layoutY="20.0" text="Selected" />
+                  <TableView layoutX="370.0" layoutY="45.0" prefHeight="250.0" prefWidth="200.0">
+                    <columns>
+                      <TableColumn prefWidth="100.0" text="question id" />
+                      <TableColumn prefWidth="99.0" text="points" />
+                    </columns>
+                  </TableView>
+                  <Button layoutX="336.0" layoutY="313.0" mnemonicParsing="false" text="Edit" />
+               </children></AnchorPane>
          </content>
       </Tab>
       <Tab text="Check exam">
