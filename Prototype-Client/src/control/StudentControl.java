@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import entity.ExamCopy;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,37 +22,41 @@ import javafx.scene.control.TextField;
 
 public class StudentControl  extends UserControl implements Initializable{
 /********************* Variable declaration *************************/
+	//myDetails Win
 	@FXML
 	private Label userNameLabel ;
 	@FXML 
 	private Label authorLabel ;
 	@FXML
 	private Label dateLabel ;
-	@FXML
-	private Label newUpdateLable ;
-	
-		
+	//MyGrades win	
 	@FXML 
 	private ComboBox<String> choosingSubject;
+	@FXML
+	private TableView<ExamCopy> examsTable;
+	//OrderExam Win
 	@FXML 
 	private ComboBox<String> orderChoosingSubject; 
 	@FXML 
 	private ComboBox<String> chooseExam; 
-	
-	@FXML 
+	//ManualExam Win
+	@FXML
 	private TextField manualExamCodeField; 
+	private Label errorMsg ;
+	//DoComputerizeExam 
 	@FXML 
 	private TextField examCodeField; 
 	
 	
-	@FXML
-	private TableView<String> examsTable;
+	
 	/************* Class Useful variables *************************/
 	String subjectChoosen ;
+	
 	String[] messageToServer = new String[3];
 	
 	
 	/***************Class Methods*******************************/
+	//MyDetails Win
 	@FXML public void  showDetails(String sName) {
 		userNameLabel.setText(sName); // setting student name
 		authorLabel.setText("Student"); // setting authorize
@@ -62,9 +67,9 @@ public class StudentControl  extends UserControl implements Initializable{
 		//DateFormat dateForm = new SimpleDateFormat("DD/MM/YY");
 	//	String formatDateString = dateForm.format(todayDate);	
 	}
-	/******************************MyGradesWindow*********************************/
+	/****************************************   MyGradesWindow   *******************************************************/
 	/**************************Action Listeners***********************/
-	public void showGradesOpened(ActionEvent e) throws IOException{
+	public void showGradesOpened(ActionEvent e) {
 		//ask for relevant subject from the server 
 		messageToServer[0] = "getSubjects";
 		messageToServer[1] = null;
@@ -85,7 +90,47 @@ public class StudentControl  extends UserControl implements Initializable{
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server	
 	}
 /******************** LoadingDate methods to GUI ********************/
+	public void showExecutedExams(ArrayList<ExamCopy> executedExamsList) {
+		try {
+			//setting executed exam data on the table
+			ObservableList<ExamCopy> observableList = FXCollections.observableArrayList(executedExamsList);
+			examsTable.setItems(observableList);
+		} catch (Exception e) {
+		}	
+	}	
+	/****************************************   ManualExamWindow   *******************************************************/
+	/**************************Action Listeners***********************/
+	public void downloadPressed(ActionEvent e) {
+		if(!manualExamCodeField.getText().isEmpty()) {
+		messageToServer[0] ="checkExamCode";
+		messageToServer[1] = manualExamCodeField.getText();
+		messageToServer[2] = null;
+		chat.handleMessageFromClientUI(messageToServer);// send the message to server	
+		}
+		else errorMsg.setVisible(true);
+	}
+	/******************** LoadingData methods to GUI ********************/
+	//no data should appear , server should send the client an exam 
+	
+	/****************************************   DoComputerizeExam Window   *******************************************************/
+	/**************************Action Listeners***********************/
+	public void openExamPressed(ActionEvent e) {
+		if(!examCodeField.getText().isEmpty()) {
+		messageToServer[0] ="checkExamCode";
+		messageToServer[1] = examCodeField.getText();
+		messageToServer[2] = null;
+		chat.handleMessageFromClientUI(messageToServer);// send the message to server	
+		}
+		else errorMsg.setVisible(true);
+	}
 	
 	
 	
+	/*************************** Handaling messages from the server *********************************/
+	public void checkMessage( ) {
+		
+		
+		
+		
+	}
 }
