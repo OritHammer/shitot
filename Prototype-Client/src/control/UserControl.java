@@ -52,7 +52,8 @@ public class UserControl implements Initializable {
 	private Parent home_page_parent;
 	private Scene home_page_scene;
 	static Thread th;
-
+	protected String userNameFromDB;
+	
 	public void closeButtonAction(ActionEvent e) throws IOException {
 		Stage stage = (Stage) closeButton.getScene().getWindow();
 		stage.close();
@@ -96,9 +97,8 @@ public class UserControl implements Initializable {
 			if (msg[0].toString().equals("checkUserDetails")) {
 				@SuppressWarnings("unchecked")
 				ArrayList<String> userDetails = (ArrayList<String>) msg[1];
-				if (userDetails == null) {
-
-				} else {
+				if (userDetails != null) {
+					userNameFromDB=userDetails.get(1).toLowerCase();
 					switch (userDetails.get(2).toLowerCase()) {
 					case "teacher": {
 						// Platform.exit();

@@ -18,6 +18,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.text.Text;
 
 public class TeacherControl extends  UserControl implements Initializable  {
 
@@ -29,7 +30,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	
 	/* fxml variables */
 	@FXML
-	private TextField text;
+	private Text userText;
 
 	@FXML
 	private TextField answer1;
@@ -65,12 +66,14 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		messageToServer[2]=null;
 		chat.handleMessageFromClientUI(messageToServer);//send the message to server
 	}
+	
 	@FXML
 	private ComboBox<String> subjectsComboBoxInCreate;
 	@FXML
 	private ComboBox<String> questionsComboBox;
 	@FXML
 	private ComboBox<String> subjectsComboBox;
+
 /*initialized the update Question window*/
 	
 	public void loadQuestions(ActionEvent e) throws IOException {
@@ -231,4 +234,8 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	correctAns4.setSelected(false);
 	}
 
+   public void initialize(URL url, ResourceBundle rb) {
+		userText.setText(userNameFromDB);
+	}
+ 
 }

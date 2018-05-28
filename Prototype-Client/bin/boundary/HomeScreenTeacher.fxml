@@ -17,7 +17,7 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Text layoutX="157.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="user" wrappingWidth="132.13671875" />
+                  <Text fx:id="userText" layoutX="157.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="user" wrappingWidth="132.13671875" />
                   <Text layoutX="111.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello" />
                </children>
             </AnchorPane>
@@ -78,8 +78,8 @@
          <content>
             <AnchorPane prefHeight="361.0" prefWidth="707.0">
                <children>
-                  <TextField fx:id="answer41" layoutX="58.0" layoutY="260.0" prefHeight="25.0" prefWidth="346.0" />
-                  <TextField fx:id="answer31" layoutX="58.0" layoutY="226.0" prefHeight="25.0" prefWidth="346.0" />
+                  <TextField layoutX="58.0" layoutY="260.0" prefHeight="25.0" prefWidth="346.0" />
+                  <TextField layoutX="58.0" layoutY="226.0" prefHeight="25.0" prefWidth="346.0" />
                   <TextField layoutX="58.0" layoutY="189.0" prefHeight="25.0" prefWidth="346.0" />
                   <TextField layoutX="58.0" layoutY="152.0" prefHeight="25.0" prefWidth="346.0" />
                   <Label layoutX="40.0" layoutY="264.0" text="D" />
@@ -99,7 +99,7 @@
                   </Button>
                   <RadioButton id="1" layoutX="440.0" layoutY="156.0" mnemonicParsing="false">
                      <toggleGroup>
-                        <ToggleGroup fx:id="group1" />
+                        <ToggleGroup/>
                      </toggleGroup>
                   </RadioButton>
                   <RadioButton id="2" layoutX="440.0" layoutY="193.0" mnemonicParsing="false" toggleGroup="$group1" />
