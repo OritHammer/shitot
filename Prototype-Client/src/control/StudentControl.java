@@ -42,10 +42,13 @@ public class StudentControl  extends UserControl implements Initializable{
 	//ManualExam Win
 	@FXML
 	private TextField manualExamCodeField; 
+	@FXML 
 	private Label errorMsg ;
 	//DoComputerizeExam 
 	@FXML 
 	private TextField examCodeField; 
+	@FXML 
+	private Label errorMsg2 ;
 	
 	
 	
@@ -121,7 +124,7 @@ public class StudentControl  extends UserControl implements Initializable{
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server	
 		}
-		else errorMsg.setVisible(true);
+		else errorMsg2.setVisible(true);
 	}
 	
 	
