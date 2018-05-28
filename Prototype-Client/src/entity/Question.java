@@ -1,8 +1,13 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Question {
+public class Question implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private String questionContent;
 	private ArrayList<String> answers;

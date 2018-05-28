@@ -7,6 +7,7 @@ package control;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import entity.Question;
 import ocsf.server.*;
 
 /**
@@ -27,7 +28,7 @@ public class EchoServer extends AbstractServer {
 	 */
 	final public static int DEFAULT_PORT = 5555;
 	MysqlConnection con=new MysqlConnection();
-	ArrayList<String> objectList = new ArrayList<String>();
+	ArrayList<Object> objectList = new ArrayList<Object>();
 	//Question questionDetails = new Question();
 	Object[] serverMessage=new Object[2];
 	// Constructors ****************************************************
@@ -81,7 +82,9 @@ public class EchoServer extends AbstractServer {
 		}
 		case "getQuestionDetails" :
 			{
-				objectList=con.getQuestionDetails(message[1],objectList);
+				
+				Question q=con.getQuestionDetails(message[1]);
+				serverMessage[1]=q;
 				this.sendToAllClients(serverMessage);
 				break;
 			}

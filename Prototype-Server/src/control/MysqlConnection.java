@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import entity.Question;
 public class MysqlConnection {
 static Connection conn;
 private Statement stmt;
@@ -39,7 +41,8 @@ private Statement stmt;
 			System.out.println("VendorError: " + ex.getErrorCode());
 		}
 	}
-	public ArrayList<String> checkUserDetails(ArrayList<String> userDetails,String userID,String userPass) {
+	
+	public ArrayList<Object> checkUserDetails(ArrayList<Object> userDetails,String userID,String userPass) {
 		try {
 			stmt = conn.createStatement();
 			//query check existent of such details base on  user name and password
@@ -58,7 +61,8 @@ private Statement stmt;
 		}
 		return userDetails;
 	}
-	public ArrayList<String> getSubjectList(ArrayList<String> subjectList) {
+	
+	public ArrayList<Object> getSubjectList(ArrayList<Object> subjectList) {
 		/*
 		 * This function separate the subject id from the whole Question id for 
 		 * useful query 
@@ -83,7 +87,7 @@ private Statement stmt;
 		return subjectList;
 	}
 
-	public ArrayList<String> getQuestionList(String subject,ArrayList<String> questionList) {
+	public ArrayList<Object> getQuestionList(String subject,ArrayList<Object> questionList) {
 		/*
 		 * The function return the question list by the given subject code
 		 */
@@ -91,8 +95,9 @@ private Statement stmt;
 		try {
 			 stmt = conn.createStatement();
 			 ResultSet rs = stmt.executeQuery("SELECT Question_Text FROM questions"+ " WHERE Question_id like "+"\""+subject+"%\""+";" );
-			while (rs.next())
+			 while (rs.next()) {
 				questionList.add(rs.getString(1));
+			}
 			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -100,10 +105,10 @@ private Statement stmt;
 		return questionList;
 	}
 
-	public ArrayList<String> getQuestionDetails(String quest, ArrayList<String> DetailsList) {
-		int i;
+	public Question getQuestionDetails(String quest) {
 		//ArrayList<String> answerList = new ArrayList<String>();
 		//Statement stmt;
+		Question question=null;
 		try {
 			stmt = conn.createStatement();
 			//Query return all the details of specific question
@@ -111,9 +116,17 @@ private Statement stmt;
 			//The next commands get the returned details from DB and insert them to question object 
 			
 			rs.next(); 
-			//inserting the data to String List , order by the same order in DB  
-			for(i=1;i<8;i++)
-				DetailsList.add(rs.getString(i));
+			//inserting the data to String List , order by the same order in DB 
+			question=new Question();
+			question.setId(rs.getString(1));
+			question.setTeacherName(rs.getString(2));
+			ArrayList<String> answers = new ArrayList<String>();
+			answers.add(rs.getString(3));
+			answers.add(rs.getString(4));
+			answers.add(rs.getString(5));
+			answers.add(rs.getString(6));
+			question.setAnswers(answers);
+			question.setTrueAnswer(rs.getString(7));
 			
 			rs.close();
 			
@@ -123,7 +136,7 @@ private Statement stmt;
 			
 			
 		}
-		return DetailsList;
+		return question;
 	}
 
 	public void updateAnswer(String questionID, String newAnswer) throws SQLException {

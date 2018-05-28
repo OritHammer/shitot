@@ -124,18 +124,20 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	}
 
 	/* this method show the question details to user*/
-	public void showQuestionDetails(ArrayList<String> q){
+	public void showQuestionDetails(Question q){
 		try {
 		trueAnsFlag=true;// Permit to user change the correct answer
-		questionID.setText(q.get(0));
-		teacherName.setText(q.get(1));
-		answer1.setText(q.get(2));
-		answer2.setText(q.get(3));
-		answer3.setText(q.get(4));
-		answer4.setText(q.get(5));
+		questionID.setText(q.getId());
+		teacherName.setText(q.getTeacherName());
+		ArrayList<String> answers = q.getAnswers();
+		System.out.println(answers.get(0));
+		answer1.setText(answers.get(0));
+		answer2.setText(answers.get(1));
+		answer3.setText(answers.get(2));
+		answer4.setText(answers.get(3));
 		
 		/*set up the correct answer button*/
-		switch (""+q.get(6)+"") {/*The number of the correct answers*/
+		switch (""+q.getTrueAnswer()+"") {/*The number of the correct answers*/
 		case ("1"): {
 			correctAns1.setSelected(true);
 			break;
@@ -201,7 +203,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			}
 			case ("getQuestionDetails"): /* get the subject list from server */
 			{
-				showQuestionDetails((ArrayList<String>) msg[1]);
+				showQuestionDetails((Question) msg[1]);
 				break;
 			}
 			default:{
