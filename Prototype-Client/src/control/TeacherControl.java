@@ -130,27 +130,26 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		questionID.setText(q.getId());
 		teacherName.setText(q.getTeacherName());
 		ArrayList<String> answers = q.getAnswers();
-		System.out.println(answers.get(0));
 		answer1.setText(answers.get(0));
 		answer2.setText(answers.get(1));
 		answer3.setText(answers.get(2));
 		answer4.setText(answers.get(3));
 		
 		/*set up the correct answer button*/
-		switch (""+q.getTrueAnswer()+"") {/*The number of the correct answers*/
-		case ("1"): {
+		switch (q.getTrueAnswer()) {/*The number of the correct answers*/
+		case (1): {
 			correctAns1.setSelected(true);
 			break;
 		}
-		case ("2"): {
+		case (2): {
 			correctAns2.setSelected(true);
 			break;
 		}
-		case ("3"): {
+		case (3): {
 			correctAns3.setSelected(true);
 			break;
 		}
-		case ("4"): {
+		case (4): {
 			correctAns4.setSelected(true);
 			break;
 		}

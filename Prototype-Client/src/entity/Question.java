@@ -11,12 +11,11 @@ public class Question implements Serializable{
 	private String id;
 	private String questionContent;
 	private ArrayList<String> answers;
-	private int trueAnswer;
+	private int correctAnswer;
 	private String teacherName; // The teacher who wrote the question
 	
 	public Question() {
 		answers= new ArrayList<String>();
-		
 	}
 
 	public String getId() {
@@ -44,11 +43,11 @@ public class Question implements Serializable{
 	}
 
 	public int getTrueAnswer() {
-		return trueAnswer;
+		return correctAnswer;
 	}
 
-	public void setTrueAnswer(int trueAnswer) {
-		this.trueAnswer = trueAnswer;
+	public void setTrueAnswer(int correctAnswer) {
+		this.correctAnswer = correctAnswer;
 	}
 
 	public String getTeacherName() {
@@ -58,9 +57,5 @@ public class Question implements Serializable{
 	public void setTeacherName(String teacherName) {
 		this.teacherName = teacherName;
 	}
-	
-	
-	
-	
 	
 }

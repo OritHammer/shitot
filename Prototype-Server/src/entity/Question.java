@@ -11,7 +11,7 @@ public class Question implements Serializable{
 	private String id;
 	private String questionContent;
 	private ArrayList<String> answers;
-	private String correctAnswer;
+	private int correctAnswer;
 	private String teacherName; // The teacher who wrote the question
 	
 	public Question() {
@@ -42,12 +42,12 @@ public class Question implements Serializable{
 		this.answers = answers;
 	}
 
-	public String getTrueAnswer() {
+	public int getTrueAnswer() {
 		return correctAnswer;
 	}
 
-	public void setTrueAnswer(String trueAnswer) {
-		this.correctAnswer = trueAnswer;
+	public void setTrueAnswer(int correctAnswer) {
+		this.correctAnswer = correctAnswer;
 	}
 
 	public String getTeacherName() {

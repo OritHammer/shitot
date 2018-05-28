@@ -126,7 +126,7 @@ private Statement stmt;
 			answers.add(rs.getString(5));
 			answers.add(rs.getString(6));
 			question.setAnswers(answers);
-			question.setTrueAnswer(rs.getString(7));
+			question.setTrueAnswer(Integer.parseInt(rs.getString(7)));
 			
 			rs.close();
 			
