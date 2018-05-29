@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import entity.Question;
+import entity.User;
 import ocsf.server.*;
 
 /**
@@ -96,7 +97,8 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		case "checkUserDetails": {
-			objectList=con.checkUserDetails(objectList, message[1], message[2]);
+			User user=con.checkUserDetails(message[1], message[2]);
+			serverMessage[1]=user;
 			this.sendToAllClients(serverMessage);
 			break;
 		}

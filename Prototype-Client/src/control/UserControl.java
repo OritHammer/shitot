@@ -9,6 +9,7 @@ import java.util.Scanner;
 import com.sun.javafx.fxml.LoadListener;
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.Loader;
 
+import entity.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -94,15 +95,14 @@ public class UserControl implements Initializable {
 		try {
 			chat.closeConnection();// close the connection
 			Object[] msg = (Object[]) message;
-			ArrayList<String> userDetails = (ArrayList<String>) msg[1];
-			if (userDetails.get(0)==null) {
+			User user = (User) msg[1];
+			if (user==null) {
 				errorMsg.setVisible(true);
 				return;
 			}
 			if (msg[0].toString().equals("checkUserDetails")) {
-				if (userDetails != null) {
-					userNameFromDB=userDetails.get(1).toLowerCase();
-					switch (userDetails.get(2).toLowerCase()) {
+				if (user != null) {
+					switch (user.getRole().toLowerCase()) {
 					case "teacher": {
 						// Platform.exit();
 
@@ -118,7 +118,7 @@ public class UserControl implements Initializable {
 									loader.setLocation(getClass().getResource("/boundary/HomeScreenTeacher.fxml"));
 									home_page_parent = loader.load();
 									TeacherControl tController=loader.getController();
-									String userName=userDetails.get(1).toLowerCase();
+									String userName=user.getFullname().toLowerCase();
 									tController.setUserText(userName);/*send the name to the controller*/
 									home_page_scene = new Scene(home_page_parent);
 									Main.getStage().setScene(home_page_scene);
@@ -144,7 +144,7 @@ public class UserControl implements Initializable {
 									loader.setLocation(getClass().getResource("/boundary/HomeScreenStudent.fxml"));
 									home_page_parent = loader.load();
 									StudentControl sController=loader.getController();
-									String userName=userDetails.get(1).toLowerCase();
+									String userName=user.getFullname().toLowerCase();
 									sController.setUserText(userName);/*send the name to the controller*/
 									home_page_scene = new Scene(home_page_parent);
 									Main.getStage().setScene(home_page_scene);
@@ -168,7 +168,7 @@ public class UserControl implements Initializable {
 									loader.setLocation(getClass().getResource("/boundary/HomeScreenDirector.fxml"));
 									home_page_parent = loader.load();
 									DirectorControl dController=loader.getController();
-									String userName=userDetails.get(1).toLowerCase();/*get the name of the user*/
+									String userName=user.getFullname().toLowerCase();/*get the name of the user*/
 									dController.setUserText(userName);/*send the name to the controller*/
 									home_page_scene = new Scene(home_page_parent);
 									Main.getStage().setScene(home_page_scene);
