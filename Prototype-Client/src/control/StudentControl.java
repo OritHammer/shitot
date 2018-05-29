@@ -87,6 +87,7 @@ public class StudentControl  extends UserControl implements Initializable{
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server	
 	}
+	
 	public void chooseSubjectPressed(ActionEvent e) throws IOException  {
 		choosingSubject.getSelectionModel().clearSelection();
 		//clearing previous results  

@@ -36,7 +36,7 @@
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab fx:id="myGrades" onSelectionChanged="#initSubjects" text="My grades">
+    <Tab fx:id="myGrades" text="My grades">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -51,7 +51,7 @@
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab fx:id="orderExam" onSelectionChanged="#initSubjects" text="Order exam copy">
+      <Tab fx:id="orderExam" text="Order exam copy">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>

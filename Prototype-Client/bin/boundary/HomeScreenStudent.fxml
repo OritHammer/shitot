@@ -11,16 +11,6 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label layoutX="66.0" layoutY="40.0" prefHeight="43.0" prefWidth="96.0" text="Hello ">
-                     <font>
-                        <Font name="Berlin Sans FB Demi Bold" size="36.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="userNameLabel" layoutX="162.0" layoutY="44.0" text="adding name">
-                     <font>
-                        <Font name="Berlin Sans FB" size="32.0" />
-                     </font>
-                  </Label>
                   <Label layoutX="38.0" layoutY="117.0" prefHeight="27.0" prefWidth="157.0" text="My authorization:">
                      <font>
                         <Font name="System Bold" size="18.0" />
@@ -41,10 +31,12 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
+                  <Text layoutX="77.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello" wrappingWidth="44.638671875" />
+                  <Text fx:id="userText" layoutX="122.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab fx:id="myGrades" onSelectionChanged="#initSubjects" text="My grades">
+    <Tab fx:id="myGrades" text="My grades">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -59,7 +51,7 @@
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab fx:id="orderExam" onSelectionChanged="#initSubjects" text="Order exam copy">
+      <Tab fx:id="orderExam" text="Order exam copy">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
