@@ -7,7 +7,7 @@
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.StudentControl">
   <tabs>
-    <Tab onSelectionChanged="#showDetails" text="My details">
+    <Tab fx:id="myDetails" text="My details">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -44,7 +44,7 @@
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab onSelectionChanged="#showGradesOpened" text="My grades">
+    <Tab fx:id="myGrades" onSelectionChanged="#initSubjects" text="My grades">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -59,18 +59,18 @@
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab onSelectionChanged="#showOrderExamGui" text="Order exam copy">
+      <Tab fx:id="orderExam" onSelectionChanged="#initSubjects" text="Order exam copy">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <ComboBox fx:id="orderChooseSubject" layoutX="33.0" layoutY="73.0" onAction="#chooseSubjectPressed" prefWidth="150.0" promptText="choose subject" />
-                  <ComboBox fx:id="chooseExam" layoutX="33.0" layoutY="126.0" onAction="#chooseExamPressed" prefWidth="150.0" promptText="choose exam" />
+                  <ComboBox fx:id="chooseExam" layoutX="33.0" layoutY="126.0" prefWidth="150.0" promptText="choose exam" />
                   <Button layoutX="250.0" layoutY="312.0" mnemonicParsing="false" text="Order exam copy" />
                </children>
             </AnchorPane>
         </content>
       </Tab>
-      <Tab onSelectionChanged="#showManualExamGui" text="Manual exam">
+      <Tab fx:id="manualExam" text="Manual exam">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -95,7 +95,7 @@
             </AnchorPane>
         </content>
       </Tab>
-      <Tab onSelectionChanged="#showComputrizeExam" text="Do computrize exam">
+      <Tab fx:id="computrizeExam" text="Do computrize exam">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -106,7 +106,7 @@
                      </font>
                   </Label>
                   <TextField fx:id="examCodeField2" layoutX="140.0" layoutY="51.0" promptText="please enter 6 " />
-                  <Label layoutX="313.0" layoutY="55.0" text="Wrong exam code" textFill="RED" visible="false">
+                  <Label fx:id="errorMsg2" layoutX="313.0" layoutY="55.0" text="Wrong exam code" textFill="RED" visible="false">
                      <font>
                         <Font size="14.0" />
                      </font>

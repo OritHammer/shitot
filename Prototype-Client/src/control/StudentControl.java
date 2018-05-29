@@ -1,11 +1,13 @@
 package control;
 
 import java.io.IOException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import entity.ExamCopy;
 import javafx.collections.FXCollections;
@@ -17,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
@@ -49,6 +52,8 @@ public class StudentControl  extends UserControl implements Initializable{
 	private TextField examCodeField; 
 	@FXML 
 	private Label errorMsg2 ;
+	@FXML
+	private Tab myDetails;
 	
 	
 	
@@ -59,8 +64,10 @@ public class StudentControl  extends UserControl implements Initializable{
 	
 	
 	/***************Class Methods*******************************/
+	
 	//MyDetails Win
-	@FXML public void  showDetails(String sName) {
+	 public void initialize(URL url, ResourceBundle rb) {
+		/*
 		userNameLabel.setText(sName); // setting student name
 		authorLabel.setText("Student"); // setting authorize
 		//Calendar cal = Calendar.getInstance();
@@ -69,10 +76,11 @@ public class StudentControl  extends UserControl implements Initializable{
 		dateLabel.setText(todayDate.toString());
 		//DateFormat dateForm = new SimpleDateFormat("DD/MM/YY");
 	//	String formatDateString = dateForm.format(todayDate);	
+	 */
 	}
 	/****************************************   MyGradesWindow   *******************************************************/
 	/**************************Action Listeners***********************/
-	public void showGradesOpened(ActionEvent e) {
+	public void initSubjects(ActionEvent e) {
 		//ask for relevant subject from the server 
 		messageToServer[0] = "getSubjects";
 		messageToServer[1] = null;

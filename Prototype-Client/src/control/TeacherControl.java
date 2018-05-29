@@ -233,7 +233,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	correctAns3.setSelected(false);
 	correctAns4.setSelected(false);
 	}
-
+	
    public void initialize(URL url, ResourceBundle rb) {
 		userText.setText(userNameFromDB);
 	}

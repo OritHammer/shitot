@@ -82,7 +82,6 @@ public class EchoServer extends AbstractServer {
 		}
 		case "getQuestionDetails" :
 			{
-				
 				Question q=con.getQuestionDetails(message[1]);
 				serverMessage[1]=q;
 				this.sendToAllClients(serverMessage);

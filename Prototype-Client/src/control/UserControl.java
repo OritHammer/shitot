@@ -80,8 +80,8 @@ public class UserControl implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("enter server ip");
-		 this.ip = "77.138.70.98";
-		//this.ip = "localhost";
+		 //this.ip = "77.138.70.98";
+		this.ip = "localhost";
 		// this.ip = sc.nextLine();
 		sc.close();
 	}
@@ -90,15 +90,14 @@ public class UserControl implements Initializable {
 		try {
 			chat.closeConnection();// close the connection
 			Object[] msg = (Object[]) message;
-			if (msg[1] == null) {
+			ArrayList<String> userDetails = (ArrayList<String>) msg[1];
+			if (userDetails.get(0)==null) {
 				errorMsg.setVisible(true);
 				return;
 			}
 			if (msg[0].toString().equals("checkUserDetails")) {
-				@SuppressWarnings("unchecked")
-				ArrayList<String> userDetails = (ArrayList<String>) msg[1];
 				if (userDetails != null) {
-					userNameFromDB=userDetails.get(1).toLowerCase();
+					
 					switch (userDetails.get(2).toLowerCase()) {
 					case "teacher": {
 						// Platform.exit();
@@ -110,6 +109,7 @@ public class UserControl implements Initializable {
 							public void run() {
 								// TODO Auto-generated method stub
 								try {
+									userNameFromDB=userDetails.get(1).toLowerCase();
 									home_page_parent = FXMLLoader
 											.load(getClass().getResource("/boundary/HomeScreenTeacher.fxml"));
 									home_page_scene = new Scene(home_page_parent);
@@ -165,7 +165,6 @@ public class UserControl implements Initializable {
 					}
 					}
 				}
-
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -45,15 +45,19 @@ private Statement stmt;
 	public ArrayList<Object> checkUserDetails(ArrayList<Object> userDetails,String userID,String userPass) {
 		try {
 			stmt = conn.createStatement();
+			String error = "noSuchUser";
 			//query check existent of such details base on  user name and password
 			ResultSet rs = stmt.executeQuery("SELECT userID,userName,role FROM users WHERE userID=\""+userID+"\" AND password=\""+userPass+"\";");
 			//if there is no user with given details
-			
-					rs.next();
+			rs.next();
+			if(!rs.first()) {
+				userDetails.add(null);
+				return userDetails;
+			}
+			//if the user is existing 
 					for(int i=1;i<4;i++) {
-					userDetails.add(rs.getString(i));
+					userDetails.add(rs.getString(i));	
 					//in the end userDetails will have the UserID,userName,role
-				
 			}
 		}catch (SQLException e) {
 			System.out.println("this error");
