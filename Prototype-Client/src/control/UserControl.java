@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
+import com.sun.javafx.fxml.LoadListener;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.Loader;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,7 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class UserControl implements Initializable {
@@ -45,7 +48,8 @@ public class UserControl implements Initializable {
 
 	@FXML
 	private ImageView LoginButton;
-
+	@FXML
+	public Text userText;
 	@FXML
 	private javafx.scene.control.Button closeButton;
 
@@ -97,7 +101,7 @@ public class UserControl implements Initializable {
 			}
 			if (msg[0].toString().equals("checkUserDetails")) {
 				if (userDetails != null) {
-					
+					userNameFromDB=userDetails.get(1).toLowerCase();
 					switch (userDetails.get(2).toLowerCase()) {
 					case "teacher": {
 						// Platform.exit();
@@ -109,9 +113,13 @@ public class UserControl implements Initializable {
 							public void run() {
 								// TODO Auto-generated method stub
 								try {
-									userNameFromDB=userDetails.get(1).toLowerCase();
-									home_page_parent = FXMLLoader
-											.load(getClass().getResource("/boundary/HomeScreenTeacher.fxml"));
+									
+									FXMLLoader loader=new FXMLLoader();
+									loader.setLocation(getClass().getResource("/boundary/HomeScreenTeacher.fxml"));
+									home_page_parent = loader.load();
+									TeacherControl tController=loader.getController();
+									String userName=userDetails.get(1).toLowerCase();
+									tController.setUserText(userName);/*send the name to the controller*/
 									home_page_scene = new Scene(home_page_parent);
 									Main.getStage().setScene(home_page_scene);
 								} catch (IOException e) {
@@ -131,8 +139,13 @@ public class UserControl implements Initializable {
 							public void run() {
 								// TODO Auto-generated method stub
 								try {
-									home_page_parent = FXMLLoader
-											.load(getClass().getResource("/boundary/HomeScreenStudent.fxml"));
+
+									FXMLLoader loader=new FXMLLoader();
+									loader.setLocation(getClass().getResource("/boundary/HomeScreenStudent.fxml"));
+									home_page_parent = loader.load();
+									StudentControl sController=loader.getController();
+									String userName=userDetails.get(1).toLowerCase();
+									sController.setUserText(userName);/*send the name to the controller*/
 									home_page_scene = new Scene(home_page_parent);
 									Main.getStage().setScene(home_page_scene);
 								} catch (IOException e) {
@@ -151,8 +164,12 @@ public class UserControl implements Initializable {
 							public void run() {
 								// TODO Auto-generated method stub
 								try {
-									home_page_parent = FXMLLoader
-											.load(getClass().getResource("/boundary/HomeScreenDirector.fxml"));
+									FXMLLoader loader=new FXMLLoader();
+									loader.setLocation(getClass().getResource("/boundary/HomeScreenDirector.fxml"));
+									home_page_parent = loader.load();
+									DirectorControl dController=loader.getController();
+									String userName=userDetails.get(1).toLowerCase();/*get the name of the user*/
+									dController.setUserText(userName);/*send the name to the controller*/
 									home_page_scene = new Scene(home_page_parent);
 									Main.getStage().setScene(home_page_scene);
 								} catch (IOException e) {
@@ -190,4 +207,9 @@ public class UserControl implements Initializable {
 		   chat.handleMessageFromClientUI(messageToServer);
 		  }
 		 }
+	public void setUserText(String s) {/*set the user name text in the "hello user" text*/
+		userNameFromDB=s;
+		 userText.setText(userNameFromDB);
+
+	}
 }
