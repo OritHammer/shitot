@@ -60,6 +60,8 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private TextField createAnswer4;
 	
 	@FXML
+	private TextField questionName;
+	@FXML
 	private TextField questionID;
 	@FXML
 	private TextField teacherName;
@@ -72,6 +74,16 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private RadioButton correctAns3;
 	@FXML
 	private RadioButton correctAns4;
+	
+	@FXML
+	private RadioButton createCorrectAnswer1;
+	@FXML
+	private RadioButton createCorrectAnswer2;
+	@FXML
+	private RadioButton createCorrectAnswer3;
+	@FXML
+	private RadioButton createCorrectAnswer4;
+	
 	@FXML
 	private ToggleGroup group;
 	@FXML
@@ -97,7 +109,29 @@ public class TeacherControl extends  UserControl implements Initializable  {
 
 /*initialized the update Question window*/
 	public void createQuestionClick(ActionEvent e)throws IOException{
-		if((createAnswer1.getText().trim().equals("")) ||((createAnswer2.getText().trim().equals("")))||(createAnswer3.getText().trim().equals(""))||(createAnswer4.getText().trim().equals(""))) {
+		Question question=new Question();
+		ArrayList<String> answers=new ArrayList<String>();
+		question.setQuestionContent(questionName.getText().trim());
+		answers.add(createAnswer1.getText().trim());
+		answers.add(createAnswer2.getText().trim());
+		answers.add(createAnswer3.getText().trim());
+		answers.add(createAnswer4.getText().trim());
+		
+		int correctAnswer=0;
+		if(createCorrectAnswer1.isSelected()) {
+			correctAnswer=1;
+		}
+		if(createCorrectAnswer2.isSelected()) {
+			correctAnswer=2;
+		}
+		if(createCorrectAnswer3.isSelected()) {
+			correctAnswer=3;
+		}
+		if(createCorrectAnswer4.isSelected()) {
+			correctAnswer=4;
+		}
+		
+		if((answers.get(0).equals("")) ||((answers.get(1).equals("")))||(answers.get(2).equals(""))||(answers.get(3).equals(""))||(correctAnswer==0)||(question.getQuestionContent().equals(""))) {
 			   try{
 		            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/boundary/ErrorMessage.fxml"));
 		            Parent root1 = (Parent) fxmlLoader.load();
@@ -108,6 +142,15 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		          }catch(Exception exception) {
 		        	  
 		          }
+		}
+		else {
+			question.setAnswers(answers);
+			question.setTrueAnswer(correctAnswer);
+			connect(this); //connecting to server
+			messageToServer[0]="SetQuestion";
+			messageToServer[1]=subject;
+			messageToServer[2]=null;
+			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 		}
 			
 	}

@@ -97,17 +97,17 @@
                         </RadialGradient>
                      </textFill>
                   </Button>
-                  <RadioButton id="1" layoutX="440.0" layoutY="156.0" mnemonicParsing="false">
+                  <RadioButton id="1" fx:id="createCorrectAnswer1" layoutX="440.0" layoutY="156.0" mnemonicParsing="false">
                      <toggleGroup>
                         <ToggleGroup />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton id="2" layoutX="440.0" layoutY="193.0" mnemonicParsing="false">
+                  <RadioButton id="2" fx:id="createCorrectAnswer2" layoutX="440.0" layoutY="193.0" mnemonicParsing="false">
                      <toggleGroup>
                         <ToggleGroup fx:id="group1" />
                      </toggleGroup></RadioButton>
-                  <RadioButton id="3" layoutX="440.0" layoutY="230.0" mnemonicParsing="false" toggleGroup="$group1" />
-                  <RadioButton id="4" layoutX="440.0" layoutY="264.0" mnemonicParsing="false" toggleGroup="$group1" />
+                  <RadioButton id="3" fx:id="createCorrectAnswer3" layoutX="440.0" layoutY="230.0" mnemonicParsing="false" toggleGroup="$group1" />
+                  <RadioButton id="4" fx:id="createCorrectAnswer4" layoutX="440.0" layoutY="264.0" mnemonicParsing="false" toggleGroup="$group1" />
                   <Button cancelButton="true" graphicTextGap="0.0" layoutX="370.0" layoutY="324.0" mnemonicParsing="false" text="cancel">
                      <textFill>
                         <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
@@ -118,12 +118,14 @@
                         </RadialGradient>
                      </textFill>
                   </Button>
-                  <ComboBox fx:id="subjectsComboBoxInCreate" layoutX="58.0" layoutY="52.0" prefWidth="150.0" promptText="choose subject" />
-                  <TextField editable="false" layoutX="69.0" layoutY="116.0" />
-                  <TextField editable="false" layoutX="238.0" layoutY="116.0" />
-                  <Label layoutX="75.0" layoutY="95.0" prefHeight="17.0" prefWidth="85.0" text="teacher's name" />
-                  <Label layoutX="248.0" layoutY="95.0" text="question number" />
+                  <ComboBox fx:id="subjectsComboBoxInCreate" layoutX="58.0" layoutY="16.0" prefWidth="150.0" promptText="choose subject" />
+                  <TextField editable="false" layoutX="69.0" layoutY="66.0" />
+                  <TextField editable="false" layoutX="238.0" layoutY="66.0" />
+                  <Label layoutX="75.0" layoutY="45.0" prefHeight="17.0" prefWidth="85.0" text="teacher's name" />
+                  <Label layoutX="248.0" layoutY="45.0" text="question number" />
                   <Label layoutX="499.0" layoutY="77.0" />
+                  <TextField fx:id="questionName" layoutX="58.0" layoutY="114.0" prefHeight="25.0" prefWidth="346.0" />
+                  <Label layoutX="77.0" layoutY="95.0" prefHeight="17.0" prefWidth="85.0" text="question name" />
                </children>
             </AnchorPane>
          </content>
