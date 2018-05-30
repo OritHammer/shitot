@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 import entity.Question;
+import entity.TeachingProfessions;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -78,11 +79,13 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/*ask for the qustions text*/
-		questionsComboBox.getSelectionModel().clearSelection(); 
-		clearForm();
 		subject = subjectsComboBox.getValue(); // get the subject code
 		if(subject==null)
 			return;
+		questionsComboBox.getSelectionModel().clearSelection(); 
+		
+		clearForm();
+		
 		connect(this); //connecting to server
 		messageToServer[0]="getQuestions";
 		messageToServer[1]=subject;
@@ -106,8 +109,11 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	}
 
 	/* this method show the subjects list on the combobox */
-	public void showSubjects(ArrayList<String> subjectList) {
-		ObservableList<String> observableList = FXCollections.observableArrayList(subjectList);
+	public void showSubjects(ArrayList<TeachingProfessions> msg) {
+		ObservableList<String> observableList = FXCollections.observableArrayList();
+		for(TeachingProfessions tp:msg) {
+			observableList.add(tp.getTp_id());
+		}
 		if(createQuestion.isSelected()) {
 			subjectsComboBoxInCreate.setItems(observableList);
 		}
@@ -195,7 +201,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			switch (msg[0].toString()) {
 			case ("getSubjects"): /* get the subjects list from server */
 			{
-				showSubjects((ArrayList<String>) msg[1]);
+				showSubjects((ArrayList<TeachingProfessions>) msg[1]);
 				break;
 			}
 			case ("getQuestions"): /* get the questions list from server */

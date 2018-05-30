@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import entity.Question;
+import entity.TeachingProfessions;
 import entity.User;
 import ocsf.server.*;
 
@@ -29,7 +30,6 @@ public class EchoServer extends AbstractServer {
 	 */
 	final public static int DEFAULT_PORT = 5555;
 	MysqlConnection con=new MysqlConnection();
-	ArrayList<Object> objectList = new ArrayList<Object>();
 	//Question questionDetails = new Question();
 	Object[] serverMessage=new Object[2];
 	// Constructors ****************************************************
@@ -61,23 +61,23 @@ public class EchoServer extends AbstractServer {
 	}
 
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		
 		con.runDB(); 
 		//String[] message = ((String) msg).split(" ");
 		String[] message = (String[])msg; // message = message returned from Client
 		System.out.println("Message received: " + msg + " from " + client);
 		// split the msg to 2 strings (message[0]=the name of the method the server need to call,message[1]=search key to work with in SQL 
 		serverMessage[0] = message[0];
-		serverMessage[1] =objectList;
 		switch (message[0]) {
 		case "getSubjects": { /* if the client request all the subject */
-			objectList = con.getSubjectList(objectList);
+			ArrayList<TeachingProfessions> tp = con.getSubjectList();
+			serverMessage[1] =tp;
 			this.sendToAllClients(serverMessage);
 			System.out.println("arraylist to deliver");
 			break;
 		}
 		case "getQuestions": {/*client request all all the questions under some subject*/
-			objectList = con.getQuestionList(message[1],objectList);
+			ArrayList<String> questionList = con.getQuestionList(message[1]);
+			serverMessage[1] =questionList;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
@@ -112,7 +112,6 @@ public class EchoServer extends AbstractServer {
 		/* System.out.println("Message received: " + msg + " from " + client); */
 		//this.sendToAllClients(msg);
 		System.out.println("Handle massege success");
-		objectList.clear();
 	}
 
 	/**

@@ -8,11 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import entity.Question;
+import entity.TeachingProfessions;
 import entity.User;
 
 public class MysqlConnection {
 	static Connection conn;
 	private Statement stmt;
+	ArrayList<TeachingProfessions> subjectList=null;
 
 	/************************** Class Constructor ********************************/
 	public MysqlConnection() {
@@ -30,7 +32,6 @@ public class MysqlConnection {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 		} catch (Exception ex) {
 			/* handle the error */}
-
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost/shitot", "root", "1234");
 			System.out.println("SQL connection succeed");
@@ -64,36 +65,39 @@ public class MysqlConnection {
 
 	}
 
-	public ArrayList<Object> getSubjectList(ArrayList<Object> subjectList) {
+	public ArrayList<TeachingProfessions> getSubjectList() {
 		/*
 		 * This function separate the subject id from the whole Question id for useful
 		 * query
 		 */
+		if(subjectList==null) {
+			subjectList=new ArrayList<TeachingProfessions>() ;
+			// Statement stmt;
+			TeachingProfessions teachingprofessions;
+			try {
+				stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT * FROM teachingprofessions;");// questions is the name on the DB
+				while (rs.next()) {
+					teachingprofessions=new TeachingProfessions();
+					teachingprofessions.setTp_id(rs.getString(1));
+					teachingprofessions.setName(rs.getString(2));
+					subjectList.add(teachingprofessions);
+				}
+				rs.close();
 
-		String subjectID = "";
-		// Statement stmt;
-		try {
-			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT Question_id FROM questions;");// questions is the name on the DB
-			while (rs.next()) {
-				subjectID = rs.getString(1).substring(0, 2);
-				if (!subjectList.contains(subjectID))
-					subjectList.add(subjectID);
-			}
-			rs.close();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
 		}
-
-		return subjectList;
+		return(subjectList);
 	}
 
-	public ArrayList<Object> getQuestionList(String subject, ArrayList<Object> questionList) {
+	public ArrayList<String> getQuestionList(String subject) {
 		/*
 		 * The function return the question list by the given subject code
 		 */
 		// Statement stmt;
+		ArrayList<String> questionList=new ArrayList<String>();
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
