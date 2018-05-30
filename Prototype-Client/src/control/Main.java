@@ -2,6 +2,7 @@ package control;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,6 +14,7 @@ public class Main extends Application {
   try {
    /*display update question UI*/
    //Parent root = FXMLLoader.load(getClass().getResource("/boundary/updateQuestion.fxml"));
+	  
    Parent root = FXMLLoader.load(getClass().getResource("/boundary/LoginGui.fxml"));
    //Parent root = FXMLLoader.load(getClass().getResource("/boundary/HomeScreenTeacher.fxml"));
    guiStage = primaryStage;

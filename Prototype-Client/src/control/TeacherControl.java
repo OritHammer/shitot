@@ -7,19 +7,28 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
+import com.sun.nio.sctp.Notification;
+
 import entity.Question;
 import entity.TeachingProfessions;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class TeacherControl extends  UserControl implements Initializable  {
 
@@ -42,6 +51,15 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	@FXML
 	private TextField answer4;
 	@FXML
+	private TextField createAnswer1;
+	@FXML
+	private TextField createAnswer2;
+	@FXML
+	private TextField createAnswer3;
+	@FXML
+	private TextField createAnswer4;
+	
+	@FXML
 	private TextField questionID;
 	@FXML
 	private TextField teacherName;
@@ -56,6 +74,8 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private RadioButton correctAns4;
 	@FXML
 	private ToggleGroup group;
+	@FXML
+	private Button createQuestionBtn;
 	
 	@FXML
 	private Tab createQuestion;
@@ -76,6 +96,21 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private ComboBox<String> subjectsComboBox;
 
 /*initialized the update Question window*/
+	public void createQuestionClick(ActionEvent e)throws IOException{
+		if((createAnswer1.getText().trim().equals("")) ||((createAnswer2.getText().trim().equals("")))||(createAnswer3.getText().trim().equals(""))||(createAnswer4.getText().trim().equals(""))) {
+			   try{
+		            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/boundary/ErrorMessage.fxml"));
+		            Parent root1 = (Parent) fxmlLoader.load();
+		            Stage stage = new Stage();
+		            stage.setTitle("Error");
+		            stage.setScene(new Scene(root1));  
+		            stage.show();
+		          }catch(Exception exception) {
+		        	  
+		          }
+		}
+			
+	}
 	
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/*ask for the qustions text*/

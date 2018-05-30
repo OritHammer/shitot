@@ -78,16 +78,16 @@
          <content>
             <AnchorPane prefHeight="361.0" prefWidth="707.0">
                <children>
-                  <TextField layoutX="58.0" layoutY="260.0" prefHeight="25.0" prefWidth="346.0" />
-                  <TextField layoutX="58.0" layoutY="226.0" prefHeight="25.0" prefWidth="346.0" />
-                  <TextField layoutX="58.0" layoutY="189.0" prefHeight="25.0" prefWidth="346.0" />
-                  <TextField layoutX="58.0" layoutY="152.0" prefHeight="25.0" prefWidth="346.0" />
+                  <TextField fx:id="createAnswer4" layoutX="58.0" layoutY="260.0" prefHeight="25.0" prefWidth="346.0" />
+                  <TextField fx:id="createAnswer3" layoutX="58.0" layoutY="226.0" prefHeight="25.0" prefWidth="346.0" />
+                  <TextField fx:id="createAnswer2" layoutX="58.0" layoutY="189.0" prefHeight="25.0" prefWidth="346.0" />
+                  <TextField fx:id="createAnswer1" layoutX="58.0" layoutY="152.0" prefHeight="25.0" prefWidth="346.0" />
                   <Label layoutX="40.0" layoutY="264.0" text="D" />
                   <Label layoutX="39.0" layoutY="230.0" text="C" />
                   <Label layoutX="40.0" layoutY="193.0" text="B" />
                   <Label layoutX="39.0" layoutY="156.0" text="A" />
                   <Label layoutX="412.0" layoutY="128.0" text="correct answer" />
-                  <Button layoutX="278.0" layoutY="324.0" mnemonicParsing="false" text="update">
+                  <Button fx:id="createQuestionBtn" layoutX="278.0" layoutY="324.0" mnemonicParsing="false" onAction="#createQuestionClick" text="Create">
                      <textFill>
                         <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
                            <stops>
@@ -99,10 +99,13 @@
                   </Button>
                   <RadioButton id="1" layoutX="440.0" layoutY="156.0" mnemonicParsing="false">
                      <toggleGroup>
-                        <ToggleGroup/>
+                        <ToggleGroup />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton id="2" layoutX="440.0" layoutY="193.0" mnemonicParsing="false" toggleGroup="$group1" />
+                  <RadioButton id="2" layoutX="440.0" layoutY="193.0" mnemonicParsing="false">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="group1" />
+                     </toggleGroup></RadioButton>
                   <RadioButton id="3" layoutX="440.0" layoutY="230.0" mnemonicParsing="false" toggleGroup="$group1" />
                   <RadioButton id="4" layoutX="440.0" layoutY="264.0" mnemonicParsing="false" toggleGroup="$group1" />
                   <Button cancelButton="true" graphicTextGap="0.0" layoutX="370.0" layoutY="324.0" mnemonicParsing="false" text="cancel">
@@ -117,9 +120,10 @@
                   </Button>
                   <ComboBox fx:id="subjectsComboBoxInCreate" layoutX="58.0" layoutY="52.0" prefWidth="150.0" promptText="choose subject" />
                   <TextField editable="false" layoutX="69.0" layoutY="116.0" />
-                  <TextField layoutX="238.0" layoutY="116.0" />
+                  <TextField editable="false" layoutX="238.0" layoutY="116.0" />
                   <Label layoutX="75.0" layoutY="95.0" prefHeight="17.0" prefWidth="85.0" text="teacher's name" />
                   <Label layoutX="248.0" layoutY="95.0" text="question number" />
+                  <Label layoutX="499.0" layoutY="77.0" />
                </children>
             </AnchorPane>
          </content>
