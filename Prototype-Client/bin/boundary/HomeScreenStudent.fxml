@@ -11,7 +11,7 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label layoutX="38.0" layoutY="117.0" prefHeight="27.0" prefWidth="157.0" text="My authorization:">
+                  <Label layoutX="39.0" layoutY="317.0" prefHeight="27.0" prefWidth="157.0" text="My authorization:">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -21,7 +21,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="38.0" layoutY="159.0" prefHeight="27.0" prefWidth="56.0" text="Date :">
+                  <Label layoutX="340.0" layoutY="317.0" prefHeight="27.0" prefWidth="56.0" text="Date :">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -31,8 +31,14 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Text layoutX="77.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello" wrappingWidth="44.638671875" />
-                  <Text fx:id="userText" layoutX="122.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text layoutX="49.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello" wrappingWidth="49.638671875">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font></Text>
+                  <Text fx:id="userText" layoutX="116.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" underline="true" wrappingWidth="158.3603515625">
+                     <font>
+                        <Font size="17.0" />
+                     </font></Text>
                </children></AnchorPane>
       </content>
     </Tab>
