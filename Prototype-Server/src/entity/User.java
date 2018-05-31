@@ -17,14 +17,14 @@ public class User implements Serializable{
 	
 
 
-	public User(String username, String userID, String fullname, String role, String password, String status) {
+	public User(String username, String userID, String fullname, String password, String status, String role) {
 		super();
 		this.username = username;
 		this.userID = userID;
 		this.fullname = fullname;
-		this.role = role;
 		this.password = password;
 		this.status = status;
+		this.role = role;
 	}
 
 	public String getUsername() {

@@ -42,8 +42,31 @@ public class MysqlConnection {
 			System.out.println("VendorError: " + ex.getErrorCode());
 		}
 	}
+	public void createQuestion(Object subject, Object question) {
+	
+			
+		ArrayList<String> questionList=new ArrayList<String>();
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(
+					"SELECT Question_id FROM questions" + " WHERE Question_id like " + "\"" + subject + "%\"" + ";");
+			while (rs.next()) {
+				questionList.add(rs.getString(1));
+			}
 
-	public User checkUserDetails(String userID, String userPass) {
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+
+			System.out.println("this error");
+			
+		
+
+	}
+	
+	public User checkUserDetails(Object userID, Object userPass) {
 		try {
 			stmt = conn.createStatement();
 			// query check existent of such details base on user name and password
@@ -92,7 +115,7 @@ public class MysqlConnection {
 		return(subjectList);
 	}
 
-	public ArrayList<String> getQuestionList(String subject) {
+	public ArrayList<String> getQuestionList(Object subject) {
 		/*
 		 * The function return the question list by the given subject code
 		 */
@@ -112,7 +135,7 @@ public class MysqlConnection {
 		return questionList;
 	}
 
-	public Question getQuestionDetails(String quest) {
+	public Question getQuestionDetails(Object quest) {
 		// ArrayList<String> answerList = new ArrayList<String>();
 		// Statement stmt;
 		Question question = null;
@@ -147,7 +170,7 @@ public class MysqlConnection {
 		return question;
 	}
 
-	public void updateAnswer(String questionID, String newAnswer) throws SQLException {
+	public void updateAnswer(Object questionID, Object newAnswer) throws SQLException {
 		// Statement stmt;
 		stmt = conn.createStatement();
 		// query update on DB the correct answer of question that have the given

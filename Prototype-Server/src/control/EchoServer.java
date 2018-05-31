@@ -63,11 +63,11 @@ public class EchoServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		con.runDB(); 
 		//String[] message = ((String) msg).split(" ");
-		String[] message = (String[])msg; // message = message returned from Client
+		Object[] message = (Object[])msg; // message = message returned from Client
 		System.out.println("Message received: " + msg + " from " + client);
 		// split the msg to 2 strings (message[0]=the name of the method the server need to call,message[1]=search key to work with in SQL 
 		serverMessage[0] = message[0];
-		switch (message[0]) {
+		switch ((String)message[0]) {
 		case "getSubjects": { /* if the client request all the subject */
 			ArrayList<TeachingProfessions> tp = con.getSubjectList();
 			serverMessage[1] =tp;
@@ -100,6 +100,10 @@ public class EchoServer extends AbstractServer {
 			User user=con.checkUserDetails(message[1], message[2]);
 			serverMessage[1]=user;
 			this.sendToAllClients(serverMessage);
+			break;
+		}
+		case "SetQuestion": {
+			con.createQuestion(message[1], message[2]);
 			break;
 		}
 			

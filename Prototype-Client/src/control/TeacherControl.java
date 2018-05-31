@@ -36,7 +36,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	String selectedQuestion;
 	String subject;
 	Question questionDetails;
-	String[] messageToServer=new String[3];
+	Object[] messageToServer=new Object[3];
 	
 	/* fxml variables */
 	@FXML
@@ -146,10 +146,11 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		else {
 			question.setAnswers(answers);
 			question.setTrueAnswer(correctAnswer);
+			subject = subjectsComboBoxInCreate.getValue();
 			connect(this); //connecting to server
 			messageToServer[0]="SetQuestion";
 			messageToServer[1]=subject;
-			messageToServer[2]=null;
+			messageToServer[2]=question;
 			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 		}
 			
