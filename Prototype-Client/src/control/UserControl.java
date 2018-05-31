@@ -2,7 +2,10 @@ package control;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -146,6 +149,7 @@ public class UserControl implements Initializable {
 									StudentControl sController=loader.getController();
 									String userName=user.getFullname().toLowerCase();
 									sController.setUserText(userName);/*send the name to the controller*/
+									sController.setStudentAuthorAndDate();
 									home_page_scene = new Scene(home_page_parent);
 									Main.getStage().setScene(home_page_scene);
 								} catch (IOException e) {
@@ -210,7 +214,11 @@ public class UserControl implements Initializable {
 	public void setUserText(String s) {/*set the user name text in the "hello user" text*/
 		userNameFromDB=s;
 		 userText.setText(userNameFromDB);
-
 	}
+<<<<<<< HEAD
 
+=======
+	
+	
+>>>>>>> branch 'master' of https://github.com/avivMahulya/shitot
 }
