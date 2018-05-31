@@ -14,7 +14,7 @@ import entity.User;
 public class MysqlConnection {
 	static Connection conn;
 	private Statement stmt;
-	ArrayList<TeachingProfessionals> subjectList=null;
+	ArrayList<TeachingProfessionals> subjectList = null;
 
 	/************************** Class Constructor ********************************/
 	public MysqlConnection() {
@@ -42,10 +42,10 @@ public class MysqlConnection {
 			System.out.println("VendorError: " + ex.getErrorCode());
 		}
 	}
+
 	public void createQuestion(Object subject, Object question) {
-	
-			
-		ArrayList<String> questionList=new ArrayList<String>();
+
+		ArrayList<String> questionList = new ArrayList<String>();
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
@@ -58,31 +58,26 @@ public class MysqlConnection {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-
-			System.out.println("this error");
-			
-		
-
 	}
-	
+
 	public User checkUserDetails(Object userID, Object userPass) {
 		try {
 			stmt = conn.createStatement();
 			// query check existent of such details base on user name and password
-			ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE username=\"" + userID
-					+ "\" AND password=\"" + userPass + "\";");
+			ResultSet rs = stmt.executeQuery(
+					"SELECT * FROM users WHERE username=\"" + userID + "\" AND password=\"" + userPass + "\";");
 			// if there is no user with given details
 			rs.next();
 			if (!rs.first()) {
 				return null;
 			}
 			// if the user is existing
-			return new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
+			return new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
+					rs.getString(6));
 			// in the end userDetails will have the UserID,userName,role
 
 		} catch (SQLException e) {
-			System.out.println("this error");
+			e.printStackTrace();
 			return null;
 		}
 
@@ -93,15 +88,16 @@ public class MysqlConnection {
 		 * This function separate the subject id from the whole Question id for useful
 		 * query
 		 */
-		if(subjectList==null) {
-			subjectList=new ArrayList<TeachingProfessionals>() ;
+		if (subjectList == null) {
+			subjectList = new ArrayList<TeachingProfessionals>();
 			// Statement stmt;
 			TeachingProfessionals teachingprofessions;
 			try {
 				stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT * FROM teachingprofessionals;");// questions is the name on the DB
+				ResultSet rs = stmt.executeQuery("SELECT * FROM teachingprofessionals;");// questions is the name on the
+																							// DB
 				while (rs.next()) {
-					teachingprofessions=new TeachingProfessionals();
+					teachingprofessions = new TeachingProfessionals();
 					teachingprofessions.setTp_id(rs.getString(1));
 					teachingprofessions.setName(rs.getString(2));
 					subjectList.add(teachingprofessions);
@@ -110,9 +106,9 @@ public class MysqlConnection {
 
 			} catch (SQLException e) {
 				e.printStackTrace();
-			}	
+			}
 		}
-		return(subjectList);
+		return (subjectList);
 	}
 
 	public ArrayList<String> getQuestionList(Object subject) {
@@ -120,7 +116,7 @@ public class MysqlConnection {
 		 * The function return the question list by the given subject code
 		 */
 		// Statement stmt;
-		ArrayList<String> questionList=new ArrayList<String>();
+		ArrayList<String> questionList = new ArrayList<String>();
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
@@ -165,12 +161,13 @@ public class MysqlConnection {
 
 			// end insert details
 		} catch (SQLException e) {
-
+			e.printStackTrace();
 		}
 		return question;
 	}
 
 	public void updateAnswer(Object questionID, Object newAnswer) throws SQLException {
+		try {
 		// Statement stmt;
 		stmt = conn.createStatement();
 		// query update on DB the correct answer of question that have the given
@@ -178,5 +175,9 @@ public class MysqlConnection {
 		stmt.executeUpdate(
 				"UPDATE questions SET Correct_answer=\"" + newAnswer + "\" WHERE Question_id=\"" + questionID + "\";");
 		System.out.println("question:" + questionID + "new answer:" + newAnswer);
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }
