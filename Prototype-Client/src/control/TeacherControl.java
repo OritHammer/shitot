@@ -10,7 +10,7 @@ import java.util.Scanner;
 import com.sun.nio.sctp.Notification;
 
 import entity.Question;
-import entity.TeachingProfessions;
+import entity.TeachingProfessionals;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -188,9 +188,9 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	}
 
 	/* this method show the subjects list on the combobox */
-	public void showSubjects(ArrayList<TeachingProfessions> msg) {
+	public void showSubjects(ArrayList<TeachingProfessionals> msg) {
 		ObservableList<String> observableList = FXCollections.observableArrayList();
-		for(TeachingProfessions tp:msg) {
+		for(TeachingProfessionals tp:msg) {
 			observableList.add(tp.getTp_id());
 		}
 		if(createQuestion.isSelected()) {
@@ -280,7 +280,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			switch (msg[0].toString()) {
 			case ("getSubjects"): /* get the subjects list from server */
 			{
-				showSubjects((ArrayList<TeachingProfessions>) msg[1]);
+				showSubjects((ArrayList<TeachingProfessionals>) msg[1]);
 				break;
 			}
 			case ("getQuestions"): /* get the questions list from server */

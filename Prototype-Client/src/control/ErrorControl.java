@@ -17,8 +17,6 @@ import javafx.stage.Stage;
 
 public class ErrorControl implements Initializable  {
 
-	@FXML
-	private Button returnBtn;
 	public void closeTheWindow(ActionEvent e)throws IOException{
 		((Stage) ((Node)(e.getSource())).getScene().getWindow()).close();
 	}

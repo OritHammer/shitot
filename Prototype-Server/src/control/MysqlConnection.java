@@ -8,13 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import entity.Question;
-import entity.TeachingProfessions;
+import entity.TeachingProfessionals;
 import entity.User;
 
 public class MysqlConnection {
 	static Connection conn;
 	private Statement stmt;
-	ArrayList<TeachingProfessions> subjectList=null;
+	ArrayList<TeachingProfessionals> subjectList=null;
 
 	/************************** Class Constructor ********************************/
 	public MysqlConnection() {
@@ -88,20 +88,20 @@ public class MysqlConnection {
 
 	}
 
-	public ArrayList<TeachingProfessions> getSubjectList() {
+	public ArrayList<TeachingProfessionals> getSubjectList() {
 		/*
 		 * This function separate the subject id from the whole Question id for useful
 		 * query
 		 */
 		if(subjectList==null) {
-			subjectList=new ArrayList<TeachingProfessions>() ;
+			subjectList=new ArrayList<TeachingProfessionals>() ;
 			// Statement stmt;
-			TeachingProfessions teachingprofessions;
+			TeachingProfessionals teachingprofessions;
 			try {
 				stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT * FROM teachingprofessions;");// questions is the name on the DB
+				ResultSet rs = stmt.executeQuery("SELECT * FROM teachingprofessionals;");// questions is the name on the DB
 				while (rs.next()) {
-					teachingprofessions=new TeachingProfessions();
+					teachingprofessions=new TeachingProfessionals();
 					teachingprofessions.setTp_id(rs.getString(1));
 					teachingprofessions.setName(rs.getString(2));
 					subjectList.add(teachingprofessions);
