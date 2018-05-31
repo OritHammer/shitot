@@ -16,7 +16,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="authorLabel" layoutX="195.0" layoutY="118.0" prefHeight="27.0" prefWidth="163.0" wrapText="true">
+                  <Label fx:id="authorLabel" layoutX="193.0" layoutY="317.0" prefHeight="27.0" prefWidth="133.0" wrapText="true">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -26,7 +26,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="dateLabel" layoutX="99.0" layoutY="162.0" prefHeight="17.0" prefWidth="110.0">
+                  <Label fx:id="dateLabel" layoutX="405.0" layoutY="317.0" prefHeight="17.0" prefWidth="110.0">
                      <font>
                         <Font size="18.0" />
                      </font>

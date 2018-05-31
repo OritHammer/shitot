@@ -40,7 +40,7 @@ public class StudentControl extends UserControl implements Initializable {
 	private TableView<ExamCopy> examsTable;
 	// OrderExam Win
 	@FXML
-	private ComboBox<String> orderChoosingSubject;
+	private ComboBox<String> orderChooseSubject;
 	@FXML
 	private ComboBox<String> chooseExam;
 	// ManualExam Win
@@ -58,7 +58,7 @@ public class StudentControl extends UserControl implements Initializable {
 
 	/************* Class Useful variables *************************/
 	String subjectChoosen;
-
+	private ObservableList<String> ObservList ; 
 	String[] messageToServer = new String[3];
 
 	/*************** Class Methods *******************************/
@@ -66,6 +66,7 @@ public class StudentControl extends UserControl implements Initializable {
 	// MyDetails Win
 	public void initialize(URL url, ResourceBundle rb) {
 		// ask for relevant subject from the server
+		connect(this);
 		messageToServer[0] = "getSubjects";
 		messageToServer[1] = null;
 		messageToServer[2] = null;
@@ -85,8 +86,14 @@ public class StudentControl extends UserControl implements Initializable {
 	 *******************************************************/
 	/************************** Action Listeners ***********************/
 	public void initSubjects(ArrayList<TeachingProfessionals> tpList) {
-		//ObservableList<TeachingProfessionals> observableList = new ObservableList<TeachingProfessionals>();
 		
+		ArrayList<String> tpNames =new ArrayList<String>(); 
+		for(TeachingProfessionals tp : tpList) {
+			tpNames.add(tp.getTp_id()+" "+tp.getName());
+		}
+		ObservList = FXCollections.observableArrayList(tpNames);
+		choosingSubject.setItems(ObservList);
+		orderChooseSubject.setItems(ObservList);
 	}
 
 	public void chooseSubjectPressed(ActionEvent e) throws IOException {
