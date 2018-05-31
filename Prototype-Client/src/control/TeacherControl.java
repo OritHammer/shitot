@@ -111,6 +111,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	public void createQuestionClick(ActionEvent e)throws IOException{
 		Question question=new Question();
 		ArrayList<String> answers=new ArrayList<String>();
+		question.setTeacherName(userNameFromDB);
 		question.setQuestionContent(questionName.getText().trim());
 		answers.add(createAnswer1.getText().trim());
 		answers.add(createAnswer2.getText().trim());

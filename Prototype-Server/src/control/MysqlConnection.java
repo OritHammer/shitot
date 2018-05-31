@@ -45,15 +45,26 @@ public class MysqlConnection {
 
 	public void createQuestion(Object subject, Object question) {
 
-		ArrayList<String> questionList = new ArrayList<String>();
+		String numberStr;
+		int number;
+		Question q = (Question) question;
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
-					"SELECT Question_id FROM questions" + " WHERE Question_id like " + "\"" + subject + "%\"" + ";");
-			while (rs.next()) {
-				questionList.add(rs.getString(1));
-			}
+					"SELECT MAX(Question_id) FROM questions" + " WHERE Question_id like " + "\"" + subject + "%\"" + ";");
+			rs.next();
+			System.out.println(rs.getString(1));
 
+			number = Integer.parseInt(rs.getString(1).substring(2, 5));
+			number = number+1;
+			numberStr = (String)subject; 
+			numberStr = numberStr +""+  String.format("%03d", number);
+			stmt. executeUpdate(
+			"INSERT INTO shitot.questions VALUES(\""
+			+numberStr.trim()+"\",\""+q.getTeacherName().trim()+"\",\""
+			+q.getQuestionContent()+"\",\""+q.getAnswers().get(0)+"\",\""+q.getAnswers().get(1)+"\",\""
+			+q.getAnswers().get(2)+"\",\""+q.getAnswers().get(3)+"\",\""+String.valueOf(q.getTrueAnswer())+"\");");
+			
 			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -75,7 +86,6 @@ public class MysqlConnection {
 			return new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
 					rs.getString(6));
 			// in the end userDetails will have the UserID,userName,role
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;

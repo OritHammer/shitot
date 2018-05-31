@@ -212,4 +212,5 @@ public class UserControl implements Initializable {
 		 userText.setText(userNameFromDB);
 
 	}
+
 }
