@@ -1,95 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.effect.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.text.*?>
-<?import javafx.scene.canvas.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
-<?import javafx.scene.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="322.0" prefWidth="575.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.UserControl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="306.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.UserControl">
    <children>
-      <ImageView fitHeight="344.0" fitWidth="575.0" focusTraversable="true" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+      <Group layoutX="11.0" layoutY="270.0">
+         <children>
+            <ImageView fitHeight="71.0" fitWidth="84.0" layoutX="59.0" layoutY="16.0">
+               <image>
+                  <Image url="@../../Copywriting-Master-Class-Owl-200x175.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="146.0" layoutY="37.0" text="AES">
+               <font>
+                  <Font name="Agency FB Bold" size="39.0" />
+               </font>
+            </Label>
+            <Label layoutX="54.0" layoutY="78.0" text="Academic Exam System">
+               <font>
+                  <Font name="Agency FB" size="23.0" />
+               </font>
+            </Label>
+         </children>
+      </Group>
+      <ImageView fitHeight="406.0" fitWidth="306.0" layoutY="-1.0" opacity="0.49">
          <image>
-            <Image url="@../../LoginBG3.jpg" />
+            <Image url="@../../colorful-bricks-1200309.jpg" />
          </image>
       </ImageView>
-      <PasswordField fx:id="password" layoutX="175.0" layoutY="172.0" prefHeight="25.0" prefWidth="222.0" promptText="password must be 4 chars at least" />
-      <ProgressBar layoutX="158.0" layoutY="280.0" opacity="0.9" prefHeight="21.0" prefWidth="242.0" progress="0.0" />
-      <TextField fx:id="userName" layoutX="175.0" layoutY="116.0" prefHeight="25.0" prefWidth="222.0" promptText="please enter 4 numbers ">
-         <cursor>
-            <Cursor fx:constant="MOVE" />
-         </cursor>
-      </TextField>
-      <Label layoutX="26.0" layoutY="113.0" text="User Name:" textFill="WHITE">
+      <Label layoutX="68.0" layoutY="14.0" text="login">
          <font>
-            <Font name="Book Antiqua Bold" size="24.0" />
+            <Font name="Agency FB" size="96.0" />
          </font>
       </Label>
-      <Label layoutX="26.0" layoutY="169.0" text="Password:" textFill="#fcfcfc">
+      <Label layoutX="68.0" layoutY="185.0" text="Password">
          <font>
-            <Font name="Book Antiqua Bold" size="24.0" />
+            <Font name="Agency FB Bold" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="LoginBtn" layoutX="279.0" layoutY="243.0" mnemonicParsing="false" onAction="#loginPressed" text="Login">
+      <TextField fx:id="userName" layoutX="66.0" layoutY="154.0" prefHeight="25.0" prefWidth="149.0" promptText="please enter your ID" />
+      <Label layoutX="65.0" layoutY="130.0" text="User Name">
          <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Button>
-      <Label layoutX="46.0" layoutY="32.0" text="Academic Exam System">
-         <font>
-            <Font name="Bookman Old Style" size="41.0" />
-         </font>
-         <effect>
-            <Lighting diffuseConstant="2.0" specularConstant="1.21" specularExponent="26.05">
-               <bumpInput>
-                  <Shadow />
-               </bumpInput>
-               <light>
-                  <Light.Distant azimuth="0.0" elevation="145.47" />
-               </light>
-            </Lighting>
-         </effect>
-         <textFill>
-            <LinearGradient endX="1.0" endY="1.0">
-               <stops>
-                  <Stop color="WHITE" />
-                  <Stop color="#444dfc" offset="1.0" />
-               </stops>
-            </LinearGradient>
-         </textFill>
-      </Label>
-      <Label fx:id="bar" disable="true" layoutX="163.0" layoutY="290.0" prefHeight="21.0" prefWidth="232.0" textFill="RED" wrapText="true">
-         <font>
-            <Font name="System Bold" size="15.0" />
+            <Font name="Agency FB Bold" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="closeButton" layoutX="226.0" layoutY="243.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Close">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Button>
-      <Label fx:id="errorMsg" layoutX="216.0" layoutY="208.0" prefHeight="17.0" prefWidth="211.0" text="No user found" textFill="RED" visible="false">
-         <font>
-            <Font size="18.0" />
-         </font></Label>
-      <Label fx:id="errorMsg1" layoutX="200.0" layoutY="208.0" prefHeight="17.0" prefWidth="211.0" text="Both feilds are empty." textFill="RED" visible="false">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="errorMsg2" layoutX="182.0" layoutY="208.0" prefHeight="17.0" prefWidth="211.0" text="Username field is empty." textFill="RED" visible="false">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="errorMsg3" layoutX="182.0" layoutY="208.0" prefHeight="17.0" prefWidth="211.0" text="Password field is empty." textFill="RED" visible="false">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
+      <Button fx:id="LoginBtn" layoutX="121.0" layoutY="242.0" mnemonicParsing="false" onAction="#loginPressed" text="login" />
+      <PasswordField fx:id="password" layoutX="65.0" layoutY="207.0" prefHeight="25.0" prefWidth="149.0" promptText="please enter your password" />
    </children>
 </AnchorPane>
