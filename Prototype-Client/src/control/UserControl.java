@@ -189,10 +189,10 @@ public class UserControl implements Initializable {
 	}
 
 	public void loginPressed(ActionEvent e) throws IOException {
-		errorMsg.setVisible(false);
+		/*errorMsg.setVisible(false);
 		errorMsg1.setVisible(false);
 		errorMsg2.setVisible(false);
-		errorMsg3.setVisible(false);
+		errorMsg3.setVisible(false);*/
 		  connect(this);
 		  if (userName.getText().equals("") && password.getText().equals(""))
 			  errorMsg1.setVisible(true);
