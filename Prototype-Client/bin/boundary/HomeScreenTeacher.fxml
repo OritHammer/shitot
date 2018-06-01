@@ -119,10 +119,8 @@
                      </textFill>
                   </Button>
                   <ComboBox fx:id="subjectsComboBoxInCreate" layoutX="58.0" layoutY="16.0" prefWidth="150.0" promptText="choose subject" />
-                  <TextField editable="false" layoutX="69.0" layoutY="66.0" />
-                  <TextField editable="false" layoutX="238.0" layoutY="66.0" />
+                  <TextField fx:id="teacherNameOnCreate" editable="false" layoutX="69.0" layoutY="66.0" />
                   <Label layoutX="75.0" layoutY="45.0" prefHeight="17.0" prefWidth="85.0" text="teacher's name" />
-                  <Label layoutX="248.0" layoutY="45.0" text="question number" />
                   <Label layoutX="499.0" layoutY="77.0" />
                   <TextField fx:id="questionName" layoutX="58.0" layoutY="114.0" prefHeight="25.0" prefWidth="346.0" />
                   <Label layoutX="77.0" layoutY="95.0" prefHeight="17.0" prefWidth="85.0" text="question name" />

@@ -65,6 +65,8 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private TextField questionID;
 	@FXML
 	private TextField teacherName;
+	@FXML
+	private TextField teacherNameOnCreate;
 /*buttons of display the correct answer*/
 	@FXML
 	private RadioButton correctAns1;
@@ -94,6 +96,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	@FXML
 	public void initializeQuestions() {
 		connect(this); 
+		teacherNameOnCreate.setText(userNameFromDB);
 		messageToServer[0]="getSubjects";
 		messageToServer[1]=null;
 		messageToServer[2]=null;

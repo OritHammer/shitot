@@ -43,10 +43,10 @@ public class MysqlConnection {
 		}
 	}
 
-	public void createQuestion(Object subject, Object question) {
+	public synchronized void createQuestion(Object subject, Object question) {
 
-		String numberStr;
-		int number;
+		String fullQuestionNumber;
+		int questionNumber;
 		Question q = (Question) question;
 		try {
 			stmt = conn.createStatement();
@@ -55,13 +55,13 @@ public class MysqlConnection {
 			rs.next();
 			System.out.println(rs.getString(1));
 
-			number = Integer.parseInt(rs.getString(1).substring(2, 5));
-			number = number+1;
-			numberStr = (String)subject; 
-			numberStr = numberStr +""+  String.format("%03d", number);
+			questionNumber = Integer.parseInt(rs.getString(1).substring(2, 5));
+			questionNumber = questionNumber+1;
+			fullQuestionNumber = (String)subject; 
+			fullQuestionNumber = fullQuestionNumber +""+  String.format("%03d", questionNumber);
 			stmt. executeUpdate(
 			"INSERT INTO shitot.questions VALUES(\""
-			+numberStr.trim()+"\",\""+q.getTeacherName().trim()+"\",\""
+			+fullQuestionNumber.trim()+"\",\""+q.getTeacherName().trim()+"\",\""
 			+q.getQuestionContent()+"\",\""+q.getAnswers().get(0)+"\",\""+q.getAnswers().get(1)+"\",\""
 			+q.getAnswers().get(2)+"\",\""+q.getAnswers().get(3)+"\",\""+String.valueOf(q.getTrueAnswer())+"\");");
 			
