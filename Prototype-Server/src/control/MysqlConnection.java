@@ -53,9 +53,10 @@ public class MysqlConnection {
 			ResultSet rs = stmt.executeQuery(
 					"SELECT MAX(Question_id) FROM questions" + " WHERE Question_id like " + "\"" + subject + "%\"" + ";");
 			rs.next();
-			System.out.println(rs.getString(1));
-
-			questionNumber = Integer.parseInt(rs.getString(1).substring(2, 5));
+			if((rs.getString(1) == null))
+				questionNumber = 0;
+			else
+				questionNumber = Integer.parseInt(rs.getString(1).substring(2, 5));
 			questionNumber = questionNumber+1;
 			fullQuestionNumber = (String)subject; 
 			fullQuestionNumber = fullQuestionNumber +""+  String.format("%03d", questionNumber);
