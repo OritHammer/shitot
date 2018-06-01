@@ -47,6 +47,8 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	/* fxml variables */
 	@FXML
 	private Text userText;
+	@FXML
+	private TextField teacherNameOnCreate;
 
 	@FXML
 	private TextField answer1;
@@ -111,6 +113,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	
 	@FXML
 	public void initializeQuestions() {
+		teacherNameOnCreate.setText(userNameFromDB);
 		connect(this); 
 		messageToServer[0]="getSubjects";
 		messageToServer[1]=null;
