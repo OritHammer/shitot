@@ -10,6 +10,7 @@ import java.util.Scanner;
 import com.sun.nio.sctp.Notification;
 
 import entity.Question;
+import entity.QuestionInExam;
 import entity.TeachingProfessionals;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,10 +22,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -37,6 +42,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	String subject;
 	Question questionDetails;
 	Object[] messageToServer=new Object[3];
+	ObservableList<QuestionInExam> observblelist=FXCollections.observableArrayList();
 	
 	/* fxml variables */
 	@FXML
@@ -65,8 +71,6 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private TextField questionID;
 	@FXML
 	private TextField teacherName;
-	@FXML
-	private TextField teacherNameOnCreate;
 /*buttons of display the correct answer*/
 	@FXML
 	private RadioButton correctAns1;
@@ -92,11 +96,22 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private Button createQuestionBtn;
 	
 	@FXML
+	private Tab createExamTab;
+	@FXML
 	private Tab createQuestion;
+	@FXML
+	private Tab changeQuestionTab;
+	
+	@FXML
+	private TableColumn<QuestionInExam,String> pointsInTableColumnInCreateExam;
+	@FXML
+	private TableColumn<QuestionInExam,String> questionNameInTableColumnInCreateExam;
+	@FXML
+	private TableView<QuestionInExam> buildExamTableView;
+	
 	@FXML
 	public void initializeQuestions() {
 		connect(this); 
-		teacherNameOnCreate.setText(userNameFromDB);
 		messageToServer[0]="getSubjects";
 		messageToServer[1]=null;
 		messageToServer[2]=null;
@@ -109,6 +124,10 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private ComboBox<String> questionsComboBox;
 	@FXML
 	private ComboBox<String> subjectsComboBox;
+	@FXML
+	private ComboBox<String> subjectsComboBoxInBuildExam;
+	@FXML
+	private ComboBox<String> questionsComboBoxInCreate;
 
 /*initialized the update Question window*/
 	public void createQuestionClick(ActionEvent e)throws IOException{
@@ -162,10 +181,16 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/*ask for the qustions text*/
-		subject = subjectsComboBox.getValue(); // get the subject code
+		if(changeQuestionTab.isSelected())
+			subject = subjectsComboBox.getValue(); // get the subject code
+		if(createExamTab.isSelected())
+			subject = subjectsComboBoxInBuildExam.getValue(); // get the subject code
 		if(subject==null)
 			return;
-		questionsComboBox.getSelectionModel().clearSelection(); 
+		if(changeQuestionTab.isSelected())
+			questionsComboBox.getSelectionModel().clearSelection(); 
+		if(createExamTab.isSelected())
+			questionsComboBoxInCreate.getSelectionModel().clearSelection(); 
 		
 		clearForm();
 		
@@ -175,7 +200,18 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		messageToServer[2]=null;
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
-
+	
+	public void toQuestionInExam(ActionEvent e) {
+		QuestionInExam questioninexam=new QuestionInExam();
+		questioninexam.setName(questionsComboBoxInCreate.getValue());
+		observblelist.add(questioninexam);
+		questionNameInTableColumnInCreateExam.setCellValueFactory(new PropertyValueFactory<>("name"));
+		pointsInTableColumnInCreateExam.setCellValueFactory(new PropertyValueFactory<>("points"));
+		buildExamTableView.setItems(null);
+		buildExamTableView.setItems(observblelist);
+		
+	}
+	
 	public void askForQuestionDetails(ActionEvent e) throws IOException {
 		
 		selectedQuestion = questionsComboBox.getValue(); // get the selected question
@@ -200,8 +236,12 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		if(createQuestion.isSelected()) {
 			subjectsComboBoxInCreate.setItems(observableList);
 		}
-		else {
+		if(changeQuestionTab.isSelected()) {
 			subjectsComboBox.setItems(observableList);
+		}
+		if(createExamTab.isSelected()) {
+			subjectsComboBoxInBuildExam.setItems(observableList);
+
 		}
 	}
 
@@ -210,7 +250,10 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	{
 		try {
 		ObservableList<String> observableList = FXCollections.observableArrayList(questionsList);
-		questionsComboBox.setItems(observableList);
+		if(changeQuestionTab.isSelected())
+			questionsComboBox.setItems(observableList);
+		if(createExamTab.isSelected())
+			questionsComboBoxInCreate.setItems(observableList);
 		}
 		catch(Exception e) {}
 	}
@@ -250,8 +293,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		catch(Exception e) {}
 	}
 
-	
-/*send to server request for update correct answer*/
+	/*send to server request for update correct answer*/
 	public void updateCorrectAnswer(ActionEvent e) throws IOException, SQLException {
 		
 		
@@ -272,7 +314,6 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		System.exit(0);/*close the program (of client only)*/
 		
 	}
-	
 
 	/* check the content message from server */
 	@SuppressWarnings("unchecked")
@@ -308,6 +349,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			e.printStackTrace();
 		}
 	}
+
 	/*clear all the text fields and radio buttons*/
 	public void clearForm()
 	{
