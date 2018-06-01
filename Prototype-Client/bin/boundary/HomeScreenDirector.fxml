@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.chart.*?>
@@ -8,26 +9,41 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DirectorControl">
   <tabs>
-      <Tab text="Home">
+      <Tab closable="false" text="Home">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="372.0" fitWidth="600.0" layoutY="-1.0" opacity="0.22">
+                     <image>
+                        <Image url="@../../colorful-bricks-1200309.jpg" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="78.0" layoutY="50.0" text="HELLO" />
+               </children></AnchorPane>
         </content>
       </Tab>
-    <Tab text="Adding Time Requests">
+    <Tab fx:id="tabAddingTimeR" text="Adding Time Requests">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label layoutX="53.0" layoutY="44.0" prefHeight="17.0" prefWidth="78.0" text="Choose Exam" />
-                  <ComboBox layoutX="143.0" layoutY="40.0" prefHeight="25.0" prefWidth="242.0" />
-                  <Label layoutX="47.0" layoutY="142.0" text="Time added" />
-                  <Label layoutX="47.0" layoutY="98.0" text="Teacher Name" />
-                  <TextField editable="false" layoutX="143.0" layoutY="94.0" />
-                  <TextField editable="false" layoutX="143.0" layoutY="138.0" />
-                  <TextField layoutX="50.0" layoutY="215.0" prefHeight="120.0" prefWidth="481.0" />
-                  <Label layoutX="48.0" layoutY="186.0" text="Reason for adding time" />
+                  <ImageView fitHeight="372.0" fitWidth="600.0" opacity="0.22">
+                     <image>
+                        <Image url="@../../colorful-bricks-1200309.jpg" />
+                     </image>
+                  </ImageView>
+                  <ComboBox fx:id="cmbATRChooseExecutedExam" layoutX="51.0" layoutY="27.0" opacity="0.62" prefHeight="25.0" prefWidth="242.0" promptText="choose an executed exam" />
+                  <Label layoutX="332.0" layoutY="125.0" text="Time Added" />
+                  <Label layoutX="46.0" layoutY="124.0" text="Teacher Name" />
+                  <TextField fx:id="txtFATRTeachName" editable="false" layoutX="142.0" layoutY="120.0" opacity="0.65" prefHeight="25.0" prefWidth="171.0" />
+                  <TextField fx:id="txtFATRTimeAdded" editable="false" layoutX="414.0" layoutY="121.0" opacity="0.65" prefHeight="25.0" prefWidth="119.0" />
+                  <TextField fx:id="txtFATRreasonAddingTime" editable="false" layoutX="52.0" layoutY="186.0" opacity="0.65" prefHeight="120.0" prefWidth="481.0" />
+                  <Label layoutX="48.0" layoutY="157.0" text="Reason for adding time" />
+                  <Button fx:id="btnATRApprove" layoutX="151.0" layoutY="320.0" mnemonicParsing="false" text="Approve Request" />
+                  <Button fx:id="btnATRreject" layoutX="292.0" layoutY="320.0" mnemonicParsing="false" text="Reject Request" />
+                  <TextField fx:id="txtFATRCourseName" editable="false" layoutX="142.0" layoutY="75.0" opacity="0.65" prefHeight="25.0" prefWidth="171.0" />
+                  <Label layoutX="46.0" layoutY="79.0" text="Course Name" />
                </children></AnchorPane>
       </content>
     </Tab>
@@ -59,4 +75,7 @@
         </content>
       </Tab>
   </tabs>
+   <cursor>
+      <Cursor fx:constant="NONE" />
+   </cursor>
 </TabPane>
