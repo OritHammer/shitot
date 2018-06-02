@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import entity.Question;
 import entity.QuestionInExam;
 import entity.TeachingProfessionals;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -103,6 +104,14 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		messageToServer[2]=null;
 		chat.handleMessageFromClientUI(messageToServer);//send the message to server
 	}
+	public void initializeSubjectsForCreateQuestion() {
+		teacherNameOnCreate.setText(userNameFromDB);
+		connect(this); 
+		messageToServer[0]="getSubjects";
+		messageToServer[1]=null;
+		messageToServer[2]=null;
+		chat.handleMessageFromClientUI(messageToServer);//send the message to server
+	}
 	
 	@FXML
 	private ComboBox<String> subjectsComboBoxInCreate;
@@ -174,7 +183,9 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		if(subject==null)
 			return;
 		if(changeQuestionTab.isSelected())
-			questionsComboBox.getSelectionModel().clearSelection(); 
+			Platform.runLater(() -> questionsComboBox.getItems().clear());
+		Platform.runLater(() -> questionsComboBox.getSelectionModel().clearSelection());
+			
 		if(createExamTab.isSelected())
 			questionsComboBoxInCreate.getSelectionModel().clearSelection(); 
 		
@@ -215,21 +226,37 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		for(TeachingProfessionals tp:msg) {
 			observableList.add(tp.getTp_id());
 		}
-		if(createQuestion.isSelected()) {
-			subjectsComboBoxInCreate.setItems(observableList);
-		}
-		if(changeQuestionTab.isSelected()) {
-			subjectsComboBox.setItems(observableList);
-		}
-		if(createExamTab.isSelected()) {
-			subjectsComboBoxInBuildExam.setItems(observableList);
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+			
+				// TODO Auto-generated method stub
+				
+				if(createQuestion.isSelected()) {
+					clearForm();
+					subjectsComboBox.getItems().clear();
+					questionsComboBox.getItems().clear();
+					subjectsComboBoxInCreate.setItems(observableList);
+				}
+				if(changeQuestionTab.isSelected()) {
+					subjectsComboBoxInCreate.getItems().clear();
+					subjectsComboBox.setItems(observableList);
+				}
+				if(createExamTab.isSelected()) {
+					subjectsComboBoxInBuildExam.setItems(observableList);
 
 		}
+			}});
 	}
 
 	/* this method show the questions list on the combobox */
 	public void showQuestions(ArrayList<String> questionsList) 
 	{
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
 		try {
 		ObservableList<String> observableList = FXCollections.observableArrayList(questionsList);
 		if(changeQuestionTab.isSelected())
@@ -238,7 +265,9 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			questionsComboBoxInCreate.setItems(observableList);
 		}
 		catch(Exception e) {}
-	}
+			}});
+		}
+		
 
 	/* this method show the question details to user*/
 	public void showQuestionDetails(Question q){

@@ -74,7 +74,7 @@
             </AnchorPane>
          </content>
       </Tab>
-      <Tab fx:id="createQuestion" onSelectionChanged="#initializeQuestions" text="Create question">
+      <Tab fx:id="createQuestion" onSelectionChanged="#initializeSubjectsForCreateQuestion" text="Create question">
          <content>
             <AnchorPane prefHeight="361.0" prefWidth="707.0">
                <children>
