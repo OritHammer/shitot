@@ -115,7 +115,7 @@ public class EchoServer extends AbstractServer {
 		// saveUserToDB(con, (ArrayList<String>)msg);
 		/* System.out.println("Message received: " + msg + " from " + client); */
 		//this.sendToAllClients(msg);
-		System.out.println("Handle massege success");
+		System.out.println("Handle massege success  " + (String)message[0]);
 	}
 
 	/**

@@ -118,7 +118,7 @@
                         </RadialGradient>
                      </textFill>
                   </Button>
-                  <ComboBox fx:id="subjectsComboBoxInCreate" layoutX="76.0" layoutY="20.0" prefWidth="150.0" promptText="choose subject" />
+                  <ComboBox fx:id="subjectsComboBoxInCreate" layoutX="76.0" layoutY="20.0" onAction="#doNothing" prefWidth="150.0" promptText="choose subject" />
                   <TextField fx:id="teacherNameOnCreate" editable="false" layoutX="87.0" layoutY="70.0" />
                   <Label layoutX="93.0" layoutY="49.0" prefHeight="17.0" prefWidth="85.0" text="teacher's name" />
                   <Label layoutX="499.0" layoutY="78.0" />

@@ -31,7 +31,9 @@ public class TeacherControl extends  UserControl implements Initializable  {
 
 	private Boolean trueAnsFlag=false;// 
 	String selectedQuestion;
-	String subject;
+	  String subject;
+	  String subject1;
+	  String lastSubject=null;
 	Question questionDetails;
 	Object[] messageToServer=new Object[3];
 	
@@ -176,26 +178,39 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/*ask for the qustions text*/
+	
 		if(changeQuestionTab.isSelected())
-			subject = subjectsComboBox.getValue(); // get the subject code
-		if(createExamTab.isSelected())
-			subject = subjectsComboBoxInBuildExam.getValue(); // get the subject code
-		if(subject==null)
-			return;
-		if(changeQuestionTab.isSelected())
-			Platform.runLater(() -> questionsComboBox.getItems().clear());
-		Platform.runLater(() -> questionsComboBox.getSelectionModel().clearSelection());
+		{
+			subject1 = subjectsComboBox.getValue(); // get the subject code
+			if(createExamTab.isSelected())
+				subject1 = subjectsComboBoxInBuildExam.getValue(); // get the subject code
+			if(subject1==null)
+				return;
+			if(changeQuestionTab.isSelected())
+				
+				Platform.runLater(() -> questionsComboBox.getItems().clear());
+			Platform.runLater(() -> questionsComboBox.getSelectionModel().clearSelection());
+				
+			if(createExamTab.isSelected())
+				questionsComboBoxInCreate.getSelectionModel().clearSelection(); 
 			
-		if(createExamTab.isSelected())
-			questionsComboBoxInCreate.getSelectionModel().clearSelection(); 
+			if(!subject1.equals(lastSubject))
+			{
+			clearForm();
+			connect(this); //connecting to server
+			messageToServer[0]="getQuestions";
+			messageToServer[1]=subject1;
+			messageToServer[2]=null;
+			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
+			}
+			lastSubject=subject1;
+		}
+		else
+		{
+			lastSubject=null;
+			return;
+		}
 		
-		clearForm();
-		
-		connect(this); //connecting to server
-		messageToServer[0]="getQuestions";
-		messageToServer[1]=subject;
-		messageToServer[2]=null;
-		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 	
 	public void toQuestionInExam(ActionEvent e) {
@@ -379,5 +394,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
    public void initialize(URL url, ResourceBundle rb) {
 		userText.setText(userNameFromDB);
 	}
- 
+   public void doNothing(ActionEvent e) throws IOException {
+   }
+   
 }
