@@ -118,7 +118,7 @@
                         </RadialGradient>
                      </textFill>
                   </Button>
-                  <ComboBox fx:id="subjectsComboBoxInCreate" layoutX="76.0" layoutY="20.0" onAction="#doNothing" prefWidth="150.0" promptText="choose subject" />
+                  <ComboBox fx:id="subjectsComboBoxInCreate" layoutX="76.0" layoutY="20.0" prefWidth="150.0" promptText="choose subject" />
                   <TextField fx:id="teacherNameOnCreate" editable="false" layoutX="87.0" layoutY="70.0" />
                   <Label layoutX="93.0" layoutY="49.0" prefHeight="17.0" prefWidth="85.0" text="teacher's name" />
                   <Label layoutX="499.0" layoutY="78.0" />
@@ -156,19 +156,23 @@
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <Label layoutX="67.0" layoutY="42.0" text="Questions" />
-                  <Button layoutX="239.0" layoutY="323.0" mnemonicParsing="false" text="Add question" />
+                  <Button layoutX="239.0" layoutY="323.0" mnemonicParsing="false" onAction="#toQuestionInExam" text="Add question" />
                   <ComboBox fx:id="subjectsComboBoxInBuildExam" layoutX="66.0" layoutY="65.0" onAction="#loadQuestions" prefWidth="150.0" promptText="choose subject" />
-                  <ComboBox fx:id="questionsComboBoxInCreate" layoutX="66.0" layoutY="103.0" onAction="#toQuestionInExam" prefHeight="25.0" prefWidth="433.0" promptText="Choose question" />
+                  <ComboBox fx:id="questionsComboBoxInCreate" layoutX="66.0" layoutY="103.0" prefHeight="25.0" prefWidth="433.0" promptText="Choose question" />
                   <Button layoutX="346.0" layoutY="323.0" mnemonicParsing="false" text="Remove" />
-                  <TextField layoutX="77.0" layoutY="213.0" />
-                  <TextField layoutX="77.0" layoutY="264.0" />
+                  <TextField layoutX="77.0" layoutY="213.0" prefHeight="25.0" prefWidth="317.0" />
+                  <TextField layoutX="77.0" layoutY="264.0" prefHeight="25.0" prefWidth="317.0" />
                   <Label layoutX="77.0" layoutY="190.0" text="Remarks for teacher" />
                   <Label layoutX="77.0" layoutY="244.0" text="Remarks for student" />
-                  <TextField layoutX="77.0" layoutY="158.0" />
-                  <Label layoutX="77.0" layoutY="134.0" text="Points" />
+                  <TextField fx:id="pointsText" layoutX="77.0" layoutY="158.0" />
+                  <Label layoutX="77.0" layoutY="136.0" text="Points" />
                   <Button layoutX="422.0" layoutY="323.0" mnemonicParsing="false" text="Remove" />
-                  <ListView layoutX="527.0" layoutY="113.0" prefHeight="200.0" prefWidth="200.0" />
-                  <Label layoutX="574.0" layoutY="95.0" text="Questions in exam" />
+                  <TableView fx:id="questionsInExamTableView" layoutX="523.0" layoutY="51.0" prefHeight="262.0" prefWidth="198.0">
+                    <columns>
+                      <TableColumn fx:id="questionNameTableView" prefWidth="103.0" text="Question name" />
+                      <TableColumn fx:id="questionPointsTableView" prefWidth="96.0" text="Points" />
+                    </columns>
+                  </TableView>
                </children></AnchorPane>
          </content>
       </Tab>

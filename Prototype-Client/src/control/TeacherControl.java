@@ -23,8 +23,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -34,7 +37,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private String selectedQuestion;
 	private String subject;
 	private Object[] messageToServer=new Object[3];
-	private ObservableList<QuestionInExam> questionInExamObservable=FXCollections.observableArrayList();
+	ObservableList<QuestionInExam> questionInExamObservable=FXCollections.observableArrayList();
 	/* fxml variables */
 	@FXML
 	private Text userText;
@@ -58,6 +61,8 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	@FXML
 	private TextField createAnswer4;
 	
+	@FXML
+	private TextField pointsText;
 	@FXML
 	private TextField questionName;
 	@FXML
@@ -106,7 +111,11 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	}
 
 	@FXML
-	private ListView<String> QuestionsInExamListView;
+	private TableView<QuestionInExam> questionsInExamTableView;
+	@FXML
+	private TableColumn<QuestionInExam,String> questionNameTableView;
+	@FXML
+	private TableColumn<QuestionInExam,Float> questionPointsTableView;
 	
 	@FXML
 	private ComboBox<String> subjectsComboBoxInCreate;
@@ -202,13 +211,22 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	}
 	
 	public void toQuestionInExam(ActionEvent e) {
-		QuestionInExam questioninexam=new QuestionInExam();
-		questioninexam.setName(questionsComboBoxInCreate.getValue());
-		questionInExamObservable.add(questioninexam);
-		
+		//if(!questionInExamObservable.contains(questionsComboBoxInCreate.getValue())) {
+			QuestionInExam questioninexam=new QuestionInExam();
+			questioninexam.setName(questionsComboBoxInCreate.getValue());
+			questioninexam.setPoints(Integer.parseInt(pointsText.getText()));
+			questionInExamObservable.add(questioninexam);
+			questionsInExamTableView.setItems(null);
+			questionsInExamTableView.setItems(questionInExamObservable);
+			questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("name"));
+			questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));
+		//}
 
-		
 	}
+	/*public void uploadQuestion(ActionEvent e) {
+		QuestionInExam questioninexam=questionInExamObservable.get(questionsInExamTableView.getSelectionModel().getSelectedIndex());
+		pointsText.setText(String.valueOf(questioninexam.getPoints()));
+	}*/
 	
 	public void askForQuestionDetails(ActionEvent e) throws IOException {
 		
