@@ -20,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
@@ -30,13 +31,10 @@ import javafx.stage.Stage;
 public class TeacherControl extends  UserControl implements Initializable  {
 
 	private Boolean trueAnsFlag=false;// 
-	String selectedQuestion;
-	  String subject;
-	  String subject1;
-	  String lastSubject=null;
-	Question questionDetails;
-	Object[] messageToServer=new Object[3];
-	
+	private String selectedQuestion;
+	private String subject;
+	private Object[] messageToServer=new Object[3];
+	private ObservableList<QuestionInExam> questionInExamObservable=FXCollections.observableArrayList();
 	/* fxml variables */
 	@FXML
 	private Text userText;
@@ -106,14 +104,9 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		messageToServer[2]=null;
 		chat.handleMessageFromClientUI(messageToServer);//send the message to server
 	}
-	public void initializeSubjectsForCreateQuestion() {
-		teacherNameOnCreate.setText(userNameFromDB);
-		connect(this); 
-		messageToServer[0]="getSubjects";
-		messageToServer[1]=null;
-		messageToServer[2]=null;
-		chat.handleMessageFromClientUI(messageToServer);//send the message to server
-	}
+
+	@FXML
+	private ListView<String> QuestionsInExamListView;
 	
 	@FXML
 	private ComboBox<String> subjectsComboBoxInCreate;
@@ -125,7 +118,15 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private ComboBox<String> subjectsComboBoxInBuildExam;
 	@FXML
 	private ComboBox<String> questionsComboBoxInCreate;
-
+	
+	public void initializeSubjectsForCreateQuestion() {
+		teacherNameOnCreate.setText(userNameFromDB);
+		connect(this); 
+		messageToServer[0]="getSubjects";
+		messageToServer[1]=null;
+		messageToServer[2]=null;
+		chat.handleMessageFromClientUI(messageToServer);//send the message to server
+	}
 /*initialized the update Question window*/
 	public void createQuestionClick(ActionEvent e)throws IOException{
 		Question question=new Question();
@@ -178,44 +179,33 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/*ask for the qustions text*/
-	
 		if(changeQuestionTab.isSelected())
-		{
-			subject1 = subjectsComboBox.getValue(); // get the subject code
-			if(createExamTab.isSelected())
-				subject1 = subjectsComboBoxInBuildExam.getValue(); // get the subject code
-			if(subject1==null)
-				return;
-			if(changeQuestionTab.isSelected())
-				
-				Platform.runLater(() -> questionsComboBox.getItems().clear());
-			Platform.runLater(() -> questionsComboBox.getSelectionModel().clearSelection());
-				
-			if(createExamTab.isSelected())
-				questionsComboBoxInCreate.getSelectionModel().clearSelection(); 
-			
-			if(!subject1.equals(lastSubject))
-			{
-			clearForm();
-			connect(this); //connecting to server
-			messageToServer[0]="getQuestions";
-			messageToServer[1]=subject1;
-			messageToServer[2]=null;
-			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
-			}
-			lastSubject=subject1;
-		}
-		else
-		{
-			lastSubject=null;
+			subject = subjectsComboBox.getValue(); // get the subject code
+		if(createExamTab.isSelected())
+			subject = subjectsComboBoxInBuildExam.getValue(); // get the subject code
+		if(subject.equals(null))
 			return;
-		}
+		if(changeQuestionTab.isSelected())
+			Platform.runLater(() -> questionsComboBox.getItems().clear());
+		Platform.runLater(() -> questionsComboBox.getSelectionModel().clearSelection());
+			
+		if(createExamTab.isSelected())
+			questionsComboBoxInCreate.getSelectionModel().clearSelection(); 
 		
+		clearForm();
+		
+		connect(this); //connecting to server
+		messageToServer[0]="getQuestions";
+		messageToServer[1]=subject;
+		messageToServer[2]=null;
+		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 	
 	public void toQuestionInExam(ActionEvent e) {
 		QuestionInExam questioninexam=new QuestionInExam();
 		questioninexam.setName(questionsComboBoxInCreate.getValue());
+		questionInExamObservable.add(questioninexam);
+		
 
 		
 	}
@@ -394,7 +384,5 @@ public class TeacherControl extends  UserControl implements Initializable  {
    public void initialize(URL url, ResourceBundle rb) {
 		userText.setText(userNameFromDB);
 	}
-   public void doNothing(ActionEvent e) throws IOException {
-   }
-   
+ 
 }
