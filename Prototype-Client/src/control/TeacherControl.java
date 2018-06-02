@@ -5,9 +5,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.Scanner;
-
-import com.sun.nio.sctp.Notification;
 
 import entity.Question;
 import entity.QuestionInExam;
@@ -22,18 +19,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class TeacherControl extends  UserControl implements Initializable  {
 
@@ -42,7 +33,6 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	String subject;
 	Question questionDetails;
 	Object[] messageToServer=new Object[3];
-	ObservableList<QuestionInExam> observblelist=FXCollections.observableArrayList();
 	
 	/* fxml variables */
 	@FXML
@@ -103,13 +93,6 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private Tab createQuestion;
 	@FXML
 	private Tab changeQuestionTab;
-	
-	@FXML
-	private TableColumn<QuestionInExam,String> pointsInTableColumnInCreateExam;
-	@FXML
-	private TableColumn<QuestionInExam,String> questionNameInTableColumnInCreateExam;
-	@FXML
-	private TableView<QuestionInExam> buildExamTableView;
 	
 	@FXML
 	public void initializeQuestions() {
@@ -207,11 +190,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	public void toQuestionInExam(ActionEvent e) {
 		QuestionInExam questioninexam=new QuestionInExam();
 		questioninexam.setName(questionsComboBoxInCreate.getValue());
-		observblelist.add(questioninexam);
-		questionNameInTableColumnInCreateExam.setCellValueFactory(new PropertyValueFactory<>("name"));
-		pointsInTableColumnInCreateExam.setCellValueFactory(new PropertyValueFactory<>("points"));
-		buildExamTableView.setItems(null);
-		buildExamTableView.setItems(observblelist);
+
 		
 	}
 	
