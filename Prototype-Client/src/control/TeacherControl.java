@@ -40,6 +40,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private String subject;
 	private Object[] messageToServer=new Object[3];
 	ObservableList<QuestionInExam> questionInExamObservable=FXCollections.observableArrayList();
+	
 	/* fxml variables */
 	@FXML
 	private Text userText;
@@ -97,13 +98,6 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private ToggleGroup group;
 	@FXML
 	private Button createQuestionBtn;
-	
-	@FXML
-	private Tab createExamTab;
-	@FXML
-	private Tab createQuestion;
-	@FXML
-	private Tab changeQuestionTab;
 	
 	@FXML
 	public void initializeQuestions() {
@@ -246,13 +240,9 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			observableList.add(tp.getTp_id());
 		}				
 		if(pageLabel.getText().equals("Create question")) {
-			//clearForm();
-			//subjectsComboBox.getItems().clear();
-			//questionsComboBox.getItems().clear();
 			subjectsComboBoxInCreate.setItems(observableList);
 		}
 		if(pageLabel.getText().equals("Update question")) {
-			//subjectsComboBoxInCreate.getItems().clear();
 			subjectsComboBox.setItems(observableList);
 		}
 		if(pageLabel.getText().equals("Create exam")) {
@@ -316,9 +306,15 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	}
 	private void openScreen(String screen) {
 		try{
-			   Parent root = FXMLLoader.load(getClass().getResource("/boundary/"+screen+".fxml"));
-	            Scene scene = new Scene(root);
+				FXMLLoader loader=new FXMLLoader();
+				loader.setLocation(getClass().getResource("/boundary/"+screen+".fxml"));
+	            Scene scene = new Scene(loader.load());
 	            Stage stage=Main.getStage();
+	            if(screen.equals("ErrorMessage")) {
+	    			ErrorControl tController=loader.getController();
+	    			tController.setBackwardScreen(stage.getScene());/*send the name to the controller*/
+	    			tController.setErrorMessage("ERROR");
+	            }
 	            stage.setTitle("Create question");
 	            stage.setScene(scene);  
 	            stage.show();
@@ -388,16 +384,16 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	/*clear all the text fields and radio buttons*/
 	public void clearForm()
 	{
-	answer1.clear();
-	answer2.clear();
-	answer3.clear();
-	answer4.clear();
-	questionID.clear();
-	teacherName.clear();
-	correctAns1.setSelected(false);
-	correctAns2.setSelected(false);
-	correctAns3.setSelected(false);
-	correctAns4.setSelected(false);
+		answer1.clear();
+		answer2.clear();
+		answer3.clear();
+		answer4.clear();
+		questionID.clear();
+		teacherName.clear();
+		correctAns1.setSelected(false);
+		correctAns2.setSelected(false);
+		correctAns3.setSelected(false);
+		correctAns4.setSelected(false);
 	}
 	
    public void initialize(URL url, ResourceBundle rb) {
