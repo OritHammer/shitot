@@ -50,7 +50,7 @@ public class S_HomeScreenController extends UserControl implements Initializable
 	}
 	public void myGradesPressed(ActionEvent e) {
 		openScreen("MyGradesScreen");
-	}
+	} 
 public void orderExamCopyPressed(ActionEvent e) {
 	openScreen("OrderExamCopyScreen");
 	}
