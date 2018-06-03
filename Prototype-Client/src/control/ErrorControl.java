@@ -43,7 +43,7 @@ public class ErrorControl implements Initializable  {
 	}
 	public void setBackwardScreen(Scene backwardScreen) {
 		this.backwardScreen = backwardScreen;
-	}
+	} 
 	public void setErrorMessage(String errorMessage) {
 		errorText.setText(errorMessage);
 	}

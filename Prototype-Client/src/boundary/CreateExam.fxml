@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="361.0" prefWidth="701.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="361.0" prefWidth="701.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
       <TableView fx:id="questionsInExamTableView" layoutX="484.0" layoutY="47.0" prefHeight="262.0" prefWidth="198.0">
          <columns>
@@ -25,5 +25,6 @@
       <ComboBox fx:id="subjectsComboBox" layoutX="27.0" layoutY="61.0" onAction="#loadQuestions" prefWidth="150.0" promptText="choose subject" />
       <Button layoutX="200.0" layoutY="319.0" mnemonicParsing="false" onAction="#toQuestionInExam" text="Add question" />
       <Label layoutX="28.0" layoutY="38.0" text="Questions" />
+      <Label fx:id="pageLabel" layoutX="307.0" layoutY="14.0" text="Create exam" />
    </children>
 </AnchorPane>

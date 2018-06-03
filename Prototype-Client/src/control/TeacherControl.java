@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 import entity.Question;
 import entity.QuestionInExam;
 import entity.TeachingProfessionals;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,14 +16,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -113,14 +109,6 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	@FXML
 	private ComboBox<String> subjectsComboBox;
 	
-	public void initializeSubjectsForCreateQuestion() {
-		teacherNameOnCreate.setText(userNameFromDB);
-		connect(this); 
-		messageToServer[0]="getSubjects";
-		messageToServer[1]=null;
-		messageToServer[2]=null;
-		chat.handleMessageFromClientUI(messageToServer);//send the message to server
-	}
 /*initialized the update Question window*/
 	public void createQuestionClick(ActionEvent e)throws IOException{
 		Question question=new Question();
@@ -144,10 +132,10 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		}
 		if(createCorrectAnswer4.isSelected()) {
 			correctAnswer=4;
-		}
+		} 
 		
 		if((answers.get(0).equals("")) ||((answers.get(1).equals("")))||(answers.get(2).equals(""))||(answers.get(3).equals(""))||(correctAnswer==0)||(question.getQuestionContent().equals(""))) {
-			openScreen("ErrorMessage");
+			openScreen("ErrorMessage","Not all fields are completely full");
 		}
 		else {
 			question.setAnswers(answers);
@@ -165,45 +153,49 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/*ask for the qustions text*/
 			subject = subjectsComboBox.getValue(); // get the subject code
-		if(subject.equals(null))
-			return;		
-		clearForm();
+		if(subject==null)
+			return;
+		questionsComboBox.getSelectionModel().clearSelection();
+		if(!pageLabel.getText().equals("Create exam"))
+			clearForm();
 		connect(this); //connecting to server
 		messageToServer[0]="getQuestions";
 		messageToServer[1]=subject;
 		messageToServer[2]=null;
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
-	
-	public void toQuestionInExam(ActionEvent e) {
-		//if(!questionInExamObservable.contains(questionsComboBoxInCreate.getValue())) {
-			QuestionInExam questioninexam=new QuestionInExam();
-			questioninexam.setName(questionsComboBox.getValue());
-			questioninexam.setPoints(Integer.parseInt(pointsText.getText()));
-			questionInExamObservable.add(questioninexam);
-			questionsInExamTableView.setItems(null);
-			questionsInExamTableView.setItems(questionInExamObservable);
-			questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("name"));
-			questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));
-		//}
 
+	public void toQuestionInExam(ActionEvent e) {
+		if(pointsText.getText().equals("")) {
+			openScreen("ErrorMessage","Please fill the points area");
+			return;
+		}
+		if(questionsComboBox.getValue()==null) {
+			openScreen("ErrorMessage","Please choose question");
+			return;
+		}
+		QuestionInExam questioninexam=new QuestionInExam();
+		questioninexam.setName(questionsComboBox.getValue());
+		questioninexam.setPoints(Integer.parseInt(pointsText.getText()));
+		questionInExamObservable.add(questioninexam);
+		questionsInExamTableView.setItems(null);
+		questionsInExamTableView.setItems(questionInExamObservable);
+		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("name"));
+		questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));
+		//questionsInExamTableView.setRowFactory(value);
 	}
-	/*public void uploadQuestion(ActionEvent e) {
-		QuestionInExam questioninexam=questionInExamObservable.get(questionsInExamTableView.getSelectionModel().getSelectedIndex());
-		pointsText.setText(String.valueOf(questioninexam.getPoints()));
-	}*/
 	
 	public void askForQuestionDetails(ActionEvent e) throws IOException {
 		
 		selectedQuestion = questionsComboBox.getValue(); // get the selected question
 		if(selectedQuestion==null)
 			return;
+		
 		connect(this); // connecting to server
 		messageToServer[0]="getQuestionDetails";
 		messageToServer[1]=selectedQuestion;
 		messageToServer[2]=null;
 		clearForm();
-		if(selectedQuestion!=null)
 		chat.handleMessageFromClientUI(messageToServer);// ask for details of specific question
 		
 	}
@@ -221,7 +213,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	public void showQuestions(ArrayList<String> questionsList) 
 	{
 		ObservableList<String> observableList = FXCollections.observableArrayList(questionsList);
-			questionsComboBox.setItems(observableList);
+		questionsComboBox.setItems(observableList);
 	}
 		
 
@@ -264,6 +256,10 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		openScreen("UpdateQuestion");
 	}
 	
+	public void openCreateExam(ActionEvent e) {
+		openScreen("CreateExam");
+	}
+	
 	public void openCreateQuestion(ActionEvent e) {
 		openScreen("CreateQuestion");
 	}
@@ -278,6 +274,22 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	    			tController.setBackwardScreen(stage.getScene());/*send the name to the controller*/
 	    			tController.setErrorMessage("ERROR");//send a the error to the alert we made
 	            }
+	            stage.setTitle("Create question");
+	            stage.setScene(scene);  
+	            stage.show();
+	          }catch(Exception exception) {
+	        	  System.out.println("Error in opening the page");
+	          }		
+	}
+	private void openScreen(String screen,String message) {
+		try{
+				FXMLLoader loader=new FXMLLoader();
+				loader.setLocation(getClass().getResource("/boundary/"+screen+".fxml"));
+	            Scene scene = new Scene(loader.load());
+	            Stage stage=Main.getStage();
+	    		ErrorControl tController=loader.getController();
+	    		tController.setBackwardScreen(stage.getScene());/*send the name to the controller*/
+	    		tController.setErrorMessage(message);//send a the error to the alert we made
 	            stage.setTitle("Create question");
 	            stage.setScene(scene);  
 	            stage.show();
@@ -362,7 +374,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
    public void initialize(URL url, ResourceBundle rb) {
 	   if(pageLabel.getText().equals("Home screen"))
 		   userText.setText(userNameFromDB);
-	   if(pageLabel.getText().equals("Create question")||pageLabel.getText().equals("Update question")) {
+	   if(pageLabel.getText().equals("Create question")||pageLabel.getText().equals("Create exam")||pageLabel.getText().equals("Update question")) {
 			if(pageLabel.getText().equals("Create question"))
 				teacherNameOnCreate.setText(userNameFromDB);
 		connect(this); 
