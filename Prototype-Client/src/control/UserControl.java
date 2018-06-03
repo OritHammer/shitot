@@ -210,6 +210,7 @@ public class UserControl implements Initializable {
 		 }
 	public void setUserText(String userNameFromDB) {/*set the user name text in the "hello user" text*/
 		this.userNameFromDB=userNameFromDB;
+		Globals.userName=userNameFromDB;
 		 userText.setText(userNameFromDB);
 	}
 

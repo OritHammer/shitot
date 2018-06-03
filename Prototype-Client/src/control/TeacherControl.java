@@ -382,10 +382,12 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	
    public void initialize(URL url, ResourceBundle rb) {
 	   if(pageLabel.getText().equals("Home screen"))
-		   userText.setText(userNameFromDB);
+		   userText.setText(Globals.userName);
 	   if(pageLabel.getText().equals("Create question")||pageLabel.getText().equals("Create exam")||pageLabel.getText().equals("Update question")) {
 			if(pageLabel.getText().equals("Create question"))
-				teacherNameOnCreate.setText(userNameFromDB);
+			{
+				teacherNameOnCreate.setText(Globals.userName);
+			}
 		connect(this); 
 		messageToServer[0]="getSubjects";
 		messageToServer[1]=null;
