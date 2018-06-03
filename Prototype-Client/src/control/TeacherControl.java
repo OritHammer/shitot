@@ -244,7 +244,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		ArrayList<QuestionInExam> questioninexam=(ArrayList<QuestionInExam>) questionInExamObservable.stream().collect(Collectors.toList());;
 		exam.setRemarksForStudent(remarksForStudent.getText());
 		exam.setRemarksForTeacher(remarksForTeacher.getText());
-	    DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+	   /* DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
 	    Date date = null;
 		try {
 			date = (Date) sdf.parse(timeForExam.getText());
@@ -252,7 +252,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-		exam.setSolutionTime(date.toString());
+		exam.setSolutionTime(date.toString());*/
 		exam.setType(typeComboBox.getValue());
 		messageToServer[0]="setExam";
 		messageToServer[1]=questioninexam;
