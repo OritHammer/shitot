@@ -16,10 +16,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
@@ -32,7 +34,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class TeacherControl extends  UserControl implements Initializable  {
-
+	
 	private Boolean trueAnsFlag=false;// 
 	private String selectedQuestion;
 	private String subject;
@@ -44,6 +46,9 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	@FXML
 	private TextField teacherNameOnCreate;
 
+	@FXML
+	private Label pageLabel;
+	
 	@FXML
 	private TextField answer1;
 	@FXML
@@ -102,7 +107,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	
 	@FXML
 	public void initializeQuestions() {
-		teacherNameOnCreate.setText(userNameFromDB);
+		//teacherNameOnCreate.setText(userNameFromDB);
 		connect(this); 
 		messageToServer[0]="getSubjects";
 		messageToServer[1]=null;
@@ -162,16 +167,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		}
 		
 		if((answers.get(0).equals("")) ||((answers.get(1).equals("")))||(answers.get(2).equals(""))||(answers.get(3).equals(""))||(correctAnswer==0)||(question.getQuestionContent().equals(""))) {
-			   try{
-		            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/boundary/ErrorMessage.fxml"));
-		            Parent root1 = (Parent) fxmlLoader.load();
-		            Stage stage = new Stage();
-		            stage.setTitle("Error");
-		            stage.setScene(new Scene(root1));  
-		            stage.show();
-		          }catch(Exception exception) {
-		        	  
-		          }
+			openScreen("ErrorMessage");
 		}
 		else {
 			question.setAnswers(answers);
@@ -188,17 +184,17 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/*ask for the qustions text*/
-		if(changeQuestionTab.isSelected())
+		if(pageLabel.getText().equals("Update question"))
 			subject = subjectsComboBox.getValue(); // get the subject code
-		if(createExamTab.isSelected())
+		if(pageLabel.getText().equals("Create question"))
 			subject = subjectsComboBoxInBuildExam.getValue(); // get the subject code
 		if(subject.equals(null))
 			return;
-		if(changeQuestionTab.isSelected())
+		if(pageLabel.getText().equals("Update question"))
 			Platform.runLater(() -> questionsComboBox.getItems().clear());
 		Platform.runLater(() -> questionsComboBox.getSelectionModel().clearSelection());
 			
-		if(createExamTab.isSelected())
+		if(pageLabel.getText().equals("Create exam"))
 			questionsComboBoxInCreate.getSelectionModel().clearSelection(); 
 		
 		clearForm();
@@ -248,48 +244,32 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		ObservableList<String> observableList = FXCollections.observableArrayList();
 		for(TeachingProfessionals tp:msg) {
 			observableList.add(tp.getTp_id());
+		}				
+		if(pageLabel.getText().equals("Create question")) {
+			//clearForm();
+			//subjectsComboBox.getItems().clear();
+			//questionsComboBox.getItems().clear();
+			subjectsComboBoxInCreate.setItems(observableList);
 		}
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-			
-				// TODO Auto-generated method stub
-				
-				if(createQuestion.isSelected()) {
-					clearForm();
-					subjectsComboBox.getItems().clear();
-					questionsComboBox.getItems().clear();
-					subjectsComboBoxInCreate.setItems(observableList);
-				}
-				if(changeQuestionTab.isSelected()) {
-					subjectsComboBoxInCreate.getItems().clear();
-					subjectsComboBox.setItems(observableList);
-				}
-				if(createExamTab.isSelected()) {
-					subjectsComboBoxInBuildExam.setItems(observableList);
+		if(pageLabel.getText().equals("Update question")) {
+			//subjectsComboBoxInCreate.getItems().clear();
+			subjectsComboBox.setItems(observableList);
+		}
+		if(pageLabel.getText().equals("Create exam")) {
+			subjectsComboBoxInBuildExam.setItems(observableList);
 
 		}
-			}});
 	}
 
 	/* this method show the questions list on the combobox */
 	public void showQuestions(ArrayList<String> questionsList) 
 	{
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-		try {
 		ObservableList<String> observableList = FXCollections.observableArrayList(questionsList);
-		if(changeQuestionTab.isSelected())
+		if(pageLabel.getText().equals("Update question"))
 			questionsComboBox.setItems(observableList);
-		if(createExamTab.isSelected())
+		if(pageLabel.getText().equals("Create exam"))
 			questionsComboBoxInCreate.setItems(observableList);
-		}
-		catch(Exception e) {}
-			}});
-		}
+	}
 		
 
 	/* this method show the question details to user*/
@@ -327,10 +307,28 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		catch(Exception e) {}
 	}
 
+	public void openUpdateQuestionScreen(ActionEvent e) {
+		openScreen("UpdateQuestion");
+	}
+	
+	public void openCreateQuestion(ActionEvent e) {
+		openScreen("CreateQuestion");
+	}
+	private void openScreen(String screen) {
+		try{
+			   Parent root = FXMLLoader.load(getClass().getResource("/boundary/"+screen+".fxml"));
+	            Scene scene = new Scene(root);
+	            Stage stage=Main.getStage();
+	            stage.setTitle("Create question");
+	            stage.setScene(scene);  
+	            stage.show();
+	          }catch(Exception exception) {
+	        	  System.out.println("Error in opening the page");
+	          }		
+	}
+	
 	/*send to server request for update correct answer*/
-	public void updateCorrectAnswer(ActionEvent e) throws IOException, SQLException {
-		
-		
+	public void updateCorrectAnswer(ActionEvent e) throws IOException, SQLException {		
 		if (trueAnsFlag) {//if there is permission to update the question
 			String qID=questionID.getText();
 			RadioButton selected = (RadioButton)group.getSelectedToggle();
@@ -343,12 +341,15 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			chat.closeConnection();
 		}
 	}
+	
 	/*cancel button was pressed*/
-	public void cancel(ActionEvent e) throws IOException, SQLException {
-		System.exit(0);/*close the program (of client only)*/
-		
+	public void closeScreen(ActionEvent e) throws IOException, SQLException {
+	    final Node source = (Node) e.getSource();
+	    Stage stage = (Stage) source.getScene().getWindow();
+	    stage.close();	
+	    openScreen("HomeScreenTeacher");
 	}
-
+	
 	/* check the content message from server */
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
@@ -400,7 +401,10 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	}
 	
    public void initialize(URL url, ResourceBundle rb) {
-		userText.setText(userNameFromDB);
+		//userText.setText(userNameFromDB);//trouble in create new screen
+	   if(pageLabel.getText().equals("Create question")||pageLabel.getText().equals("Update question")) {
+		   initializeQuestions();
+	   }
 	}
  
 }
