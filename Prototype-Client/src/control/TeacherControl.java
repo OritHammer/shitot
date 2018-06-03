@@ -94,6 +94,8 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private ToggleGroup group;
 	@FXML
 	private Button createQuestionBtn;
+	@FXML
+	private Button createExamBTN;
 
 	@FXML
 	private TableView<QuestionInExam> questionsInExamTableView;
@@ -216,6 +218,13 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		questionsComboBox.setItems(observableList);
 	}
 		
+	public void createExam(ActionEvent e) {
+		connect(this); 
+		messageToServer[0]="createExam";
+		messageToServer[1]=questionInExamObservable;
+		messageToServer[2]=null;
+		chat.handleMessageFromClientUI(messageToServer);//send the message to server	
+	}
 
 	/* this method show the question details to user*/
 	public void showQuestionDetails(Question q){

@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import entity.Question;
+import entity.QuestionInExam;
 import entity.TeachingProfessionals;
 import entity.User;
 
@@ -198,5 +199,10 @@ public class MysqlConnection {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void createExam(Object examDetails) {
+		ArrayList<QuestionInExam> questioninexam=(ArrayList<QuestionInExam>) examDetails;
+		
 	}
 }

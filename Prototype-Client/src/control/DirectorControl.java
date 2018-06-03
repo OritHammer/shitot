@@ -37,7 +37,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	//FXML System information
 	
 	public void initialize(URL url, ResourceBundle rb) {
-		userText.setText(userNameFromDB);
+		//userText.setText(userNameFromDB);
 	}
 	
 	
