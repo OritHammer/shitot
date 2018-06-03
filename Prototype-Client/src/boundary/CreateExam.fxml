@@ -5,8 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="361.0" prefWidth="701.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<AnchorPane prefHeight="361.0" prefWidth="701.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TableView fx:id="questionsInExamTableView" layoutX="484.0" layoutY="47.0" prefHeight="262.0" prefWidth="198.0">
          <columns>
@@ -22,8 +21,8 @@
       <TextField layoutX="38.0" layoutY="260.0" prefHeight="25.0" prefWidth="317.0" />
       <TextField layoutX="38.0" layoutY="209.0" prefHeight="25.0" prefWidth="317.0" />
       <Button layoutX="307.0" layoutY="319.0" mnemonicParsing="false" text="Remove" />
-      <ComboBox fx:id="questionsComboBoxInCreate" layoutX="27.0" layoutY="99.0" prefHeight="25.0" prefWidth="433.0" promptText="Choose question" />
-      <ComboBox fx:id="subjectsComboBoxInBuildExam" layoutX="27.0" layoutY="61.0" onAction="#loadQuestions" prefWidth="150.0" promptText="choose subject" />
+      <ComboBox fx:id="questionsComboBox" layoutX="27.0" layoutY="99.0" prefHeight="25.0" prefWidth="433.0" promptText="Choose question" />
+      <ComboBox fx:id="subjectsComboBox" layoutX="27.0" layoutY="61.0" onAction="#loadQuestions" prefWidth="150.0" promptText="choose subject" />
       <Button layoutX="200.0" layoutY="319.0" mnemonicParsing="false" onAction="#toQuestionInExam" text="Add question" />
       <Label layoutX="28.0" layoutY="38.0" text="Questions" />
    </children>
