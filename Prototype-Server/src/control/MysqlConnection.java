@@ -26,7 +26,7 @@ public class MysqlConnection {
 		 * System.out.println("enter your password: "); DBname = sc.nextLine();
 		 */
 	}
-
+ 
 	/**************************** Class Methods **********************************/
 	public void runDB() {
 		try {
