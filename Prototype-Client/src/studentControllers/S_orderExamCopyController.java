@@ -12,7 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-  
+ 
 public class S_orderExamCopyController extends UserControl{
 	/********************* GUI Variable declaration *************************/
 	@FXML
@@ -27,7 +27,7 @@ public class S_orderExamCopyController extends UserControl{
 			messageToServer[1] = subjectCmb.getValue();
 			messageToServer[2] = null;
 			chat.handleMessageFromClientUI(messageToServer);// send the message to server
-		}
+		} 
 	public void chooseExamPressed(ActionEvent e) {
 	
 	}

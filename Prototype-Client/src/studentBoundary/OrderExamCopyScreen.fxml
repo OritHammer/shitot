@@ -4,9 +4,8 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
-  
 
-<AnchorPane prefHeight="475.0" prefWidth="506.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<AnchorPane prefHeight="475.0" prefWidth="506.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="studentControllers.">
    <children>
       <Button layoutX="144.0" layoutY="254.0" mnemonicParsing="false" onAction="#orderExamPressed" prefHeight="25.0" prefWidth="163.0" text="Order exam copy" />
       <Button fx:id="backToHomeBtn" layoutX="144.0" layoutY="413.0" mnemonicParsing="false" onAction="#goToHomePressed" prefHeight="25.0" prefWidth="163.0" text="Go back to home page" />
