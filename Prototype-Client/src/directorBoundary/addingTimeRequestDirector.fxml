@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.DirectorControl">
+   <children>
+      <Label layoutX="56.0" layoutY="102.0" text="Course Name" />
+      <TextField fx:id="txtFATRCourseName" editable="false" layoutX="152.0" layoutY="98.0" opacity="0.65" prefHeight="25.0" prefWidth="171.0" />
+      <Label layoutX="58.0" layoutY="180.0" text="Reason for adding time" />
+      <TextField fx:id="txtFATRreasonAddingTime" editable="false" layoutX="62.0" layoutY="209.0" opacity="0.65" prefHeight="120.0" prefWidth="481.0" />
+      <TextField fx:id="txtFATRTimeAdded" editable="false" layoutX="424.0" layoutY="144.0" opacity="0.65" prefHeight="25.0" prefWidth="119.0" />
+      <TextField fx:id="txtFATRTeachName" editable="false" layoutX="152.0" layoutY="143.0" opacity="0.65" prefHeight="25.0" prefWidth="171.0" />
+      <Label layoutX="56.0" layoutY="147.0" text="Teacher Name" />
+      <Label layoutX="342.0" layoutY="148.0" text="Time Added" />
+      <ComboBox fx:id="cmbATRChooseExecutedExam" layoutX="61.0" layoutY="50.0" opacity="0.62" prefHeight="25.0" prefWidth="242.0" promptText="choose an executed exam" />
+      <Label fx:id="pageLabel" layoutX="200.0" layoutY="14.0" prefHeight="17.0" prefWidth="171.0" text="Adding time requests" />
+      <Button fx:id="backButton" layoutX="277.0" layoutY="371.0" mnemonicParsing="false" onAction="#backButtonPressed" text="back" />
+   </children>
+</AnchorPane>
