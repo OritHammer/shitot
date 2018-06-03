@@ -60,6 +60,7 @@ public void manualExamPressed(ActionEvent e) {
 public void computrizeExamPressed(ActionEvent e) {
 	
 }
+
 	
 	
 	private void openScreen(String screen) {

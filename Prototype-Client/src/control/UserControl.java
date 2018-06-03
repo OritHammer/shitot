@@ -24,6 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import studentControllers.S_HomeScreenController;
 
 public class UserControl implements Initializable {
 	@FXML
@@ -141,11 +142,11 @@ public class UserControl implements Initializable {
 								try {
 
 									FXMLLoader loader=new FXMLLoader();
-									loader.setLocation(getClass().getResource("/boundary/HomeScreenStudent.fxml"));
+									loader.setLocation(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
 									home_page_parent = loader.load();
-									StudentControl sController=loader.getController();
+									S_HomeScreenController sController=loader.getController();
 									String userName=user.getFullname().toLowerCase();
-									sController.setUserText(userName);/*send the name to the controller*/
+									//sController.setUserText(userName);/*send the name to the controller*/
 									home_page_scene = new Scene(home_page_parent);
 									Main.getStage().setScene(home_page_scene);
 								} catch (IOException e) {
