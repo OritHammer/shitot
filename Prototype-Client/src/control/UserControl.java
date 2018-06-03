@@ -29,6 +29,7 @@ import studentControllers.S_HomeScreenController;
 public class UserControl implements Initializable {
 	@FXML
 	private TextField userName;
+	
 	@FXML
 	private PasswordField password;
 	@FXML
@@ -52,6 +53,8 @@ public class UserControl implements Initializable {
 	private ImageView LoginButton;
 	@FXML
 	public Text userText;
+	@FXML
+	private Label userText1;
 	@FXML
 	private javafx.scene.control.Button closeButton;
 
@@ -211,6 +214,10 @@ public class UserControl implements Initializable {
 	public void setUserText(String userNameFromDB) {/*set the user name text in the "hello user" text*/
 		this.userNameFromDB=userNameFromDB;
 		Globals.userName=userNameFromDB;
+		if(this instanceof DirectorControl) {
+			 userText1.setText(userNameFromDB);
+		return;
+		}
 		 userText.setText(userNameFromDB);
 	}
 
