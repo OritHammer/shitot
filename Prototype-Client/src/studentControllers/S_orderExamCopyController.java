@@ -12,7 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
- 
+  
 public class S_orderExamCopyController extends UserControl{
 	/********************* GUI Variable declaration *************************/
 	@FXML
