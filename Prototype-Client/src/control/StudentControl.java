@@ -62,7 +62,6 @@ public class StudentControl extends UserControl implements Initializable {
 	String[] messageToServer = new String[3];
 
 	/*************** Class Methods *******************************/
-
 	// MyDetails Win
 	public void initialize(URL url, ResourceBundle rb) {
 		// ask for relevant subject from the server
