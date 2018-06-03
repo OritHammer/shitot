@@ -63,7 +63,7 @@ public void computrizeExamPressed(ActionEvent e) {
 	
 	
 	private void openScreen(String screen) {
-		try{
+		try{ 
 			   Parent root = FXMLLoader.load(getClass().getResource("/studentBoundary/"+screen+".fxml"));
 	            Scene scene = new Scene(root);
 	            Stage stage=Main.getStage();

@@ -26,7 +26,7 @@ public class S_myGradesScreenController extends UserControl {
 	private TableColumn<ExamCopy, Float> gradeColumn;
 
 	private Object[] messageToServer = new Object[3];
-
+ 
 	/*************** Class Methods *******************************/
 	// both of those methods should be for all screens
 	public void choosingSubjectPressed(ActionEvent e) {

@@ -21,7 +21,7 @@ public class S_orderExamCopyController extends UserControl{
 	private ComboBox<String> subjectCmb;
 	private Object[] messageToServer = new Object[3];
 	
-	/*************** Class Methods *******************************/
+	/***************  Class Methods *******************************/
 	public void chooseSubjectPressed(ActionEvent e) {
 			messageToServer[0] = "getExamsCodesByStudentID_And_Subject";
 			messageToServer[1] = subjectCmb.getValue();
