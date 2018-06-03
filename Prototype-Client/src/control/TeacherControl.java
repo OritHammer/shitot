@@ -113,14 +113,6 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	@FXML
 	private ComboBox<String> subjectsComboBox;
 	
-	public void initializeSubjectsForCreateQuestion() {
-		teacherNameOnCreate.setText(userNameFromDB);
-		connect(this); 
-		messageToServer[0]="getSubjects";
-		messageToServer[1]=null;
-		messageToServer[2]=null;
-		chat.handleMessageFromClientUI(messageToServer);//send the message to server
-	}
 /*initialized the update Question window*/
 	public void createQuestionClick(ActionEvent e)throws IOException{
 		Question question=new Question();
@@ -164,9 +156,13 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/*ask for the qustions text*/
+		
+		questionsComboBox.getSelectionModel().clearSelection();
+		questionsComboBox.getItems().clear();
+
 			subject = subjectsComboBox.getValue(); // get the subject code
 		if(subject.equals(null))
-			return;		
+			return;
 		clearForm();
 		connect(this); //connecting to server
 		messageToServer[0]="getQuestions";
@@ -188,22 +184,18 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		//}
 
 	}
-	/*public void uploadQuestion(ActionEvent e) {
-		QuestionInExam questioninexam=questionInExamObservable.get(questionsInExamTableView.getSelectionModel().getSelectedIndex());
-		pointsText.setText(String.valueOf(questioninexam.getPoints()));
-	}*/
 	
 	public void askForQuestionDetails(ActionEvent e) throws IOException {
 		
 		selectedQuestion = questionsComboBox.getValue(); // get the selected question
-		if(selectedQuestion==null)
+		if(selectedQuestion.equals(null))
 			return;
+		
 		connect(this); // connecting to server
 		messageToServer[0]="getQuestionDetails";
 		messageToServer[1]=selectedQuestion;
 		messageToServer[2]=null;
 		clearForm();
-		if(selectedQuestion!=null)
 		chat.handleMessageFromClientUI(messageToServer);// ask for details of specific question
 		
 	}
@@ -221,7 +213,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	public void showQuestions(ArrayList<String> questionsList) 
 	{
 		ObservableList<String> observableList = FXCollections.observableArrayList(questionsList);
-			questionsComboBox.setItems(observableList);
+		questionsComboBox.setItems(observableList);
 	}
 		
 
@@ -344,6 +336,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		}
 	}
 
+	
 	/*clear all the text fields and radio buttons*/
 	public void clearForm()
 	{

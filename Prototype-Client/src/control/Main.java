@@ -22,7 +22,7 @@ public class Main extends Application {
    guiStage.setTitle("Login");
    guiStage.setScene(scene);
    guiStage.show(); 
-  }
+  } 
   catch(Exception e)
   {
    e.printStackTrace();
