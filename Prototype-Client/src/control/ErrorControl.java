@@ -13,18 +13,21 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class ErrorControl implements Initializable  {
-	private String backwardScreen;
+	
+	private Scene backwardScreen;
+	@FXML
+	private Text errorText;
+	
 	public void closeTheWindow(ActionEvent e)throws IOException{
 		((Stage) ((Node)(e.getSource())).getScene().getWindow()).close();
 		try {
-		   Parent root = FXMLLoader.load(getClass().getResource("/boundary/"+backwardScreen+".fxml"));
-           Scene scene = new Scene(root);
            Stage stage=Main.getStage();
            stage.setTitle("Create question");
-           stage.setScene(scene);  
+           stage.setScene(backwardScreen);  
            stage.show();
          }catch(Exception exception) {
        	  System.out.println("Error in opening the page");
@@ -34,6 +37,15 @@ public class ErrorControl implements Initializable  {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		
+	}
+	public Scene getBackwardScreen() {
+		return backwardScreen;
+	}
+	public void setBackwardScreen(Scene backwardScreen) {
+		this.backwardScreen = backwardScreen;
+	}
+	public void setErrorMessage(String errorMessage) {
+		errorText.setText(errorMessage);
 	}
 
 }

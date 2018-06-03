@@ -40,6 +40,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private String subject;
 	private Object[] messageToServer=new Object[3];
 	ObservableList<QuestionInExam> questionInExamObservable=FXCollections.observableArrayList();
+	
 	/* fxml variables */
 	@FXML
 	private Text userText;
@@ -97,23 +98,6 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private ToggleGroup group;
 	@FXML
 	private Button createQuestionBtn;
-	
-	@FXML
-	private Tab createExamTab;
-	@FXML
-	private Tab createQuestion;
-	@FXML
-	private Tab changeQuestionTab;
-	
-	@FXML
-	public void initializeQuestions() {
-		//teacherNameOnCreate.setText(userNameFromDB);
-		connect(this); 
-		messageToServer[0]="getSubjects";
-		messageToServer[1]=null;
-		messageToServer[2]=null;
-		chat.handleMessageFromClientUI(messageToServer);//send the message to server
-	}
 
 	@FXML
 	private TableView<QuestionInExam> questionsInExamTableView;
@@ -128,10 +112,6 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private ComboBox<String> questionsComboBox;
 	@FXML
 	private ComboBox<String> subjectsComboBox;
-	@FXML
-	private ComboBox<String> subjectsComboBoxInBuildExam;
-	@FXML
-	private ComboBox<String> questionsComboBoxInCreate;
 	
 	public void initializeSubjectsForCreateQuestion() {
 		teacherNameOnCreate.setText(userNameFromDB);
@@ -184,21 +164,10 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/*ask for the qustions text*/
-		if(pageLabel.getText().equals("Update question"))
 			subject = subjectsComboBox.getValue(); // get the subject code
-		if(pageLabel.getText().equals("Create question"))
-			subject = subjectsComboBoxInBuildExam.getValue(); // get the subject code
 		if(subject.equals(null))
-			return;
-		if(pageLabel.getText().equals("Update question"))
-			Platform.runLater(() -> questionsComboBox.getItems().clear());
-		Platform.runLater(() -> questionsComboBox.getSelectionModel().clearSelection());
-			
-		if(pageLabel.getText().equals("Create exam"))
-			questionsComboBoxInCreate.getSelectionModel().clearSelection(); 
-		
+			return;		
 		clearForm();
-		
 		connect(this); //connecting to server
 		messageToServer[0]="getQuestions";
 		messageToServer[1]=subject;
@@ -209,7 +178,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	public void toQuestionInExam(ActionEvent e) {
 		//if(!questionInExamObservable.contains(questionsComboBoxInCreate.getValue())) {
 			QuestionInExam questioninexam=new QuestionInExam();
-			questioninexam.setName(questionsComboBoxInCreate.getValue());
+			questioninexam.setName(questionsComboBox.getValue());
 			questioninexam.setPoints(Integer.parseInt(pointsText.getText()));
 			questionInExamObservable.add(questioninexam);
 			questionsInExamTableView.setItems(null);
@@ -244,20 +213,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		ObservableList<String> observableList = FXCollections.observableArrayList();
 		for(TeachingProfessionals tp:msg) {
 			observableList.add(tp.getTp_id());
-		}				
-		if(pageLabel.getText().equals("Create question")) {
-			//clearForm();
-			//subjectsComboBox.getItems().clear();
-			//questionsComboBox.getItems().clear();
-			subjectsComboBoxInCreate.setItems(observableList);
-		}
-		if(pageLabel.getText().equals("Update question")) {
-			//subjectsComboBoxInCreate.getItems().clear();
 			subjectsComboBox.setItems(observableList);
-		}
-		if(pageLabel.getText().equals("Create exam")) {
-			subjectsComboBoxInBuildExam.setItems(observableList);
-
 		}
 	}
 
@@ -265,10 +221,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	public void showQuestions(ArrayList<String> questionsList) 
 	{
 		ObservableList<String> observableList = FXCollections.observableArrayList(questionsList);
-		if(pageLabel.getText().equals("Update question"))
 			questionsComboBox.setItems(observableList);
-		if(pageLabel.getText().equals("Create exam"))
-			questionsComboBoxInCreate.setItems(observableList);
 	}
 		
 
@@ -316,9 +269,15 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	}
 	private void openScreen(String screen) {
 		try{
-			   Parent root = FXMLLoader.load(getClass().getResource("/boundary/"+screen+".fxml"));
-	            Scene scene = new Scene(root);
+				FXMLLoader loader=new FXMLLoader();
+				loader.setLocation(getClass().getResource("/boundary/"+screen+".fxml"));
+	            Scene scene = new Scene(loader.load());
 	            Stage stage=Main.getStage();
+	            if(screen.equals("ErrorMessage")) {
+	    			ErrorControl tController=loader.getController();
+	    			tController.setBackwardScreen(stage.getScene());/*send the name to the controller*/
+	    			tController.setErrorMessage("ERROR");//send a the error to the alert we made
+	            }
 	            stage.setTitle("Create question");
 	            stage.setScene(scene);  
 	            stage.show();
@@ -388,23 +347,30 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	/*clear all the text fields and radio buttons*/
 	public void clearForm()
 	{
-	answer1.clear();
-	answer2.clear();
-	answer3.clear();
-	answer4.clear();
-	questionID.clear();
-	teacherName.clear();
-	correctAns1.setSelected(false);
-	correctAns2.setSelected(false);
-	correctAns3.setSelected(false);
-	correctAns4.setSelected(false);
+		answer1.clear();
+		answer2.clear();
+		answer3.clear();
+		answer4.clear();
+		questionID.clear();
+		teacherName.clear();
+		correctAns1.setSelected(false);
+		correctAns2.setSelected(false);
+		correctAns3.setSelected(false);
+		correctAns4.setSelected(false);
 	}
 	
    public void initialize(URL url, ResourceBundle rb) {
-		//userText.setText(userNameFromDB);//trouble in create new screen
+	   if(pageLabel.getText().equals("Home screen"))
+		   userText.setText(userNameFromDB);
 	   if(pageLabel.getText().equals("Create question")||pageLabel.getText().equals("Update question")) {
-		   initializeQuestions();
-	   }
+			if(pageLabel.getText().equals("Create question"))
+				teacherNameOnCreate.setText(userNameFromDB);
+		connect(this); 
+		messageToServer[0]="getSubjects";
+		messageToServer[1]=null;
+		messageToServer[2]=null;
+		chat.handleMessageFromClientUI(messageToServer);//send the message to server	   
 	}
+   }
  
 }
