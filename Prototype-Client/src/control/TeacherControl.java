@@ -3,9 +3,11 @@ package control;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import entity.Exam;
 import entity.Question;
 import entity.QuestionInExam;
 import entity.TeachingProfessionals;
@@ -71,6 +73,12 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private TextField questionID;
 	@FXML
 	private TextField teacherName;
+    @FXML
+    private TextField remarksForStudent;
+    @FXML
+    private TextField remarksForTeacher;
+    @FXML
+    private TextField timeForExam;
 /*buttons of display the correct answer*/
 	@FXML
 	private RadioButton correctAns1;
@@ -108,12 +116,14 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private ComboBox<String> questionsComboBox;
 	@FXML
 	private ComboBox<String> subjectsComboBox;
+	@FXML
+	private ComboBox<String> typeComboBox;
 	
 /*initialized the update Question window*/
 	public void createQuestionClick(ActionEvent e)throws IOException{
 		Question question=new Question();
 		ArrayList<String> answers=new ArrayList<String>();
-		question.setTeacherName(userNameFromDB);
+		question.setTeacherName(Globals.userName);
 		question.setQuestionContent(questionName.getText().trim());
 		answers.add(createAnswer1.getText().trim());
 		answers.add(createAnswer2.getText().trim());
@@ -220,15 +230,28 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		ObservableList<String> observableList = FXCollections.observableArrayList(questionsList);
 		questionsComboBox.setItems(observableList);
 	}
-		
-	public void createExam(ActionEvent e) {
-		connect(this); 
-		messageToServer[0]="createExam";
-		messageToServer[1]=questionInExamObservable;
-		messageToServer[2]=null;
-		chat.handleMessageFromClientUI(messageToServer);//send the message to server	
-	}
 
+	public void createExam(ActionEvent e) {
+		Exam exam = new Exam();
+		String courseID=questionsComboBox.getValue().substring(0, 2);
+		exam.setE_id(subjectsComboBox.getValue()+""+ courseID);
+		//exam.setRemarksForStudent(remarksForStudent.getText());
+		//exam.setRemarksForTeacher(remarksForTeacher.getText());
+		//exam.setSolutionTime(Time.valueOf(timeForExam.getText()));
+		//exam.setType(typeComboBox.getValue());
+		connect(this); 
+		messageToServer[0]="setExam";
+		messageToServer[1]=questionInExamObservable;
+		messageToServer[2]=exam;
+		chat.handleMessageFromClientUI(messageToServer);//send the message to server
+		try {
+			chat.closeConnection();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}//close the connection
+	}
+	
 	/* this method show the question details to user*/
 	public void showQuestionDetails(Question q){
 		try {

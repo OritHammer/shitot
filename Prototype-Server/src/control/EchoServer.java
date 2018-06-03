@@ -81,8 +81,8 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		case "createExam": {/*client request all all the questions under some subject*/
-			con.createExam(message[1]);
+		case "setExam": {/*client request all all the questions under some subject*/
+			con.createExam(message[1],message[2]);
 			break;
 		}
 		case "getQuestionDetails" :

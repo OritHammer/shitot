@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import entity.Exam;
 import entity.Question;
 import entity.QuestionInExam;
 import entity.TeachingProfessionals;
@@ -140,9 +141,9 @@ public class MysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
-					"SELECT Question_Text FROM questions" + " WHERE Question_id like " + "\"" + subject + "%\"" + ";");
+					"SELECT question_id,Question_Text FROM questions" + " WHERE Question_id like " + "\"" + subject + "%\"" + ";");
 			while (rs.next()) {
-				questionList.add(rs.getString(1));
+				questionList.add(rs.getString(1)+" "+rs.getString(2));
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -201,8 +202,35 @@ public class MysqlConnection {
 		}
 	}
 
-	public void createExam(Object examDetails) {
-		ArrayList<QuestionInExam> questioninexam=(ArrayList<QuestionInExam>) examDetails;
+	public void createExam(Object questionInExams,Object examDetails) {
+		ArrayList<QuestionInExam> questioninexam=(ArrayList<QuestionInExam>) questionInExams;
+		Exam exam=(Exam)examDetails;
+		String fullExamNumber;
+		String examNumber=exam.getE_id();
+		int examNum;
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(
+					"SELECT MAX(e_id) FROM exams" + " WHERE e_id like " + "\"" + examNumber + "%\"" + ";");
+			rs.next();
+			if((rs.getString(1) == null))
+				examNum = 0;
+			else
+				examNum = Integer.parseInt(rs.getString(1).substring(3, 5));
+			examNum++;
+			fullExamNumber =examNumber; 
+			fullExamNumber = fullExamNumber +""+  String.format("%02d", examNumber);
+			/*stmt. executeUpdate(
+			"INSERT INTO shitot.questions VALUES(\""
+			+fullQuestionNumber.trim()+"\",\""+q.getTeacherName().trim()+"\",\""
+			+q.getQuestionContent()+"\",\""+q.getAnswers().get(0)+"\",\""+q.getAnswers().get(1)+"\",\""
+			+q.getAnswers().get(2)+"\",\""+q.getAnswers().get(3)+"\",\""+String.valueOf(q.getTrueAnswer())+"\");");*/
+			
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		//stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
 		
 	}
 }
