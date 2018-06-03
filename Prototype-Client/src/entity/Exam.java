@@ -9,7 +9,7 @@ public class Exam implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String e_id;
-	private Time solutionTime;
+	private String solutionTime;
 	private String remarksForTeacher;
 	private String remarksForStudent;
 	private String type;
@@ -31,10 +31,10 @@ public class Exam implements Serializable{
 	public void setRemarksForTeacher(String remarksForTeacher) {
 		this.remarksForTeacher = remarksForTeacher;
 	}
-	public Time getSolutionTime() {
+	public String getSolutionTime() {
 		return solutionTime;
 	}
-	public void setSolutionTime(Time solutionTime) {
+	public void setSolutionTime(String solutionTime) {
 		this.solutionTime = solutionTime;
 	}
 	public String getE_id() {

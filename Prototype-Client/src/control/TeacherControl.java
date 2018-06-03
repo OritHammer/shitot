@@ -2,10 +2,15 @@ package control;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import entity.Exam;
 import entity.Question;
@@ -156,6 +161,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			messageToServer[1]=subject;
 			messageToServer[2]=question;
 			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
+			chat.closeConnection();//close the connection
 		}
 			
 	}
@@ -205,10 +211,10 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		selectedQuestion = questionsComboBox.getValue(); // get the selected question
 		if(selectedQuestion==null)
 			return;
-		
+		String[] questionDetails = selectedQuestion.split(" ");
 		connect(this); // connecting to server
 		messageToServer[0]="getQuestionDetails";
-		messageToServer[1]=selectedQuestion;
+		messageToServer[1]=questionDetails[1];
 		messageToServer[2]=null;
 		clearForm();
 		chat.handleMessageFromClientUI(messageToServer);// ask for details of specific question
@@ -235,14 +241,23 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		Exam exam = new Exam();
 		String courseID=questionsComboBox.getValue().substring(0, 2);
 		exam.setE_id(subjectsComboBox.getValue()+""+ courseID);
-		//exam.setRemarksForStudent(remarksForStudent.getText());
-		//exam.setRemarksForTeacher(remarksForTeacher.getText());
-		//exam.setSolutionTime(Time.valueOf(timeForExam.getText()));
-		//exam.setType(typeComboBox.getValue());
-		connect(this); 
+		ArrayList<QuestionInExam> questioninexam=(ArrayList<QuestionInExam>) questionInExamObservable.stream().collect(Collectors.toList());;
+		exam.setRemarksForStudent(remarksForStudent.getText());
+		exam.setRemarksForTeacher(remarksForTeacher.getText());
+	    DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+	    Date date = null;
+		try {
+			date = (Date) sdf.parse(timeForExam.getText());
+		} catch (ParseException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		exam.setSolutionTime(date.toString());
+		exam.setType(typeComboBox.getValue());
 		messageToServer[0]="setExam";
-		messageToServer[1]=questionInExamObservable;
+		messageToServer[1]=questioninexam;
 		messageToServer[2]=exam;
+		connect(this); 
 		chat.handleMessageFromClientUI(messageToServer);//send the message to server
 		try {
 			chat.closeConnection();
@@ -408,6 +423,9 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	}
 	
    public void initialize(URL url, ResourceBundle rb) {
+	   if(pageLabel.getText().equals("Create exam")) {
+		   typeComboBox.setItems(FXCollections.observableArrayList("computerized" ,"uncomputerized"));
+	   }
 	   if(pageLabel.getText().equals("Home screen"))
 		   userText.setText(Globals.userName);
 	   if(pageLabel.getText().equals("Create question")||pageLabel.getText().equals("Create exam")||pageLabel.getText().equals("Update question")) {

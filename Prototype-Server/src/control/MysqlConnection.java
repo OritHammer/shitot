@@ -203,7 +203,6 @@ public class MysqlConnection {
 	}
 
 	public void createExam(Object questionInExams,Object examDetails) {
-		ArrayList<QuestionInExam> questioninexam=(ArrayList<QuestionInExam>) questionInExams;
 		Exam exam=(Exam)examDetails;
 		String fullExamNumber;
 		String examNumber=exam.getE_id();
@@ -216,15 +215,14 @@ public class MysqlConnection {
 			if((rs.getString(1) == null))
 				examNum = 0;
 			else
-				examNum = Integer.parseInt(rs.getString(1).substring(3, 5));
+				examNum = Integer.parseInt(rs.getString(1).substring(4, 6));
 			examNum++;
 			fullExamNumber =examNumber; 
-			fullExamNumber = fullExamNumber +""+  String.format("%02d", examNumber);
-			/*stmt. executeUpdate(
+			fullExamNumber = fullExamNumber +""+  String.format("%02d", examNum);
+			stmt. executeUpdate(
 			"INSERT INTO shitot.questions VALUES(\""
-			+fullQuestionNumber.trim()+"\",\""+q.getTeacherName().trim()+"\",\""
-			+q.getQuestionContent()+"\",\""+q.getAnswers().get(0)+"\",\""+q.getAnswers().get(1)+"\",\""
-			+q.getAnswers().get(2)+"\",\""+q.getAnswers().get(3)+"\",\""+String.valueOf(q.getTrueAnswer())+"\");");*/
+			+fullExamNumber.trim()+"\",\""+exam.getSolutionTime()+"\",\""
+			+exam.getRemarksForTeacher()+"\",\""+exam.getRemarksForStudent()+"\",\""+exam.getType()+"\");");
 			
 			rs.close();
 		} catch (SQLException e) {
