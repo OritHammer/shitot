@@ -136,7 +136,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		}
 		if(createCorrectAnswer4.isSelected()) {
 			correctAnswer=4;
-		}
+		} 
 		
 		if((answers.get(0).equals("")) ||((answers.get(1).equals("")))||(answers.get(2).equals(""))||(answers.get(3).equals(""))||(correctAnswer==0)||(question.getQuestionContent().equals(""))) {
 			openScreen("ErrorMessage","Not all fields are completely full");
@@ -168,7 +168,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		messageToServer[2]=null;
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
-	
+
 	public void toQuestionInExam(ActionEvent e) {
 		if(pointsText.getText().equals("")) {
 			openScreen("ErrorMessage","Please fill the points area");
@@ -186,6 +186,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		questionsInExamTableView.setItems(questionInExamObservable);
 		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("name"));
 		questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));
+		//questionsInExamTableView.setRowFactory(value);
 	}
 	
 	public void askForQuestionDetails(ActionEvent e) throws IOException {
