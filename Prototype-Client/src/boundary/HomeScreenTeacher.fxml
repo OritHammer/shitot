@@ -13,16 +13,16 @@
 
 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="358.0" prefWidth="218.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
-      <Text fx:id="userText" layoutX="115.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="user" wrappingWidth="132.13671875" />
-      <Text layoutX="72.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello" />
-      <Button layoutX="60.0" layoutY="61.0" mnemonicParsing="false" onAction="#openUpdateQuestionScreen" text="Update question" />
-      <Button layoutX="62.0" layoutY="90.0" mnemonicParsing="false" onAction="#openCreateQuestion" text="Create question" />
-      <Button layoutX="66.0" layoutY="120.0" mnemonicParsing="false" text="Statistic report" />
-      <Button layoutX="72.0" layoutY="152.0" mnemonicParsing="false" text="Create exam" />
-      <Button layoutX="75.0" layoutY="185.0" mnemonicParsing="false" text="Check exam" />
-      <Button layoutX="57.0" layoutY="218.0" mnemonicParsing="false" text="Create exam code" />
-      <Button layoutX="57.0" layoutY="251.0" mnemonicParsing="false" text="Extend exam time" />
-      <Button layoutX="76.0" layoutY="285.0" mnemonicParsing="false" text="Lock exam" />
-      <Label fx:id="pageLabel" layoutX="64.0" layoutY="14.0" prefHeight="17.0" prefWidth="85.0" text="Home screen" />
+      <Text fx:id="userText" layoutX="111.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="user" wrappingWidth="132.13671875" />
+      <Text layoutX="68.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello" />
+      <Button layoutX="56.0" layoutY="61.0" mnemonicParsing="false" onAction="#openUpdateQuestionScreen" text="Update question" />
+      <Button layoutX="58.0" layoutY="90.0" mnemonicParsing="false" onAction="#openCreateQuestion" text="Create question" />
+      <Button layoutX="62.0" layoutY="120.0" mnemonicParsing="false" text="Statistic report" />
+      <Button layoutX="68.0" layoutY="152.0" mnemonicParsing="false" onAction="#openCreateExam" text="Create exam" />
+      <Button layoutX="71.0" layoutY="185.0" mnemonicParsing="false" text="Check exam" />
+      <Button layoutX="53.0" layoutY="218.0" mnemonicParsing="false" text="Create exam code" />
+      <Button layoutX="53.0" layoutY="251.0" mnemonicParsing="false" text="Extend exam time" />
+      <Button layoutX="72.0" layoutY="285.0" mnemonicParsing="false" text="Lock exam" />
+      <Label fx:id="pageLabel" layoutX="65.0" layoutY="14.0" prefHeight="17.0" prefWidth="85.0" text="Home screen" />
    </children>
 </AnchorPane>

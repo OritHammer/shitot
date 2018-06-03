@@ -139,7 +139,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		}
 		
 		if((answers.get(0).equals("")) ||((answers.get(1).equals("")))||(answers.get(2).equals(""))||(answers.get(3).equals(""))||(correctAnswer==0)||(question.getQuestionContent().equals(""))) {
-			openScreen("ErrorMessage");
+			openScreen("ErrorMessage","Not all fields are completely full");
 		}
 		else {
 			question.setAnswers(answers);
@@ -159,10 +159,9 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			subject = subjectsComboBox.getValue(); // get the subject code
 		if(subject==null)
 			return;
-		questionsComboBox.getItems().clear();
 		questionsComboBox.getSelectionModel().clearSelection();
-
-		clearForm();
+		if(!pageLabel.getText().equals("Create exam"))
+			clearForm();
 		connect(this); //connecting to server
 		messageToServer[0]="getQuestions";
 		messageToServer[1]=subject;
@@ -171,17 +170,22 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	}
 	
 	public void toQuestionInExam(ActionEvent e) {
-		//if(!questionInExamObservable.contains(questionsComboBoxInCreate.getValue())) {
-			QuestionInExam questioninexam=new QuestionInExam();
-			questioninexam.setName(questionsComboBox.getValue());
-			questioninexam.setPoints(Integer.parseInt(pointsText.getText()));
-			questionInExamObservable.add(questioninexam);
-			questionsInExamTableView.setItems(null);
-			questionsInExamTableView.setItems(questionInExamObservable);
-			questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("name"));
-			questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));
-		//}
-
+		if(pointsText.getText().equals("")) {
+			openScreen("ErrorMessage","Please fill the points area");
+			return;
+		}
+		if(questionsComboBox.getValue()==null) {
+			openScreen("ErrorMessage","Please choose question");
+			return;
+		}
+		QuestionInExam questioninexam=new QuestionInExam();
+		questioninexam.setName(questionsComboBox.getValue());
+		questioninexam.setPoints(Integer.parseInt(pointsText.getText()));
+		questionInExamObservable.add(questioninexam);
+		questionsInExamTableView.setItems(null);
+		questionsInExamTableView.setItems(questionInExamObservable);
+		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("name"));
+		questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));
 	}
 	
 	public void askForQuestionDetails(ActionEvent e) throws IOException {
@@ -255,6 +259,10 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		openScreen("UpdateQuestion");
 	}
 	
+	public void openCreateExam(ActionEvent e) {
+		openScreen("CreateExam");
+	}
+	
 	public void openCreateQuestion(ActionEvent e) {
 		openScreen("CreateQuestion");
 	}
@@ -269,6 +277,22 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	    			tController.setBackwardScreen(stage.getScene());/*send the name to the controller*/
 	    			tController.setErrorMessage("ERROR");//send a the error to the alert we made
 	            }
+	            stage.setTitle("Create question");
+	            stage.setScene(scene);  
+	            stage.show();
+	          }catch(Exception exception) {
+	        	  System.out.println("Error in opening the page");
+	          }		
+	}
+	private void openScreen(String screen,String message) {
+		try{
+				FXMLLoader loader=new FXMLLoader();
+				loader.setLocation(getClass().getResource("/boundary/"+screen+".fxml"));
+	            Scene scene = new Scene(loader.load());
+	            Stage stage=Main.getStage();
+	    		ErrorControl tController=loader.getController();
+	    		tController.setBackwardScreen(stage.getScene());/*send the name to the controller*/
+	    		tController.setErrorMessage(message);//send a the error to the alert we made
 	            stage.setTitle("Create question");
 	            stage.setScene(scene);  
 	            stage.show();
@@ -335,7 +359,6 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		}
 	}
 
-	
 	/*clear all the text fields and radio buttons*/
 	public void clearForm()
 	{
@@ -354,7 +377,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
    public void initialize(URL url, ResourceBundle rb) {
 	   if(pageLabel.getText().equals("Home screen"))
 		   userText.setText(userNameFromDB);
-	   if(pageLabel.getText().equals("Create question")||pageLabel.getText().equals("Update question")) {
+	   if(pageLabel.getText().equals("Create question")||pageLabel.getText().equals("Create exam")||pageLabel.getText().equals("Update question")) {
 			if(pageLabel.getText().equals("Create question"))
 				teacherNameOnCreate.setText(userNameFromDB);
 		connect(this); 
