@@ -105,8 +105,6 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	private TableColumn<QuestionInExam,Float> questionPointsTableView;
 	
 	@FXML
-	private ComboBox<String> subjectsComboBoxInCreate;
-	@FXML
 	private ComboBox<String> questionsComboBox;
 	@FXML
 	private ComboBox<String> subjectsComboBox;
@@ -142,7 +140,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		else {
 			question.setAnswers(answers);
 			question.setTrueAnswer(correctAnswer);
-			subject = subjectsComboBoxInCreate.getValue();
+			subject = subjectsComboBox.getValue();
 			connect(this); //connecting to server
 			messageToServer[0]="SetQuestion";
 			messageToServer[1]=subject;
@@ -166,6 +164,11 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		messageToServer[2]=null;
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
+
+	public void lockSubject(ActionEvent e) {
+		subjectsComboBox.setDisable(true);
+	}
+	
 
 	public void toQuestionInExam(ActionEvent e) {
 		if(pointsText.getText().equals("")) {
@@ -290,6 +293,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	        	  System.out.println("Error in opening the page");
 	          }		
 	}
+	
 	private void openScreen(String screen,String message) {
 		try{
 				FXMLLoader loader=new FXMLLoader();
