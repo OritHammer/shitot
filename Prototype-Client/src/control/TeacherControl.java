@@ -156,13 +156,12 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/*ask for the qustions text*/
-		
-		questionsComboBox.getSelectionModel().clearSelection();
-		questionsComboBox.getItems().clear();
-
 			subject = subjectsComboBox.getValue(); // get the subject code
-		if(subject.equals(null))
+		if(subject==null)
 			return;
+		questionsComboBox.getItems().clear();
+		questionsComboBox.getSelectionModel().clearSelection();
+
 		clearForm();
 		connect(this); //connecting to server
 		messageToServer[0]="getQuestions";
@@ -188,7 +187,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	public void askForQuestionDetails(ActionEvent e) throws IOException {
 		
 		selectedQuestion = questionsComboBox.getValue(); // get the selected question
-		if(selectedQuestion.equals(null))
+		if(selectedQuestion==null)
 			return;
 		
 		connect(this); // connecting to server
