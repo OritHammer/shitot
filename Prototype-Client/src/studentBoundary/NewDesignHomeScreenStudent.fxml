@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  
+
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -44,5 +44,10 @@
       <Button layoutX="120.0" layoutY="185.0" mnemonicParsing="false" onAction="#orderExamCopyPressed" text="Order exam copy" />
       <Button layoutX="108.0" layoutY="218.0" mnemonicParsing="false" onAction="#manualExamPressed" text="Execute manual exam" />
       <Button layoutX="96.0" layoutY="256.0" mnemonicParsing="false" onAction="#computrizeExamPressed" prefHeight="25.0" prefWidth="155.0" text="Execute computrize exam" />
+      <TextField fx:id="newMsgTextField" layoutX="40.0" layoutY="301.0" prefHeight="103.0" prefWidth="269.0" promptText="New Messages">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
    </children>
 </AnchorPane>
