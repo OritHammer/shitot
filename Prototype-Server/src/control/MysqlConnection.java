@@ -152,7 +152,7 @@ public class MysqlConnection {
 			ResultSet rs = stmt.executeQuery(
 					"SELECT question_id,Question_Text FROM questions" + " WHERE Question_id like " + "\"" + subject + "%\"" + ";");
 			while (rs.next()) {
-				questionList.add(rs.getString(1)+" "+rs.getString(2));
+				questionList.add(rs.getString(1)+"-"+rs.getString(2));
 			}
 			rs.close();
 		} catch (SQLException e) {

@@ -193,7 +193,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			return;
 		}
 		QuestionInExam questioninexam=new QuestionInExam();//creating new questioninexam
-		String[] questionDetails = questionsComboBox.getValue().split(" ");
+		String[] questionDetails = questionsComboBox.getValue().split("-");
 		questioninexam.setQuestionID(questionDetails[0]);
 		questioninexam.setPoints(Integer.parseInt(pointsText.getText()));
 		questionInExamObservable.add(questioninexam);
@@ -211,7 +211,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		selectedQuestion = questionsComboBox.getValue(); // get the selected question
 		if(selectedQuestion==null)
 			return;
-		String[] questionDetails = selectedQuestion.split(" ");
+		String[] questionDetails = selectedQuestion.split("-");
 		connect(this); // connecting to server
 		messageToServer[0]="getQuestionDetails";
 		messageToServer[1]=questionDetails[1];
@@ -257,7 +257,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		}
 		Exam exam = new Exam();//creating a new exam;
 	    Time time = null;
-		String courseID=questionsComboBox.getValue().substring(0, 2);//we want the course id 
+		String courseID=questionInExamObservable.get(0).getQuestionID().substring(0, 2);//we want the course id 
 		exam.setE_id(subjectsComboBox.getValue()+""+ courseID);//making the start of the id of the exam
 		ArrayList<QuestionInExam> questioninexam=(ArrayList<QuestionInExam>) questionInExamObservable.stream().collect(Collectors.toList());//making the observable a lis
 		exam.setRemarksForStudent(remarksForStudent.getText());
