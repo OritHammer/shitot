@@ -9,13 +9,17 @@ public class StudentPerformExam implements Serializable{
 	private String excecutedExamID = " ";
 	private String userName = " ";
 	private String isApproved = "0" ;
-	private String resonForChangeGrade = " "; 
+	private String reasonForChangeGrade = " "; 
 	
-	public StudentPerformExam(String dateDB,String timeDB, String finishedDB,String excecutedExamIDDB,String userNameDB,String isApprovedDB,String resonForChangeGradeDB) {
+	public StudentPerformExam(String dateDB,String timeDB, String finishedDB,String excecutedExamIDDB,String userNameDB,String isApprovedDB,String reasonForChangeGradeDB) {
 		super();
 		date = dateDB;
 		time = timeDB;
 		finished = finishedDB;
+		excecutedExamID = excecutedExamIDDB ; 
+		userName = userNameDB ; 
+		isApproved = isApprovedDB ; 
+		reasonForChangeGrade = reasonForChangeGradeDB ; 
 	}
 
 	public String getDate() {
@@ -67,11 +71,11 @@ public class StudentPerformExam implements Serializable{
 	}
 
 	public String getResonForChangeGrade() {
-		return resonForChangeGrade;
+		return reasonForChangeGrade;
 	}
 
 	public void setResonForChangeGrade(String resonForChangeGrade) {
-		this.resonForChangeGrade = resonForChangeGrade;
+		this.reasonForChangeGrade = resonForChangeGrade;
 	}
 	
 	

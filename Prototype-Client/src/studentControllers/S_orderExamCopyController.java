@@ -17,23 +17,18 @@ public class S_orderExamCopyController extends UserControl{
 	/********************* GUI Variable declaration *************************/
 	@FXML
 	private ComboBox<String> examCmb;
-	@FXML
-	private ComboBox<String> subjectCmb;
+
+
 	private Object[] messageToServer = new Object[3];
 	
 	/***************  Class Methods *******************************/
-	public void chooseSubjectPressed(ActionEvent e) {
-			messageToServer[0] = "getExamsCodesByStudentID_And_Subject";
-			messageToServer[1] = subjectCmb.getValue();
-			messageToServer[2] = null;
-			chat.handleMessageFromClientUI(messageToServer);// send the message to server
-		} 
+	
 	public void chooseExamPressed(ActionEvent e) {
 	
 	}
 	public void orderExamPressed(ActionEvent e) {
 		
-		messageToServer[0] = "getExamsCopyByStudentID_And_Subject";
+		messageToServer[0] = "getExamsCopyByUserName";
 		messageToServer[1] = examCmb.getValue();
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
