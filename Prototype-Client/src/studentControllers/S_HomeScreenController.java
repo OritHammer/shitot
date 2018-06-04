@@ -58,7 +58,7 @@ public class S_HomeScreenController extends UserControl implements Initializable
 		dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
 		authorLabel.setText("Student");
 	} 
-
+ 
 	public void logoutPressed(ActionEvent e) {
 		messageToServer[0] = "logoutProcess";
 		messageToServer[1] = Globals.getuserName();
