@@ -455,7 +455,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			}
 		connect(this); 
 		messageToServer[0]="getSubjects";
-		messageToServer[1]=null;
+		messageToServer[1]=Globals.getuserName();
 		messageToServer[2]=null;
 		chat.handleMessageFromClientUI(messageToServer);//send the message to server	   
 	}

@@ -113,7 +113,7 @@ public class MysqlConnection {
 			e.printStackTrace();
 		}
 	}
-	public ArrayList<TeachingProfessionals> getSubjectList() {
+	public ArrayList<TeachingProfessionals> getSubjectList(Object teacherUserName) {
 		/*
 		 * This function separate the subject id from the whole Question id for useful
 		 * query
@@ -124,8 +124,8 @@ public class MysqlConnection {
 			TeachingProfessionals teachingprofessions;
 			try {
 				stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery("SELECT * FROM teachingprofessionals;");// questions is the name on the
-																							// DB
+				ResultSet rs = stmt.executeQuery("SELECT tp.tp_ID,tp.name FROM teachingprofessionals tp,teacherincourse tc,courses c WHERE "
+						+ "tp.tp_ID=c.tp_ID AND c.courseID=tc.courseID AND tc.UserNameTeacher=\""+teacherUserName.toString()+"\";");
 				while (rs.next()) {
 					teachingprofessions = new TeachingProfessionals();
 					teachingprofessions.setTp_id(rs.getString(1));
