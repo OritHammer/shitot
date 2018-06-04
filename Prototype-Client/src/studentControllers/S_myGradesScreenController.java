@@ -36,10 +36,7 @@ public class S_myGradesScreenController extends UserControl {
 	/*************** Class Methods *******************************/
 	// both of those methods should be for all screens
 	public void choosingSubjectPressed(ActionEvent e) {
-		messageToServer[0] = "getExamsByStudentID_And_Subject";
-		messageToServer[1] = null;
-		messageToServer[2] = null;
-		chat.handleMessageFromClientUI(messageToServer);// send the message to server
+		
 	}
 
 	public void goToHomePressed(ActionEvent e) throws Exception {
@@ -56,6 +53,28 @@ public class S_myGradesScreenController extends UserControl {
 	}
 	public void setHomePScene(Scene home) {
 		homeSc = home; 
+	}
+	public void setGradesOnTable () {
+		messageToServer[0] = "getExamsByStudentID";
+		messageToServer[1] = null;
+		messageToServer[2] = null;
+		chat.handleMessageFromClientUI(messageToServer);// send the message to server
+	}
+	public void checkMessage(Object message) {
+		Object[] msgFromServer = (Object[])message ;
+		try {
+			switch((String)msgFromServer[0]) {
+			case "getExamsByStudentID":
+			{
+				
+			}
+			
+			}
+
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }

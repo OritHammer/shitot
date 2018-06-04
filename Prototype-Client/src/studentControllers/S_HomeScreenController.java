@@ -53,14 +53,14 @@ public class S_HomeScreenController extends UserControl implements Initializable
 	}
 
 	public void setStudentAuthor_Date_name() {
-		userNameLabel.setText(Globals.userName);
+		userNameLabel.setText(Globals.getuserName());
 		dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
 		authorLabel.setText("Student");
 	}
 
 	public void logoutPressed(ActionEvent e) {
 		messageToServer[0] = "logoutProcess";
-		messageToServer[1] = Globals.userName;
+		messageToServer[1] = Globals.getuserName();
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 	}

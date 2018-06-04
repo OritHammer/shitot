@@ -148,7 +148,7 @@ public class UserControl implements Initializable {
 									loader.setLocation(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
 									home_page_parent = loader.load();
 									S_HomeScreenController sController=loader.getController();
-									Globals.userName = user.getFullname() ;
+									Globals.setuserName(user.getUsername());
 									sController.setStudentAuthor_Date_name();/*send the name to the controller*/
 									home_page_scene = new Scene(home_page_parent);
 									//	sController.setHomePScene(home_page_scene);
@@ -214,7 +214,7 @@ public class UserControl implements Initializable {
 		 }
 	public void setUserText(String userNameFromDB) {/*set the user name text in the "hello user" text*/
 		this.userNameFromDB=userNameFromDB;
-		Globals.userName=userNameFromDB;
+		Globals.setuserName(userNameFromDB);
 		if(this instanceof DirectorControl) {
 			 userText1.setText(userNameFromDB);
 		return;
