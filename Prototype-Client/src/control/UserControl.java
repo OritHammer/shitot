@@ -174,6 +174,8 @@ public class UserControl implements Initializable {
 									FXMLLoader loader=new FXMLLoader();
 									loader.setLocation(getClass().getResource("/directorBoundary/HomeScreenDirector.fxml"));
 									home_page_parent = loader.load();
+									Globals.setFullName(user.getFullname());
+									Globals.setuserName(user.getUsername());
 									DirectorControl dController=loader.getController();
 									String userName=user.getFullname().toLowerCase();/*get the name of the user*/
 									dController.setUserText(userName);/*send the name to the controller*/
