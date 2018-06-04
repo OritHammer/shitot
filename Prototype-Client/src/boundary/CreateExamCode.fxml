@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="382.0" prefWidth="355.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="382.0" prefWidth="355.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
       <Button fx:id="createExamBTN" layoutX="113.0" layoutY="324.0" mnemonicParsing="false" onAction="#createExam" text="Create code exam" />
       <ComboBox fx:id="examComboBox" layoutX="27.0" layoutY="143.0" prefHeight="25.0" prefWidth="150.0" promptText="Choose question" />
