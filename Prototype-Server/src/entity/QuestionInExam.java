@@ -11,7 +11,6 @@ public class QuestionInExam implements Serializable {
 	private String questionID;
 	private int questionIndexInExam;
 	private float points;
-	private String name;
 	
 	public float getPoints() {
 		return points;
@@ -37,10 +36,5 @@ public class QuestionInExam implements Serializable {
 	public void setExamID(String examID) {
 		this.examID = examID;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+
 }

@@ -198,13 +198,15 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			return;
 		}
 		QuestionInExam questioninexam=new QuestionInExam();
-		questioninexam.setName(questionsComboBox.getValue());
+		String[] questionDetails = questionsComboBox.getValue().split(" ");
+		questioninexam.setQuestionID(questionDetails[0]);
 		questioninexam.setPoints(Integer.parseInt(pointsText.getText()));
 		questionInExamObservable.add(questioninexam);
 		questionsInExamTableView.setItems(null);
 		questionsInExamTableView.setItems(questionInExamObservable);
-		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("name"));
+		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));
 		questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));
+		pointsText.setText("");
 		//questionsInExamTableView.setRowFactory(value);
 	}
 	
@@ -240,21 +242,31 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	}
 
 	public void createExam(ActionEvent e) {
+		int sumOfPoints=0;
+		if(timeForExamHours.getText().equals("")||timeForExamMinute.getText().equals("")||Integer.valueOf(timeForExamHours.getText())<0) {
+			openScreen("ErrorMessage","Please fill time for exam");
+			return;
+		}
+		if(typeComboBox.getValue().equals(null)) {
+			openScreen("ErrorMessage","Please select the type of exam");
+			return;
+		}
+		for(QuestionInExam q:questionInExamObservable) {
+			sumOfPoints+=q.getPoints();
+		}
+		if(sumOfPoints!=100) {
+			openScreen("ErrorMessage","Points are not match to 100");
+			return;
+		}
 		Exam exam = new Exam();
+	    Time time = null;
 		String courseID=questionsComboBox.getValue().substring(0, 2);
 		exam.setE_id(subjectsComboBox.getValue()+""+ courseID);
 		ArrayList<QuestionInExam> questioninexam=(ArrayList<QuestionInExam>) questionInExamObservable.stream().collect(Collectors.toList());;
 		exam.setRemarksForStudent(remarksForStudent.getText());
 		exam.setRemarksForTeacher(remarksForTeacher.getText());
-	    DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
-	    Date date = null;
-		try {
-			date = (Date) sdf.parse(timeForExamHours.getText()+":"+timeForExamMinute.getText()+":00");
-		} catch (ParseException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-		exam.setSolutionTime(date.toString());
+		time =  time.valueOf(timeForExamHours.getText()+":"+timeForExamMinute.getText()+":00");
+		exam.setSolutionTime(time.toString());
 		exam.setType(typeComboBox.getValue());
 		messageToServer[0]="setExam";
 		messageToServer[1]=questioninexam;
@@ -426,7 +438,9 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	
    public void initialize(URL url, ResourceBundle rb) {
 	   if(pageLabel.getText().equals("Create exam")) {
-		   typeComboBox.setItems(FXCollections.observableArrayList("computerized" ,"uncomputerized"));
+		   typeComboBox.setItems(FXCollections.observableArrayList("computerized" ,"manual"));
+		   timeForExamHours.setText("00");
+		   timeForExamMinute.setText("00");
 	   }
 	   if(pageLabel.getText().equals("Home screen"))
 		   userText.setText(Globals.userName);

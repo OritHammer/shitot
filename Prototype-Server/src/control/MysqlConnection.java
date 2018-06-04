@@ -203,10 +203,12 @@ public class MysqlConnection {
 	}
 
 	public void createExam(Object questionInExams,Object examDetails) {
+		ArrayList<QuestionInExam> questionInExam=(ArrayList<QuestionInExam>)questionInExams;
 		Exam exam=(Exam)examDetails;
 		String fullExamNumber;
 		String examNumber=exam.getE_id();
 		int examNum;
+		int questionCounter=1;
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
@@ -220,9 +222,16 @@ public class MysqlConnection {
 			fullExamNumber =examNumber; 
 			fullExamNumber = fullExamNumber +""+  String.format("%02d", examNum);
 			stmt. executeUpdate(
-			"INSERT INTO shitot.questions VALUES(\""
+			"INSERT INTO shitot.exams VALUES(\""
 			+fullExamNumber.trim()+"\",\""+exam.getSolutionTime()+"\",\""
 			+exam.getRemarksForTeacher()+"\",\""+exam.getRemarksForStudent()+"\",\""+exam.getType()+"\");");
+			
+			for(QuestionInExam q:questionInExam) {
+				stmt. executeUpdate(
+						"INSERT INTO shitot.questioninexam VALUES(\""
+						+fullExamNumber.trim()+"\",\""+q.getQuestionID()+"\",\""
+						+(questionCounter++)+"\",\""+q.getPoints()+"\");");
+			}
 			
 			rs.close();
 		} catch (SQLException e) {

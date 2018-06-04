@@ -14,25 +14,26 @@
             <TableColumn fx:id="questionPointsTableView" prefWidth="96.0" text="Points" />
          </columns>
       </TableView>
-      <Button fx:id="createExamBTN" layoutX="340.0" layoutY="322.0" mnemonicParsing="false" onAction="#createExam" text="Create exam" />
+      <Button fx:id="createExamBTN" layoutX="299.0" layoutY="322.0" mnemonicParsing="false" onAction="#createExam" text="Create exam" />
       <Label layoutX="28.0" layoutY="120.0" text="Points" />
       <TextField fx:id="pointsText" layoutX="28.0" layoutY="138.0" />
       <Label layoutX="28.0" layoutY="218.0" text="Remarks for student" />
       <Label layoutX="28.0" layoutY="166.0" text="Remarks for teacher" />
       <TextField fx:id="remarksForStudent" layoutX="28.0" layoutY="238.0" prefHeight="25.0" prefWidth="317.0" />
       <TextField fx:id="remarksForTeacher" layoutX="28.0" layoutY="189.0" prefHeight="25.0" prefWidth="317.0" />
-      <Button layoutX="264.0" layoutY="322.0" mnemonicParsing="false" text="Remove" />
+      <Button layoutX="223.0" layoutY="322.0" mnemonicParsing="false" text="Remove" />
       <ComboBox fx:id="questionsComboBox" layoutX="27.0" layoutY="89.0" onAction="#lockSubject" prefHeight="25.0" prefWidth="433.0" promptText="Choose question" />
       <ComboBox fx:id="subjectsComboBox" layoutX="27.0" layoutY="51.0" onAction="#loadQuestions" prefWidth="150.0" promptText="choose subject" />
-      <Button layoutX="157.0" layoutY="322.0" mnemonicParsing="false" onAction="#toQuestionInExam" text="Add question" />
+      <Button layoutX="116.0" layoutY="322.0" mnemonicParsing="false" onAction="#toQuestionInExam" text="Add question" />
       <Label layoutX="28.0" layoutY="28.0" text="Questions" />
       <Label fx:id="pageLabel" layoutX="307.0" layoutY="14.0" text="Create exam" />
-      <Button layoutX="436.0" layoutY="322.0" mnemonicParsing="false" onAction="#toQuestionInExam" text="Add question" />
+      <Button layoutX="395.0" layoutY="322.0" mnemonicParsing="false" onAction="#toQuestionInExam" text="Add question" />
       <TextField fx:id="timeForExamHours" layoutX="28.0" layoutY="282.0" prefHeight="25.0" prefWidth="59.0" />
       <Label layoutX="28.0" layoutY="265.0" text="Time for exam" />
       <ComboBox fx:id="typeComboBox" layoutX="189.0" layoutY="139.0" prefWidth="150.0" />
       <Label layoutX="189.0" layoutY="120.0" text="Type" />
       <TextField fx:id="timeForExamMinute" layoutX="104.0" layoutY="282.0" prefHeight="25.0" prefWidth="59.0" />
       <Label layoutX="94.0" layoutY="285.0" text=":" />
+      <Button layoutX="498.0" layoutY="322.0" mnemonicParsing="false" onAction="#closeScreen" text="Back" />
    </children>
 </AnchorPane>
