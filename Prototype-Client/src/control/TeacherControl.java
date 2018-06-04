@@ -192,17 +192,16 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			openScreen("ErrorMessage","Please choose question");
 			return;
 		}
-		QuestionInExam questioninexam=new QuestionInExam();
+		QuestionInExam questioninexam=new QuestionInExam();//creating new questioninexam
 		String[] questionDetails = questionsComboBox.getValue().split(" ");
 		questioninexam.setQuestionID(questionDetails[0]);
 		questioninexam.setPoints(Integer.parseInt(pointsText.getText()));
 		questionInExamObservable.add(questioninexam);
-		questionsInExamTableView.setItems(null);
 		questionsInExamTableView.setItems(questionInExamObservable);
-		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));
-		questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));
-		pointsText.setText("");
-		questionsComboBox.getItems().remove(questionsComboBox.getValue());
+		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));//display the id in the table view
+		questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));//display the points in the table view
+		pointsText.setText("");//entering the question to the list and put text "" in the points component
+		questionsComboBox.getItems().remove(questionsComboBox.getValue());//removing the question from the combobox
 
 		//questionsInExamTableView.setRowFactory(value);
 	}
@@ -256,14 +255,14 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			openScreen("ErrorMessage","Points are not match to 100");
 			return;
 		}
-		Exam exam = new Exam();
+		Exam exam = new Exam();//creating a new exam;
 	    Time time = null;
-		String courseID=questionsComboBox.getValue().substring(0, 2);
-		exam.setE_id(subjectsComboBox.getValue()+""+ courseID);
-		ArrayList<QuestionInExam> questioninexam=(ArrayList<QuestionInExam>) questionInExamObservable.stream().collect(Collectors.toList());;
+		String courseID=questionsComboBox.getValue().substring(0, 2);//we want the course id 
+		exam.setE_id(subjectsComboBox.getValue()+""+ courseID);//making the start of the id of the exam
+		ArrayList<QuestionInExam> questioninexam=(ArrayList<QuestionInExam>) questionInExamObservable.stream().collect(Collectors.toList());//making the observable a lis
 		exam.setRemarksForStudent(remarksForStudent.getText());
 		exam.setRemarksForTeacher(remarksForTeacher.getText());
-		time =  time.valueOf(timeForExamHours.getText()+":"+timeForExamMinute.getText()+":00");
+		time =  time.valueOf(timeForExamHours.getText()+":"+timeForExamMinute.getText()+":00");//making a Time class format
 		exam.setSolutionTime(time.toString());
 		exam.setType(typeComboBox.getValue());
 		messageToServer[0]="setExam";
@@ -432,6 +431,12 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		correctAns2.setSelected(false);
 		correctAns3.setSelected(false);
 		correctAns4.setSelected(false);
+	}
+
+	public void removeFromTableView(ActionEvent e) {
+		ObservableList<QuestionInExam> questiontoremove=questionsInExamTableView.getSelectionModel().getSelectedItems();
+		questiontoremove.forEach(questionInExamObservable::remove);
+		//questionsComboBox.getItems().add(questiontoremove);//removing the question from the combobox
 	}
 	
    public void initialize(URL url, ResourceBundle rb) {
