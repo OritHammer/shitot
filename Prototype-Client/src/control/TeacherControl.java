@@ -121,10 +121,6 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	@FXML
 	private ComboBox<String> typeComboBox;
 	
-	public void kaka(ActionEvent e) {
-		System.out.println("kaki");
-	}
-	
 /*initialized the update Question window*/
 	public void createQuestionClick(ActionEvent e)throws IOException{
 		Question question=new Question();

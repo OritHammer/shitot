@@ -10,7 +10,7 @@
    <children>
       <TableView fx:id="questionsInExamTableView" editable="true" layoutX="484.0" layoutY="37.0" prefHeight="262.0" prefWidth="198.0">
          <columns>
-            <TableColumn fx:id="questionNameTableView" onEditStart="#kaka" prefWidth="103.0" text="Question name" />
+            <TableColumn fx:id="questionNameTableView" prefWidth="103.0" text="Question name" />
             <TableColumn fx:id="questionPointsTableView" prefWidth="96.0" text="Points" />
          </columns>
       </TableView>
