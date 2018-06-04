@@ -12,13 +12,13 @@ public class RequestForChangingTimeAllocated implements Serializable{
 	public RequestForChangingTimeAllocated() {
 		menagerApprove="waiting";
 	}
-	  
+	   
 	public String getRequestID() {
 		return RequestID;
 	}
 	public void setRequestID(String requestID) {
 		RequestID = requestID;
-	}
+	} 
 	public String getTeacherName() {
 		return teacherName;
 	}
