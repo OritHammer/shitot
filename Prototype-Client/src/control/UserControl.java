@@ -169,7 +169,7 @@ public class UserControl implements Initializable {
 								// TODO Auto-generated method stub
 								try {
 									FXMLLoader loader=new FXMLLoader();
-									loader.setLocation(getClass().getResource("/boundary/HomeScreenDirector.fxml"));
+									loader.setLocation(getClass().getResource("/directorBoundary/HomeScreenDirector.fxml"));
 									home_page_parent = loader.load();
 									DirectorControl dController=loader.getController();
 									String userName=user.getFullname().toLowerCase();/*get the name of the user*/

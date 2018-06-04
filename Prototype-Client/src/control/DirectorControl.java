@@ -15,6 +15,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -59,33 +61,43 @@ public class DirectorControl extends UserControl implements Initializable {
 	//FXML System information
 	
 	public void initialize(URL url, ResourceBundle rb) {
-		 if(pageLabel.getText().equals("Home screen"));
+		 if(pageLabel.getText().equals("Home screen"))
 			  userText1.setText(Globals.userName);
 	}
 	public void openAddingTimeRequest(ActionEvent e) {
+		((Node)e.getSource()).getScene().getWindow().hide(); //hiding homePage window
 		openScreen("addingTimeRequestDirector");
 	}
 	public void openStatisticReport(ActionEvent e) {
+		((Node)e.getSource()).getScene().getWindow().hide(); //hiding homePage window
 		openScreen("statisticReportDirector");
 	}
 	public void openSystemInformation(ActionEvent e) {
+		((Node)e.getSource()).getScene().getWindow().hide(); //hiding homePage window
 		openScreen("systemInformationDirector");
 	}
 	private void openScreen(String screen) {
 		try{
-				FXMLLoader loader=new FXMLLoader();
-				loader.setLocation(getClass().getResource("/directorBoundary/"+screen+".fxml"));
-	            Scene scene = new Scene(loader.load());
-	            Stage stage=Main.getStage();
-	            if(screen.equals("ErrorMessage")) {
+			Stage primaryStage = new Stage();
+			FXMLLoader loader = new FXMLLoader();
+			Pane root = loader.load(getClass().getResource("/directorBoundary/"+screen+".fxml").openStream());
+			
+
+			
+			Scene scene = new Scene(root);			
+			 if(screen.equals("ErrorMessage")) {
 	    			ErrorControl tController=loader.getController();
-	    			tController.setBackwardScreen(stage.getScene());/*send the name to the controller*/
-	    			tController.setErrorMessage("ERROR");//send a the error to the alert we made
+	    			tController.setBackwardScreen(primaryStage.getScene());// send the name to the controller
+	    			tController.setErrorMessage("ERROR"); //send a the error to the alert we made
 	            }
-	            stage.setTitle("Create question");
-	            stage.setScene(scene);  
-	            stage.show();
+	        primaryStage.setTitle(screen);
+	    //   primaryStage.getIcons().add(new Image("/Prototype-Client/Copywriting-Master-Class-Owl-200x175.png"));
+			primaryStage.setScene(scene);		
+			primaryStage.show();
+			
+	
 	          }catch(Exception exception) {
+	        	  exception.printStackTrace();
 	        	  System.out.println("Error in opening the page");
 	          }		
 	}
@@ -106,11 +118,10 @@ public class DirectorControl extends UserControl implements Initializable {
 	          }		
 	}
 	/*back button was pressed*/
-/*	public void backButtonPressed(ActionEvent e) throws IOException, SQLException {
+	public void backButtonPressed(ActionEvent e) throws IOException, SQLException {
 	    final Node source = (Node) e.getSource();
 	    Stage stage = (Stage) source.getScene().getWindow();
 	    stage.close();	
 	    openScreen("HomeScreenDirector");
 	}
-	*/
 }
