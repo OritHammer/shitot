@@ -61,7 +61,7 @@ public class S_HomeScreenController extends UserControl implements Initializable
 
 	public void logoutPressed(ActionEvent e) {
 		messageToServer[0] = "logoutProcess";
-		messageToServer[1] = Globals.getFullName();
+		messageToServer[1] = Globals.getuserName();
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 	}
