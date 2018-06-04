@@ -81,7 +81,7 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		case "setExam": {/*client request all all the questions under some subject*/
+		case "setExam": {/*client request is to create exam in DB*/
 			con.createExam(message[1],message[2]);
 			break;
 		}
@@ -112,8 +112,12 @@ public class EchoServer extends AbstractServer {
 		}
 		case "logoutProcess" :{
 			con.performLogout(message[1]);
+			break;
 		}
-			
+	/*	case "getExecutedExamCodeList" :{// for using on confirm request of adding time to exam
+			con.getRequestsList(message[1]);
+			break;
+		} */ 
 			default:{
 				System.out.println("Error on switch case ");
 			}
@@ -152,7 +156,7 @@ public class EchoServer extends AbstractServer {
 	 *            entered.
 	 */
 	public static void main(String[] args) {
-		int port = 0; // Port to listen on
+	 	int port = 0; // Port to listen on
 
 		try {
 			port = Integer.parseInt(args[0]); // Get port from command line

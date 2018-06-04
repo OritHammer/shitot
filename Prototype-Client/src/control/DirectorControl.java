@@ -60,7 +60,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	//FXML Statistic Reports
 	
 	
-	
+ 	 
 	//FXML System information
 /*********************************************************************homePageButtons**********************************************************/
 	public void initialize(URL url, ResourceBundle rb) {
@@ -135,18 +135,13 @@ public class DirectorControl extends UserControl implements Initializable {
 			chat.closeConnection();// close the connection
 
 			Object[] msg = (Object[]) message;
-			/*	msg[1]=new ArrayList<String>();
-				((ArrayList<String>)msg[1]).add("afdvdfv");
-				((ArrayList<String>)msg[1]).add("bhhgk");            */
+
 			switch (msg[0].toString()) {
 			case ("getTimeRequestCodeList"): { /* get the subjects list from server */
 				initExecutedExamList((ArrayList<String>) msg[1]);
 				break;
 			}
-			case ("bkjb"):{
-				
-				break;
-			}
+
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
