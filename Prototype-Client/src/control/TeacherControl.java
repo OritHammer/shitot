@@ -123,6 +123,10 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	/* initialized the update Question window */
 	public void createQuestionClick(ActionEvent e) throws IOException {
+		if(subjectsComboBox.getValue()==null) {
+			openScreen("ErrorMessage", "Please choose subject");
+			return;
+		}
 		Question question = new Question();
 		ArrayList<String> answers = new ArrayList<String>();
 		question.setTeacherName(Globals.getuserName());
@@ -316,7 +320,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		} catch (Exception e) {
 		}
 	}
-
+	
+	public void openExtendExamTimeScreen(ActionEvent e) {
+		openScreen("ExtendExamTime");
+	}
+	
 	public void openUpdateQuestionScreen(ActionEvent e) {
 		openScreen("UpdateQuestion");
 	}
@@ -361,7 +369,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			ErrorControl tController = loader.getController();
 			tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
 			tController.setErrorMessage(message);// send a the error to the alert we made
-			stage.setTitle("Create question");
+			stage.setTitle("Error message");
 			stage.setScene(scene);
 			stage.show();
 		} catch (Exception exception) {
@@ -457,8 +465,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 		if (pageLabel.getText().equals("Home screen"))
 			userText.setText(Globals.getFullName());
-		if (pageLabel.getText().equals("Create question") || pageLabel.getText().equals("Create exam")
-				|| pageLabel.getText().equals("Update question") ||  pageLabel.getText().equals("Create exam code")) {
+		if (pageLabel.getText().equals("Create question") 
+				||	pageLabel.getText().equals("Create exam")
+				||	pageLabel.getText().equals("Update question")
+				||  pageLabel.getText().equals("Create exam code")
+				||	pageLabel.getText().equals("Extend exam time")) {
 			if (pageLabel.getText().equals("Create question")) {
 				teacherNameOnCreate.setText(Globals.getuserName());
 			}
