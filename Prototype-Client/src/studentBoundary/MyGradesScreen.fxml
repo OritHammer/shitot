@@ -16,5 +16,6 @@
         </columns>
       </TableView>
       <Button fx:id="backToHomeBtn" layoutX="186.0" layoutY="426.0" mnemonicParsing="false" onAction="#goToHomePressed" prefHeight="25.0" prefWidth="150.0" text="Go back to home page" />
+      <Label fx:id="stam" layoutX="220.0" layoutY="117.0" onMouseClicked="#setT" prefHeight="17.0" prefWidth="62.0" text="enter" />
    </children>
 </AnchorPane>

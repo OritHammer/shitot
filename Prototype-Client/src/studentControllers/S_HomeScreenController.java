@@ -87,16 +87,16 @@ public class S_HomeScreenController extends UserControl implements Initializable
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
 		connectionFlag = true;
 	}
-
+// the problem is with the fact that we create a new scene each time and we need to prevent it in that way
 	private void openScreen(String screen) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/studentBoundary/" + screen + ".fxml"));
 			if(gradeSc == null) {
 				gradeSc = new Scene(root);
 			}
-			Scene scene2 = new Scene(root);
+			//Scene scene2 = new Scene(root);
 			Stage stage = Main.getStage();
-			stage.setScene(scene2);
+			stage.setScene(gradeSc);
 			stage.show();
 			// stage.setScene(scene);
 		} catch (Exception exception) {

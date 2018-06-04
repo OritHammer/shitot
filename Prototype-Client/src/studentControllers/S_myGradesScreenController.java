@@ -9,13 +9,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
   
 public class S_myGradesScreenController extends UserControl {
 	/********************* GUI Variable declaration *************************/
+	@FXML
+	private Label stam;
 	@FXML
 	private TableView<ExamCopy> cexamGradesTable;
 	@FXML
@@ -44,5 +48,8 @@ public class S_myGradesScreenController extends UserControl {
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.show();
+	}
+	public void setT(MouseEvent e) {
+		stam.setText("hello");
 	}
 }
