@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import entity.Course;
 import entity.Exam;
 import entity.Question;
 import entity.QuestionInExam;
@@ -139,7 +140,28 @@ public class MysqlConnection {
 		}
 		return (subjectList);
 	}
-
+	
+	public ArrayList<Course> getCourseList(Object subject) {
+		/*
+		 * The function return the question list by the given subject code
+		 */
+		// Statement stmt;
+		ArrayList<Course> courseList = new ArrayList<Course>();
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(
+					"SELECT courseID,name FROM courses" +
+			" WHERE tp_ID=\""+subject+"\";");
+			while (rs.next()) {
+				courseList.add(new Course(rs.getString(1),rs.getString(2)));
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return courseList;
+	}
+	
 	public ArrayList<String> getQuestionList(Object subject, Object teacherUserName) {
 		/*
 		 * The function return the question list by the given subject code

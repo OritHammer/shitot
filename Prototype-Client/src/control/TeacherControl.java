@@ -1,5 +1,5 @@
 package control;
- 
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -7,6 +7,8 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+
+import entity.Course;
 import entity.Exam;
 import entity.Question;
 import entity.QuestionInExam;
@@ -45,7 +47,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	private Text userText;
 	@FXML
 	private TextField teacherNameOnCreate;
-	
+
 	@FXML
 	private Label pageLabel;
 
@@ -120,6 +122,9 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private ComboBox<String> subjectsComboBox;
 	@FXML
+	private ComboBox<String> coursesComboBox;
+
+	@FXML
 	private ComboBox<String> typeComboBox;
 
 	/* check the content message from server */
@@ -133,6 +138,11 @@ public class TeacherControl extends UserControl implements Initializable {
 			case ("getSubjects"): /* get the subjects list from server */
 			{
 				showSubjects((ArrayList<TeachingProfessionals>) msg[1]);
+				break;
+			}
+			case ("getCourses"): /* get the courses list from server */
+			{
+				showCourses((ArrayList<Course>) msg[1]);
 				break;
 			}
 			case ("getQuestions"): /* get the questions list from server */
@@ -166,11 +176,9 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 		if (pageLabel.getText().equals("Home screen"))
 			userText.setText(Globals.getFullName());
-		if (pageLabel.getText().equals("Create question") 
-				||	pageLabel.getText().equals("Create exam")
-				||	pageLabel.getText().equals("Update question")
-				||  pageLabel.getText().equals("Create exam code")
-				||	pageLabel.getText().equals("Extend exam time")) {
+		if (pageLabel.getText().equals("Create question") || pageLabel.getText().equals("Create exam")
+				|| pageLabel.getText().equals("Update question") || pageLabel.getText().equals("Create exam code")
+				|| pageLabel.getText().equals("Extend exam time")) {
 			if (pageLabel.getText().equals("Create question")) {
 				teacherNameOnCreate.setText(Globals.getuserName());
 			}
@@ -181,12 +189,12 @@ public class TeacherControl extends UserControl implements Initializable {
 			chat.handleMessageFromClientUI(messageToServer);// send the message to server
 		}
 	}
-	
-	/*****************Opening screens action-events*****************/
+
+	/***************** Opening screens action-events *****************/
 	public void openExtendExamTimeScreen(ActionEvent e) {
 		openScreen("ExtendExamTime");
 	}
-	
+
 	public void openUpdateQuestionScreen(ActionEvent e) {
 		openScreen("UpdateQuestion");
 	}
@@ -203,7 +211,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		openScreen("CreateQuestion");
 	}
 
-	/*****************Create exam functions*****************/
+	/***************** Create exam functions *****************/
 	public void lockSubject(ActionEvent e) {
 		subjectsComboBox.setDisable(true);
 	}
@@ -232,7 +240,7 @@ public class TeacherControl extends UserControl implements Initializable {
 
 		// questionsInExamTableView.setRowFactory(value);
 	}
-	
+
 	public void removeFromTableView(ActionEvent e) {
 		ObservableList<QuestionInExam> questiontoremove = questionsInExamTableView.getSelectionModel()
 				.getSelectedItems();
@@ -240,7 +248,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		// questionsComboBox.getItems().add(questiontoremove);//removing the question
 		// from the combobox
 	}
-	
+
 	@SuppressWarnings("static-access")
 	public void createExam(ActionEvent e) {
 		int sumOfPoints = 0;
@@ -263,7 +271,8 @@ public class TeacherControl extends UserControl implements Initializable {
 		Exam exam = new Exam();// creating a new exam;
 		Time time = null;
 		String courseID = questionInExamObservable.get(0).getQuestionID().substring(0, 2);// we want the course id
-		exam.setE_id(subjectsComboBox.getValue() + "" + courseID);// making the start of the id of the exam
+		String []subjectSubString=subjectsComboBox.getValue().split("-");
+		exam.setE_id(subjectSubString[0].trim() + "" + courseID);// making the start of the id of the exam
 		ArrayList<QuestionInExam> questioninexam = (ArrayList<QuestionInExam>) questionInExamObservable.stream()
 				.collect(Collectors.toList());// making the observable a lis
 		exam.setRemarksForStudent(remarksForStudent.getText());
@@ -285,7 +294,8 @@ public class TeacherControl extends UserControl implements Initializable {
 			e1.printStackTrace();
 		} // close the connection
 	}
-	/*****************Update question screen function*****************/
+
+	/***************** Update question screen function *****************/
 	/* send to server request for update correct answer */
 	public void updateCorrectAnswer(ActionEvent e) throws IOException, SQLException {
 		if (trueAnsFlag) {// if there is permission to update the question
@@ -300,10 +310,11 @@ public class TeacherControl extends UserControl implements Initializable {
 			chat.closeConnection();
 		}
 	}
-	/*****************create question screen function*****************/
+
+	/***************** create question screen function *****************/
 	/* initialized the update Question window */
 	public void createQuestionClick(ActionEvent e) throws IOException {
-		if(subjectsComboBox.getValue()==null) {
+		if (subjectsComboBox.getValue() == null) {
 			openScreen("ErrorMessage", "Please choose subject");
 			return;
 		}
@@ -337,9 +348,10 @@ public class TeacherControl extends UserControl implements Initializable {
 			question.setAnswers(answers);
 			question.setTrueAnswer(correctAnswer);
 			subject = subjectsComboBox.getValue();
+			String[] subjectSubString = subject.split("-");
 			connect(this); // connecting to server
 			messageToServer[0] = "SetQuestion";
-			messageToServer[1] = subject;
+			messageToServer[1] = subjectSubString[0].trim();
 			messageToServer[2] = question;
 			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 			chat.closeConnection();// close the connection
@@ -347,18 +359,22 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	}
 
-	/*****************functions that all most of the screens uses*****************/
+	/*****************
+	 * functions that all most of the screens uses
+	 *****************/
+
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/* ask for the qustions text */
 		subject = subjectsComboBox.getValue(); // get the subject code
 		if (subject == null)
 			return;
+		String[] subjectSubString = subject.split("-");
 		questionsComboBox.getSelectionModel().clearSelection();
 		if (!pageLabel.getText().equals("Create exam"))
 			clearForm();
 		connect(this); // connecting to server
 		messageToServer[0] = "getQuestions";
-		messageToServer[1] = subject;
+		messageToServer[1] = subjectSubString[0].trim();
 		messageToServer[2] = Globals.getuserName();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
@@ -382,12 +398,16 @@ public class TeacherControl extends UserControl implements Initializable {
 	public void showSubjects(ArrayList<TeachingProfessionals> msg) {
 		ObservableList<String> observableList = FXCollections.observableArrayList();
 		for (TeachingProfessionals tp : msg) {
-			observableList.add(tp.getTp_id());
+			observableList.add(tp.getTp_id() + " - " + tp.getName());
 			subjectsComboBox.setItems(observableList);
 		}
 	}
 
+	/* this method show the Courses list on the combobox */
+	
 	/* this method show the questions list on the combobox */
+	
+	
 	public void showQuestions(ArrayList<String> questionsList) {
 		ObservableList<String> observableList = FXCollections.observableArrayList(questionsList);
 		questionsComboBox.setItems(observableList);
@@ -476,13 +496,34 @@ public class TeacherControl extends UserControl implements Initializable {
 		} catch (Exception e) {
 		}
 	}
-	
+
 	/* close button was pressed */
 	public void closeScreen(ActionEvent e) throws IOException, SQLException {
 		final Node source = (Node) e.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
 		openScreen("HomeScreenTeacher");
+	}
+
+	/***************** create Exam code screen function *****************/
+	public void loadCourses(ActionEvent e) throws IOException {
+		/* ask for the qustions text */
+		subject = subjectsComboBox.getValue(); // get the subject code
+		if (subject == null)
+			return;
+		String[] subjectSubString = subject.split("-");
+		
+		connect(this); // connecting to server
+		messageToServer[0] = "getCourses";
+		messageToServer[1] = subjectSubString[0].trim();
+		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
+	}
+	public void showCourses(ArrayList<Course> msg) {
+		ObservableList<String> observableList = FXCollections.observableArrayList();
+		for (Course c : msg) {
+			observableList.add(c.getCourseID() + " - " + c.getName());
+			coursesComboBox.setItems(observableList);
+		}
 	}
 
 }
