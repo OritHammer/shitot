@@ -107,7 +107,7 @@ public class MysqlConnection {
 			stmt = conn.createStatement();
 			stmt.executeUpdate("UPDATE users " + 
 				       "SET status=\"unconnected\" WHERE username=\""+userName.toString()+"\";");
-			System.out.println("user set as unconnected"); 
+			System.out.println("user set as unconnected");  
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
