@@ -109,7 +109,7 @@ public class EchoServer extends AbstractServer {
 		case "SetQuestion": {
 			con.createQuestion(message[1], message[2]);
 			break;
-		}
+		} 
 		case "logoutProcess" :{
 			con.performLogout(message[1]);
 			this.sendToAllClients(serverMessage);

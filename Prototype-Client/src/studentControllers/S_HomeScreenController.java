@@ -121,7 +121,7 @@ public class S_HomeScreenController extends UserControl implements Initializable
 			case "logoutProcess" : {
 				//need to think how to close this scene and go back to main scene ! 
 				break;
-			}
+			} 
 			}
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();

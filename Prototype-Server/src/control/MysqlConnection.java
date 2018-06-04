@@ -174,7 +174,7 @@ public class MysqlConnection {
 							+ "WHERE Question_Text=\"" + quest + "\";");
 			// The next commands get the returned details from DB and insert them to
 			// question object
-
+ 
 			rs.next();
 			// inserting the data to String List , order by the same order in DB
 			question = new Question();
