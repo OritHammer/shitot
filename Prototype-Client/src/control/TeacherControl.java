@@ -316,7 +316,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		} catch (Exception e) {
 		}
 	}
-
+	
+	public void openExtendExamTimeScreen(ActionEvent e) {
+		openScreen("ExtendExamTime");
+	}
+	
 	public void openUpdateQuestionScreen(ActionEvent e) {
 		openScreen("UpdateQuestion");
 	}
@@ -458,7 +462,8 @@ public class TeacherControl extends UserControl implements Initializable {
 		if (pageLabel.getText().equals("Home screen"))
 			userText.setText(Globals.getFullName());
 		if (pageLabel.getText().equals("Create question") || pageLabel.getText().equals("Create exam")
-				|| pageLabel.getText().equals("Update question") ||  pageLabel.getText().equals("Create exam code")) {
+				|| pageLabel.getText().equals("Update question") ||  pageLabel.getText().equals("Create exam code") ||
+				pageLabel.getText().equals("Extend exam time")) {
 			if (pageLabel.getText().equals("Create question")) {
 				teacherNameOnCreate.setText(Globals.getuserName());
 			}
