@@ -91,17 +91,24 @@ public class S_HomeScreenController extends UserControl implements Initializable
 	private void openScreen(String screen) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/studentBoundary/" + screen + ".fxml"));
+			FXMLLoader loader = new FXMLLoader(); 
 			if(gradeSc == null) {
 				gradeSc = new Scene(root);
 			}
+			S_myGradesScreenController myGradeC = loader.getController();
 			//Scene scene2 = new Scene(root);
 			Stage stage = Main.getStage();
+			//myGradeC.setHomePScene(homeSc);
 			stage.setScene(gradeSc);
 			stage.show();
 			// stage.setScene(scene);
 		} catch (Exception exception) {
+			exception.printStackTrace();
 			System.out.println("Error in opening the page");
 		}
+	}
+	public void setHomePScene(Scene home) {
+		homeSc = home; 
 	}
 
 	@SuppressWarnings("unchecked")

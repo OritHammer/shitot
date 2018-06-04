@@ -1,5 +1,6 @@
 package studentControllers;
 
+import control.Main;
 import control.UserControl;
 import entity.ExamCopy;//need to check if grades is based on exam copy or ex-exam
 
@@ -18,8 +19,7 @@ import javafx.stage.Stage;
   
 public class S_myGradesScreenController extends UserControl {
 	/********************* GUI Variable declaration *************************/
-	@FXML
-	private Label stam;
+	
 	@FXML
 	private TableView<ExamCopy> cexamGradesTable;
 	@FXML
@@ -30,6 +30,8 @@ public class S_myGradesScreenController extends UserControl {
 	private TableColumn<ExamCopy, Float> gradeColumn;
 
 	private Object[] messageToServer = new Object[3];
+	
+	private static Scene homeSc ; 
  
 	/*************** Class Methods *******************************/
 	// both of those methods should be for all screens
@@ -42,14 +44,18 @@ public class S_myGradesScreenController extends UserControl {
 
 	public void goToHomePressed(ActionEvent e) throws Exception {
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
-		Stage primaryStage = new Stage();
+		//Stage primaryStage = new Stage();
 		FXMLLoader loader = new FXMLLoader();
 		Pane root = loader.load(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml").openStream());
+		Stage MainStage = Main.getStage();
 		Scene scene = new Scene(root);
-		primaryStage.setScene(scene);
-		primaryStage.show();
+		MainStage.setScene(scene);
+		MainStage.show();
+		//primaryStage.setScene(scene);
+		//primaryStage.show();
 	}
-	public void setT(MouseEvent e) {
-		stam.setText("hello");
+	public void setHomePScene(Scene home) {
+		homeSc = home; 
 	}
+
 }

@@ -151,6 +151,7 @@ public class UserControl implements Initializable {
 									Globals.userName = user.getFullname() ;
 									sController.setStudentAuthor_Date_name();/*send the name to the controller*/
 									home_page_scene = new Scene(home_page_parent);
+									//	sController.setHomePScene(home_page_scene);
 									Main.getStage().setScene(home_page_scene);
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
