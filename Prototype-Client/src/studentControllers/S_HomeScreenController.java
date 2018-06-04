@@ -62,7 +62,7 @@ public class S_HomeScreenController extends UserControl implements Initializable
 	public void logoutPressed(ActionEvent e) {
 		messageToServer[0] = "logoutProcess";
 		messageToServer[1] = Globals.getuserName();
-		messageToServer[2] = null;
+		messageToServer[2] = null ;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 	}
 
@@ -116,7 +116,13 @@ public class S_HomeScreenController extends UserControl implements Initializable
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
 		try {
-
+			Object[] msgFromServer = (Object[])message ; 
+			switch(msgFromServer[0].toString()) {
+			case "logoutProcess" : {
+				//need to think how to close this scene and go back to main scene ! 
+				break;
+			} 
+			}
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}

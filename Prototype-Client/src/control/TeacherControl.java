@@ -1,5 +1,5 @@
 package control;
-
+ 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -123,7 +123,7 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	/* initialized the update Question window */
 	public void createQuestionClick(ActionEvent e) throws IOException {
-		if(subjectsComboBox.getValue().equals("")) {
+		if(subjectsComboBox.getValue()==null) {
 			openScreen("ErrorMessage", "Please choose subject");
 			return;
 		}
@@ -369,7 +369,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			ErrorControl tController = loader.getController();
 			tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
 			tController.setErrorMessage(message);// send a the error to the alert we made
-			stage.setTitle("Create question");
+			stage.setTitle("Error message");
 			stage.setScene(scene);
 			stage.show();
 		} catch (Exception exception) {
