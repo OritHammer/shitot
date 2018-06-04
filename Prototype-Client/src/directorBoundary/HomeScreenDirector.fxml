@@ -1,16 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.DirectorControl">
    <children>
-      <Label layoutX="53.0" layoutY="41.0" prefHeight="17.0" prefWidth="43.0" text="Hello" />
-      <Label fx:id="userText1" layoutX="111.0" layoutY="41.0" text="user" />
-      <Button fx:id="AddingTime" layoutX="196.0" layoutY="83.0" mnemonicParsing="false" onAction="#openAddingTimeRequest" prefHeight="25.0" prefWidth="209.0" text="Adding time request" />
-      <Button fx:id="StatisticReport" layoutX="196.0" layoutY="134.0" mnemonicParsing="false" onAction="#openStatisticReport" prefHeight="25.0" prefWidth="209.0" text="Statistic Report" />
-      <Button fx:id="SystemInformation"  layoutX="196.0" layoutY="200.0" mnemonicParsing="false" onAction="#openSystemInformation" prefHeight="25.0" prefWidth="209.0" text="System information" />
-      <Label fx:id="pageLabel" layoutX="272.0" layoutY="14.0" text="Home screen" />
+      <ImageView fitHeight="400.0" fitWidth="600.0" opacity="0.5">
+         <image>
+            <Image url="@../../colorful-bricks-1200309.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="53.0" layoutY="76.0" prefHeight="53.0" prefWidth="90.0" text="Hello">
+         <font>
+            <Font name="System Bold Italic" size="36.0" />
+         </font></Label>
+      <Label fx:id="userText1" layoutX="170.0" layoutY="88.0" prefHeight="30.0" prefWidth="79.0" text="user">
+         <font>
+            <Font name="System Bold Italic" size="20.0" />
+         </font></Label>
+      <Button fx:id="AddingTime" layoutX="355.0" layoutY="129.0" mnemonicParsing="false" onAction="#openAddingTimeRequest" prefHeight="25.0" prefWidth="209.0" text="Adding time request" />
+      <Button fx:id="StatisticReport" layoutX="355.0" layoutY="251.0" mnemonicParsing="false" onAction="#openStatisticReport" prefHeight="25.0" prefWidth="209.0" text="Statistic Report" />
+      <Button fx:id="SystemInformation" layoutX="355.0" layoutY="188.0" mnemonicParsing="false" onAction="#openSystemInformation" prefHeight="25.0" prefWidth="209.0" text="System information" />
+      <Label fx:id="pageLabel" layoutX="234.0" layoutY="14.0" prefHeight="16.0" prefWidth="108.0" text="Home screen">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font></Label>
+      <Label layoutX="53.0" layoutY="213.0" text="Date:">
+         <font>
+            <Font name="System Bold Italic" size="28.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="60.0" fitWidth="90.0" layoutX="189.0" layoutY="329.0">
+         <image>
+            <Image url="@../../Copywriting-Master-Class-Owl-200x175.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="162.0" layoutY="225.0" text="enter date" />
+      <Label layoutX="281.0" layoutY="331.0" text="logo...">
+         <font>
+            <Font size="38.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
