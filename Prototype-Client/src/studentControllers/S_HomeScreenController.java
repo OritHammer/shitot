@@ -33,7 +33,10 @@ public class S_HomeScreenController extends UserControl implements Initializable
 	private Label dateLabel;
 	@FXML
 	private TextField newMsgTextField;
-
+	
+	private static Scene homeSc = null ;
+	private static Scene gradeSc = null ;
+	
 	private Object[] messageToServer = new Object[3];
 	private static Boolean connectionFlag = false;
 	private Calendar currentCalendar = Calendar.getInstance();
@@ -88,6 +91,9 @@ public class S_HomeScreenController extends UserControl implements Initializable
 	private void openScreen(String screen) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/studentBoundary/" + screen + ".fxml"));
+			if(gradeSc == null) {
+				gradeSc = new Scene(root);
+			}
 			Scene scene2 = new Scene(root);
 			Stage stage = Main.getStage();
 			stage.setScene(scene2);
