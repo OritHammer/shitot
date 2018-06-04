@@ -32,7 +32,7 @@ public class S_orderExamCopyController extends UserControl{
 		messageToServer[1] = examCmb.getValue();
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
-	}
+	} 
 public void goToHomePressed(ActionEvent e) throws Exception {
 	((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
 	Stage primaryStage = new Stage();

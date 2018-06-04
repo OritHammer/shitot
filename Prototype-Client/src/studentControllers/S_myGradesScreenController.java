@@ -27,7 +27,7 @@ public class S_myGradesScreenController extends UserControl {
 	private TableColumn<ExamCopy, String> examCodeColumn;
 	@FXML
 	private TableColumn<ExamCopy, String> courseCodeColumn;
-	@FXML
+	@FXML 
 	private TableColumn<ExamCopy, Float> gradeColumn;
 
 	private Object[] messageToServer = new Object[3];

@@ -89,7 +89,7 @@ public class S_HomeScreenController extends UserControl implements Initializable
 	public void computrizeExamPressed(ActionEvent e) {
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
 		connectionFlag = true;
-	}
+	} 
 // the problem is with the fact that we create a new scene each time and we need to prevent it in that way
 	private void openScreen(String screen) {
 		try {
