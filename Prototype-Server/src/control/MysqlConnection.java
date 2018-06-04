@@ -252,4 +252,23 @@ public class MysqlConnection {
 		//stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
 		
 	}
+	/************************************************************director functions*********************************************************************************************/
+	public void getRequestsList(Object list) {// get list of executed exam code of exams that exist request to adding them time
+		list=new ArrayList<String>();
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("select * FROM shitot.requestforchangingtimeallocated where isApproved='waiting'");
+			//insert to table view
+		
+		
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
+		
+		
+		
+	}
 }
