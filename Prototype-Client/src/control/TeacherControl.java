@@ -2,16 +2,11 @@ package control;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-
 import entity.Exam;
 import entity.Question;
 import entity.QuestionInExam;
@@ -126,6 +121,10 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	@FXML
 	private ComboBox<String> typeComboBox;
 	
+	public void kaka(ActionEvent e) {
+		System.out.println("kaki");
+	}
+	
 /*initialized the update Question window*/
 	public void createQuestionClick(ActionEvent e)throws IOException{
 		Question question=new Question();
@@ -207,6 +206,8 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));
 		questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));
 		pointsText.setText("");
+		questionsComboBox.getItems().remove(questionsComboBox.getValue());
+
 		//questionsInExamTableView.setRowFactory(value);
 	}
 	
@@ -241,6 +242,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		questionsComboBox.setItems(observableList);
 	}
 
+	@SuppressWarnings("static-access")
 	public void createExam(ActionEvent e) {
 		int sumOfPoints=0;
 		if(timeForExamHours.getText().equals("")||timeForExamMinute.getText().equals("")||Integer.valueOf(timeForExamHours.getText())<0) {
@@ -455,6 +457,5 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		messageToServer[2]=null;
 		chat.handleMessageFromClientUI(messageToServer);//send the message to server	   
 	}
-   }
- 
+   } 
 }
