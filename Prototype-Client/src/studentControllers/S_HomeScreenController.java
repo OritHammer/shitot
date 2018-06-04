@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import control.Globals;
 import control.Main;
 import control.UserControl;
 import javafx.event.ActionEvent;
@@ -25,11 +26,11 @@ import javafx.stage.Stage;
 public class S_HomeScreenController extends UserControl implements Initializable {
 	/********************* GUI Variable declaration *************************/
 	@FXML
-	private  Label userNameLabel;
+	private Label userNameLabel;
 	@FXML
-	private  Label authorLabel;
+	private Label authorLabel;
 	@FXML
-	private  Label dateLabel;
+	private Label dateLabel;
 	@FXML
 	private TextField newMsgTextField;
 
@@ -38,55 +39,60 @@ public class S_HomeScreenController extends UserControl implements Initializable
 	private Calendar currentCalendar = Calendar.getInstance();
 	private Date currentTime = currentCalendar.getTime();
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
+
 	/*************** Class Methods *******************************/
 	public void initialize(URL url, ResourceBundle rb) {
 		// make sure that after the first time there be no more connections
-		setStudentAuthorAndDate();
 		if (!connectionFlag) {
-		connect(this);
+			// setStudentAuthor_Date_name(String name);
+			connect(this);
 		}
 	}
 
-	public void setStudentAuthorAndDate() {
+	public void setStudentAuthor_Date_name() {
+		userNameLabel.setText(Globals.userName);
 		dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
 		authorLabel.setText("Student");
 	}
 
 	public void logoutPressed(ActionEvent e) {
 		messageToServer[0] = "logoutProcess";
-		messageToServer[1] = null;
+		messageToServer[1] = Globals.userName;
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 	}
 
 	public void myGradesPressed(ActionEvent e) {
-		connectionFlag = true ;
+		connectionFlag = true;
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
 		openScreen("MyGradesScreen");
 	}
 
 	public void orderExamCopyPressed(ActionEvent e) {
-		connectionFlag = true ;
+		connectionFlag = true;
+		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
 		openScreen("OrderExamCopyScreen");
 	}
 
 	public void manualExamPressed(ActionEvent e) {
-		connectionFlag = true ;
+		connectionFlag = true;
+		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
 		openScreen("ManualExamScreen");
 	}
 
 	public void computrizeExamPressed(ActionEvent e) {
-		connectionFlag = true ;
+		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
+		connectionFlag = true;
 	}
 
 	private void openScreen(String screen) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/studentBoundary/" + screen + ".fxml"));
-			Scene scene = new Scene(root);
+			Scene scene2 = new Scene(root);
 			Stage stage = Main.getStage();
-			// stage.setTitle("Create question");
-			stage.setScene(scene);
+			stage.setScene(scene2);
 			stage.show();
+			// stage.setScene(scene);
 		} catch (Exception exception) {
 			System.out.println("Error in opening the page");
 		}
@@ -99,5 +105,6 @@ public class S_HomeScreenController extends UserControl implements Initializable
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
+
 	}
 }

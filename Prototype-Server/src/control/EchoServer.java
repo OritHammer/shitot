@@ -110,6 +110,9 @@ public class EchoServer extends AbstractServer {
 			con.createQuestion(message[1], message[2]);
 			break;
 		}
+		case "logoutProcess" :{
+			con.performLogout(message[1]);
+		}
 			
 			default:{
 				System.out.println("Error on switch case ");

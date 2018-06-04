@@ -103,7 +103,16 @@ public class MysqlConnection {
 		}
 
 	}
-
+	public void performLogout(Object userName) {
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("UPDATE users " + 
+				       "SET status=\"unconnected\" WHERE username=\""+userName+"\";");
+			System.out.println("user set as unconnected"); 
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	public ArrayList<TeachingProfessionals> getSubjectList() {
 		/*
 		 * This function separate the subject id from the whole Question id for useful
