@@ -63,8 +63,9 @@ public class S_myGradesScreenController extends UserControl {
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 	}
 	public void checkMessage(Object message) {
-		Object[] msgFromServer = (Object[])message ;
+		
 		try {
+			Object[] msgFromServer = (Object[])message ;
 			switch((String)msgFromServer[0]) {
 			case "getExamsByUserName":
 			{

@@ -112,6 +112,7 @@ public class EchoServer extends AbstractServer {
 		}
 		case "logoutProcess" :{
 			con.performLogout(message[1]);
+			this.sendToAllClients(serverMessage);
 			break;
 		}
 	/*	case "getExecutedExamCodeList" :{// for using on confirm request of adding time to exam
