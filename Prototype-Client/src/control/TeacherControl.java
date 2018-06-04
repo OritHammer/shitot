@@ -318,6 +318,10 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		openScreen("UpdateQuestion");
 	}
 	
+	public void openExamCodeScreen(ActionEvent e) {
+		openScreen("CreateExamCode");
+	}
+	
 	public void openCreateExam(ActionEvent e) {
 		openScreen("CreateExam");
 	}
