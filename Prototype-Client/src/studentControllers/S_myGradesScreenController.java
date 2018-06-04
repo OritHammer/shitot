@@ -1,5 +1,6 @@
 package studentControllers;
 
+import control.Globals;
 import control.Main;
 import control.UserControl;
 import entity.ExamCopy;//need to check if grades is based on exam copy or ex-exam
@@ -35,8 +36,8 @@ public class S_myGradesScreenController extends UserControl {
  
 	/*************** Class Methods *******************************/
 	// both of those methods should be for all screens
-	public void choosingSubjectPressed(ActionEvent e) {
-		
+	public void refreshTable(ActionEvent e) {
+		getGradesFromServer();
 	}
 
 	public void goToHomePressed(ActionEvent e) throws Exception {
@@ -54,9 +55,9 @@ public class S_myGradesScreenController extends UserControl {
 	public void setHomePScene(Scene home) {
 		homeSc = home; 
 	}
-	public void setGradesOnTable () {
-		messageToServer[0] = "getExamsByStudentID";
-		messageToServer[1] = null;
+	public void getGradesFromServer () {
+		messageToServer[0] = "getExamsByUserName";
+		messageToServer[1] = Globals.getuserName();
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 	}
@@ -64,7 +65,7 @@ public class S_myGradesScreenController extends UserControl {
 		Object[] msgFromServer = (Object[])message ;
 		try {
 			switch((String)msgFromServer[0]) {
-			case "getExamsByStudentID":
+			case "getExamsByUserName":
 			{
 				
 			}
@@ -74,7 +75,11 @@ public class S_myGradesScreenController extends UserControl {
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
-
 	}
+	
+	/**********************************************************HANDLEMESSAGE*********************************************/
 
+	public void showGradesOnTable() {
+		
+	}
 }

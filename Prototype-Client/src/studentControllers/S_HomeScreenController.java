@@ -42,6 +42,7 @@ public class S_HomeScreenController extends UserControl implements Initializable
 	private Calendar currentCalendar = Calendar.getInstance();
 	private Date currentTime = currentCalendar.getTime();
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
+	FXMLLoader loader = new FXMLLoader(); 
 
 	/*************** Class Methods *******************************/
 	public void initialize(URL url, ResourceBundle rb) {
@@ -68,6 +69,8 @@ public class S_HomeScreenController extends UserControl implements Initializable
 	public void myGradesPressed(ActionEvent e) {
 		connectionFlag = true;
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
+		S_myGradesScreenController myGradeC = loader.getController();
+		myGradeC.getGradesFromServer();
 		openScreen("MyGradesScreen");
 	}
 
@@ -91,7 +94,6 @@ public class S_HomeScreenController extends UserControl implements Initializable
 	private void openScreen(String screen) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/studentBoundary/" + screen + ".fxml"));
-			FXMLLoader loader = new FXMLLoader(); 
 			if(gradeSc == null) {
 				gradeSc = new Scene(root);
 			}
