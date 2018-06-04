@@ -123,6 +123,10 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	/* initialized the update Question window */
 	public void createQuestionClick(ActionEvent e) throws IOException {
+		if(subjectsComboBox.getValue().equals("")) {
+			openScreen("ErrorMessage", "Please choose subject");
+			return;
+		}
 		Question question = new Question();
 		ArrayList<String> answers = new ArrayList<String>();
 		question.setTeacherName(Globals.getuserName());
