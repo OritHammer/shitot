@@ -43,7 +43,7 @@ public class S_HomeScreenController extends UserControl implements Initializable
 	private Date currentTime = currentCalendar.getTime();
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
 	FXMLLoader loader = new FXMLLoader(); 
-
+  
 	/*************** Class Methods *******************************/
 	public void initialize(URL url, ResourceBundle rb) {
 		// make sure that after the first time there be no more connections
