@@ -28,7 +28,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -270,6 +269,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 	/*****************Update question screen function*****************/
 	/* send to server request for update correct answer */
+	
 	public void updateCorrectAnswer(ActionEvent e) throws IOException, SQLException {
 		if (trueAnsFlag) {// if there is permission to update the question
 			String qID = questionID.getText();
@@ -285,6 +285,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 	/*****************create question screen function*****************/
 	/* initialized the update Question window */
+	
 	public void createQuestionClick(ActionEvent e) throws IOException {
 		if(subjectsComboBox.getValue()==null) {
 			openScreen("ErrorMessage", "Please choose subject");
