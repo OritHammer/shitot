@@ -151,7 +151,8 @@ public class MysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
-					"SELECT question_id,Question_Text FROM questions,teacherincourse" + " WHERE Question_id like " + "\"" + subject + "%\" AND UserNameTeacher=\""+userName+"\";");
+					"SELECT question_id,Question_Text FROM questions,teacherincourse" +
+			" WHERE Question_id like " + "\"" + subject + "%\" AND UserNameTeacher=\""+userName+"\"And courseID like \""+subject+"%\";");
 			while (rs.next()) {
 				questionList.add(rs.getString(1)+"-"+rs.getString(2));
 			}
@@ -234,7 +235,8 @@ public class MysqlConnection {
 			stmt. executeUpdate(
 			"INSERT INTO shitot.exams VALUES(\""
 			+fullExamNumber.trim()+"\",\""+exam.getSolutionTime()+"\",\""
-			+exam.getRemarksForTeacher()+"\",\""+exam.getRemarksForStudent()+"\",\""+exam.getType()+"\");");
+			+exam.getRemarksForTeacher()+"\",\""+exam.getRemarksForStudent()+"\",\""+exam.getType()+"\",\""
+			+exam.getTeacherUserName()+"\");");
 			
 			for(QuestionInExam q:questionInExam) {
 				stmt. executeUpdate(

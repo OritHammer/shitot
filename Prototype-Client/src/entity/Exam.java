@@ -13,6 +13,8 @@ public class Exam implements Serializable{
 	private String remarksForTeacher;
 	private String remarksForStudent;
 	private String type;
+	private String teacherUserName;
+	
 	public String getType() {
 		return type;
 	}
@@ -42,5 +44,11 @@ public class Exam implements Serializable{
 	}
 	public void setE_id(String e_id) {
 		this.e_id = e_id;
+	}
+	public String getTeacherUserName() {
+		return teacherUserName;
+	}
+	public void setTeacherUserName(String teacherUserName) {
+		this.teacherUserName = teacherUserName;
 	}
 }
