@@ -20,5 +20,5 @@
       <Button fx:id="backButton" layoutX="399.0" layoutY="350.0" mnemonicParsing="false" onAction="#backButtonPressed" text="cancel" />
       <Button layoutX="130.0" layoutY="350.0" mnemonicParsing="false" text="Confirm Request" />
       <Button layoutX="266.0" layoutY="350.0" mnemonicParsing="false" text="Reject Request" />
-   </children>
+   </children> 
 </AnchorPane>

@@ -12,7 +12,7 @@ public class RequestForChangingTimeAllocated implements Serializable{
 	public RequestForChangingTimeAllocated() {
 		menagerApprove="waiting";
 	}
-	
+	 
 	public String getRequestID() {
 		return RequestID;
 	}

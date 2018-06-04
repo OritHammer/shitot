@@ -11,7 +11,7 @@ import java.io.*;
 public class ChatClient extends AbstractClient
 {
   //Instance variables **********************************************
-  
+   
   /**
    * The interface type variable.  It allows the implementation of 
    * the display method in the client.

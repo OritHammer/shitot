@@ -60,7 +60,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	//FXML Statistic Reports
 	
 	
-	
+ 	 
 	//FXML System information
 /*********************************************************************homePageButtons**********************************************************/
 	public void initialize(URL url, ResourceBundle rb) {
