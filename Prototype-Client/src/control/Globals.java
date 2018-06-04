@@ -1,5 +1,14 @@
 package control;
 
 public class Globals {
-public static String userName;
+	
+private static String userName;
+
+public static String getuserName(){
+	return(userName);
+}
+public static void setuserName(String userNameToChange) {
+	userName=userNameToChange;
+}
+
 }

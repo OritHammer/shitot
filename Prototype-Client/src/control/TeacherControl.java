@@ -125,7 +125,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 	public void createQuestionClick(ActionEvent e)throws IOException{
 		Question question=new Question();
 		ArrayList<String> answers=new ArrayList<String>();
-		question.setTeacherName(Globals.userName);
+		question.setTeacherName(Globals.getuserName());
 		question.setQuestionContent(questionName.getText().trim());
 		answers.add(createAnswer1.getText().trim());
 		answers.add(createAnswer2.getText().trim());
@@ -174,7 +174,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		connect(this); //connecting to server
 		messageToServer[0]="getQuestions";
 		messageToServer[1]=subject;
-		messageToServer[2]=null;
+		messageToServer[2]=Globals.getuserName();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 
@@ -446,11 +446,11 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		   timeForExamMinute.setText("00");
 	   }
 	   if(pageLabel.getText().equals("Home screen"))
-		   userText.setText(Globals.userName);
+		   userText.setText(Globals.getuserName());
 	   if(pageLabel.getText().equals("Create question")||pageLabel.getText().equals("Create exam")||pageLabel.getText().equals("Update question")) {
 			if(pageLabel.getText().equals("Create question"))
 			{
-				teacherNameOnCreate.setText(Globals.userName);
+				teacherNameOnCreate.setText(Globals.getuserName());
 			}
 		connect(this); 
 		messageToServer[0]="getSubjects";

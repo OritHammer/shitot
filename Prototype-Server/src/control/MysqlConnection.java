@@ -141,16 +141,17 @@ public class MysqlConnection {
 		return (subjectList);
 	}
 
-	public ArrayList<String> getQuestionList(Object subject) {
+	public ArrayList<String> getQuestionList(Object subject, Object teacherUserName) {
 		/*
 		 * The function return the question list by the given subject code
 		 */
 		// Statement stmt;
 		ArrayList<String> questionList = new ArrayList<String>();
+		String userName =(String)teacherUserName;
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
-					"SELECT question_id,Question_Text FROM questions" + " WHERE Question_id like " + "\"" + subject + "%\"" + ";");
+					"SELECT question_id,Question_Text FROM questions,teacherincourse" + " WHERE Question_id like " + "\"" + subject + "%\" AND UserNameTeacher=\""+userName+"\";");
 			while (rs.next()) {
 				questionList.add(rs.getString(1)+"-"+rs.getString(2));
 			}

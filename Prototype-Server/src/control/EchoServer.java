@@ -76,7 +76,7 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		case "getQuestions": {/*client request all all the questions under some subject*/
-			ArrayList<String> questionList = con.getQuestionList(message[1]);
+			ArrayList<String> questionList = con.getQuestionList(message[1],message[2]);
 			serverMessage[1] =questionList;
 			this.sendToAllClients(serverMessage);
 			break;
