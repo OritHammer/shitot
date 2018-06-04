@@ -69,7 +69,7 @@ public class EchoServer extends AbstractServer {
 		serverMessage[0] = message[0];
 		switch ((String)message[0]) {
 		case "getSubjects": { /* if the client request all the subject */
-			ArrayList<TeachingProfessionals> tp = con.getSubjectList();
+			ArrayList<TeachingProfessionals> tp = con.getSubjectList(message[1]);
 			serverMessage[1] =tp;
 			this.sendToAllClients(serverMessage);
 			System.out.println("arraylist to deliver");

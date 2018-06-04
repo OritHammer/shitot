@@ -262,6 +262,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		ArrayList<QuestionInExam> questioninexam=(ArrayList<QuestionInExam>) questionInExamObservable.stream().collect(Collectors.toList());//making the observable a lis
 		exam.setRemarksForStudent(remarksForStudent.getText());
 		exam.setRemarksForTeacher(remarksForTeacher.getText());
+		exam.setTeacherUserName(Globals.getuserName());
 		time =  time.valueOf(timeForExamHours.getText()+":"+timeForExamMinute.getText()+":00");//making a Time class format
 		exam.setSolutionTime(time.toString());
 		exam.setType(typeComboBox.getValue());
@@ -446,7 +447,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 		   timeForExamMinute.setText("00");
 	   }
 	   if(pageLabel.getText().equals("Home screen"))
-		   userText.setText(Globals.getuserName());
+		   userText.setText(Globals.getFullName());
 	   if(pageLabel.getText().equals("Create question")||pageLabel.getText().equals("Create exam")||pageLabel.getText().equals("Update question")) {
 			if(pageLabel.getText().equals("Create question"))
 			{
@@ -454,7 +455,7 @@ public class TeacherControl extends  UserControl implements Initializable  {
 			}
 		connect(this); 
 		messageToServer[0]="getSubjects";
-		messageToServer[1]=null;
+		messageToServer[1]=Globals.getuserName();
 		messageToServer[2]=null;
 		chat.handleMessageFromClientUI(messageToServer);//send the message to server	   
 	}

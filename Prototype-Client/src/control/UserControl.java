@@ -123,6 +123,8 @@ public class UserControl implements Initializable {
 									TeacherControl tController=loader.getController();
 									String userName=user.getFullname().toLowerCase();
 									tController.setUserText(userName);/*send the name to the controller*/
+									Globals.setFullName(user.getFullname());
+									Globals.setuserName(user.getUsername());
 									home_page_scene = new Scene(home_page_parent);
 									Main.getStage().setScene(home_page_scene);
 								} catch (IOException e) {
@@ -147,6 +149,7 @@ public class UserControl implements Initializable {
 									loader.setLocation(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
 									home_page_parent = loader.load();
 									S_HomeScreenController sController=loader.getController();
+									Globals.setFullName(user.getFullname());
 									Globals.setuserName(user.getUsername());
 									sController.setStudentAuthor_Date_name();/*send the name to the controller*/
 									home_page_scene = new Scene(home_page_parent);
@@ -171,6 +174,8 @@ public class UserControl implements Initializable {
 									FXMLLoader loader=new FXMLLoader();
 									loader.setLocation(getClass().getResource("/directorBoundary/HomeScreenDirector.fxml"));
 									home_page_parent = loader.load();
+									Globals.setFullName(user.getFullname());
+									Globals.setuserName(user.getUsername());
 									DirectorControl dController=loader.getController();
 									String userName=user.getFullname().toLowerCase();/*get the name of the user*/
 									dController.setUserText(userName);/*send the name to the controller*/
@@ -213,7 +218,7 @@ public class UserControl implements Initializable {
 		 }
 	public void setUserText(String userNameFromDB) {/*set the user name text in the "hello user" text*/
 		this.userNameFromDB=userNameFromDB;
-		Globals.setuserName(userNameFromDB);
+		Globals.setFullName(userNameFromDB);
 		if(this instanceof DirectorControl) {
 			 userText1.setText(userNameFromDB);
 		return;

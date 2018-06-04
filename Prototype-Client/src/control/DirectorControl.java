@@ -65,7 +65,7 @@ public class DirectorControl extends UserControl implements Initializable {
 /*********************************************************************homePageButtons**********************************************************/
 	public void initialize(URL url, ResourceBundle rb) {
 		 if(pageLabel.getText().equals("Home screen"))
-			  userText1.setText(Globals.getuserName());
+			  userText1.setText(Globals.getFullName());
 	}
 	public void openAddingTimeRequest(ActionEvent e) {
 		((Node)e.getSource()).getScene().getWindow().hide(); //hiding homePage window
