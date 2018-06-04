@@ -117,7 +117,6 @@ public class UserControl implements Initializable {
 							public void run() {
 								// TODO Auto-generated method stub
 								try {
-									
 									FXMLLoader loader=new FXMLLoader();
 									loader.setLocation(getClass().getResource("/boundary/HomeScreenTeacher.fxml"));
 									home_page_parent = loader.load();
