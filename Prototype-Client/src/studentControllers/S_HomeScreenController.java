@@ -43,7 +43,7 @@ public class S_HomeScreenController extends UserControl implements Initializable
 	private Date currentTime = currentCalendar.getTime();
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
 	FXMLLoader loader = new FXMLLoader(); 
-
+  
 	/*************** Class Methods *******************************/
 	public void initialize(URL url, ResourceBundle rb) {
 		// make sure that after the first time there be no more connections
@@ -57,11 +57,11 @@ public class S_HomeScreenController extends UserControl implements Initializable
 		userNameLabel.setText(Globals.getFullName());
 		dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
 		authorLabel.setText("Student");
-	}
+	} 
 
 	public void logoutPressed(ActionEvent e) {
 		messageToServer[0] = "logoutProcess";
-		messageToServer[1] = Globals.getFullName();
+		messageToServer[1] = Globals.getuserName();
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 	}
