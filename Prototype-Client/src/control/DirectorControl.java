@@ -262,9 +262,9 @@ public class DirectorControl extends UserControl implements Initializable {
 			con.setStatusToAddingTimeRequest(((Object[])msg)[1],"rejected");
 			break;
 		}
-	}
+	}*/
 /////////////////////////////put in mysqlConnection
-public void setStatusToAddingTimeRequest(Object RequestID,String newStatus) {
+/*public void setStatusToAddingTimeRequest(Object RequestID,String newStatus) {
 		try {
 		String reqID=(String)RequestID;
 		stmt = conn.createStatement();
@@ -272,5 +272,5 @@ public void setStatusToAddingTimeRequest(Object RequestID,String newStatus) {
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 }
