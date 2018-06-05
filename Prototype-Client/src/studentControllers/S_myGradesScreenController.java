@@ -84,7 +84,7 @@ public class S_myGradesScreenController extends UserControl {
 			e.printStackTrace();
 		}
 	}
-	
+	 
 	/**********************************************************HANDLEMESSAGE*********************************************/
  
 	public void showGradesOnTable(ArrayList<String[]> detailsFromS) {
