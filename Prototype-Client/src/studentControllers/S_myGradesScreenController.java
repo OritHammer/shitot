@@ -7,6 +7,8 @@ import control.Main;
 import control.UserControl;
 import entity.ExamCopy;//need to check if grades is based on exam copy or ex-exam
 import entity.StudentPerformExam;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,6 +35,7 @@ public class S_myGradesScreenController extends UserControl {
 	@FXML 
 	private TableColumn <ExamCopy, Float> dateColumn ;
 	
+	ObservableList<String[]> detailsList = FXCollections.observableArrayList();
 	private Object[] messageToServer = new Object[3];
 	
 	private static Scene homeSc ; 
@@ -82,11 +85,12 @@ public class S_myGradesScreenController extends UserControl {
 	}
 	
 	/**********************************************************HANDLEMESSAGE*********************************************/
-// maybe think of arraylist of strings and that it , taking from DB exam code ang grade , as a point ? 
+ 
 	public void showGradesOnTable(Object msg) {
-		ArrayList<StudentPerformExam> sExamPref = (ArrayList<StudentPerformExam>)msg;
-		String examCode = " ";
-		String courseCode = " ";
+		ArrayList<String[]> sExamPref = (ArrayList<String[]>)msg;
+		for(String[] i : sExamPref) {
+			
+		}
 		
 	}
 }
