@@ -190,21 +190,22 @@ public class DirectorControl extends UserControl implements Initializable {
 	 ***********************************************************/
 	
 	@SuppressWarnings("unchecked")
-	public void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList) {
-		for (RequestForChangingTimeAllocated i : requestsList) {
-			addingTimeRequestsObservable.add(i);
-			requestsTable.setItems(addingTimeRequestsObservable);
-			// display the id in the table view
-			examIDColumn.setCellValueFactory(new PropertyValueFactory<>("IDexecutedExam"));
-		
-			teacherNameColumn.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
-		
-			timeAddedColumn.setCellValueFactory(new PropertyValueFactory<>("timeAdded"));
-			requestsTable.getColumns().clear();
-			requestsTable.getColumns().addAll(examIDColumn,teacherNameColumn,timeAddedColumn);
-		}
+		 public void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList) {
+			  for (RequestForChangingTimeAllocated i : requestsList) {
+			   addingTimeRequestsObservable.add(i);
 
-		// questionsComboBox.getItems().remove(questionsComboBox.getValue());//removing
-		// from combobox
-	}
+			  }
+			 if(requestsTable.getColumns()!=null)
+			 requestsTable.getColumns().clear();
+			  requestsTable.setItems(addingTimeRequestsObservable);
+			  // display the id in the table view
+			     examIDColumn.setCellValueFactory(new PropertyValueFactory<>("IDexecutedExam"));
+			    
+			     teacherNameColumn.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
+			    
+			     timeAddedColumn.setCellValueFactory(new PropertyValueFactory<>("timeAdded"));
+			     //requestsTable.getColumns().clear();
+			     requestsTable.getColumns().addAll(examIDColumn,teacherNameColumn,timeAddedColumn);
+			
+			 }
 }
