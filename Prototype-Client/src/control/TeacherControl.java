@@ -37,7 +37,6 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	private Boolean trueAnsFlag = false;//
 	private String selectedQuestion;
-	private String subject;
 	private Object[] messageToServer = new Object[3];
 	ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
 
@@ -105,7 +104,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	private ComboBox<String> subjectsComboBox;
 	@FXML
 	private ComboBox<String> coursesComboBox;
-
+	@FXML
+	private ComboBox<String> examComboBox;
 	@FXML
 	private ComboBox<String> typeComboBox;
 
@@ -130,6 +130,11 @@ public class TeacherControl extends UserControl implements Initializable {
 			case ("getQuestions"): /* get the questions list from server */
 			{
 				showQuestions((ArrayList<String>) msg[1]);
+				break;
+			}
+			case ("getExams"): /* get the subjects list from server */
+			{
+				showExams((ArrayList<String>) msg[1]);
 				break;
 			}
 			case ("getQuestionDetails"): /* get the subject list from server */
@@ -331,7 +336,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		} else {
 			question.setAnswers(answers);
 			question.setTrueAnswer(correctAnswer);
-			subject = subjectsComboBox.getValue();
+			String subject = subjectsComboBox.getValue();
 			String[] subjectSubString = subject.split("-");
 			connect(this); // connecting to server
 			messageToServer[0] = "SetQuestion";
@@ -349,7 +354,7 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/* ask for the qustions text */
-		subject = subjectsComboBox.getValue(); // get the subject code
+		String subject = subjectsComboBox.getValue(); // get the subject code
 		if (subject == null)
 			return;
 		String[] subjectSubString = subject.split("-");
@@ -489,10 +494,10 @@ public class TeacherControl extends UserControl implements Initializable {
 		openScreen("HomeScreenTeacher");
 	}
 
-	/***************** create Exam code screen function *****************/
+	/***************** create Exam and extend extend time code screen function *****************/
 	public void loadCourses(ActionEvent e) throws IOException {
-		/* ask for the qustions text */
-		subject = subjectsComboBox.getValue(); // get the subject code
+		/* ask for the courses name */
+		String subject = subjectsComboBox.getValue(); // get the subject code
 		if (subject == null)
 			return;
 		String[] subjectSubString = subject.split("-");
@@ -500,14 +505,34 @@ public class TeacherControl extends UserControl implements Initializable {
 		connect(this); // connecting to server
 		messageToServer[0] = "getCourses";
 		messageToServer[1] = subjectSubString[0].trim();
+		messageToServer[2] = Globals.getuserName();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
+	
 	public void showCourses(ArrayList<Course> msg) {
 		ObservableList<String> observableList = FXCollections.observableArrayList();
 		for (Course c : msg) {
 			observableList.add(c.getCourseID() + " - " + c.getName());
-			coursesComboBox.setItems(observableList);
 		}
+		coursesComboBox.setItems(observableList);
 	}
-
+	
+	public void loadExams(ActionEvent e) throws IOException {
+		/* ask for the exams name */
+		String examIDStart;
+		String []subjectSubString = subjectsComboBox.getValue().split("-");
+		String []examSubString = coursesComboBox.getValue().split("-");
+		examIDStart=subjectSubString[0].trim()+""+examSubString[0].trim();
+		if (examIDStart.equals(""))
+			return;		
+		connect(this); // connecting to server
+		messageToServer[0] = "getExams";
+		messageToServer[1] = examIDStart;
+		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
+	}
+	
+	private void showExams(ArrayList<String> examList) {
+		ObservableList<String> observableList = FXCollections.observableArrayList(examList);
+		examComboBox.setItems(observableList);
+	}
 }

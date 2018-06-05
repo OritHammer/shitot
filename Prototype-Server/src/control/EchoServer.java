@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import entity.Course;
+import entity.Exam;
 import entity.Question;
 import entity.TeachingProfessionals;
 import entity.User;
@@ -78,12 +79,17 @@ public class EchoServer extends AbstractServer {
 		}
 		
 		case "getCourses": {/*client request all all the courses under some subject*/
-			ArrayList<Course> courseList = con.getCourseList(message[1]);
+			ArrayList<Course> courseList = con.getCourseList(message[1],message[2]);
 			serverMessage[1] =courseList;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		
+		case "getExams": {/*client request all all the courses under some subject*/
+			ArrayList<String> examsList = con.getExams(message[1]);
+			serverMessage[1] =examsList;
+			this.sendToAllClients(serverMessage);
+			break;
+		}
 		case "getQuestions": {/*client request all all the questions under some subject*/
 			ArrayList<String> questionList = con.getQuestionList(message[1],message[2]);
 			serverMessage[1] =questionList;

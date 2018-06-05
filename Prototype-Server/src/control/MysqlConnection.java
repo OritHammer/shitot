@@ -141,17 +141,18 @@ public class MysqlConnection {
 		return (subjectList);
 	}
 	
-	public ArrayList<Course> getCourseList(Object subject) {
+	public ArrayList<Course> getCourseList(Object subject, Object teacherUserName) {
 		/*
-		 * The function return the question list by the given subject code
+		 * The function return the course list by the given subject code
 		 */
 		// Statement stmt;
 		ArrayList<Course> courseList = new ArrayList<Course>();
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
-					"SELECT courseID,name FROM courses" +
-			" WHERE tp_ID=\""+subject+"\";");
+							"SELECT c.courseID,c.name FROM courses c,teacherincourse tc" +
+							" WHERE tp_ID=\""+subject+"\" AND tc.courseID=c.courseID AND tc.UserNameTeacher=\""
+							+teacherUserName.toString()+"\";");
 			while (rs.next()) {
 				courseList.add(new Course(rs.getString(1),rs.getString(2)));
 			}
@@ -291,5 +292,22 @@ public class MysqlConnection {
 		
 		
 		
+	}
+
+	
+	public ArrayList<String> getExams(Object examIDStart) {
+		ArrayList<String> examList = new ArrayList<String>();
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(
+							"SELECT e_id FROM exams WHERE e_id like \""+examIDStart+"%\";");
+			while (rs.next()) {
+				examList.add(rs.getString(1));
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return examList;	
 	}
 }
