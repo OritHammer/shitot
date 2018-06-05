@@ -150,6 +150,9 @@ public class EchoServer extends AbstractServer {
 			serverMessage[1]=request;
 			this.sendToAllClients(serverMessage);
 			break;
+		}   
+		case  "getExamsByUserName" : {
+			ArrayList<String[]> examsPrefDetails = con.getPrefExamDetails((String)message[1]);
 		}
 		
 	/*	case "getExecutedExamCodeList" :{// for using on confirm request of adding time to exam

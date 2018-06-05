@@ -29,8 +29,10 @@ public class S_myGradesScreenController extends UserControl {
 	@FXML
 	private TableColumn<ExamCopy, String> courseCodeColumn;
 	@FXML 
-	private TableColumn<ExamCopy, Float> gradeColumn;
-
+	private TableColumn <ExamCopy, Float> gradeColumn;
+	@FXML 
+	private TableColumn <ExamCopy, Float> dateColumn ;
+	
 	private Object[] messageToServer = new Object[3];
 	
 	private static Scene homeSc ; 
@@ -64,7 +66,7 @@ public class S_myGradesScreenController extends UserControl {
 	}
 	public void checkMessage(Object message) {
 		
-		try {
+		try { 
 			Object[] msgFromServer = (Object[])message ;
 			switch((String)msgFromServer[0]) {
 			case "getExamsByUserName":
