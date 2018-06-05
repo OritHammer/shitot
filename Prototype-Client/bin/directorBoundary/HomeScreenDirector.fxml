@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
- 
+
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.DirectorControl">
    <children>
       <ImageView fitHeight="400.0" fitWidth="600.0" opacity="0.5">
@@ -21,7 +21,7 @@
          <font>
             <Font name="System Bold Italic" size="20.0" />
          </font></Label>
-      <Button fx:id="AddingTime" layoutX="355.0" layoutY="129.0" mnemonicParsing="false" onAction="#openAddingTimeRequest" prefHeight="25.0" prefWidth="209.0" text="Adding time request" />
+      <Button fx:id="AddingTime" layoutX="355.0" layoutY="129.0" mnemonicParsing="false" onAction="#openTimeRequestTable" prefHeight="25.0" prefWidth="209.0" text="Adding time request" />
       <Button fx:id="StatisticReport" layoutX="355.0" layoutY="251.0" mnemonicParsing="false" onAction="#openStatisticReport" prefHeight="25.0" prefWidth="209.0" text="Statistic Report" />
       <Button fx:id="SystemInformation" layoutX="355.0" layoutY="188.0" mnemonicParsing="false" onAction="#openSystemInformation" prefHeight="25.0" prefWidth="209.0" text="System information" />
       <Label fx:id="pageLabel" layoutX="234.0" layoutY="14.0" prefHeight="16.0" prefWidth="108.0" text="Home screen">

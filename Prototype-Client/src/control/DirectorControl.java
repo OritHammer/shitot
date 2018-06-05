@@ -140,13 +140,13 @@ public class DirectorControl extends UserControl implements Initializable {
 	private void openScreen(String screen, String message) {// for error message
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/directorBoundary/" + screen + ".fxml"));
+			loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));
 			Scene scene = new Scene(loader.load());
 			Stage stage = Main.getStage();
 			ErrorControl tController = loader.getController();
 			tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
 			tController.setErrorMessage(message);// send a the error to the alert we made
-			stage.setTitle("Create question");
+			stage.setTitle("ErrorMessage");
 			stage.setScene(scene);
 			stage.show();
 		} catch (Exception exception) {
