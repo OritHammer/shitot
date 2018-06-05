@@ -4,7 +4,7 @@ public class Globals {
 	
 private static String userName;
 private static String fullName;
-
+private static String requestId;
 public static String getuserName(){
 	return(userName);
 }
@@ -17,5 +17,10 @@ public static String getFullName() {
 public static void setFullName(String fullNameToChange) {
 	fullName = fullNameToChange;
 }
-
+public static void setRequestId(String id) {
+	requestId=id;
+}
+public static String getRequestId() {
+return requestId;
+}
 }

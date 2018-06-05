@@ -50,7 +50,9 @@ public class DirectorControl extends UserControl implements Initializable {
 	@FXML
 	private ComboBox<String> cmbATRChooseExecutedExam;
 	@FXML
-	private TextField txtFATRCourseName;
+	private TextField txtFATRrequestId;
+	@FXML
+	private TextField txtFATRexecutedExamId;
 	@FXML
 	private TextField txtFATRTeachName;
 	@FXML
@@ -86,10 +88,15 @@ public class DirectorControl extends UserControl implements Initializable {
 			messageToServer[1] = null;
 			messageToServer[2] = null;
 			chat.handleMessageFromClientUI(messageToServer);// send the message to server
-
+		}
+		else if (pageLabel.getText().contentEquals("Adding time requests")){
+			connect(this);
+			messageToServer[0] = "getTimeRequestDetails";
+			messageToServer[1] = Globals.getRequestId();
+			messageToServer[2] = null;
+			chat.handleMessageFromClientUI(messageToServer);// send the message to server
 		}
 	}
-
 	public void openTimeRequestTable(ActionEvent e) {
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding homePage window
 		openScreen("TimeRequestTable");
@@ -175,7 +182,11 @@ public class DirectorControl extends UserControl implements Initializable {
 				initAddingTimeRequests((ArrayList<RequestForChangingTimeAllocated>) msg[1]);
 				break;
 			}
-
+			case ("getTimeRequestDetails"): { /* get the subjects list from server */
+				initAddingTimeRequestDetails((RequestForChangingTimeAllocated) msg[1]);
+				break;
+			}
+		
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -188,7 +199,13 @@ public class DirectorControl extends UserControl implements Initializable {
 	/*******************************************************
 	       listeners on addingTimeRequestDirector
 	 ***********************************************************/
-	
+	public void showDetailsButtonPressed(ActionEvent e) throws IOException, SQLException {
+		Globals.setRequestId(requestsTable.getSelectionModel().getSelectedItems().get(0).getRequestID());;
+		final Node source = (Node) e.getSource();
+		Stage stage = (Stage) source.getScene().getWindow();
+		stage.close();
+		openScreen("addingTimeRequestDirector");
+	}
 	@SuppressWarnings("unchecked")
 		 public void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList) {
 			  for (RequestForChangingTimeAllocated i : requestsList) {
@@ -208,4 +225,12 @@ public class DirectorControl extends UserControl implements Initializable {
 			     requestsTable.getColumns().addAll(examIDColumn,teacherNameColumn,timeAddedColumn);
 			
 			 }
+	public void initAddingTimeRequestDetails(RequestForChangingTimeAllocated request) {
+		txtFATRTeachName.setText(request.getTeacherName());
+		txtFATRTimeAdded.setText(request.getTimeAdded());
+		txtFATRreasonAddingTime.setText(request.getReason());
+		txtFATRrequestId.setText(request.getRequestID());
+		txtFATRexecutedExamId.setText(request.getIDexecutedExam());
+	
+	}
 }
