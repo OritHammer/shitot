@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="485.0" prefWidth="414.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="studentControllers.S_HomeScreenController">
+   <children>
+      <Label layoutX="26.0" layoutY="23.0" prefHeight="34.0" prefWidth="63.0" text="Hello :">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="userNameLabel" layoutX="19.0" layoutY="57.0" prefHeight="26.0" prefWidth="118.0" text="user name" underline="true">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="194.0" layoutY="27.0" prefHeight="27.0" prefWidth="155.0" text="My authorization:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="26.0" layoutY="431.0" prefHeight="27.0" prefWidth="52.0" text="Date :">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="authorLabel" layoutX="215.0" layoutY="57.0" prefHeight="26.0" prefWidth="95.0" text="author">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="dateLabel" layoutX="96.0" layoutY="436.0" prefHeight="17.0" prefWidth="138.0" text="DateField">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Button fx:id="logOutBtn" layoutX="258.0" layoutY="437.0" mnemonicParsing="false" onAction="#logoutPressed" text="Logout" />
+      <Button layoutX="138.0" layoutY="153.0" mnemonicParsing="false" onAction="#myGradesPressed" text="My grades" />
+      <Button layoutX="120.0" layoutY="185.0" mnemonicParsing="false" onAction="#orderExamCopyPressed" text="Order exam copy" />
+      <Button layoutX="108.0" layoutY="218.0" mnemonicParsing="false" onAction="#manualExamPressed" text="Execute manual exam" />
+      <Button layoutX="96.0" layoutY="256.0" mnemonicParsing="false" onAction="#computrizeExamPressed" prefHeight="25.0" prefWidth="155.0" text="Execute computrize exam" />
+      <TextField fx:id="newMsgTextField" layoutX="40.0" layoutY="301.0" prefHeight="103.0" prefWidth="269.0" promptText="New Messages">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+   </children>
+</AnchorPane>

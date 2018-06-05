@@ -45,17 +45,17 @@ public class DirectorControl extends UserControl implements Initializable {
 	private Button SystemInformation;
 	@FXML
 	private Button backButton;
-	
-	//FAML Adding Time Requests TAB
-	@FXML 
+
+	// FAML Adding Time Requests TAB
+	@FXML
 	private ComboBox<String> cmbATRChooseExecutedExam;
-	@FXML 
+	@FXML
 	private TextField txtFATRCourseName;
-	@FXML 
+	@FXML
 	private TextField txtFATRTeachName;
-	@FXML 
+	@FXML
 	private TextField txtFATRTimeAdded;
-	@FXML 
+	@FXML
 	private TextField txtFATRreasonAddingTime;
 	@FXML
 	private Button btnATRApprove;
@@ -71,85 +71,98 @@ public class DirectorControl extends UserControl implements Initializable {
 	private TableColumn<RequestForChangingTimeAllocated, String> timeAddedColumn;
 	@FXML
 	private Button showDetailsButton;
-	//FXML Statistic Reports
-	
-	
- 	 
-	//FXML System information
-/*********************************************************************homePageButtons**********************************************************/
+	// FXML Statistic Reports
+
+	// FXML System information
+	/******************************************************************
+	 * homePageButtons
+	 **********************************************************/
 	public void initialize(URL url, ResourceBundle rb) {
-		 if(pageLabel.getText().equals("Home screen"))
-			  userText1.setText(Globals.getFullName());
-		 else if(pageLabel.getText().contentEquals("requests"))
-		 {
-			 	
-		 }
+		if (pageLabel.getText().equals("Home screen"))
+			userText1.setText(Globals.getFullName());
+		else if (pageLabel.getText().contentEquals("requests")) {
+
+		}
 	}
-	public void openAddingTimeRequest(ActionEvent e) {
-		((Node)e.getSource()).getScene().getWindow().hide(); //hiding homePage window
-		openScreen("addingTimeTable");
+
+	public void openTimeRequestTable(ActionEvent e) {
+		((Node) e.getSource()).getScene().getWindow().hide(); // hiding homePage window
+		openScreen("TimeRequestTable");
 		connect(this);
-		messageToServer[0] = "getTimeRequestCodeList";
+		messageToServer[0] = "getTimeRequestList";
 		messageToServer[1] = null;
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
-	
+
 	}
+
 	public void openStatisticReport(ActionEvent e) {
-		((Node)e.getSource()).getScene().getWindow().hide(); //hiding homePage window
+		((Node) e.getSource()).getScene().getWindow().hide(); // hiding homePage window
 		openScreen("statisticReportDirector");
 	}
+
 	public void openSystemInformation(ActionEvent e) {
-		((Node)e.getSource()).getScene().getWindow().hide(); //hiding homePage window
+		((Node) e.getSource()).getScene().getWindow().hide(); // hiding homePage window
 		openScreen("systemInformationDirector");
 	}
-	private void openScreen(String screen) {//open the windows after login
-		try{
+
+	private void openScreen(String screen) {// open the windows after login
+		try {
 			Stage primaryStage = new Stage();
 			FXMLLoader loader = new FXMLLoader();
-			Pane root = loader.load(getClass().getResource("/directorBoundary/"+screen+".fxml").openStream());///////////*נצטרך לשנות לבונדרי רגיל או להתאים לארור מסג'*/////////////
-			
-			Scene scene = new Scene(root);			
-			 if(screen.equals("ErrorMessage")) {
-	    			ErrorControl tController=loader.getController();
-	    			tController.setBackwardScreen(primaryStage.getScene());// send the name to the controller
-	    			tController.setErrorMessage("ERROR"); //send a the error to the alert we made
-	            }
-	        primaryStage.setTitle(screen);
-	   //     primaryStage.getIcons().add(new Image("/Prototype-Client/Copywriting-Master-Class-Owl-200x175.png"));
-			primaryStage.setScene(scene);		
+			Pane root = loader.load(getClass().getResource("/directorBoundary/" + screen + ".fxml").openStream());/////////// *נצטרך
+																													/////////// לשנות
+																													/////////// לבונדרי
+																													/////////// רגיל
+																													/////////// או
+																													/////////// להתאים
+																													/////////// לארור
+																													/////////// מסג'*/////////////
+
+			Scene scene = new Scene(root);
+			if (screen.equals("ErrorMessage")) {
+				ErrorControl tController = loader.getController();
+				tController.setBackwardScreen(primaryStage.getScene());// send the name to the controller
+				tController.setErrorMessage("ERROR"); // send a the error to the alert we made
+			}
+			primaryStage.setTitle(screen);
+			// primaryStage.getIcons().add(new
+			// Image("/Prototype-Client/Copywriting-Master-Class-Owl-200x175.png"));
+			primaryStage.setScene(scene);
 			primaryStage.show();
-			
-	
-	          }catch(Exception exception) {
-	        	  exception.printStackTrace();
-	        	  System.out.println("Error in opening the page");
-	          }		
+
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			System.out.println("Error in opening the page");
+		}
 	}
-	private void openScreen(String screen,String message) {// for error message
-		try{
-				FXMLLoader loader=new FXMLLoader();
-				loader.setLocation(getClass().getResource("/directorBoundary/"+screen+".fxml"));
-	            Scene scene = new Scene(loader.load());
-	            Stage stage=Main.getStage();
-	    		ErrorControl tController=loader.getController();
-	    		tController.setBackwardScreen(stage.getScene());/*send the name to the controller*/
-	    		tController.setErrorMessage(message);//send a the error to the alert we made
-	            stage.setTitle("Create question");
-	            stage.setScene(scene);  
-	            stage.show();
-	          }catch(Exception exception) {
-	        	  System.out.println("Error in opening the page");
-	          }		
+
+	private void openScreen(String screen, String message) {// for error message
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/directorBoundary/" + screen + ".fxml"));
+			Scene scene = new Scene(loader.load());
+			Stage stage = Main.getStage();
+			ErrorControl tController = loader.getController();
+			tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
+			tController.setErrorMessage(message);// send a the error to the alert we made
+			stage.setTitle("Create question");
+			stage.setScene(scene);
+			stage.show();
+		} catch (Exception exception) {
+			System.out.println("Error in opening the page");
+		}
 	}
-	/*cancel button was pressed*/
+
+	/* cancel button was pressed */
 	public void backButtonPressed(ActionEvent e) throws IOException, SQLException {
-	    final Node source = (Node) e.getSource();
-	    Stage stage = (Stage) source.getScene().getWindow();
-	    stage.close();	
-	    openScreen("HomeScreenDirector");
+		final Node source = (Node) e.getSource();
+		Stage stage = (Stage) source.getScene().getWindow();
+		stage.close();
+		openScreen("HomeScreenDirector");
 	}
-///////********************************************check the message that arrived from server***********************************************************/
+
+	/////// ***************************check the message that arrived from server***************************/
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
 		try {
@@ -158,7 +171,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			Object[] msg = (Object[]) message;
 
 			switch (msg[0].toString()) {
-			case ("getTimeRequestCodeList"): { /* get the subjects list from server */
+			case ("getTimeRequestList"): { /* get the subjects list from server */
 				initAddingTimeRequests((ArrayList<RequestForChangingTimeAllocated>) msg[1]);
 				break;
 			}
@@ -171,22 +184,25 @@ public class DirectorControl extends UserControl implements Initializable {
 			e.printStackTrace();
 		}
 	}
-	/*******************************************************listeners on addingTimeRequestDirector***********************************************************/
-	/**/
-	public void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList){
-		for(RequestForChangingTimeAllocated i:requestsList)
-		{
+
+	/*******************************************************
+	       listeners on addingTimeRequestDirector
+	 ***********************************************************/
+	
+	public void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList) {
+		for (RequestForChangingTimeAllocated i : requestsList) {
 			addingTimeRequestsObservable.add(i);
-			
+
 			requestsTable.setItems(addingTimeRequestsObservable);
-			examIDColumn.setCellValueFactory(new PropertyValueFactory<>("IDexecutedExam"));// display the id in the
-																								// table view
-			teacherNameColumn.setCellValueFactory(new PropertyValueFactory<>("teacherName"));// display the points in the
-																								// table view
-			timeAddedColumn.setCellValueFactory(new PropertyValueFactory<>("timeAdded"));// display the points in the
-			// table view
+			// display the id in the table view
+			examIDColumn.setCellValueFactory(new PropertyValueFactory<>("IDexecutedExam"));
+			// display the points in the table view
+			teacherNameColumn.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
+			// display the points in the table view
+			timeAddedColumn.setCellValueFactory(new PropertyValueFactory<>("timeAdded"));
 		}
-		
-		//questionsComboBox.getItems().remove(questionsComboBox.getValue());//removing from combobox
+
+		// questionsComboBox.getItems().remove(questionsComboBox.getValue());//removing
+		// from combobox
 	}
 }

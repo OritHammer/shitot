@@ -167,12 +167,11 @@ public class MysqlConnection {
 		/*
 		 * The function return the course list by the given subject code
 		 */
-		// Statement stmt;
 		ArrayList<RequestForChangingTimeAllocated> requestList = new ArrayList<RequestForChangingTimeAllocated>();
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
-							"SELECT * FROM requestforchangingtimeallocated ;");
+					"SELECT * FROM shitot.requestforchangingtimeallocated where isApproved='waiting';");
 			while (rs.next()) {
 				requestList.add(new RequestForChangingTimeAllocated(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6)));
 			}

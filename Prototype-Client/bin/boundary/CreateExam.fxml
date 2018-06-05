@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="361.0" prefWidth="701.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+   <children>
+      <TableView fx:id="questionsInExamTableView" editable="true" layoutX="484.0" layoutY="37.0" prefHeight="262.0" prefWidth="198.0">
+         <columns>
+            <TableColumn fx:id="questionNameTableView" prefWidth="103.0" text="Question name" />
+            <TableColumn fx:id="questionPointsTableView" prefWidth="96.0" text="Points" />
+         </columns>
+      </TableView>
+      <Button layoutX="299.0" layoutY="322.0" mnemonicParsing="false" onAction="#createExam" text="Create exam" />
+      <Label layoutX="28.0" layoutY="120.0" text="Points" />
+      <TextField fx:id="pointsText" layoutX="28.0" layoutY="138.0" />
+      <Label layoutX="28.0" layoutY="218.0" text="Remarks for student" />
+      <Label layoutX="28.0" layoutY="166.0" text="Remarks for teacher" />
+      <TextField fx:id="remarksForStudent" layoutX="28.0" layoutY="238.0" prefHeight="25.0" prefWidth="317.0" />
+      <TextField fx:id="remarksForTeacher" layoutX="28.0" layoutY="189.0" prefHeight="25.0" prefWidth="317.0" />
+      <Button layoutX="223.0" layoutY="322.0" mnemonicParsing="false" onAction="#removeFromTableView" text="Remove" />
+      <ComboBox fx:id="questionsComboBox" layoutX="27.0" layoutY="89.0" onAction="#lockSubject" prefHeight="25.0" prefWidth="433.0" promptText="Choose question" />
+      <ComboBox fx:id="subjectsComboBox" layoutX="27.0" layoutY="51.0" onAction="#loadQuestions" prefWidth="150.0" promptText="choose subject" />
+      <Button layoutX="116.0" layoutY="322.0" mnemonicParsing="false" onAction="#toQuestionInExam" text="Add question" />
+      <Label layoutX="28.0" layoutY="28.0" text="Questions" />
+      <Label fx:id="pageLabel" layoutX="307.0" layoutY="14.0" text="Create exam" />
+      <TextField fx:id="timeForExamHours" layoutX="28.0" layoutY="282.0" prefHeight="25.0" prefWidth="59.0" />
+      <Label layoutX="28.0" layoutY="265.0" text="Time for exam" />
+      <ComboBox fx:id="typeComboBox" layoutX="189.0" layoutY="139.0" prefWidth="150.0" />
+      <Label layoutX="189.0" layoutY="120.0" text="Type" />
+      <TextField fx:id="timeForExamMinute" layoutX="104.0" layoutY="282.0" prefHeight="25.0" prefWidth="59.0" />
+      <Label layoutX="94.0" layoutY="285.0" text=":" />
+      <Button layoutX="395.0" layoutY="322.0" mnemonicParsing="false" onAction="#closeScreen" text="Back" />
+   </children>
+</AnchorPane>

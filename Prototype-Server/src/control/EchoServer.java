@@ -131,7 +131,7 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		case "getTimeRequestCodeList":{
+		case "getTimeRequestList":{
 			ArrayList<RequestForChangingTimeAllocated> requestsList=con.getAddingTimeRequests();
 			serverMessage[1]=requestsList;
 			this.sendToAllClients(serverMessage);

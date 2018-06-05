@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="studentControllers.S_manualExamController">
+   <children>
+      <Label layoutX="27.0" layoutY="135.0" prefHeight="27.0" prefWidth="162.0" text="enter exam code:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="codeTextField" layoutX="189.0" layoutY="133.0" promptText="please enter 6 digits">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <Button layoutX="138.0" layoutY="288.0" mnemonicParsing="false" onAction="#downloadExamPressed" text="Download exam" />
+      <CheckBox fx:id="correctExamCodeCB" layoutX="228.0" layoutY="176.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="102.0" text="Correct code" />
+      <Button layoutX="119.0" layoutY="515.0" mnemonicParsing="false" onAction="#backToHomePressed" prefHeight="25.0" prefWidth="140.0" text="Go back to home page" />
+   </children>
+</AnchorPane>

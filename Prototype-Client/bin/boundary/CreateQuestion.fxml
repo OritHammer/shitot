@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.paint.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="407.0" prefWidth="519.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+   <children>
+      <Label layoutX="71.0" layoutY="129.0" prefHeight="17.0" prefWidth="85.0" text="question name" />
+      <TextField fx:id="questionName" layoutX="52.0" layoutY="148.0" prefHeight="25.0" prefWidth="346.0" />
+      <Label layoutX="475.0" layoutY="108.0" />
+      <Label layoutX="69.0" layoutY="79.0" prefHeight="17.0" prefWidth="85.0" text="teacher's name" />
+      <TextField fx:id="teacherNameOnCreate" editable="false" layoutX="63.0" layoutY="100.0" />
+      <ComboBox fx:id="subjectsComboBox" layoutX="52.0" layoutY="50.0" prefWidth="150.0" promptText="choose subject" />
+      <Button cancelButton="true" graphicTextGap="0.0" layoutX="364.0" layoutY="358.0" mnemonicParsing="false" onAction="#closeScreen" text="cancel">
+         <textFill>
+            <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
+               <stops>
+                  <Stop color="#a3b812" />
+                  <Stop color="#f52214" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Button>
+      <RadioButton id="4" fx:id="correctAns4" layoutX="434.0" layoutY="298.0" mnemonicParsing="false">
+         <toggleGroup>
+            <ToggleGroup fx:id="group1" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton id="3" fx:id="correctAns3" layoutX="434.0" layoutY="264.0" mnemonicParsing="false" toggleGroup="$group1" />
+      <RadioButton id="2" fx:id="correctAns2" layoutX="434.0" layoutY="227.0" mnemonicParsing="false" toggleGroup="$group1" />
+      <RadioButton id="1" fx:id="correctAns1" layoutX="434.0" layoutY="190.0" mnemonicParsing="false">
+         <toggleGroup>
+            <ToggleGroup />
+         </toggleGroup>
+      </RadioButton>
+      <Button layoutX="272.0" layoutY="358.0" mnemonicParsing="false" onAction="#createQuestionClick" text="Create">
+         <textFill>
+            <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
+               <stops>
+                  <Stop color="#a3b812" />
+                  <Stop color="#f52214" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Button>
+      <Label layoutX="406.0" layoutY="162.0" text="correct answer" />
+      <Label layoutX="33.0" layoutY="190.0" text="A" />
+      <Label layoutX="34.0" layoutY="227.0" text="B" />
+      <Label layoutX="33.0" layoutY="264.0" text="C" />
+      <Label layoutX="34.0" layoutY="298.0" text="D" />
+      <TextField fx:id="answer1" layoutX="52.0" layoutY="186.0" prefHeight="25.0" prefWidth="346.0" />
+      <TextField fx:id="answer2" layoutX="52.0" layoutY="223.0" prefHeight="25.0" prefWidth="346.0" />
+      <TextField fx:id="answer3" layoutX="52.0" layoutY="260.0" prefHeight="25.0" prefWidth="346.0" />
+      <TextField fx:id="answer4" layoutX="52.0" layoutY="294.0" prefHeight="25.0" prefWidth="346.0" />
+      <Label fx:id="pageLabel" layoutX="202.0" layoutY="14.0" prefHeight="17.0" prefWidth="85.0" text="Create question" />
+   </children>
+</AnchorPane>
