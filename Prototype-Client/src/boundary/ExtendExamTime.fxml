@@ -8,18 +8,20 @@
 
 <AnchorPane prefHeight="376.0" prefWidth="264.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
-      <Label layoutX="34.0" layoutY="265.0" text="Extend time by" />
-      <Label layoutX="34.0" layoutY="198.0" text="Choose exam" />
-      <Label layoutX="37.0" layoutY="133.0" text="Choose course" />
-      <ComboBox fx:id="examComboBox" layoutX="34.0" layoutY="219.0" prefHeight="25.0" prefWidth="150.0" promptText="Choose exam" />
+      <Label layoutX="31.0" layoutY="225.0" text="Extend time by" />
+      <Label layoutX="28.0" layoutY="164.0" text="Choose exam" />
+      <Label layoutX="31.0" layoutY="105.0" text="Choose course" />
+      <ComboBox fx:id="examComboBox" layoutX="28.0" layoutY="185.0" prefHeight="25.0" prefWidth="150.0" promptText="Choose exam" />
       <Button layoutX="189.0" layoutY="337.0" mnemonicParsing="false" onAction="#closeScreen" text="Back" />
-      <Label layoutX="35.0" layoutY="65.0" text="Choose subject" />
-      <ComboBox fx:id="subjectsComboBox" layoutX="34.0" layoutY="88.0" onAction="#loadCourses" prefWidth="150.0" promptText="choose subject" />
-      <ComboBox fx:id="coursesComboBox" layoutX="34.0" layoutY="156.0" onAction="#loadExams" prefHeight="25.0" prefWidth="150.0" promptText="Choose course" />
-      <Button fx:id="createExamBTN" layoutX="53.0" layoutY="337.0" mnemonicParsing="false" onAction="#createExam" text="Create code exam" />
-      <TextField fx:id="timeForExamMinute" layoutX="114.0" layoutY="289.0" prefHeight="25.0" prefWidth="59.0" />
-      <TextField fx:id="timeForExamHours" layoutX="38.0" layoutY="289.0" prefHeight="25.0" prefWidth="59.0" />
-      <Label layoutX="104.0" layoutY="292.0" text=":" />
+      <Label layoutX="29.0" layoutY="44.0" text="Choose subject" />
+      <ComboBox fx:id="subjectsComboBox" layoutX="28.0" layoutY="67.0" onAction="#loadCourses" prefWidth="150.0" promptText="choose subject" />
+      <ComboBox fx:id="coursesComboBox" layoutX="28.0" layoutY="128.0" onAction="#loadExams" prefHeight="25.0" prefWidth="150.0" promptText="Choose course" />
+      <Button layoutX="24.0" layoutY="337.0" mnemonicParsing="false" onAction="#createExtendTimeRequest" text="Confirm" />
+      <TextField fx:id="timeForExamMinute" layoutX="111.0" layoutY="249.0" prefHeight="25.0" prefWidth="59.0" />
+      <TextField fx:id="timeForExamHours" layoutX="35.0" layoutY="249.0" prefHeight="25.0" prefWidth="59.0" />
+      <Label layoutX="101.0" layoutY="252.0" text=":" />
       <Label fx:id="pageLabel" layoutX="83.0" layoutY="14.0" text="Extend exam time" />
+      <TextField fx:id="reasonForChange" layoutX="35.0" layoutY="300.0" prefHeight="25.0" prefWidth="150.0" />
+      <Label layoutX="34.0" layoutY="283.0" text="reason for change" />
    </children>
 </AnchorPane>

@@ -3,16 +3,29 @@ package entity;
 import java.io.Serializable;
 
 public class RequestForChangingTimeAllocated implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String RequestID;
 	private String teacherName;
 	private String menagerApprove; 
 	private String reason;
 	private String timeAdded;
+	private String IDexecutedExam;
 	
 	public RequestForChangingTimeAllocated() {
 		menagerApprove="waiting";
 	}
-	
+	public RequestForChangingTimeAllocated(String rID,String tName,String approved,String reason,String time,String examID) {
+		menagerApprove="waiting";
+		RequestID=rID;
+		teacherName=tName;
+		menagerApprove=approved;
+		this.reason=reason;
+		timeAdded=time;
+		IDexecutedExam=examID;
+	}
 	public String getRequestID() { 
 		return RequestID;
 	}
@@ -43,5 +56,10 @@ public class RequestForChangingTimeAllocated implements Serializable{
 	public void setTimeAdded(String timeAdded) {
 		this.timeAdded = timeAdded;
 	}
-	
+	public String getIDexecutedExam(){
+		return IDexecutedExam;
+	}
+	public void  setIDexecutedExam(String examID) {
+		IDexecutedExam=examID;
+	}
 }

@@ -14,7 +14,7 @@
             <TableColumn fx:id="questionPointsTableView" prefWidth="96.0" text="Points" />
          </columns>
       </TableView>
-      <Button fx:id="createExamBTN" layoutX="299.0" layoutY="322.0" mnemonicParsing="false" onAction="#createExam" text="Create exam" />
+      <Button layoutX="299.0" layoutY="322.0" mnemonicParsing="false" onAction="#createExam" text="Create exam" />
       <Label layoutX="28.0" layoutY="120.0" text="Points" />
       <TextField fx:id="pointsText" layoutX="28.0" layoutY="138.0" />
       <Label layoutX="28.0" layoutY="218.0" text="Remarks for student" />
