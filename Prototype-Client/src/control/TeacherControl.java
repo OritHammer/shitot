@@ -76,6 +76,9 @@ public class TeacherControl extends UserControl implements Initializable {
 	private TextField timeForExamMinute;
 	@FXML
 	private TextField reasonForChange;
+	@FXML
+	private TextField examCode;
+	
 	
 	/* RadioButton of display the correct answer */
 	@FXML
@@ -189,17 +192,22 @@ public class TeacherControl extends UserControl implements Initializable {
 			|| pageLabel.getText().equals("Create exam")
 			|| pageLabel.getText().equals("Update question") 
 			|| pageLabel.getText().equals("Create exam code")
-			|| pageLabel.getText().equals("Extend exam time")) {
+			|| pageLabel.getText().equals("Extend exam time")
+			|| pageLabel.getText().equals("Lock exam")) {
 			
 			connect(this);
-			if (pageLabel.getText().equals("Extend exam time")) {
+			if (pageLabel.getText().equals("Extend exam time")
+				|| pageLabel.getText().equals("Lock exam")) {
+				
 				messageToServer[0] = "getExecutedExams";
 				messageToServer[1] = Globals.getuserName();
 				chat.handleMessageFromClientUI(messageToServer);// send the message to server
 			}
+			
 			if (pageLabel.getText().equals("Create question")) {
 				teacherNameOnCreate.setText(Globals.getuserName());
 			}
+			
 			messageToServer[0] = "getSubjects";
 			messageToServer[1] = Globals.getuserName();
 			messageToServer[2] = null;
@@ -302,6 +310,24 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[0] = "setExam";
 		messageToServer[1] = questioninexam;
 		messageToServer[2] = exam;
+		connect(this);
+		chat.handleMessageFromClientUI(messageToServer);// send the message to server
+		try {
+			chat.closeConnection();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} // close the connection
+	}
+	
+	
+	public void createExamCode(ActionEvent e) {
+		ExecutedExam exam;
+		String examID=examComboBox.getValue();
+		String executedExamId = examCode.getText();
+		exam = new ExecutedExam(executedExamId,0,0,0,0,0,Globals.getuserName(),examID,0,0,0,0,0,0);
+		messageToServer[0] = "setExamCode";
+		messageToServer[1] = exam;
 		connect(this);
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 		try {
@@ -451,7 +477,7 @@ public class TeacherControl extends UserControl implements Initializable {
 				tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
 				tController.setErrorMessage("ERROR");// send a the error to the alert we made
 			}
-			stage.setTitle("Create question");
+			stage.setTitle(screen);
 			stage.setScene(scene);
 			stage.show();
 		} catch (Exception exception) {
@@ -545,6 +571,9 @@ public class TeacherControl extends UserControl implements Initializable {
 	
 	public void loadExams(ActionEvent e) throws IOException {
 		/* ask for the exams name */
+		if(coursesComboBox.getValue()==null) {
+			return;
+		}
 		String examIDStart;
 		String []subjectSubString = subjectsComboBox.getValue().split("-");
 		String []examSubString = coursesComboBox.getValue().split("-");
@@ -555,6 +584,14 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[0] = "getExams";
 		messageToServer[1] = examIDStart;
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
+	}
+	
+	public void openLockExamScreen(ActionEvent e) {
+		openScreen("LockExam");
+	}
+	
+	public void lockExam(ActionEvent e) {
+		
 	}
 	
 	public void showExams(ArrayList<String> examList) {

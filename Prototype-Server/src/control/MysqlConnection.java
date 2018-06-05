@@ -352,6 +352,34 @@ public class MysqlConnection {
 		//stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
 		
 	}
+	
+	public synchronized void createExamCode(Object excutedExam) {
+		
+		ExecutedExam exam=(ExecutedExam)excutedExam;
+		
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(
+					"SELECT executedExamID FROM shitot.executedexam WHERE executedExamID = \"" + exam.getExecutedExamID() + "\";");
+			
+			if(rs.isBeforeFirst())
+			{
+				System.out.println("There is already a code like that, please choose another code");
+			rs.close();
+				return;
+			}
+			else {
+			stmt. executeUpdate(
+			"INSERT INTO shitot.executedexam VALUES(\""
+			+exam.getExecutedExamID().trim()+"\",0,0,0,0,0,\""+exam.getTeacherName()+"\",\""+exam.getExam_id()+"\",0,0,0,0,0,0);");
+				}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		//stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
+		
+	}
 	/************************************************************director functions*********************************************************************************************/
 	public void getRequestsList(Object list) {// get list of executed exam code of exams that exist request to adding them time
 		list=new ArrayList<String>();
