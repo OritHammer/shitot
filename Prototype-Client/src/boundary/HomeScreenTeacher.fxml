@@ -11,18 +11,48 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="358.0" prefWidth="218.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="573.0" prefWidth="391.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
-      <Text fx:id="userText" layoutX="111.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="user" wrappingWidth="132.13671875" />
-      <Text layoutX="68.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello" />
-      <Button layoutX="56.0" layoutY="61.0" mnemonicParsing="false" onAction="#openUpdateQuestionScreen" text="Update question" />
-      <Button layoutX="58.0" layoutY="90.0" mnemonicParsing="false" onAction="#openCreateQuestion" text="Create question" />
-      <Button layoutX="62.0" layoutY="120.0" mnemonicParsing="false" text="Statistic report" />
-      <Button layoutX="68.0" layoutY="152.0" mnemonicParsing="false" onAction="#openCreateExam" text="Create exam" />
-      <Button layoutX="71.0" layoutY="185.0" mnemonicParsing="false" text="Check exam" />
-      <Button layoutX="53.0" layoutY="218.0" mnemonicParsing="false" text="Create exam code" />
-      <Button layoutX="53.0" layoutY="251.0" mnemonicParsing="false" text="Extend exam time" />
-      <Button layoutX="72.0" layoutY="285.0" mnemonicParsing="false" text="Lock exam" />
-      <Label fx:id="pageLabel" layoutX="65.0" layoutY="14.0" prefHeight="17.0" prefWidth="85.0" text="Home screen" />
+      <Button layoutX="142.0" layoutY="119.0" mnemonicParsing="false" onAction="#openUpdateQuestionScreen" text="Update question" />
+      <Button layoutX="144.0" layoutY="148.0" mnemonicParsing="false" onAction="#openCreateQuestion" text="Create question" />
+      <Button layoutX="148.0" layoutY="178.0" mnemonicParsing="false" text="Statistic report" />
+      <Button layoutX="154.0" layoutY="210.0" mnemonicParsing="false" onAction="#openCreateExam" text="Create exam" />
+      <Button layoutX="157.0" layoutY="243.0" mnemonicParsing="false" text="Check exam" />
+      <Button layoutX="139.0" layoutY="276.0" mnemonicParsing="false" onAction="#openExamCodeScreen" text="Create exam code" />
+      <Button layoutX="139.0" layoutY="314.0" mnemonicParsing="false" onAction="#openExtendExamTimeScreen" text="Extend exam time" />
+      <Button layoutX="158.0" layoutY="348.0" mnemonicParsing="false" text="Lock exam" />
+      <Label fx:id="pageLabel" layoutX="146.0" layoutY="14.0" prefHeight="17.0" prefWidth="85.0" text="Home screen" visible="false" />
+      <TextField layoutX="63.0" layoutY="400.0" prefHeight="103.0" prefWidth="269.0" promptText="New Messages">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <Button layoutX="287.0" layoutY="529.0" mnemonicParsing="false" text="Logout" />
+      <Label layoutX="125.0" layoutY="528.0" prefHeight="17.0" prefWidth="138.0" text="DateField">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="238.0" layoutY="63.0" prefHeight="26.0" prefWidth="95.0" text="Teacher">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="55.0" layoutY="523.0" prefHeight="27.0" prefWidth="52.0" text="Date :">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="217.0" layoutY="33.0" prefHeight="27.0" prefWidth="155.0" text="My authorization:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="49.0" layoutY="29.0" prefHeight="34.0" prefWidth="63.0" text="Hello :">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Text fx:id="userText" layoutX="49.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="user name" />
    </children>
 </AnchorPane>

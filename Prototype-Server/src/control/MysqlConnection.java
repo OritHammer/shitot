@@ -7,9 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import entity.Course;
 import entity.Exam;
 import entity.Question;
 import entity.QuestionInExam;
+import entity.RequestForChangingTimeAllocated;
 import entity.TeachingProfessionals;
 import entity.User;
 
@@ -90,7 +92,7 @@ public class MysqlConnection {
 			// if the user is existing
 			 User newUser =  new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),rs.getString(5) ,
 					rs.getString(6)); // in section 5 need to insert "connected"
-			 /*//updating user status 
+			/* //updating user status 
 			stmt.executeUpdate(
 				     "UPDATE users " + 
 				       "SET status=\"connected\" WHERE username=\""+userID+"\" AND password=\""+userPass+"\";");//  setting a new status                                                    
@@ -101,14 +103,13 @@ public class MysqlConnection {
 			e.printStackTrace();
 			return null;
 		}
- 
 	}
 	public void performLogout(Object userName) {
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate("UPDATE users " + 
-				       "SET status=\"unconnected\" WHERE username=\""+userName+"\";");
-			System.out.println("user set as unconnected"); 
+				       "SET status=\"unconnected\" WHERE username=\""+userName.toString()+"\";");
+			System.out.println("user set as unconnected");  
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -140,7 +141,47 @@ public class MysqlConnection {
 		}
 		return (subjectList);
 	}
-
+	
+	public ArrayList<Course> getCourseList(Object subject, Object teacherUserName) {
+		/*
+		 * The function return the course list by the given subject code
+		 */
+		// Statement stmt;
+		ArrayList<Course> courseList = new ArrayList<Course>();
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(
+							"SELECT c.courseID,c.name FROM courses c,teacherincourse tc" +
+							" WHERE tp_ID=\""+subject+"\" AND tc.courseID=c.courseID AND tc.UserNameTeacher=\""
+							+teacherUserName.toString()+"\";");
+			while (rs.next()) {
+				courseList.add(new Course(rs.getString(1),rs.getString(2)));
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return courseList;
+	}
+	public ArrayList<RequestForChangingTimeAllocated> getAddingTimeRequests() {
+		/*
+		 * The function return the course list by the given subject code
+		 */
+		// Statement stmt;
+		ArrayList<RequestForChangingTimeAllocated> requestList = new ArrayList<RequestForChangingTimeAllocated>();
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(
+							"SELECT * FROM requestforchangingtimeallocated ;");
+			while (rs.next()) {
+				requestList.add(new RequestForChangingTimeAllocated(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6)));
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return requestList;
+	}
 	public ArrayList<String> getQuestionList(Object subject, Object teacherUserName) {
 		/*
 		 * The function return the question list by the given subject code
@@ -175,7 +216,7 @@ public class MysqlConnection {
 							+ "WHERE Question_Text=\"" + quest + "\";");
 			// The next commands get the returned details from DB and insert them to
 			// question object
-
+ 
 			rs.next();
 			// inserting the data to String List , order by the same order in DB
 			question = new Question();
@@ -270,5 +311,22 @@ public class MysqlConnection {
 		
 		
 		
+	}
+
+	
+	public ArrayList<String> getExams(Object examIDStart) {
+		ArrayList<String> examList = new ArrayList<String>();
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(
+							"SELECT e_id FROM exams WHERE e_id like \""+examIDStart+"%\";");
+			while (rs.next()) {
+				examList.add(rs.getString(1));
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return examList;	
 	}
 }

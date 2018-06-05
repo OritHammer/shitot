@@ -24,14 +24,14 @@
             </RadialGradient>
          </textFill>
       </Button>
-      <RadioButton id="4" fx:id="createCorrectAnswer4" layoutX="434.0" layoutY="298.0" mnemonicParsing="false">
+      <RadioButton id="4" fx:id="correctAns4" layoutX="434.0" layoutY="298.0" mnemonicParsing="false">
          <toggleGroup>
             <ToggleGroup fx:id="group1" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton id="3" fx:id="createCorrectAnswer3" layoutX="434.0" layoutY="264.0" mnemonicParsing="false" toggleGroup="$group1" />
-      <RadioButton id="2" fx:id="createCorrectAnswer2" layoutX="434.0" layoutY="227.0" mnemonicParsing="false" toggleGroup="$group1" />
-      <RadioButton id="1" fx:id="createCorrectAnswer1" layoutX="434.0" layoutY="190.0" mnemonicParsing="false">
+      <RadioButton id="3" fx:id="correctAns3" layoutX="434.0" layoutY="264.0" mnemonicParsing="false" toggleGroup="$group1" />
+      <RadioButton id="2" fx:id="correctAns2" layoutX="434.0" layoutY="227.0" mnemonicParsing="false" toggleGroup="$group1" />
+      <RadioButton id="1" fx:id="correctAns1" layoutX="434.0" layoutY="190.0" mnemonicParsing="false">
          <toggleGroup>
             <ToggleGroup />
          </toggleGroup>
@@ -51,10 +51,10 @@
       <Label layoutX="34.0" layoutY="227.0" text="B" />
       <Label layoutX="33.0" layoutY="264.0" text="C" />
       <Label layoutX="34.0" layoutY="298.0" text="D" />
-      <TextField fx:id="createAnswer1" layoutX="52.0" layoutY="186.0" prefHeight="25.0" prefWidth="346.0" />
-      <TextField fx:id="createAnswer2" layoutX="52.0" layoutY="223.0" prefHeight="25.0" prefWidth="346.0" />
-      <TextField fx:id="createAnswer3" layoutX="52.0" layoutY="260.0" prefHeight="25.0" prefWidth="346.0" />
-      <TextField fx:id="createAnswer4" layoutX="52.0" layoutY="294.0" prefHeight="25.0" prefWidth="346.0" />
+      <TextField fx:id="answer1" layoutX="52.0" layoutY="186.0" prefHeight="25.0" prefWidth="346.0" />
+      <TextField fx:id="answer2" layoutX="52.0" layoutY="223.0" prefHeight="25.0" prefWidth="346.0" />
+      <TextField fx:id="answer3" layoutX="52.0" layoutY="260.0" prefHeight="25.0" prefWidth="346.0" />
+      <TextField fx:id="answer4" layoutX="52.0" layoutY="294.0" prefHeight="25.0" prefWidth="346.0" />
       <Label fx:id="pageLabel" layoutX="202.0" layoutY="14.0" prefHeight="17.0" prefWidth="85.0" text="Create question" />
    </children>
 </AnchorPane>

@@ -7,7 +7,10 @@ package control;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import entity.Course;
+import entity.Exam;
 import entity.Question;
+import entity.RequestForChangingTimeAllocated;
 import entity.TeachingProfessionals;
 import entity.User;
 import ocsf.server.*;
@@ -75,6 +78,19 @@ public class EchoServer extends AbstractServer {
 			System.out.println("arraylist to deliver");
 			break;
 		}
+		
+		case "getCourses": {/*client request all all the courses under some subject*/
+			ArrayList<Course> courseList = con.getCourseList(message[1],message[2]);
+			serverMessage[1] =courseList;
+			this.sendToAllClients(serverMessage);
+			break;
+		}
+		case "getExams": {/*client request all all the courses under some subject*/
+			ArrayList<String> examsList = con.getExams(message[1]);
+			serverMessage[1] =examsList;
+			this.sendToAllClients(serverMessage);
+			break;
+		}
 		case "getQuestions": {/*client request all all the questions under some subject*/
 			ArrayList<String> questionList = con.getQuestionList(message[1],message[2]);
 			serverMessage[1] =questionList;
@@ -109,9 +125,16 @@ public class EchoServer extends AbstractServer {
 		case "SetQuestion": {
 			con.createQuestion(message[1], message[2]);
 			break;
-		}
+		} 
 		case "logoutProcess" :{
 			con.performLogout(message[1]);
+			this.sendToAllClients(serverMessage);
+			break;
+		}
+		case "getTimeRequestCodeList":{
+			ArrayList<RequestForChangingTimeAllocated> requestsList=con.getAddingTimeRequests();
+			serverMessage[1]=requestsList;
+			this.sendToAllClients(serverMessage);
 			break;
 		}
 	/*	case "getExecutedExamCodeList" :{// for using on confirm request of adding time to exam

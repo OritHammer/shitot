@@ -1,11 +1,12 @@
 package studentControllers;
 
+import java.util.ArrayList;
+
 import control.Globals;
 import control.Main;
 import control.UserControl;
 import entity.ExamCopy;//need to check if grades is based on exam copy or ex-exam
-
-
+import entity.StudentPerformExam;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-  
+   
 public class S_myGradesScreenController extends UserControl {
 	/********************* GUI Variable declaration *************************/
 	
@@ -62,12 +63,13 @@ public class S_myGradesScreenController extends UserControl {
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 	}
 	public void checkMessage(Object message) {
-		Object[] msgFromServer = (Object[])message ;
+		
 		try {
+			Object[] msgFromServer = (Object[])message ;
 			switch((String)msgFromServer[0]) {
 			case "getExamsByUserName":
 			{
-				
+				showGradesOnTable(msgFromServer[1]);
 			}
 			
 			}
@@ -78,8 +80,11 @@ public class S_myGradesScreenController extends UserControl {
 	}
 	
 	/**********************************************************HANDLEMESSAGE*********************************************/
-
-	public void showGradesOnTable() {
+// maybe think of arraylist of strings and that it , taking from DB exam code ang grade , as a point ? 
+	public void showGradesOnTable(Object msg) {
+		ArrayList<StudentPerformExam> sExamPref = (ArrayList<StudentPerformExam>)msg;
+		String examCode = " ";
+		String courseCode = " ";
 		
 	}
 }

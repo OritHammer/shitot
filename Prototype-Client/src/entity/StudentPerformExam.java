@@ -5,20 +5,26 @@ import java.io.Serializable;
 public class StudentPerformExam implements Serializable{
 	private String date = " ";
 	private String time = " ";
-	private String finished = "0" ;
+	private Boolean finished = false ;
+	private Float grade ;
 	private String excecutedExamID = " ";
 	private String userName = " ";
-	private String isApproved = "0" ;
+	private Boolean isApproved = false ;
 	private String reasonForChangeGrade = " "; 
 	 
-	public StudentPerformExam(String dateDB,String timeDB, String finishedDB,String excecutedExamIDDB,String userNameDB,String isApprovedDB,String reasonForChangeGradeDB) {
+	public StudentPerformExam(String dateDB,String timeDB, String finishedDB,String gradeDB,String excecutedExamIDDB,String userNameDB,String isApprovedDB,String reasonForChangeGradeDB) {
 		super();
 		date = dateDB;
 		time = timeDB;
-		finished = finishedDB;
+		if (finishedDB == "1") {
+			finished = true;
+		}
+		grade = Float.parseFloat(gradeDB);
 		excecutedExamID = excecutedExamIDDB ; 
 		userName = userNameDB ; 
-		isApproved = isApprovedDB ; 
+		if (isApprovedDB == "1") {
+			isApproved = true;
+		}
 		reasonForChangeGrade = reasonForChangeGradeDB ; 
 	}
 
@@ -38,12 +44,20 @@ public class StudentPerformExam implements Serializable{
 		this.time = time;
 	}
 
-	public String getFinished() {
+	public Boolean getFinished() {
 		return finished;
 	}
 
-	public void setFinished(String finished) {
+	public void setFinished(Boolean finished) {
 		this.finished = finished;
+	}
+
+	public Float getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Float grade) {
+		this.grade = grade;
 	}
 
 	public String getExcecutedExamID() {
@@ -62,21 +76,21 @@ public class StudentPerformExam implements Serializable{
 		this.userName = userName;
 	}
 
-	public String getIsApproved() {
+	public Boolean getIsApproved() {
 		return isApproved;
 	}
 
-	public void setIsApproved(String isApproved) {
+	public void setIsApproved(Boolean isApproved) {
 		this.isApproved = isApproved;
 	}
 
-	public String getResonForChangeGrade() {
+	public String getReasonForChangeGrade() {
 		return reasonForChangeGrade;
 	}
 
-	public void setResonForChangeGrade(String resonForChangeGrade) {
-		this.reasonForChangeGrade = resonForChangeGrade;
+	public void setReasonForChangeGrade(String reasonForChangeGrade) {
+		this.reasonForChangeGrade = reasonForChangeGrade;
 	}
-	
+
 	
 }
