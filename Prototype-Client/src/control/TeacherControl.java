@@ -10,8 +10,10 @@ import java.util.stream.Collectors;
 
 import entity.Course;
 import entity.Exam;
+import entity.ExecutedExam;
 import entity.Question;
 import entity.QuestionInExam;
+import entity.RequestForChangingTimeAllocated;
 import entity.TeachingProfessionals;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -94,8 +96,17 @@ public class TeacherControl extends UserControl implements Initializable {
 	private TableColumn<QuestionInExam, String> questionNameTableView;
 	@FXML
 	private TableColumn<QuestionInExam, Float> questionPointsTableView;
-
+	
 	@FXML
+    private TableView<ExecutedExam> executedExamTableView;
+    @FXML
+    private TableColumn<ExecutedExam, String> exam_idTableView;
+    @FXML
+    private TableColumn<ExecutedExam, String> executedExamIDTableView;
+    @FXML
+    private TableColumn<ExecutedExam, String> teacherNameTableView;
+	
+    @FXML
 	private ComboBox<String> questionsComboBox;
 	@FXML
 	private ComboBox<String> subjectsComboBox;
@@ -117,6 +128,11 @@ public class TeacherControl extends UserControl implements Initializable {
 			case ("getSubjects"): /* get the subjects list from server */
 			{
 				showSubjects((ArrayList<TeachingProfessionals>) msg[1]);
+				break;
+			}
+			case ("getExecutedExams"): /* get the subjects list from server */
+			{
+				showExecutedExam((ArrayList<ExecutedExam>) msg[1]);
 				break;
 			}
 			case ("getCourses"): /* get the courses list from server */
@@ -151,6 +167,14 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
+	private void showExecutedExam(ArrayList<ExecutedExam> executedexam) {
+		ObservableList<ExecutedExam> observablelist = FXCollections.observableArrayList(executedexam);
+		executedExamTableView.setItems(observablelist);
+		executedExamIDTableView.setCellValueFactory(new PropertyValueFactory<>("executedExamID"));
+		teacherNameTableView.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
+		exam_idTableView.setCellValueFactory(new PropertyValueFactory<>("exam_id"));
+	}
+
 	/* clear all the text fields and radio buttons */
 	public void initialize(URL url, ResourceBundle rb) {
 		if (pageLabel.getText().equals("Create exam")) {
@@ -161,13 +185,21 @@ public class TeacherControl extends UserControl implements Initializable {
 		if (pageLabel.getText().equals("Home screen")) {
 			userText.setText(Globals.getFullName());
 		}
-		if (pageLabel.getText().equals("Create question") || pageLabel.getText().equals("Create exam")
-				|| pageLabel.getText().equals("Update question") || pageLabel.getText().equals("Create exam code")
-				|| pageLabel.getText().equals("Extend exam time")) {
+		if (pageLabel.getText().equals("Create question") 
+			|| pageLabel.getText().equals("Create exam")
+			|| pageLabel.getText().equals("Update question") 
+			|| pageLabel.getText().equals("Create exam code")
+			|| pageLabel.getText().equals("Extend exam time")) {
+			
+			connect(this);
+			if (pageLabel.getText().equals("Extend exam time")) {
+				messageToServer[0] = "getExecutedExams";
+				messageToServer[1] = Globals.getuserName();
+				chat.handleMessageFromClientUI(messageToServer);// send the message to server
+			}
 			if (pageLabel.getText().equals("Create question")) {
 				teacherNameOnCreate.setText(Globals.getuserName());
 			}
-			connect(this);
 			messageToServer[0] = "getSubjects";
 			messageToServer[1] = Globals.getuserName();
 			messageToServer[2] = null;
@@ -530,15 +562,30 @@ public class TeacherControl extends UserControl implements Initializable {
 		examComboBox.setItems(observableList);
 	}
 	
-	public void createExtendTimeRequest(ActionEvent e) {
+	public void createExtendTimeRequest(ActionEvent e) throws IOException {
 		if(timeForExamHours.getText().equals("")||timeForExamMinute.getText().equals("")) {
 			openScreen("ErrorMessage","Please fill the time you want to extend by");
 			return;
 		}
-		if(reasonForChange.getText()==null) {
+		if(reasonForChange.getText().trim().equals("")) {
 			openScreen("ErrorMessage","Please fill the reason for changing the time");
 			return;
 		}
-		
+		ExecutedExam executedexam= executedExamTableView.getSelectionModel().getSelectedItem();
+		if(executedexam==null) {
+			openScreen("ErrorMessage","Please choose an exam");
+			return;
+		}
+		RequestForChangingTimeAllocated request = new RequestForChangingTimeAllocated();
+		request.setIDexecutedExam(executedexam.getExecutedExamID());
+		request.setReason(reasonForChange.getText());
+		request.setMenagerApprove("waiting");
+		request.setTeacherName(Globals.getuserName());
+		request.setTimeAdded(timeForExamHours.getText()+""+timeForExamMinute.getText());
+		connect(this); // connecting to server
+		messageToServer[0] = "createChangingRequest";
+		messageToServer[1] = request;
+		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
+		chat.closeConnection();
 	}
 }

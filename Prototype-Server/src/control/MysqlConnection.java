@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import entity.Course;
 import entity.Exam;
+import entity.ExecutedExam;
 import entity.Question;
 import entity.QuestionInExam;
 import entity.RequestForChangingTimeAllocated;
@@ -113,6 +114,30 @@ public class MysqlConnection {
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	public ArrayList<String[]> getPrefExamDetails(String userName){
+		ArrayList<String[]> detailsList = new ArrayList<String[]>();
+		String[] details =  new String[3] ;
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT  E.exam_id  , std.grade  , std.date "
+					+ " FROM shitot.executedexam as E , shitot.studentperformedexam as std"
+					+ "WHERE E.executedExamID = std.executedexam_id AND std.student_UserName =\""+ userName+"\" AND std.finished = '1'; " );
+			
+			while(rs.next()) {
+			if (!rs.first()) {
+				return null;
+			}
+			details[0] = rs.getString(1);
+			details[1] = rs.getString(1);
+			details[2] = rs.getString(2);
+			detailsList.add(details);
+			}
+			System.out.println("sending exams details");  
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return detailsList;
 	}
 	public ArrayList<TeachingProfessionals> getSubjectList(Object teacherUserName) {
 		/*
@@ -280,7 +305,7 @@ public class MysqlConnection {
 		}
 	}
 
-	public void createExam(Object questionInExams,Object examDetails) {
+	public synchronized void createExam(Object questionInExams,Object examDetails) {
 		ArrayList<QuestionInExam> questionInExam=(ArrayList<QuestionInExam>)questionInExams;
 		Exam exam=(Exam)examDetails;
 		String fullExamNumber;
@@ -339,7 +364,30 @@ public class MysqlConnection {
 		
 	}
 
-	
+	public ArrayList<ExecutedExam> getExecutedExam(Object teacherUserName) {//////////////////////////////////////////kaki
+		/*
+		 * The function return the course list by the given subject code
+		 */
+		// Statement stmt;
+		ArrayList<ExecutedExam> executedexam = new ArrayList<ExecutedExam>();
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(
+							"SELECT * FROM executedexam WHERE teacherName=\""+teacherUserName.toString()+"\";");
+			while (rs.next()) {
+				executedexam.add(new ExecutedExam(rs.getString(1),Integer.parseInt(rs.getString(2)),
+						Integer.parseInt(rs.getString(3)), Integer.parseInt(rs.getString(4)),Float.parseFloat(rs.getString(5)) ,
+						Float.parseFloat(rs.getString(6)),rs.getString(7), rs.getString(8),Integer.parseInt(rs.getString(9)),
+						Integer.parseInt(rs.getString(10)),Integer.parseInt(rs.getString(11)), Integer.parseInt(rs.getString(12)),
+						Integer.parseInt(rs.getString(13)) ,Integer.parseInt(rs.getString(14))));
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return executedexam;
+	}///////////////////////////////////////////////////////kaki
+
 	public ArrayList<String> getExams(Object examIDStart) {
 		ArrayList<String> examList = new ArrayList<String>();
 		try {
@@ -355,4 +403,34 @@ public class MysqlConnection {
 		}
 		return examList;	
 	}
+	
+	public synchronized void createChangingRequest(Object requestDetails) {
+		RequestForChangingTimeAllocated request = (RequestForChangingTimeAllocated)requestDetails;
+		String fullRequestNumber;
+		int requestNum;
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(
+					"SELECT MAX(requestID) FROM requestforchangingtimeallocated;");
+			rs.next();
+			if((rs.getString(1) == null))
+				requestNum = 0;
+			else
+				requestNum = Integer.parseInt(rs.getString(1));
+			requestNum++;
+			fullRequestNumber = String.valueOf(requestNum); 
+			stmt. executeUpdate(
+			"INSERT INTO shitot.requestforchangingtimeallocated VALUES(\""
+			+fullRequestNumber.trim()+"\",\""+request.getTeacherName()+"\",\""
+			+request.getReason()+"\",\""+request.getMenagerApprove()+"\",\""+request.getIDexecutedExam()+"\",\""
+			+request.getTimeAdded()+"\");");
+			
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		//stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
+		
+	}
+
 }
