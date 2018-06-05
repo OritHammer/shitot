@@ -18,7 +18,6 @@ public class RequestForChangingTimeAllocated implements Serializable{
 		menagerApprove="waiting";
 	}
 	public RequestForChangingTimeAllocated(String rID,String tName,String approved,String reason,String time,String examID) {
-		menagerApprove="waiting";
 		RequestID=rID;
 		teacherName=tName;
 		menagerApprove=approved;

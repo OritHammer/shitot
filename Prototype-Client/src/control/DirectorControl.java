@@ -81,6 +81,11 @@ public class DirectorControl extends UserControl implements Initializable {
 		if (pageLabel.getText().equals("Home screen"))
 			userText1.setText(Globals.getFullName());
 		else if (pageLabel.getText().contentEquals("requests")) {
+			connect(this);
+			messageToServer[0] = "getTimeRequestList";
+			messageToServer[1] = null;
+			messageToServer[2] = null;
+			chat.handleMessageFromClientUI(messageToServer);// send the message to server
 
 		}
 	}
@@ -88,12 +93,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	public void openTimeRequestTable(ActionEvent e) {
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding homePage window
 		openScreen("TimeRequestTable");
-		connect(this);
-		messageToServer[0] = "getTimeRequestList";
-		messageToServer[1] = null;
-		messageToServer[2] = null;
-		chat.handleMessageFromClientUI(messageToServer);// send the message to server
-
+		
 	}
 
 	public void openStatisticReport(ActionEvent e) {
@@ -189,17 +189,19 @@ public class DirectorControl extends UserControl implements Initializable {
 	       listeners on addingTimeRequestDirector
 	 ***********************************************************/
 	
+	@SuppressWarnings("unchecked")
 	public void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList) {
 		for (RequestForChangingTimeAllocated i : requestsList) {
 			addingTimeRequestsObservable.add(i);
-
 			requestsTable.setItems(addingTimeRequestsObservable);
 			// display the id in the table view
 			examIDColumn.setCellValueFactory(new PropertyValueFactory<>("IDexecutedExam"));
-			// display the points in the table view
+		
 			teacherNameColumn.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
-			// display the points in the table view
+		
 			timeAddedColumn.setCellValueFactory(new PropertyValueFactory<>("timeAdded"));
+			requestsTable.getColumns().clear();
+			requestsTable.getColumns().addAll(examIDColumn,teacherNameColumn,timeAddedColumn);
 		}
 
 		// questionsComboBox.getItems().remove(questionsComboBox.getValue());//removing
