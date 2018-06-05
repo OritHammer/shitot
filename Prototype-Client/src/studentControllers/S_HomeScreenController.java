@@ -80,16 +80,12 @@ public class S_HomeScreenController extends UserControl implements Initializable
 		openScreen("OrderExamCopyScreen");
 	}
 
-	public void manualExamPressed(ActionEvent e) {
+	public void excecuteMorCExamPressed(ActionEvent e) {
 		connectionFlag = true;
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
-		openScreen("ManualExamScreen");
+		openScreen("ManualAndComputerizeExamScreen");
 	}
 
-	public void computrizeExamPressed(ActionEvent e) {
-		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
-		connectionFlag = true;
-	} 
 // the problem is with the fact that we create a new scene each time and we need to prevent it in that way
 	private void openScreen(String screen) {
 		try {

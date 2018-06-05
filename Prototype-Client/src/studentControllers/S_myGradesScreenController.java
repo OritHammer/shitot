@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -29,11 +30,11 @@ public class S_myGradesScreenController extends UserControl {
 	@FXML
 	private TableColumn<ExamCopy, String> examCodeColumn;
 	@FXML
-	private TableColumn<ExamCopy, String> courseCodeColumn;
+	private TableColumn<String[], String> courseCodeColumn;
 	@FXML 
-	private TableColumn <ExamCopy, Float> gradeColumn;
+	private TableColumn <String[], String> gradeColumn;
 	@FXML 
-	private TableColumn <ExamCopy, Float> dateColumn ;
+	private TableColumn <String[], String> dateColumn ;
 	
 	ObservableList<String[]> detailsList = FXCollections.observableArrayList();
 	private Object[] messageToServer = new Object[3];
@@ -74,7 +75,7 @@ public class S_myGradesScreenController extends UserControl {
 			switch((String)msgFromServer[0]) {
 			case "getExamsByUserName":
 			{
-				showGradesOnTable(msgFromServer[1]);
+				showGradesOnTable((ArrayList<String[]>)msgFromServer[1]);
 			}
 			
 			}
@@ -86,10 +87,19 @@ public class S_myGradesScreenController extends UserControl {
 	
 	/**********************************************************HANDLEMESSAGE*********************************************/
  
-	public void showGradesOnTable(Object msg) {
-		ArrayList<String[]> sExamPref = (ArrayList<String[]>)msg;
-		for(String[] i : sExamPref) {
-			
+	public void showGradesOnTable(ArrayList<String[]> detailsFromS) {
+		
+		for(String[] temp : detailsFromS) {
+			detailsList.add(temp);
+		}
+		try {
+			for (int i = 0;i<detailsList.size();i++) {
+					 courseCodeColumn.setText(detailsList.get(i)[0]);
+					 gradeColumn.setText(detailsList.get(i)[1]);
+					 dateColumn.setText(detailsList.get(i)[2]);
+			}
+		}catch(NullPointerException e) {
+			System.out.println("no grades to show");
 		}
 		
 	}
