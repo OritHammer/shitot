@@ -567,12 +567,16 @@ public class TeacherControl extends UserControl implements Initializable {
 			openScreen("ErrorMessage","Please fill the time you want to extend by");
 			return;
 		}
-		if(reasonForChange.getText().trim()==null) {
+		if(reasonForChange.getText().trim().equals("")) {
 			openScreen("ErrorMessage","Please fill the reason for changing the time");
 			return;
 		}
-		RequestForChangingTimeAllocated request = new RequestForChangingTimeAllocated();
 		ExecutedExam executedexam= executedExamTableView.getSelectionModel().getSelectedItem();
+		if(executedexam==null) {
+			openScreen("ErrorMessage","Please choose an exam");
+			return;
+		}
+		RequestForChangingTimeAllocated request = new RequestForChangingTimeAllocated();
 		request.setIDexecutedExam(executedexam.getExecutedExamID());
 		request.setReason(reasonForChange.getText());
 		request.setMenagerApprove("waiting");
