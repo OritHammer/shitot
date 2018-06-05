@@ -252,7 +252,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		messageToServer[2]=null;
 		chat.handleMessageFromClientUI(messageToServer);
 	}
-	/////////////////////////////move to echoServer//////////////////////////////////////////
+/////////////////////////////move to echoServer//////////////////////////////////////////
 /*	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		case("SetStatusToApproved"){
 			con.setStatusToAddingTimeRequest(((Object[])msg)[1],"approved");
