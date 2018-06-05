@@ -137,6 +137,13 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
+		case "getTimeRequestDetails":{
+			RequestForChangingTimeAllocated request=con.getAddingTimeRequestsDetails((String)message[1]);
+			serverMessage[1]=request;
+			this.sendToAllClients(serverMessage);
+			break;
+		}
+		
 	/*	case "getExecutedExamCodeList" :{// for using on confirm request of adding time to exam
 			con.getRequestsList(message[1]);
 			break;
