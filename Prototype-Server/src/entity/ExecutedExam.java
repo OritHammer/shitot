@@ -44,6 +44,8 @@ public class ExecutedExam implements Serializable {
 		this.range85to95 = range85to95;
 		this.range95to100 = range95to100;
 	}
+	
+	
 	public String getExecutedExamID() {
 		return executedExamID;
 	}
