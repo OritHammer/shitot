@@ -29,6 +29,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import ocsf.server.ConnectionToClient;
 
 public class DirectorControl extends UserControl implements Initializable {
 	ObservableList<RequestForChangingTimeAllocated> addingTimeRequestsObservable = FXCollections.observableArrayList();
@@ -45,10 +46,18 @@ public class DirectorControl extends UserControl implements Initializable {
 	private Button SystemInformation;
 	@FXML
 	private Button backButton;
-
-	// FAML Adding Time Requests TAB
+	// FAML Time Requests Table window
 	@FXML
-	private ComboBox<String> cmbATRChooseExecutedExam;
+	private TableView<RequestForChangingTimeAllocated> requestsTable;
+	@FXML
+	private TableColumn<RequestForChangingTimeAllocated, String> examIDColumn;
+	@FXML
+	private TableColumn<RequestForChangingTimeAllocated, String> teacherNameColumn;
+	@FXML
+	private TableColumn<RequestForChangingTimeAllocated, String> timeAddedColumn;
+	@FXML
+	private Button showDetailsButton;
+	// FAML Adding Time Requests window
 	@FXML
 	private TextField txtFATRrequestId;
 	@FXML
@@ -63,16 +72,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	private Button btnATRApprove;
 	@FXML
 	private Button btnATRreject;
-	@FXML
-	private TableView<RequestForChangingTimeAllocated> requestsTable;
-	@FXML
-	private TableColumn<RequestForChangingTimeAllocated, String> examIDColumn;
-	@FXML
-	private TableColumn<RequestForChangingTimeAllocated, String> teacherNameColumn;
-	@FXML
-	private TableColumn<RequestForChangingTimeAllocated, String> timeAddedColumn;
-	@FXML
-	private Button showDetailsButton;
+
 	// FXML Statistic Reports
 
 	// FXML System information
@@ -88,8 +88,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			messageToServer[1] = null;
 			messageToServer[2] = null;
 			chat.handleMessageFromClientUI(messageToServer);// send the message to server
-		}
-		else if (pageLabel.getText().contentEquals("Adding time requests")){
+		} else if (pageLabel.getText().contentEquals("Adding time requests")) {
 			connect(this);
 			messageToServer[0] = "getTimeRequestDetails";
 			messageToServer[1] = Globals.getRequestId();
@@ -97,10 +96,11 @@ public class DirectorControl extends UserControl implements Initializable {
 			chat.handleMessageFromClientUI(messageToServer);// send the message to server
 		}
 	}
+
 	public void openTimeRequestTable(ActionEvent e) {
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding homePage window
 		openScreen("TimeRequestTable");
-		
+
 	}
 
 	public void openStatisticReport(ActionEvent e) {
@@ -169,7 +169,8 @@ public class DirectorControl extends UserControl implements Initializable {
 		openScreen("HomeScreenDirector");
 	}
 
-	/////// ***************************check the message that arrived from server***************************/
+	/////// ***************************check the message that arrived from
+	/////// server***************************/
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
 		try {
@@ -186,7 +187,7 @@ public class DirectorControl extends UserControl implements Initializable {
 				initAddingTimeRequestDetails((RequestForChangingTimeAllocated) msg[1]);
 				break;
 			}
-		
+
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -197,40 +198,79 @@ public class DirectorControl extends UserControl implements Initializable {
 	}
 
 	/*******************************************************
-	       listeners on addingTimeRequestDirector
+	 * listeners on TimeRequestTable
 	 ***********************************************************/
 	public void showDetailsButtonPressed(ActionEvent e) throws IOException, SQLException {
-		Globals.setRequestId(requestsTable.getSelectionModel().getSelectedItems().get(0).getRequestID());;
+		Globals.setRequestId(requestsTable.getSelectionModel().getSelectedItems().get(0).getRequestID());
+		;
 		final Node source = (Node) e.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
 		openScreen("addingTimeRequestDirector");
 	}
-	@SuppressWarnings("unchecked")
-		 public void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList) {
-			  for (RequestForChangingTimeAllocated i : requestsList) {
-			   addingTimeRequestsObservable.add(i);
 
-			  }
-			 if(requestsTable.getColumns()!=null)
-			 requestsTable.getColumns().clear();
-			  requestsTable.setItems(addingTimeRequestsObservable);
-			  // display the id in the table view
-			     examIDColumn.setCellValueFactory(new PropertyValueFactory<>("IDexecutedExam"));
-			    
-			     teacherNameColumn.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
-			    
-			     timeAddedColumn.setCellValueFactory(new PropertyValueFactory<>("timeAdded"));
-			     //requestsTable.getColumns().clear();
-			     requestsTable.getColumns().addAll(examIDColumn,teacherNameColumn,timeAddedColumn);
-			
-			 }
+	@SuppressWarnings("unchecked")
+	public void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList) {
+		for (RequestForChangingTimeAllocated i : requestsList) {
+			addingTimeRequestsObservable.add(i);
+
+		}
+		if (requestsTable.getColumns() != null)
+			requestsTable.getColumns().clear();
+		requestsTable.setItems(addingTimeRequestsObservable);
+		// display the id in the table view
+		examIDColumn.setCellValueFactory(new PropertyValueFactory<>("IDexecutedExam"));
+
+		teacherNameColumn.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
+
+		timeAddedColumn.setCellValueFactory(new PropertyValueFactory<>("timeAdded"));
+		// requestsTable.getColumns().clear();
+		requestsTable.getColumns().addAll(examIDColumn, teacherNameColumn, timeAddedColumn);
+
+	}
+
 	public void initAddingTimeRequestDetails(RequestForChangingTimeAllocated request) {
 		txtFATRTeachName.setText(request.getTeacherName());
 		txtFATRTimeAdded.setText(request.getTimeAdded());
 		txtFATRreasonAddingTime.setText(request.getReason());
 		txtFATRrequestId.setText(request.getRequestID());
 		txtFATRexecutedExamId.setText(request.getIDexecutedExam());
-	
+
 	}
+
+	/*******************************************************
+	 * listeners on addingTimeRequestDirector
+	 ***********************************************************/
+	public void answerRequest(ActionEvent e) {
+		String requestID = txtFATRrequestId.getText();
+		connect(this);
+		if (e.getSource() == btnATRApprove)//press on approved button
+			messageToServer[0] = "SetStatusToApproved";
+		else if (e.getSource() == btnATRreject)//press on reject button
+			messageToServer[0] = "SetStatusToReject";
+		messageToServer[1] = requestID;
+		messageToServer[2]=null;
+		chat.handleMessageFromClientUI(messageToServer);
+	}
+/////////////////////////////move to echoServer//////////////////////////////////////////
+/*	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
+		case("SetStatusToApproved"){
+			con.setStatusToAddingTimeRequest(((Object[])msg)[1],"approved");
+			break;
+		}
+		case("SetStatusToReject"){
+			con.setStatusToAddingTimeRequest(((Object[])msg)[1],"rejected");
+			break;
+		}
+	}*/
+/////////////////////////////put in mysqlConnection
+/*public void setStatusToAddingTimeRequest(Object RequestID,String newStatus) {
+		try {
+		String reqID=(String)RequestID;
+		stmt = conn.createStatement();
+		stmt.executeUpdate("Update shitot.requestforchangingtimeallocated SET isApproved='"+newStatus+"' where requestID='"+reqID+"';");
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}*/
 }
