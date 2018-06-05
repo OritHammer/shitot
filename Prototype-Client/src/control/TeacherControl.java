@@ -76,6 +76,9 @@ public class TeacherControl extends UserControl implements Initializable {
 	private TextField timeForExamMinute;
 	@FXML
 	private TextField reasonForChange;
+	@FXML
+	private TextField examCode;
+	
 	
 	/* RadioButton of display the correct answer */
 	@FXML
@@ -316,6 +319,24 @@ public class TeacherControl extends UserControl implements Initializable {
 			e1.printStackTrace();
 		} // close the connection
 	}
+	
+	
+	public void createExamCode(ActionEvent e) {
+		ExecutedExam exam;
+		String examID=examComboBox.getValue();
+		String executedExamId = examCode.getText();
+		exam = new ExecutedExam(executedExamId,0,0,0,0,0,Globals.getuserName(),examID,0,0,0,0,0,0);
+		messageToServer[0] = "setExamCode";
+		messageToServer[1] = exam;
+		connect(this);
+		chat.handleMessageFromClientUI(messageToServer);// send the message to server
+		try {
+			chat.closeConnection();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} // close the connection
+	}
 
 	/***************** Update question screen function *****************/
 	/* send to server request for update correct answer */
@@ -456,7 +477,7 @@ public class TeacherControl extends UserControl implements Initializable {
 				tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
 				tController.setErrorMessage("ERROR");// send a the error to the alert we made
 			}
-			stage.setTitle("Create question");
+			stage.setTitle(screen);
 			stage.setScene(scene);
 			stage.show();
 		} catch (Exception exception) {
