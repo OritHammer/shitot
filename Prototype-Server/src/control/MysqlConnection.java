@@ -237,7 +237,34 @@ public class MysqlConnection {
 		}
 		return question;
 	}
+	//
+	
+	public RequestForChangingTimeAllocated getAddingTimeRequestsDetails(String requestID) {
+	
+		RequestForChangingTimeAllocated tmpRequest=null;
+		try {
+			stmt = conn.createStatement();
+			// Query return all the details of specific question
+			ResultSet rs = stmt.executeQuery(
+					"SELECT * FROM requestforchangingtimeallocated "
+							+ "WHERE requestID=\"" + requestID + "\";");
+			// The next commands get the returned details from DB and insert them to
+			// question object
+ 
+			rs.next();
+			// inserting the data to String List , order by the same order in DB
+			tmpRequest = new RequestForChangingTimeAllocated(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6));
+			
+			rs.close();
 
+			// end insert details
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tmpRequest;
+	}
+	
+	//
 	public void updateAnswer(Object questionID, Object newAnswer) throws SQLException {
 		try {
 		// Statement stmt;
