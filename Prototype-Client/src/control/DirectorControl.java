@@ -250,6 +250,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			messageToServer[0] = "SetStatusToReject";
 		messageToServer[1] = requestID;
 		messageToServer[2]=null;
+		this.openTimeRequestTable(e);
 		chat.handleMessageFromClientUI(messageToServer);
 	}
 /////////////////////////////move to echoServer//////////////////////////////////////////
