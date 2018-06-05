@@ -571,7 +571,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	
 	public void loadExams(ActionEvent e) throws IOException {
 		/* ask for the exams name */
-		if(coursesComboBox.getValue().trim().equals("")) {
+		if(coursesComboBox.getValue()==null) {
 			return;
 		}
 		String examIDStart;
