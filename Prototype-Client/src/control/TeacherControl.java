@@ -375,7 +375,6 @@ public class TeacherControl extends UserControl implements Initializable {
 			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 			chat.closeConnection();// close the connection
 		}
-
 	}
 
 	/*****************
@@ -527,13 +526,14 @@ public class TeacherControl extends UserControl implements Initializable {
 		if (subject == null)
 			return;
 		String[] subjectSubString = subject.split("-");
-		
+		coursesComboBox.getSelectionModel().clearSelection();
 		connect(this); // connecting to server
 		messageToServer[0] = "getCourses";
 		messageToServer[1] = subjectSubString[0].trim();
 		messageToServer[2] = Globals.getuserName();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
+	
 	/* this method show the Courses list on the combobox */
 	public void showCourses(ArrayList<Course> msg) {
 		ObservableList<String> observableList = FXCollections.observableArrayList();
@@ -549,7 +549,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		String []subjectSubString = subjectsComboBox.getValue().split("-");
 		String []examSubString = coursesComboBox.getValue().split("-");
 		examIDStart=subjectSubString[0].trim()+""+examSubString[0].trim();
-		if (examIDStart.equals(""))
+		if (examIDStart.equals("") || examIDStart == null)
 			return;		
 		connect(this); // connecting to server
 		messageToServer[0] = "getExams";

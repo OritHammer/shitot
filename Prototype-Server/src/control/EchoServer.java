@@ -160,6 +160,15 @@ public class EchoServer extends AbstractServer {
 			ArrayList<String[]> examsPrefDetails = con.getPrefExamDetails((String)message[1]);
 		}
 		
+		case "SetStatusToApproved" :{
+			con.setStatusToAddingTimeRequest(((Object[])msg)[1],"approved");
+			break;
+		}
+		case "SetStatusToReject" :{
+			con.setStatusToAddingTimeRequest(((Object[])msg)[1],"rejected");
+			break;
+		}
+		
 	/*	case "getExecutedExamCodeList" :{// for using on confirm request of adding time to exam
 			con.getRequestsList(message[1]);
 			break;

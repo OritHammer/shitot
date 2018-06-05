@@ -47,7 +47,15 @@ public class MysqlConnection {
 			System.out.println("VendorError: " + ex.getErrorCode());
 		}
 	}
-
+	public void setStatusToAddingTimeRequest(Object RequestID,String newStatus) {
+		try {
+		String reqID=(String)RequestID;
+		stmt = conn.createStatement();
+		stmt.executeUpdate("Update shitot.requestforchangingtimeallocated SET isApproved='"+newStatus+"' where requestID='"+reqID+"';");
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	public synchronized void createQuestion(Object subject, Object question) {
 
 		String fullQuestionNumber;
