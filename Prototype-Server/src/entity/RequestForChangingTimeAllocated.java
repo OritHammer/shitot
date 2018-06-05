@@ -8,11 +8,20 @@ public class RequestForChangingTimeAllocated implements Serializable{
 	private String menagerApprove; 
 	private String reason;
 	private String timeAdded;
+	private String IDexecutedExam;
 	
 	public RequestForChangingTimeAllocated() {
 		menagerApprove="waiting";
 	}
-	   
+	public RequestForChangingTimeAllocated(String rID,String tName,String approved,String reason,String time,String examID) {
+		menagerApprove="waiting";
+		RequestID=rID;
+		teacherName=tName;
+		menagerApprove=approved;
+		this.reason=reason;
+		timeAdded=time;
+		IDexecutedExam=examID;
+	}
 	public String getRequestID() {
 		return RequestID;
 	}

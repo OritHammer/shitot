@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import entity.Course;
 import entity.Exam;
 import entity.Question;
+import entity.RequestForChangingTimeAllocated;
 import entity.TeachingProfessionals;
 import entity.User;
 import ocsf.server.*;
@@ -127,6 +128,12 @@ public class EchoServer extends AbstractServer {
 		} 
 		case "logoutProcess" :{
 			con.performLogout(message[1]);
+			this.sendToAllClients(serverMessage);
+			break;
+		}
+		case "getTimeRequestCodeList":{
+			ArrayList<RequestForChangingTimeAllocated> requestsList=con.getAddingTimeRequests();
+			serverMessage[1]=requestsList;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
