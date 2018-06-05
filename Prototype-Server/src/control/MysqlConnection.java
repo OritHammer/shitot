@@ -305,7 +305,7 @@ public class MysqlConnection {
 		}
 	}
 
-	public void createExam(Object questionInExams,Object examDetails) {
+	public synchronized void createExam(Object questionInExams,Object examDetails) {
 		ArrayList<QuestionInExam> questionInExam=(ArrayList<QuestionInExam>)questionInExams;
 		Exam exam=(Exam)examDetails;
 		String fullExamNumber;
@@ -403,4 +403,34 @@ public class MysqlConnection {
 		}
 		return examList;	
 	}
+	
+	public synchronized void createChangingRequest(Object requestDetails) {
+		RequestForChangingTimeAllocated request = (RequestForChangingTimeAllocated)requestDetails;
+		String fullRequestNumber;
+		int requestNum;
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(
+					"SELECT MAX(requestID) FROM requestforchangingtimeallocated;");
+			rs.next();
+			if((rs.getString(1) == null))
+				requestNum = 0;
+			else
+				requestNum = Integer.parseInt(rs.getString(1));
+			requestNum++;
+			fullRequestNumber = String.valueOf(requestNum); 
+			stmt. executeUpdate(
+			"INSERT INTO shitot.requestforchangingtimeallocated VALUES(\""
+			+fullRequestNumber.trim()+"\",\""+request.getTeacherName()+"\",\""
+			+request.getReason()+"\",\""+request.getMenagerApprove()+"\",\""+request.getIDexecutedExam()+"\",\""
+			+request.getTimeAdded()+"\");");
+			
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		//stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
+		
+	}
+
 }

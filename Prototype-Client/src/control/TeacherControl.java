@@ -13,6 +13,7 @@ import entity.Exam;
 import entity.ExecutedExam;
 import entity.Question;
 import entity.QuestionInExam;
+import entity.RequestForChangingTimeAllocated;
 import entity.TeachingProfessionals;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -561,15 +562,26 @@ public class TeacherControl extends UserControl implements Initializable {
 		examComboBox.setItems(observableList);
 	}
 	
-	public void createExtendTimeRequest(ActionEvent e) {
+	public void createExtendTimeRequest(ActionEvent e) throws IOException {
 		if(timeForExamHours.getText().equals("")||timeForExamMinute.getText().equals("")) {
 			openScreen("ErrorMessage","Please fill the time you want to extend by");
 			return;
 		}
-		if(reasonForChange.getText()==null) {
+		if(reasonForChange.getText().trim()==null) {
 			openScreen("ErrorMessage","Please fill the reason for changing the time");
 			return;
 		}
-		
+		RequestForChangingTimeAllocated request = new RequestForChangingTimeAllocated();
+		ExecutedExam executedexam= executedExamTableView.getSelectionModel().getSelectedItem();
+		request.setIDexecutedExam(executedexam.getExecutedExamID());
+		request.setReason(reasonForChange.getText());
+		request.setMenagerApprove("waiting");
+		request.setTeacherName(Globals.getuserName());
+		request.setTimeAdded(timeForExamHours.getText()+""+timeForExamMinute.getText());
+		connect(this); // connecting to server
+		messageToServer[0] = "createChangingRequest";
+		messageToServer[1] = request;
+		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
+		chat.closeConnection();
 	}
 }

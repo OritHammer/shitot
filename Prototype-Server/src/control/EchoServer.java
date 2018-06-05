@@ -86,17 +86,22 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		///////////////kaki
+		
 		case "getExecutedExams": {/*client request all all the courses under some subject*/
 			ArrayList<ExecutedExam> executedexam = con.getExecutedExam(message[1]);
 			serverMessage[1] =executedexam;
 			this.sendToAllClients(serverMessage);
 			break;
-		}////////////////kaki
+		}
+		
 		case "getExams": {/*client request all all the courses under some subject*/
 			ArrayList<String> examsList = con.getExams(message[1]);
 			serverMessage[1] =examsList;
 			this.sendToAllClients(serverMessage);
+			break;
+		}
+		case "createChangingRequest": {
+			con.createChangingRequest(message[1]);
 			break;
 		}
 		case "getQuestions": {/*client request all all the questions under some subject*/
