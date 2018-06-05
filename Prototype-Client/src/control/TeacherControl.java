@@ -36,7 +36,6 @@ import javafx.stage.Stage;
 public class TeacherControl extends UserControl implements Initializable {
 
 	private Boolean trueAnsFlag = false;//
-	private String selectedQuestion;
 	private Object[] messageToServer = new Object[3];
 	ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
 
@@ -161,8 +160,9 @@ public class TeacherControl extends UserControl implements Initializable {
 			timeForExamHours.setText("00");
 			timeForExamMinute.setText("00");
 		}
-		if (pageLabel.getText().equals("Home screen"))
+		if (pageLabel.getText().equals("Home screen")) {
 			userText.setText(Globals.getFullName());
+		}
 		if (pageLabel.getText().equals("Create question") || pageLabel.getText().equals("Create exam")
 				|| pageLabel.getText().equals("Update question") || pageLabel.getText().equals("Create exam code")
 				|| pageLabel.getText().equals("Extend exam time")) {
@@ -370,7 +370,7 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	public void askForQuestionDetails(ActionEvent e) throws IOException {
 
-		selectedQuestion = questionsComboBox.getValue(); // get the selected question
+		String selectedQuestion = questionsComboBox.getValue(); // get the selected question
 		if (selectedQuestion == null)
 			return;
 		String[] questionDetails = selectedQuestion.split("-");
@@ -391,12 +391,8 @@ public class TeacherControl extends UserControl implements Initializable {
 			subjectsComboBox.setItems(observableList);
 		}
 	}
-
-	/* this method show the Courses list on the combobox */
 	
 	/* this method show the questions list on the combobox */
-	
-	
 	public void showQuestions(ArrayList<String> questionsList) {
 		ObservableList<String> observableList = FXCollections.observableArrayList(questionsList);
 		questionsComboBox.setItems(observableList);
@@ -508,7 +504,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[2] = Globals.getuserName();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
-	
+	/* this method show the Courses list on the combobox */
 	public void showCourses(ArrayList<Course> msg) {
 		ObservableList<String> observableList = FXCollections.observableArrayList();
 		for (Course c : msg) {
