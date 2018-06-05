@@ -82,11 +82,12 @@ public class S_myGradesScreenController extends UserControl {
 	}
 	
 	/**********************************************************HANDLEMESSAGE*********************************************/
-// maybe think of arraylist of strings and that it , taking from DB exam code ang grade , as a point ? 
+ 
 	public void showGradesOnTable(Object msg) {
-		ArrayList<StudentPerformExam> sExamPref = (ArrayList<StudentPerformExam>)msg;
-		String examCode = " ";
-		String courseCode = " ";
+		ArrayList<String[]> sExamPref = (ArrayList<String[]>)msg;
+		for(String[] i : sExamPref) {
+			
+		}
 		
 	}
 }
