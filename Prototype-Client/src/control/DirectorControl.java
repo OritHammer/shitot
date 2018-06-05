@@ -117,14 +117,14 @@ public class DirectorControl extends UserControl implements Initializable {
 		try {
 			Stage primaryStage = new Stage();
 			FXMLLoader loader = new FXMLLoader();
-			Pane root = loader.load(getClass().getResource("/directorBoundary/" + screen + ".fxml").openStream());/////////// *ğöèøê
-																													/////////// ìùğåú
-																													/////////// ìáåğãøé
-																													/////////// øâéì
-																													/////////// àå
-																													/////////// ìäúàéí
-																													/////////// ìàøåø
-																													/////////// îñâ'*/////////////
+			Pane root = loader.load(getClass().getResource("/directorBoundary/" + screen + ".fxml").openStream());/////////// *× ×¦×˜×¨×š
+																													/////////// ×œ×©× ×•×ª
+																													/////////// ×œ×‘×•× ×“×¨×™
+																													/////////// ×¨×’×™×œ
+																													/////////// ××•
+																													/////////// ×œ×”×ª××™×
+																													/////////// ×œ××¨×•×¨
+																													/////////// ××¡×’'*/////////////
 
 			Scene scene = new Scene(root);
 			if (screen.equals("ErrorMessage")) {
@@ -165,7 +165,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	public void backButtonPressed(ActionEvent e) throws IOException, SQLException {
 		final Node source = (Node) e.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
-		stage.close();
+		stage.hide();
 		openScreen("HomeScreenDirector");
 	}
 
@@ -176,7 +176,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		try {
 			chat.closeConnection();// close the connection
 
-			Object[] msg = (Object[]) message;
+			Object[] msg = (Object[])message;
 
 			switch (msg[0].toString()) {
 			case ("getTimeRequestList"): { /* get the subjects list from server */
@@ -206,7 +206,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		final Node source = (Node) e.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
-		openScreen("addingTimeRequestDirector");
+		openScreen("â€ªaddingTimeRequestDirectorâ€¬"); 
 	}
 
 	@SuppressWarnings("unchecked")
@@ -250,6 +250,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			messageToServer[0] = "SetStatusToReject";
 		messageToServer[1] = requestID;
 		messageToServer[2]=null;
+		this.openTimeRequestTable(e);
 		chat.handleMessageFromClientUI(messageToServer);
 	}
 /////////////////////////////move to echoServer//////////////////////////////////////////

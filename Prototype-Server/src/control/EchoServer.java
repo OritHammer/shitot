@@ -104,6 +104,9 @@ public class EchoServer extends AbstractServer {
 			con.createChangingRequest(message[1]);
 			break;
 		}
+		
+
+		
 		case "getQuestions": {/*client request all all the questions under some subject*/
 			ArrayList<String> questionList = con.getQuestionList(message[1],message[2]);
 			serverMessage[1] =questionList;
@@ -114,6 +117,12 @@ public class EchoServer extends AbstractServer {
 			con.createExam(message[1],message[2]);
 			break;
 		}
+		
+		case "setExamCode": {/*client request all all the courses under some subject*/
+			con.createExamCode(message[1]);
+			break;
+		}
+		
 		case "getQuestionDetails" :
 			{
 				Question q=con.getQuestionDetails(message[1]);
