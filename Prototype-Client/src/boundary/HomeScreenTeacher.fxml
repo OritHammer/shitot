@@ -20,7 +20,7 @@
       <Button layoutX="157.0" layoutY="243.0" mnemonicParsing="false" text="Check exam" />
       <Button layoutX="139.0" layoutY="276.0" mnemonicParsing="false" onAction="#openExamCodeScreen" text="Create exam code" />
       <Button layoutX="139.0" layoutY="314.0" mnemonicParsing="false" onAction="#openExtendExamTimeScreen" text="Extend exam time" />
-      <Button layoutX="158.0" layoutY="348.0" mnemonicParsing="false" text="Lock exam" />
+      <Button layoutX="158.0" layoutY="348.0" mnemonicParsing="false" onAction="#openLockExamScreen" text="Lock exam" />
       <Label fx:id="pageLabel" layoutX="146.0" layoutY="14.0" prefHeight="17.0" prefWidth="85.0" text="Home screen" visible="false" />
       <TextField layoutX="63.0" layoutY="400.0" prefHeight="103.0" prefWidth="269.0" promptText="New Messages">
          <font>
