@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class ExamCopy {
 
-	
+	 
 /************* Class Variables ***********************/
 	private String studentID;
 	private int grade;

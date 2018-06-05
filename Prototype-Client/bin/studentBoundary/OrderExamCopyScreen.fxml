@@ -13,3 +13,4 @@
       <ComboBox fx:id="examCmb" layoutX="33.0" layoutY="108.0" onAction="#chooseExamPressed" prefWidth="150.0" promptText="Choose exam" />
    </children>
 </AnchorPane>
+ 

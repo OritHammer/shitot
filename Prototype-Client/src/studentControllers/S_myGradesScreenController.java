@@ -66,7 +66,7 @@ public class S_myGradesScreenController extends UserControl {
 	}
 	public void checkMessage(Object message) {
 		
-		try {
+		try { 
 			Object[] msgFromServer = (Object[])message ;
 			switch((String)msgFromServer[0]) {
 			case "getExamsByUserName":
