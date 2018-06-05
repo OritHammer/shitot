@@ -18,7 +18,7 @@
       <Label fx:id="pageLabel" layoutX="200.0" layoutY="14.0" prefHeight="17.0" prefWidth="171.0" text="Adding time requests" />
       <Button fx:id="backButton" layoutX="399.0" layoutY="350.0" mnemonicParsing="false" onAction="#backButtonPressed" text="cancel" />
       <Button fx:id="btnATRApprove" layoutX="130.0" layoutY="350.0" mnemonicParsing="false" onAction="#answerRequest" text="Confirm Request" />
-      <Button fx:id="btnATRreject" layoutX="266.0" layoutY="350.0" mnemonicParsing="false" onAction="#answerRequest" text="Reject Request" />
+	  <Button fx:id="btnATRreject" layoutX="266.0" layoutY="350.0" mnemonicParsing="false" onAction="#answerRequest" text="Reject Request" />
       <TextField fx:id="txtFATRrequestId" editable="false" layoutX="423.0" layoutY="98.0" opacity="0.65" prefHeight="25.0" prefWidth="112.0" />
       <Label layoutX="342.0" layoutY="102.0" text="requestID" />
    </children> 
