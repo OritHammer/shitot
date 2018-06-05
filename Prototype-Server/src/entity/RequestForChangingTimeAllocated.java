@@ -12,12 +12,26 @@ public class RequestForChangingTimeAllocated implements Serializable{
 	private String menagerApprove; 
 	private String reason;
 	private String timeAdded;
+	private String IDexecutedExam;
 	
 	public RequestForChangingTimeAllocated() {
 		menagerApprove="waiting";
 	}
+<<<<<<< HEAD
 	
 	public String getRequestID() { 
+=======
+	public RequestForChangingTimeAllocated(String rID,String tName,String approved,String reason,String time,String examID) {
+		menagerApprove="waiting";
+		RequestID=rID;
+		teacherName=tName;
+		menagerApprove=approved;
+		this.reason=reason;
+		timeAdded=time;
+		IDexecutedExam=examID;
+	}
+	public String getRequestID() {
+>>>>>>> branch 'master' of https://github.com/avivMahulya/shitot.git
 		return RequestID;
 	}
 	public void setRequestID(String requestID) {

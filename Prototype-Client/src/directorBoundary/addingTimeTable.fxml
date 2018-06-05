@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="control.DirectorControl">
+   <children>
+      <AnchorPane layoutX="-70.0" layoutY="-68.0" prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <TableView fx:id="requestsTableView" layoutX="182.0" layoutY="120.0" prefHeight="200.0" prefWidth="275.0">
+              <columns>
+                <TableColumn fx:id="examIDColumn" prefWidth="75.0" text="ExamID" />
+                <TableColumn fx:id="teacherNameColumn" prefWidth="75.0" text="TeacherName" />
+                  <TableColumn fx:id="timeAddedColumn" prefWidth="105.0" text="time added" />
+              </columns>
+            </TableView>
+            <Button fx:id="showDetailsButton" layoutX="294.0" layoutY="346.0" mnemonicParsing="false" text="Show details" />
+            <Label fx:id="pageLabel" layoutX="306.0" layoutY="82.0" text="requests" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

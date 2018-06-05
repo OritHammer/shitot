@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import entity.QuestionInExam;
+import entity.RequestForChangingTimeAllocated;
 import entity.TeachingProfessionals;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,14 +21,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class DirectorControl extends UserControl implements Initializable {
-
+	ObservableList<RequestForChangingTimeAllocated> addingTimeRequestsObservable = FXCollections.observableArrayList();
 	/// HOME TAB
 	@FXML
 	private Label userText1;
@@ -55,8 +61,16 @@ public class DirectorControl extends UserControl implements Initializable {
 	private Button btnATRApprove;
 	@FXML
 	private Button btnATRreject;
-	
-
+	@FXML
+	private TableView<RequestForChangingTimeAllocated> requestsTable;
+	@FXML
+	private TableColumn<RequestForChangingTimeAllocated, String> examIDColumn;
+	@FXML
+	private TableColumn<RequestForChangingTimeAllocated, String> teacherNameColumn;
+	@FXML
+	private TableColumn<RequestForChangingTimeAllocated, String> timeAddedColumn;
+	@FXML
+	private Button showDetailsButton;
 	//FXML Statistic Reports
 	
 	
@@ -66,14 +80,20 @@ public class DirectorControl extends UserControl implements Initializable {
 	public void initialize(URL url, ResourceBundle rb) {
 		 if(pageLabel.getText().equals("Home screen"))
 			  userText1.setText(Globals.getFullName());
+		 else if(pageLabel.getText().contentEquals("requests"))
+		 {
+			 	
+		 }
 	}
 	public void openAddingTimeRequest(ActionEvent e) {
 		((Node)e.getSource()).getScene().getWindow().hide(); //hiding homePage window
-		openScreen("addingTimeRequestDirector");
-		messageToServer[0] = "getExecutedExamCodeList";
+		openScreen("addingTimeTable");
+		connect(this);
+		messageToServer[0] = "getTimeRequestCodeList";
 		messageToServer[1] = null;
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
+	
 	}
 	public void openStatisticReport(ActionEvent e) {
 		((Node)e.getSource()).getScene().getWindow().hide(); //hiding homePage window
@@ -130,6 +150,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	    openScreen("HomeScreenDirector");
 	}
 ///////********************************************check the message that arrived from server***********************************************************/
+	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
 		try {
 			chat.closeConnection();// close the connection
@@ -138,7 +159,7 @@ public class DirectorControl extends UserControl implements Initializable {
 
 			switch (msg[0].toString()) {
 			case ("getTimeRequestCodeList"): { /* get the subjects list from server */
-				initExecutedExamList((ArrayList<String>) msg[1]);
+				initAddingTimeRequests((ArrayList<RequestForChangingTimeAllocated>) msg[1]);
 				break;
 			}
 
@@ -152,9 +173,19 @@ public class DirectorControl extends UserControl implements Initializable {
 	}
 	/*******************************************************listeners on addingTimeRequestDirector***********************************************************/
 	/**/
-	public void initExecutedExamList(ArrayList<String> ExecutedExamList){
-		ObservableList<String> observableList = FXCollections.observableArrayList(ExecutedExamList);
-		cmbATRChooseExecutedExam.setItems(observableList);
+	public void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList){
+		for(RequestForChangingTimeAllocated i:requestsList)
+		{
+			addingTimeRequestsObservable.add(i);
+			
+			requestsTable.setItems(addingTimeRequestsObservable);
+			examIDColumn.setCellValueFactory(new PropertyValueFactory<>("IDexecutedExam"));// display the id in the
+																								// table view
+			teacherNameColumn.setCellValueFactory(new PropertyValueFactory<>("teacherName"));// display the points in the
+																								// table view
+			timeAddedColumn.setCellValueFactory(new PropertyValueFactory<>("timeAdded"));// display the points in the
+			// table view
+		}
 		
 		//questionsComboBox.getItems().remove(questionsComboBox.getValue());//removing from combobox
 	}
