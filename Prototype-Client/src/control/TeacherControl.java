@@ -21,7 +21,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -73,7 +72,10 @@ public class TeacherControl extends UserControl implements Initializable {
 	private TextField timeForExamHours;
 	@FXML
 	private TextField timeForExamMinute;
-	/* buttons of display the correct answer */
+	@FXML
+	private TextField reasonForChange;
+	
+	/* RadioButton of display the correct answer */
 	@FXML
 	private RadioButton correctAns1;
 	@FXML
@@ -85,10 +87,6 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	@FXML
 	private ToggleGroup group;
-	@FXML
-	private Button createQuestionBtn;
-	@FXML
-	private Button createExamBTN;
 
 	@FXML
 	private TableView<QuestionInExam> questionsInExamTableView;
@@ -527,8 +525,20 @@ public class TeacherControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 	
-	private void showExams(ArrayList<String> examList) {
+	public void showExams(ArrayList<String> examList) {
 		ObservableList<String> observableList = FXCollections.observableArrayList(examList);
 		examComboBox.setItems(observableList);
+	}
+	
+	public void createExtendTimeRequest(ActionEvent e) {
+		if(timeForExamHours.getText().equals("")||timeForExamMinute.getText().equals("")) {
+			openScreen("ErrorMessage","Please fill the time you want to extend by");
+			return;
+		}
+		if(reasonForChange.getText()==null) {
+			openScreen("ErrorMessage","Please fill the reason for changing the time");
+			return;
+		}
+		
 	}
 }

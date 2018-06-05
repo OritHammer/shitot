@@ -3,6 +3,10 @@ package entity;
 import java.io.Serializable;
 
 public class RequestForChangingTimeAllocated implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String RequestID;
 	private String teacherName;
 	private String menagerApprove; 
@@ -12,13 +16,13 @@ public class RequestForChangingTimeAllocated implements Serializable{
 	public RequestForChangingTimeAllocated() {
 		menagerApprove="waiting";
 	}
-	   
-	public String getRequestID() {
+	
+	public String getRequestID() { 
 		return RequestID;
 	}
 	public void setRequestID(String requestID) {
 		RequestID = requestID;
-	} 
+	}
 	public String getTeacherName() {
 		return teacherName;
 	}

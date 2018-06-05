@@ -36,7 +36,7 @@
             <ToggleGroup />
          </toggleGroup>
       </RadioButton>
-      <Button fx:id="createQuestionBtn" layoutX="272.0" layoutY="358.0" mnemonicParsing="false" onAction="#createQuestionClick" text="Create">
+      <Button layoutX="272.0" layoutY="358.0" mnemonicParsing="false" onAction="#createQuestionClick" text="Create">
          <textFill>
             <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
                <stops>
