@@ -373,7 +373,7 @@ public class MysqlConnection {
 
 	}
 
-	public synchronized void createExamCode(Object excutedExam) {
+	public synchronized Boolean createExamCode(Object excutedExam) {
 
 		ExecutedExam exam = (ExecutedExam) excutedExam;
 
@@ -385,15 +385,17 @@ public class MysqlConnection {
 			if (rs.isBeforeFirst()) {
 				System.out.println("There is already a code like that, please choose another code");
 				rs.close();
-				return;
+				return false;
 			} else {
 				stmt.executeUpdate("INSERT INTO shitot.executedexam VALUES(\"" + exam.getExecutedExamID().trim()
 						+ "\",0,0,0,0,0,\"" + exam.getTeacherName() + "\",\"" + exam.getExam_id()
 						+ "\",0,0,0,0,0,0,\"open\");");
+				return true;
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
 		// stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
 
