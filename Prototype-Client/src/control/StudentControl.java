@@ -36,23 +36,17 @@ import javafx.stage.Stage;
 import studentControllers.S_myGradesScreenController;
 
 public class StudentControl extends UserControl implements Initializable {
-
-	private Parent homeParent = null;
-	private Parent gradesParent = null;
-	private Parent orderCopyParent = null;
-	private Parent excecuteExamParent = null;
 	private static Scene homeSc = null;
 	private static Scene gradeSc = null;
-	private static Scene orderCopySc = null;
-	private static Scene excecuteSc = null;
+	
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
 	@FXML
-	private Label userNameLabel;
+	private  Label userNameLabel;
 	@FXML
-	private Label authorLabel;
+	private  Label authorLabel;
 	@FXML
-	private Label dateLabel;
+	private  Label dateLabel;
 	@FXML
 	private TextField newMsgTextField;
 
@@ -120,6 +114,10 @@ public class StudentControl extends UserControl implements Initializable {
 			loader.setLocation(getClass().getResource("/studentBoundary/" + screen + ".fxml"));
 			Scene scene = new Scene(loader.load());
 			Stage stage = Main.getStage();
+			if(screen.equals("NewDesignHomeScreenStudent") ) {
+				StudentControl sControl = loader.getController();
+				sControl.setStudentAuthor_Date_name();
+			}
 			if (screen.equals("ErrorMessage")) {
 				ErrorControl tController = loader.getController();
 				tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
@@ -155,7 +153,6 @@ public class StudentControl extends UserControl implements Initializable {
 	// ***
 	public void goToHomePressed(ActionEvent e) throws Exception {
 		closeScreen(e);
-		setStudentAuthor_Date_name();
 		openScreen("NewDesignHomeScreenStudent");
 	}
 
