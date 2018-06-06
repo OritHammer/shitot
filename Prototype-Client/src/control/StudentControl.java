@@ -173,7 +173,7 @@ public class StudentControl extends UserControl implements Initializable {
 			// orderCopyParent = loaderFX.load();
 			// orderCopySc = new Scene(orderCopyParent);
 			loaderFX.setLocation(getClass().getResource("/studentBoundary/ManualAndComputerizeExamScreen.fxml"));
-			//excecuteExamParent = loaderFX.load();
+			excecuteExamParent = loaderFX.load();
 			excecuteSc = new Scene(excecuteExamParent);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
