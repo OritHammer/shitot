@@ -66,7 +66,7 @@ public class UserControl implements Initializable {
 	public void closeButtonAction(ActionEvent e) throws IOException {
 		Stage stage = (Stage) closeButton.getScene().getWindow();
 		stage.close();
-	}
+	} 
 
 	protected ChatClient chat;
 
