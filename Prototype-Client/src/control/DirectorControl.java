@@ -206,7 +206,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		final Node source = (Node) e.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
-		openScreen("‪addingTimeRequestDirector‬"); 
+		openScreen("‪addingTimeRequest‬"); 
 	}
 
 	@SuppressWarnings("unchecked")
@@ -239,7 +239,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	}
 
 	/*******************************************************
-	 * listeners on addingTimeRequestDirector
+	 * listeners on addingTimeRequest
 	 ***********************************************************/
 	public void answerRequest(ActionEvent e) {
 		String requestID = txtFATRrequestId.getText();
