@@ -112,6 +112,7 @@ public class S_HomeScreenController extends UserControl implements Initializable
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
 		try {
+			chat.closeConnection();
 			Object[] msgFromServer = (Object[])message ; 
 			switch(msgFromServer[0].toString()) {
 			case "logoutProcess" : {
@@ -120,6 +121,9 @@ public class S_HomeScreenController extends UserControl implements Initializable
 			} 
 			}
 		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

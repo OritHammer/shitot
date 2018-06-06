@@ -1,5 +1,6 @@
 package studentControllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import control.Globals;
@@ -69,8 +70,9 @@ public class S_myGradesScreenController extends UserControl {
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 	}
 	public void checkMessage(Object message) {
-		
+	
 		try { 
+			chat.closeConnection();
 			Object[] msgFromServer = (Object[])message ;
 			switch((String)msgFromServer[0]) {
 			case "getExamsByUserName":
@@ -79,8 +81,10 @@ public class S_myGradesScreenController extends UserControl {
 			}
 			
 			}
-
 		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
