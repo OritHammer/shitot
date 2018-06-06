@@ -21,9 +21,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView.EditEvent;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -33,11 +35,11 @@ import javafx.stage.Stage;
 import studentControllers.S_myGradesScreenController;
 
 public class StudentControl extends UserControl implements Initializable {
-	
-	private Parent homeParent = null ;
-	private Parent gradesParent = null ;
-	private Parent orderCopyParent = null ;
-	private Parent excecuteExamParent = null ;
+
+	private Parent homeParent = null;
+	private Parent gradesParent = null;
+	private Parent orderCopyParent = null;
+	private Parent excecuteExamParent = null;
 	private static Scene homeSc = null;
 	private static Scene gradeSc = null;
 	private static Scene orderCopySc = null;
@@ -52,15 +54,13 @@ public class StudentControl extends UserControl implements Initializable {
 	private Label dateLabel;
 	@FXML
 	private TextField newMsgTextField;
-	
-	
 
 	// *********for student do Exam***********//
 	@FXML
 	private TextField codeTextField;
 	// *********for student see his grades***********//
 	@FXML
-	private TableView<ExamCopy> cexamGradesTable;
+	private TableView<ExamCopy> examGradesTable;
 	@FXML
 	private TableColumn<ExamCopy, String> examCodeColumn;
 	@FXML
@@ -69,12 +69,15 @@ public class StudentControl extends UserControl implements Initializable {
 	private TableColumn<String[], String> gradeColumn;
 	@FXML
 	private TableColumn<String[], String> dateColumn;
+	@FXML
+	private ComboBox<String> examCodeCombo;
 
 	ObservableList<String[]> detailsList = FXCollections.observableArrayList();
 	// *********for student ask for copy of his exam***********//
-	@FXML
-	private ComboBox<String> examCmb;
-	
+
+	// *******for student execute or download exam*********//
+	private CheckBox correctExamCodeCB;
+
 	// move to user
 	private Calendar currentCalendar = Calendar.getInstance();
 	private Date currentTime = currentCalendar.getTime();
@@ -103,40 +106,33 @@ public class StudentControl extends UserControl implements Initializable {
 	// the problem is with the fact that we create a new scene each time and we need
 	// to prevent it in that way
 	private void openScreen(String screen) {// *** move to userControl ?
-		/*try {
-			Parent root = FXMLLoader.load(getClass().getResource("/studentBoundary/" + screen + ".fxml"));
-			if (gradeSc == null) {
-				gradeSc = new Scene(root);
-			}
-			S_myGradesScreenController myGradeC = loader.getController();
-			// Scene scene2 = new Scene(root);
-			Stage stage = Main.getStage();
-			// myGradeC.setHomePScene(homeSc);
-			stage.setScene(gradeSc);
-			stage.show();
-
-			// stage.setScene(scene);
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			System.out.println("Error in opening the page");
-		}*/
+		/*
+		 * try { Parent root =
+		 * FXMLLoader.load(getClass().getResource("/studentBoundary/" + screen +
+		 * ".fxml")); if (gradeSc == null) { gradeSc = new Scene(root); }
+		 * S_myGradesScreenController myGradeC = loader.getController(); // Scene scene2
+		 * = new Scene(root); Stage stage = Main.getStage(); //
+		 * myGradeC.setHomePScene(homeSc); stage.setScene(gradeSc); stage.show();
+		 * 
+		 * // stage.setScene(scene); } catch (Exception exception) {
+		 * exception.printStackTrace(); System.out.println("Error in opening the page");
+		 * }
+		 */
 		Stage stage = Main.getStage();
-		switch(screen){
-		case "home" :
-		{
+		switch (screen) {
+		case "home": {
 			stage.setScene(homeSc);
-		    break;
+			break;
 		}
-		case "grade" : {
+		case "grade": {
 			stage.setScene(gradeSc);
 			break;
 		}
-		case "copy" : 
-		{
+		case "copy": {
 			stage.setScene(orderCopySc);
 			break;
 		}
-		case "excecute" :{
+		case "excecute": {
 			stage.setScene(excecuteSc);
 			break;
 		}
@@ -162,47 +158,48 @@ public class StudentControl extends UserControl implements Initializable {
 	public void setHomePScene(Scene home) {
 		homeSc = home;
 	}
-public void initParentsAndScenes () {
-	//this method make sure we use the first scene prevent calling server 
-	try {
-	FXMLLoader loaderFX=new FXMLLoader();
-	loaderFX.setLocation(getClass().getResource("/studentBoundary/HomeScreenTeacher.fxml"));
-	homeParent = loaderFX.load() ; // setting to home parent his FXML 
-	homeSc = new Scene(homeParent);
-	loaderFX.setLocation(getClass().getResource("/studentBoundary/MyGradesScreen.fxml"));
-	gradesParent = loaderFX.load();
-	gradeSc = new Scene(gradesParent);
-	loaderFX.setLocation(getClass().getResource("/studentBoundary/OrderExamCopyScreen.fxml"));
-	orderCopyParent = loaderFX.load();
-	orderCopySc = new Scene(orderCopyParent);
-	loaderFX.setLocation(getClass().getResource("/studentBoundary/ManualAndComputerizeExamScreen.fxml"));
-	excecuteExamParent = loaderFX.load();
-	excecuteSc = new Scene(excecuteExamParent);
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+
+	public void initParentsAndScenes() {
+		// this method make sure we use the first scene prevent calling server
+		try {
+			FXMLLoader loaderFX = new FXMLLoader();
+			// loaderFX.setLocation(getClass().getResource("/studentBoundary/HomeScreenTeacher.fxml"));
+			// homeParent = loaderFX.load() ; // setting to home parent his FXML
+			// homeSc = new Scene(homeParent);
+			// loaderFX.setLocation(getClass().getResource("/studentBoundary/MyGradesScreen.fxml"));
+			// gradesParent = loaderFX.load();
+			// gradeSc = new Scene(gradesParent);
+			// loaderFX.setLocation(getClass().getResource("/studentBoundary/OrderExamCopyScreen.fxml"));
+			// orderCopyParent = loaderFX.load();
+			// orderCopySc = new Scene(orderCopyParent);
+			loaderFX.setLocation(getClass().getResource("/studentBoundary/ManualAndComputerizeExamScreen.fxml"));
+			excecuteExamParent = loaderFX.load();
+			excecuteSc = new Scene(excecuteExamParent);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
-	
-	
-}
+
 	/********************* Student Home Screen listeners *************************/
 	public void myGradesPressed(ActionEvent e) {
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
 		// S_myGradesScreenController myGradeC = loader.getController();
 		// myGradeC.getGradesFromServer();
-		//openScreen("MyGradesScreen");
+		// openScreen("MyGradesScreen");
 		openScreen("grade");
 	}
 
 	public void orderExamCopyPressed(ActionEvent e) {
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
-		//openScreen("OrderExamCopyScreen");
+		// openScreen("OrderExamCopyScreen");
 		openScreen("copy");
 	}
 
 	public void excecuteMorCExamPressed(ActionEvent e) {
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
-		//openScreen("ManualAndComputerizeExamScreen");
+		// openScreen("ManualAndComputerizeExamScreen");
 		openScreen("excecute");
 	}
 
@@ -215,6 +212,12 @@ public void initParentsAndScenes () {
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 	}
 
+	public void refreshTable(ActionEvent e) {
+		getGradesFromServer();
+	}
+
+	/********************* Student Order Copy *************************/
+
 	// for all windows
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
@@ -222,13 +225,13 @@ public void initParentsAndScenes () {
 			chat.closeConnection();
 			Object[] msgFromServer = (Object[]) message;
 			switch (msgFromServer[0].toString()) {
-				case "logoutProcess": {
-					// need to think how to close this scene and go back to main scene !
-					break;
-				}
-				case "getExamsByUserName": {
-					showGradesOnTable((ArrayList<String[]>) msgFromServer[1]);
-				}
+			case "logoutProcess": {
+				// need to think how to close this scene and go back to main scene !
+				break;
+			}
+			case "getExamsByUserName": {
+				showGradesOnTable((ArrayList<String[]>) msgFromServer[1]);
+			}
 			}
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
@@ -237,13 +240,18 @@ public void initParentsAndScenes () {
 			e.printStackTrace();
 		}
 	}
-	public void showGradesOnTable(ArrayList<String[]> detailsFromS) {		}
+
+	public void showGradesOnTable(ArrayList<String[]> detailsFromS) {
+	}
+
 	public void orderExamPressed(ActionEvent e) {
-		
 		messageToServer[0] = "getExamsCopyByUserName";
-		messageToServer[1] = examCmb.getValue();
+		messageToServer[1] = examCodeCombo.getValue();
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
-	} 
+	}
 
+	public void downloadExamPressed() {
+
+	}
 }
