@@ -185,10 +185,12 @@ public class DirectorControl extends UserControl implements Initializable {
 				break;
 			}
 			case ("getTimeRequestDetails"): { /* get the subjects list from server */
+				if ((RequestForChangingTimeAllocated) msg[1]!= null)
 				initAddingTimeRequestDetails((RequestForChangingTimeAllocated) msg[1]);
+				else openScreen("ErrorControl","There is no request to confirm .");
 				break;
 			}
-
+ 
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -212,7 +214,6 @@ public class DirectorControl extends UserControl implements Initializable {
 		
 		for (RequestForChangingTimeAllocated i : requestsList) {
 			addingTimeRequestsObservable.add(i);
-
 		}
 		if (requestsTable!=null && requestsTable.getColumns() != null)
 			requestsTable.getColumns().clear();

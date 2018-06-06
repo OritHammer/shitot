@@ -92,9 +92,10 @@ public class UserControl implements Initializable {
 		 //this.ip = "77.138.70.98";
 		this.ip = "localhost";
 		// this.ip = sc.nextLine();
-		sc.close();
+		sc.close(); 
+		LoginBtn.setDefaultButton(true);
 	}
-
+ 
 	public void checkMessage(Object message) {
 		try {
 			chat.closeConnection();// close the connection
