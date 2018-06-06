@@ -338,17 +338,17 @@ public class TeacherControl extends UserControl implements Initializable {
 			return;
 		}
 		if (executedExamId.length() != 4) {
-			for (int i = 0 ; i < executedExamId.length() ; i++){
-	            char ch = executedExamId.charAt(i);
-
-	            if (!((ch>='a' && ch<='z')||(ch>='A' && ch<='Z')||(ch>='0' && ch<='9'))){
-	                openScreen("ErrorMessage", "You must enter only letters and numbers.");
-	                return;
-	            }
-	        }
 			openScreen("ErrorMessage", "You must enter exactly 4 letters & number");
 			return;
 		}
+		for (int i = 0 ; i < executedExamId.length() ; i++){
+            char ch = executedExamId.charAt(i);
+
+            if (!((ch>='a' && ch<='z')||(ch>='A' && ch<='Z')||(ch>='0' && ch<='9'))){
+                openScreen("ErrorMessage", "You must enter only letters and numbers.");
+                return;
+            }
+        }
 		exam = new ExecutedExam();
 		exam.setExecutedExamID(executedExamId);
 		exam.setTeacherName(Globals.getuserName());
