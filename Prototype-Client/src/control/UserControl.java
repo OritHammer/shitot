@@ -95,7 +95,7 @@ public class UserControl implements Initializable {
 		sc.close();
 		LoginBtn.setDefaultButton(true);
 	}
-
+ 
 	public void checkMessage(Object message) {
 		try {
 			chat.closeConnection();// close the connection
