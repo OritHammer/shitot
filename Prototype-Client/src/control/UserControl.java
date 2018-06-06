@@ -52,7 +52,7 @@ public class UserControl implements Initializable {
 	@FXML
 	private ImageView LoginButton;
 	@FXML
-	public Text userText;
+	public Text userText;///user name
 	@FXML
 	private Label userText1;
 	@FXML
@@ -148,7 +148,7 @@ public class UserControl implements Initializable {
 									FXMLLoader loader=new FXMLLoader();
 									loader.setLocation(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
 									home_page_parent = loader.load();
-									S_HomeScreenController sController=loader.getController();
+									StudentControl sController=loader.getController();
 									Globals.setFullName(user.getFullname());
 									Globals.setuserName(user.getUsername());
 									sController.setStudentAuthor_Date_name();/*send the name to the controller*/

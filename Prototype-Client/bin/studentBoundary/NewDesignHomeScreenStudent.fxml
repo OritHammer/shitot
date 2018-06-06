@@ -7,43 +7,43 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="485.0" prefWidth="414.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="studentControllers.S_HomeScreenController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.StudentControl">
    <children>
-      <Label layoutX="26.0" layoutY="23.0" prefHeight="34.0" prefWidth="63.0" text="Hello :">
+      <Label layoutX="81.0" layoutY="26.0" prefHeight="34.0" prefWidth="63.0" text="Hello :">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="userNameLabel" layoutX="19.0" layoutY="57.0" prefHeight="26.0" prefWidth="118.0" text="user name" underline="true">
+      <Label fx:id="userNameLabel" layoutX="74.0" layoutY="60.0" prefHeight="26.0" prefWidth="118.0" text="user name" underline="true">
          <font> 
             <Font size="17.0" />
          </font>
       </Label>
-      <Label layoutX="194.0" layoutY="27.0" prefHeight="27.0" prefWidth="155.0" text="My authorization:">
+      <Label layoutX="410.0" layoutY="29.0" prefHeight="27.0" prefWidth="155.0" text="My authorization:">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="26.0" layoutY="431.0" prefHeight="27.0" prefWidth="52.0" text="Date :">
+      <Label layoutX="120.0" layoutY="329.0" prefHeight="27.0" prefWidth="52.0" text="Date :">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="authorLabel" layoutX="215.0" layoutY="57.0" prefHeight="26.0" prefWidth="95.0" text="author">
+      <Label fx:id="authorLabel" layoutX="431.0" layoutY="59.0" prefHeight="26.0" prefWidth="95.0" text="author">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <Label fx:id="dateLabel" layoutX="96.0" layoutY="436.0" prefHeight="17.0" prefWidth="138.0" text="DateField">
+      <Label fx:id="dateLabel" layoutX="190.0" layoutY="334.0" prefHeight="17.0" prefWidth="138.0" text="DateField">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <Button fx:id="logOutBtn" layoutX="258.0" layoutY="437.0" mnemonicParsing="false" onAction="#logoutPressed" text="Logout" />
-      <Button layoutX="133.0" layoutY="152.0" mnemonicParsing="false" onAction="#myGradesPressed" text="My grades" />
-      <Button layoutX="120.0" layoutY="185.0" mnemonicParsing="false" onAction="#orderExamCopyPressed" text="Order exam copy" />
-      <Button layoutX="73.0" layoutY="218.0" mnemonicParsing="false" onAction="#excecuteMorCExamPressed" text="Execute manual\computerize exam" />
-      <TextField fx:id="newMsgTextField" layoutX="60.0" layoutY="266.0" prefHeight="103.0" prefWidth="269.0" promptText="New Messages">
+      <Button fx:id="logOutBtn" layoutX="410.0" layoutY="332.0" mnemonicParsing="false" onAction="#logoutPressed" text="Logout" />
+      <Button layoutX="239.0" layoutY="86.0" mnemonicParsing="false" onAction="#myGradesPressed" text="My grades" />
+      <Button layoutX="222.0" layoutY="117.0" mnemonicParsing="false" onAction="#orderExamCopyPressed" text="Order exam copy" />
+      <Button layoutX="175.0" layoutY="153.0" mnemonicParsing="false" onAction="#excecuteMorCExamPressed" text="Execute manual\computerize exam" />
+      <TextField fx:id="newMsgTextField" layoutX="140.0" layoutY="192.0" prefHeight="103.0" prefWidth="269.0" promptText="New Messages">
          <font>
             <Font size="15.0" />
          </font>
