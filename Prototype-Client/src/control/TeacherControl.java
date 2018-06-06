@@ -325,23 +325,23 @@ public class TeacherControl extends UserControl implements Initializable {
 		ExecutedExam exam;
 		String examID=examComboBox.getValue();
 		String executedExamId = examCode.getText();
-		if (subjectsComboBox.getValue().equals(null)) {
+		if (subjectsComboBox.getValue()==null) {
 			openScreen("ErrorMessage", "Please choose subject");
 			return;
 		}
-		if (coursesComboBox.getValue().equals(null)) {
+		if (coursesComboBox.getValue()==null) {
 			openScreen("ErrorMessage", "Please choose course");
 			return;
 		}
-		if (examComboBox.getValue().equals(null)) {
-			openScreen("ErrorMessage", "Please choose course");
+		if (examComboBox.getValue()==null) {
+			openScreen("ErrorMessage", "Please choose exam");
 			return;
 		}
 		if (executedExamId.length() != 4) {
 			for (int i = 0 ; i < executedExamId.length() ; i++){
 	            char ch = executedExamId.charAt(i);
 
-	            if ((ch < '0' && ch > '9') || (ch < 'a' && ch > 'z')){
+	            if (!((ch>='a' && ch<='z')||(ch>='A' && ch<='Z')||(ch>='0' && ch<='9'))){
 	                openScreen("ErrorMessage", "You must enter only letters and numbers.");
 	                return;
 	            }
