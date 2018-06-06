@@ -228,8 +228,10 @@ public class MysqlConnection {
 			ResultSet rs = stmt
 					.executeQuery("SELECT * FROM shitot.requestforchangingtimeallocated where isApproved='waiting';");
 			while (rs.next()) {
+				
 				requestList.add(new RequestForChangingTimeAllocated(rs.getString(1), rs.getString(2), rs.getString(3),
-						rs.getString(4), rs.getString(5), rs.getString(6)));
+					rs.getString(4), rs.getString(5),rs.getTime(6)));
+				
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -310,7 +312,7 @@ public class MysqlConnection {
 			rs.next();
 			// inserting the data to String List , order by the same order in DB
 			tmpRequest = new RequestForChangingTimeAllocated(rs.getString(1), rs.getString(2), rs.getString(3),
-					rs.getString(4), rs.getString(5), rs.getTime(6).toString());
+					rs.getString(4), rs.getString(5), rs.getTime(6));
 
 			rs.close();
 
