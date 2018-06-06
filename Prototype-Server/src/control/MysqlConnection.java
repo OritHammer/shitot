@@ -130,15 +130,15 @@ public class MysqlConnection {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT  E.exam_id  , std.grade  , std.date "
 					+ " FROM shitot.executedexam as E , shitot.studentperformedexam as std"
-					+ "WHERE E.executedExamID = std.executedexam_id AND std.student_UserName =\""+ userName+"\" AND std.finished = '1'; " );
+					+ "WHERE E.executedExamID = std.executedexam_id AND std.student_UserName =\""+ userName+"\" ; " );
 			
 			while(rs.next()) {
 			if (!rs.first()) {
 				return null;
 			}
 			details[0] = rs.getString(1);
-			details[1] = rs.getString(1);
-			details[2] = rs.getString(2);
+			details[1] =""+ rs.getInt(2);
+			details[2] = rs.getDate(3).toString();
 			detailsList.add(details);
 			}
 			System.out.println("sending exams details");  

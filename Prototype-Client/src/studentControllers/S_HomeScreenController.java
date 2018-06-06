@@ -69,8 +69,8 @@ public class S_HomeScreenController extends UserControl implements Initializable
 	public void myGradesPressed(ActionEvent e) {
 		connectionFlag = true;
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
-		S_myGradesScreenController myGradeC = loader.getController();
-		myGradeC.getGradesFromServer();
+	//	S_myGradesScreenController myGradeC = loader.getController();
+	//	myGradeC.getGradesFromServer();
 		openScreen("MyGradesScreen");
 	}
 

@@ -167,6 +167,9 @@ public class EchoServer extends AbstractServer {
 		}   
 		case  "getExamsByUserName" : {
 			ArrayList<String[]> examsPrefDetails = con.getPrefExamDetails((String)message[1]);
+			serverMessage[1] = examsPrefDetails ; 
+			this.sendToAllClients(serverMessage);
+			break;
 		}
 		
 		case "SetStatusToApproved" :{
