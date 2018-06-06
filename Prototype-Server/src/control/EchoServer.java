@@ -118,8 +118,12 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		
-		case "setExamCode": {/*client request all all the courses under some subject*/
-			con.createExamCode(message[1]);
+		
+		case "setExamCode": {/*client request is to create exam code in DB*/
+			Boolean createExamCodeStatus;
+			createExamCodeStatus = con.createExamCode(message[1]);
+			serverMessage[1] = createExamCodeStatus;
+			this.sendToAllClients(serverMessage);
 			break;
 		}
 		
