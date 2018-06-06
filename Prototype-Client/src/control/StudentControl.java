@@ -2,6 +2,7 @@ package control;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -86,7 +87,7 @@ public class StudentControl extends UserControl implements Initializable {
 
 	/*************** Class Methods *******************************/
 	public void initialize(URL url, ResourceBundle rb) {
-		initParentsAndScenes();
+
 	}
 
 	/********************* general Functions *************************/
@@ -105,102 +106,96 @@ public class StudentControl extends UserControl implements Initializable {
 
 	// the problem is with the fact that we create a new scene each time and we need
 	// to prevent it in that way
-	private void openScreen(String screen) {// *** move to userControl ?
-		/*
-		 * try { Parent root =
-		 * FXMLLoader.load(getClass().getResource("/studentBoundary/" + screen +
-		 * ".fxml")); if (gradeSc == null) { gradeSc = new Scene(root); }
-		 * S_myGradesScreenController myGradeC = loader.getController(); // Scene scene2
-		 * = new Scene(root); Stage stage = Main.getStage(); //
-		 * myGradeC.setHomePScene(homeSc); stage.setScene(gradeSc); stage.show();
-		 * 
-		 * // stage.setScene(scene); } catch (Exception exception) {
-		 * exception.printStackTrace(); System.out.println("Error in opening the page");
-		 * }
-		 */
-		Stage stage = Main.getStage();
-		switch (screen) {
-		case "home": {
-			stage.setScene(homeSc);
-			break;
+	// ***
+	public void closeScreen(ActionEvent e) throws IOException, SQLException {
+		final Node source = (Node) e.getSource();
+		Stage stage = (Stage) source.getScene().getWindow();
+		stage.close();
+	}
+
+	// ***
+	private void openScreen(String screen) {// open a window of screen
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/studentBoundary/" + screen + ".fxml"));
+			Scene scene = new Scene(loader.load());
+			Stage stage = Main.getStage();
+			if (screen.equals("ErrorMessage")) {
+				ErrorControl tController = loader.getController();
+				tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
+				tController.setErrorMessage("ERROR");// send a the error to the alert we made
+			}
+			stage.setTitle(screen);
+			stage.setScene(scene);
+			stage.show();
+		} catch (Exception exception) {
+			System.out.println("Error in opening the page");
+			exception.printStackTrace();
 		}
-		case "grade": {
-			stage.setScene(gradeSc);
-			break;
+	}
+
+	// ***
+	private void openScreen(String screen, String message) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));
+			Scene scene = new Scene(loader.load());
+			Stage stage = Main.getStage();
+			ErrorControl tController = loader.getController();
+			tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
+			tController.setErrorMessage(message);// send a the error to the alert we made
+			stage.setTitle("Error message");
+			stage.setScene(scene);
+			stage.show();
+		} catch (Exception exception) {
+			System.out.println("Error in opening the page");
 		}
-		case "copy": {
-			stage.setScene(orderCopySc);
-			break;
-		}
-		case "excecute": {
-			stage.setScene(excecuteSc);
-			break;
-		}
-		}
-		stage.show();
 	}
 
 	// ***
 	public void goToHomePressed(ActionEvent e) throws Exception {
-		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
-		// Stage primaryStage = new Stage();
-		FXMLLoader loader = new FXMLLoader();
-		Pane root = loader
-				.load(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml").openStream());
-		Stage MainStage = Main.getStage();
-		Scene scene = new Scene(root);
-		MainStage.setScene(scene);
-		MainStage.show();
-		// primaryStage.setScene(scene);
-		// primaryStage.show();
-	}
-
-	public void setHomePScene(Scene home) {
-		homeSc = home;
-	}
-
-	public void initParentsAndScenes() {
-		// this method make sure we use the first scene prevent calling server
-		try {
-			FXMLLoader loaderFX = new FXMLLoader();
-			// loaderFX.setLocation(getClass().getResource("/studentBoundary/HomeScreenTeacher.fxml"));
-			// homeParent = loaderFX.load() ; // setting to home parent his FXML
-			// homeSc = new Scene(homeParent);
-			// loaderFX.setLocation(getClass().getResource("/studentBoundary/MyGradesScreen.fxml"));
-			// gradesParent = loaderFX.load();
-			// gradeSc = new Scene(gradesParent);
-			// loaderFX.setLocation(getClass().getResource("/studentBoundary/OrderExamCopyScreen.fxml"));
-			// orderCopyParent = loaderFX.load();
-			// orderCopySc = new Scene(orderCopyParent);
-			loaderFX.setLocation(getClass().getResource("/studentBoundary/ManualAndComputerizeExamScreen.fxml"));
-			excecuteExamParent = loaderFX.load();
-			excecuteSc = new Scene(excecuteExamParent);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		closeScreen(e);
+		setStudentAuthor_Date_name();
+		openScreen("NewDesignHomeScreenStudent");
 	}
 
 	/********************* Student Home Screen listeners *************************/
 	public void myGradesPressed(ActionEvent e) {
-		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
-		// S_myGradesScreenController myGradeC = loader.getController();
-		// myGradeC.getGradesFromServer();
-		// openScreen("MyGradesScreen");
-		openScreen("grade");
+		try {
+			closeScreen(e);
+			openScreen("MyGradesScreen");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
-
 	public void orderExamCopyPressed(ActionEvent e) {
-		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
-		// openScreen("OrderExamCopyScreen");
-		openScreen("copy");
-	}
+		try {
+			closeScreen(e);
+			openScreen("OrderExamCopyScreen");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
+	}
 	public void excecuteMorCExamPressed(ActionEvent e) {
-		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
-		// openScreen("ManualAndComputerizeExamScreen");
-		openScreen("excecute");
+		try {
+			closeScreen(e);
+			openScreen("ManualAndComputerizeExamScreen");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 	/********************* Student see his grades *************************/

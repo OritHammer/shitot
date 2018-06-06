@@ -57,6 +57,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	private TableColumn<RequestForChangingTimeAllocated, String> timeAddedColumn;
 	@FXML
 	private Button showDetailsButton;
+	
 	// FAML Adding Time Requests window
 	@FXML
 	private TextField txtFATRexecutedExamId;
