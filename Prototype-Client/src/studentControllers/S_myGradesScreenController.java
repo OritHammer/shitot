@@ -37,7 +37,6 @@ public class S_myGradesScreenController extends UserControl {
 	private TableColumn <String[], String> dateColumn ;
 	
 	ObservableList<String[]> detailsList = FXCollections.observableArrayList();
-	private Object[] messageToServer = new Object[3];
 	
 	private static Scene homeSc ; 
  
@@ -63,6 +62,7 @@ public class S_myGradesScreenController extends UserControl {
 		homeSc = home; 
 	}
 	public void getGradesFromServer () {
+		connect(this);
 		messageToServer[0] = "getExamsByUserName";
 		messageToServer[1] = Globals.getuserName();
 		messageToServer[2] = null;

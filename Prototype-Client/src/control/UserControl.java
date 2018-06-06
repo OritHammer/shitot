@@ -70,7 +70,7 @@ public class UserControl implements Initializable {
 
 	protected ChatClient chat;
 
-	Object[] messageToServer = new Object[3];
+	protected Object[] messageToServer = new Object[3];
 	/* connections variables */
 	protected String ip;// server ip
 
