@@ -93,6 +93,7 @@ public class UserControl implements Initializable {
 		this.ip = "localhost";
 		// this.ip = sc.nextLine();
 		sc.close();
+		LoginBtn.setDefaultButton(true);
 	}
 
 	public void checkMessage(Object message) {
