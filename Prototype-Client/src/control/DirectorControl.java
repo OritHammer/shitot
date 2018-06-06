@@ -237,7 +237,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		txtFATRexecutedExamId.setText(request.getIDexecutedExam());
 
 	}
-
+ 
 	/*******************************************************
 	 * listeners on addingTimeRequest
 	 ***********************************************************/
