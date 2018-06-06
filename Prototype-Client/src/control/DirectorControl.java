@@ -165,7 +165,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		final Node source = (Node) e.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
-		openScreen("statisticReportDirector");
+		openScreen("HomeScreenDirector");
 
 	}
 
