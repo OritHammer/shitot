@@ -66,7 +66,7 @@ public class UserControl implements Initializable {
 	public void closeButtonAction(ActionEvent e) throws IOException {
 		Stage stage = (Stage) closeButton.getScene().getWindow();
 		stage.close();
-	}
+	} 
 
 	protected ChatClient chat;
 
@@ -92,7 +92,7 @@ public class UserControl implements Initializable {
 		 //this.ip = "77.138.70.98";
 		this.ip = "localhost";
 		// this.ip = sc.nextLine();
-		sc.close();
+		sc.close(); 
 		LoginBtn.setDefaultButton(true);
 	}
  

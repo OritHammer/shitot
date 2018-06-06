@@ -8,7 +8,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.StudentControl">
    <children>
-      <TableView fx:id="examGradesTable" layoutX="113.0" layoutY="75.0" prefHeight="251.0" prefWidth="353.0">
+      <TableView fx:id="examGradesTable" layoutX="38.0" layoutY="75.0" prefHeight="251.0" prefWidth="353.0">
         <columns>
           <TableColumn fx:id="examCodeColumn" prefWidth="96.0" text="Exam code" />
           <TableColumn fx:id="courseCodeColumn" prefWidth="95.0" text="Course Code" />
@@ -16,12 +16,19 @@
             <TableColumn fx:id="dateColumn" minWidth="4.0" prefWidth="73.0" text="Date" />
         </columns>
       </TableView> 
-      <Button fx:id="backToHomeBtn" layoutX="178.0" layoutY="348.0" mnemonicParsing="false" onAction="#goToHomePressed" prefHeight="25.0" prefWidth="150.0" text="Go back to home page" />
+      <Button fx:id="backToHomeBtn" layoutX="38.0" layoutY="348.0" mnemonicParsing="false" onAction="#goToHomePressed" prefHeight="25.0" prefWidth="150.0" text="Go back to home page" />
       <Label layoutX="214.0" layoutY="40.0" prefHeight="27.0" prefWidth="150.0" text="My Grades sheet " underline="true">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Button layoutX="354.0" layoutY="348.0" mnemonicParsing="false" onAction="#refreshTable" text="Refresh" />
+      <Button layoutX="300.0" layoutY="348.0" mnemonicParsing="false" onAction="#refreshTable" text="Refresh" />
+      <Label layoutX="402.0" layoutY="91.0" prefHeight="88.0" prefWidth="184.0" text="Choose exam code from list and press 'Order exam' for ordering exam copy" wrapText="true">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="examCodeCombo" layoutX="413.0" layoutY="179.0" prefWidth="150.0" promptText="exams code" />
+      <Button layoutX="440.0" layoutY="348.0" mnemonicParsing="false" onAction="#orderExamPressed" prefHeight="25.0" prefWidth="96.0" text="Order exam" />
    </children>
 </AnchorPane>

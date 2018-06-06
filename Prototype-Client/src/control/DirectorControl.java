@@ -57,6 +57,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	private TableColumn<RequestForChangingTimeAllocated, String> timeAddedColumn;
 	@FXML
 	private Button showDetailsButton;
+	
 	// FAML Adding Time Requests window
 	@FXML
 	private TextField txtFATRexecutedExamId;
@@ -189,7 +190,7 @@ public class DirectorControl extends UserControl implements Initializable {
 				else openScreen("ErrorControl","There is no request to confirm .");
 				break;
 			}
-
+ 
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
