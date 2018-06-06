@@ -33,6 +33,15 @@ import javafx.stage.Stage;
 import studentControllers.S_myGradesScreenController;
 
 public class StudentControl extends UserControl implements Initializable {
+	
+	private Parent homeParent = null ;
+	private Parent gradesParent = null ;
+	private Parent orderCopyParent = null ;
+	private Parent excecuteExamParent = null ;
+	private static Scene homeSc = null;
+	private static Scene gradeSc = null;
+	private static Scene orderCopySc = null;
+	private static Scene excecuteSc = null;
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
 	@FXML
@@ -43,9 +52,8 @@ public class StudentControl extends UserControl implements Initializable {
 	private Label dateLabel;
 	@FXML
 	private TextField newMsgTextField;
-
-	private static Scene homeSc = null;
-	private static Scene gradeSc = null;
+	
+	
 
 	// *********for student do Exam***********//
 	@FXML
@@ -75,7 +83,7 @@ public class StudentControl extends UserControl implements Initializable {
 
 	/*************** Class Methods *******************************/
 	public void initialize(URL url, ResourceBundle rb) {
-
+		initParentsAndScenes();
 	}
 
 	/********************* general Functions *************************/
@@ -95,7 +103,7 @@ public class StudentControl extends UserControl implements Initializable {
 	// the problem is with the fact that we create a new scene each time and we need
 	// to prevent it in that way
 	private void openScreen(String screen) {// *** move to userControl ?
-		try {
+		/*try {
 			Parent root = FXMLLoader.load(getClass().getResource("/studentBoundary/" + screen + ".fxml"));
 			if (gradeSc == null) {
 				gradeSc = new Scene(root);
@@ -111,7 +119,29 @@ public class StudentControl extends UserControl implements Initializable {
 		} catch (Exception exception) {
 			exception.printStackTrace();
 			System.out.println("Error in opening the page");
+		}*/
+		Stage stage = Main.getStage();
+		switch(screen){
+		case "home" :
+		{
+			stage.setScene(homeSc);
+		    break;
 		}
+		case "grade" : {
+			stage.setScene(gradeSc);
+			break;
+		}
+		case "copy" : 
+		{
+			stage.setScene(orderCopySc);
+			break;
+		}
+		case "excecute" :{
+			stage.setScene(excecuteSc);
+			break;
+		}
+		}
+		stage.show();
 	}
 
 	// ***
@@ -132,23 +162,48 @@ public class StudentControl extends UserControl implements Initializable {
 	public void setHomePScene(Scene home) {
 		homeSc = home;
 	}
-
+public void initParentsAndScenes () {
+	//this method make sure we use the first scene prevent calling server 
+	try {
+	FXMLLoader loaderFX=new FXMLLoader();
+	loaderFX.setLocation(getClass().getResource("/studentBoundary/HomeScreenTeacher.fxml"));
+	homeParent = loaderFX.load() ; // setting to home parent his FXML 
+	homeSc = new Scene(homeParent);
+	loaderFX.setLocation(getClass().getResource("/studentBoundary/MyGradesScreen.fxml"));
+	gradesParent = loaderFX.load();
+	gradeSc = new Scene(gradesParent);
+	loaderFX.setLocation(getClass().getResource("/studentBoundary/OrderExamCopyScreen.fxml"));
+	orderCopyParent = loaderFX.load();
+	orderCopySc = new Scene(orderCopyParent);
+	loaderFX.setLocation(getClass().getResource("/studentBoundary/ManualAndComputerizeExamScreen.fxml"));
+	excecuteExamParent = loaderFX.load();
+	excecuteSc = new Scene(excecuteExamParent);
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	
+}
 	/********************* Student Home Screen listeners *************************/
 	public void myGradesPressed(ActionEvent e) {
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
 		// S_myGradesScreenController myGradeC = loader.getController();
 		// myGradeC.getGradesFromServer();
-		openScreen("MyGradesScreen");
+		//openScreen("MyGradesScreen");
+		openScreen("grade");
 	}
 
 	public void orderExamCopyPressed(ActionEvent e) {
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
-		openScreen("OrderExamCopyScreen");
+		//openScreen("OrderExamCopyScreen");
+		openScreen("copy");
 	}
 
 	public void excecuteMorCExamPressed(ActionEvent e) {
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
-		openScreen("ManualAndComputerizeExamScreen");
+		//openScreen("ManualAndComputerizeExamScreen");
+		openScreen("excecute");
 	}
 
 	/********************* Student see his grades *************************/
