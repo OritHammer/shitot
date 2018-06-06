@@ -74,10 +74,10 @@ public class MysqlConnection {
 			fullQuestionNumber = (String)subject; 
 			fullQuestionNumber = fullQuestionNumber +""+  String.format("%03d", questionNumber);
 			stmt. executeUpdate(
-			"INSERT INTO shitot.questions VALUES(\""
-			+fullQuestionNumber.trim()+"\",\""+q.getTeacherName().trim()+"\",\""
-			+q.getQuestionContent()+"\",\""+q.getAnswers().get(0)+"\",\""+q.getAnswers().get(1)+"\",\""
-			+q.getAnswers().get(2)+"\",\""+q.getAnswers().get(3)+"\",\""+String.valueOf(q.getTrueAnswer())+"\");");
+					"INSERT INTO shitot.questions VALUES(\""
+							+fullQuestionNumber.trim()+"\",\""+q.getTeacherName().trim()+"\",\""
+							+q.getQuestionContent()+"\",\""+q.getAnswers().get(0)+"\",\""+q.getAnswers().get(1)+"\",\""
+							+q.getAnswers().get(2)+"\",\""+q.getAnswers().get(3)+"\",\""+String.valueOf(q.getTrueAnswer())+"\");");
 			
 			rs.close();
 		} catch (SQLException e) {
@@ -85,7 +85,15 @@ public class MysqlConnection {
 		}
 	}
 	
+	public void setExecutedExamLocked(Object executedExamID){
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("Update shitot.executedexam SET status=\"close\" where executedExamID=\""+executedExamID.toString()+"\";");
 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	public User checkUserDetails(Object userID, Object userPass) {
 		try {
 			stmt = conn.createStatement();
@@ -415,7 +423,7 @@ public class MysqlConnection {
 						Integer.parseInt(rs.getString(3)), Integer.parseInt(rs.getString(4)),Float.parseFloat(rs.getString(5)) ,
 						Float.parseFloat(rs.getString(6)),rs.getString(7), rs.getString(8),Integer.parseInt(rs.getString(9)),
 						Integer.parseInt(rs.getString(10)),Integer.parseInt(rs.getString(11)), Integer.parseInt(rs.getString(12)),
-						Integer.parseInt(rs.getString(13)) ,Integer.parseInt(rs.getString(14))));
+						Integer.parseInt(rs.getString(13)) ,Integer.parseInt(rs.getString(14)),rs.getString(15)));
 			}
 			rs.close();
 		} catch (SQLException e) {

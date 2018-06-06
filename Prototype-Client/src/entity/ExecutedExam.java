@@ -3,10 +3,6 @@ package entity;
 import java.io.Serializable;
 
 public class ExecutedExam implements Serializable {
-
-	/*
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String executedExamID;
 	private int numOfStudentStarted;
@@ -22,12 +18,12 @@ public class ExecutedExam implements Serializable {
 	private int range75to85;
 	private int range85to95;
 	private int range95to100;
-	
+	private String status;
 	
 	
 	public ExecutedExam(String executedExamID, int numOfStudentStarted, int numOfStudentFinished,
 			int numOfStudentDidntFinished, float average, float median, String teacherName, String exam_id,
-			int range0to55, int range55to65, int range65to75, int range75to85, int range85to95, int range95to100) {
+			int range0to55, int range55to65, int range65to75, int range75to85, int range85to95, int range95to100,String status) {
 		super();
 		this.executedExamID = executedExamID;
 		this.numOfStudentStarted = numOfStudentStarted;
@@ -43,6 +39,10 @@ public class ExecutedExam implements Serializable {
 		this.range75to85 = range75to85;
 		this.range85to95 = range85to95;
 		this.range95to100 = range95to100;
+		this.status=status;
+	}
+	public ExecutedExam() {
+		// TODO Auto-generated constructor stub
 	}
 	public String getExecutedExamID() {
 		return executedExamID;
@@ -130,6 +130,12 @@ public class ExecutedExam implements Serializable {
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	

@@ -144,6 +144,11 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
+
+		case "setExecutedExamLocked": {
+			con.setExecutedExamLocked(message[1]);
+			break;
+		}
 		case "SetQuestion": {
 			con.createQuestion(message[1], message[2]);
 			break;

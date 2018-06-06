@@ -325,7 +325,34 @@ public class TeacherControl extends UserControl implements Initializable {
 		ExecutedExam exam;
 		String examID=examComboBox.getValue();
 		String executedExamId = examCode.getText();
-		exam = new ExecutedExam(executedExamId,0,0,0,0,0,Globals.getuserName(),examID,0,0,0,0,0,0);
+		if (subjectsComboBox.getValue().equals(null)) {
+			openScreen("ErrorMessage", "Please choose subject");
+			return;
+		}
+		if (coursesComboBox.getValue().equals(null)) {
+			openScreen("ErrorMessage", "Please choose course");
+			return;
+		}
+		if (examComboBox.getValue().equals(null)) {
+			openScreen("ErrorMessage", "Please choose course");
+			return;
+		}
+		if (executedExamId.length() != 4) {
+			for (int i = 0 ; i < executedExamId.length() ; i++){
+	            char ch = executedExamId.charAt(i);
+
+	            if ((ch < '0' && ch > '9') || (ch < 'a' && ch > 'z')){
+	                openScreen("ErrorMessage", "You must enter only letters and numbers.");
+	                return;
+	            }
+	        }
+			openScreen("ErrorMessage", "You must enter exactly 4 letters & number");
+			return;
+		}
+		exam = new ExecutedExam();
+		exam.setExecutedExamID(executedExamId);
+		exam.setTeacherName(Globals.getuserName());
+		exam.setExam_id(examID);
 		messageToServer[0] = "setExamCode";
 		messageToServer[1] = exam;
 		connect(this);
@@ -591,7 +618,15 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 	
 	public void lockExam(ActionEvent e) {
-		
+		ExecutedExam executedexam= executedExamTableView.getSelectionModel().getSelectedItem();
+		if(executedexam==null) {
+			openScreen("ErrorMessage","Please choose an exam");
+			return;
+		}
+		connect(this); // connecting to server
+		messageToServer[0] = "setExecutedExamLocked";
+		messageToServer[1] = executedexam.getExecutedExamID();
+		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 	
 	public void showExams(ArrayList<String> examList) {
