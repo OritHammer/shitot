@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 import entity.ExamCopy;
+import entity.ExamDetailsMessage;
 import entity.TeachingProfessionals;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,6 +28,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView.EditEvent;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -55,19 +57,19 @@ public class StudentControl extends UserControl implements Initializable {
 	private TextField codeTextField;
 	// *********for student see his grades***********//
 	@FXML
-	private TableView<ExamCopy> examGradesTable;
+	private TableView<ExamDetailsMessage> examGradesTable;
 	@FXML
-	private TableColumn<ExamCopy, String> examCodeColumn;
+	private TableColumn<ExamDetailsMessage, String> examCodeColumn;
 	@FXML
-	private TableColumn<String[], String> courseCodeColumn;
+	private TableColumn<ExamDetailsMessage, String> courseCodeColumn;
 	@FXML
-	private TableColumn<String[], String> gradeColumn;
+	private TableColumn<ExamDetailsMessage, String> gradeColumn;
 	@FXML
-	private TableColumn<String[], String> dateColumn;
+	private TableColumn<ExamDetailsMessage, String> dateColumn;
 	@FXML
 	private ComboBox<String> examCodeCombo;
 
-	ObservableList<String[]> detailsList = FXCollections.observableArrayList();
+	ObservableList<ExamDetailsMessage> detailsList = FXCollections.observableArrayList();
 	// *********for student ask for copy of his exam***********//
 
 	// *******for student execute or download exam*********//
@@ -81,7 +83,7 @@ public class StudentControl extends UserControl implements Initializable {
 
 	/*************** Class Methods *******************************/
 	public void initialize(URL url, ResourceBundle rb) {
-
+connect(this);
 	}
 
 	/********************* general Functions *************************/
@@ -222,7 +224,7 @@ public class StudentControl extends UserControl implements Initializable {
 				break;
 			}
 			case "getExamsByUserName": {
-				showGradesOnTable((ArrayList<String[]>) msgFromServer[1]);
+				showGradesOnTable((ArrayList<ExamDetailsMessage>) msgFromServer[1]);
 			}
 			}
 		} catch (IndexOutOfBoundsException e) {
@@ -233,7 +235,16 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 	}
 
-	public void showGradesOnTable(ArrayList<String[]> detailsFromS) {
+	public void showGradesOnTable(ArrayList<ExamDetailsMessage> detailsFromS) {
+		for (ExamDetailsMessage edM : detailsFromS) {
+			detailsList.add(edM);
+		}
+		examGradesTable.setItems(detailsList);
+		examCodeColumn.setCellValueFactory(new PropertyValueFactory<>("examID"));
+		dateColumn.setCellValueFactory(new PropertyValueFactory<>("examDate"));
+		gradeColumn.setCellValueFactory(new PropertyValueFactory<>("examGrade"));
+		courseCodeColumn.setCellValueFactory(new PropertyValueFactory<>("examCourse"));
+		examGradesTable.getColumns().addAll(examCodeColumn,courseCodeColumn,gradeColumn,dateColumn);
 	}
 
 	public void orderExamPressed(ActionEvent e) {

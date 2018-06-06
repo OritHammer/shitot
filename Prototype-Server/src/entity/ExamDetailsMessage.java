@@ -8,11 +8,13 @@ public class ExamDetailsMessage implements Serializable {
 	private String examID ;
 	private String examGrade;
 	private String examDate;
+	private String examCourse;
 	
 	public ExamDetailsMessage(String eID,String eGrade,String eDate ) {
 		examID = eID;
 		examDate = eDate;
 		examGrade = eGrade;
+		examCourse = examID.substring(2, 4);
 	}
 
 	public String getExamID() {

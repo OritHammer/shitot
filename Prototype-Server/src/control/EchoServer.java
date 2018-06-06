@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import entity.Course;
 import entity.Exam;
+import entity.ExamDetailsMessage;
 import entity.ExecutedExam;
 import entity.Question;
 import entity.RequestForChangingTimeAllocated;
@@ -175,7 +176,7 @@ public class EchoServer extends AbstractServer {
 			break;
 		}   
 		case  "getExamsByUserName" : {
-			ArrayList<String[]> examsPrefDetails = con.getPrefExamDetails((String)message[1]);
+			ArrayList<ExamDetailsMessage> examsPrefDetails = con.getPrefExamDetails((String)message[1]);
 			serverMessage[1] = examsPrefDetails ; 
 			this.sendToAllClients(serverMessage);
 			break;

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import entity.Course;
 import entity.Exam;
+import entity.ExamDetailsMessage;
 import entity.ExecutedExam;
 import entity.Question;
 import entity.QuestionInExam;
@@ -137,24 +138,20 @@ public class MysqlConnection {
 		}
 	}
 
-	public ArrayList<String[]> getPrefExamDetails(String userName) {
-		ArrayList<String[]> detailsList = new ArrayList<String[]>();
-		String[] details = new String[3];
+	public ArrayList<ExamDetailsMessage> getPrefExamDetails(String userName) {
+		ArrayList<ExamDetailsMessage> detailsList = new ArrayList<ExamDetailsMessage>();
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT  E.exam_id  , stdE.grade  , stdE.date "
 					+ " FROM shitot.executedexam  E , shitot.studentperformedexam  stdE "
 					+ "WHERE E.executedExamID = stdE.executedexam_id AND stdE.student_UserName =\"" + userName
-					+ "\" ; ");
+					+ "\" AND E.status = 'close'  ; ");
 			/*
 			 * if (!rs.first()) { return null; }
 			 */
 
 			while (rs.next()) {
-				details[0] = rs.getString(1);
-				details[1] = "" + rs.getInt(2);
-				details[2] = rs.getDate(3).toString();
-				detailsList.add(details);
+				detailsList.add(new ExamDetailsMessage( rs.getString(1), ""+rs.getString(1), rs.getDate(3).toString()));
 			}
 		} catch (NullPointerException e) {
 			System.out.println("No data from server");
