@@ -15,165 +15,180 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import studentControllers.S_myGradesScreenController;
 
 public class StudentControl extends UserControl implements Initializable {
 	/********************* Variable declaration *************************/
-	// myDetails Win
+	// *********for HomePage***********//
 	@FXML
 	private Label userNameLabel;
 	@FXML
 	private Label authorLabel;
 	@FXML
 	private Label dateLabel;
-	// MyGrades win
 	@FXML
-	private ComboBox<String> choosingSubject;
-	@FXML
-	private TableView<ExamCopy> examsTable;
-	// OrderExam Win
-	@FXML
-	private ComboBox<String> orderChooseSubject;
-	@FXML
-	private ComboBox<String> chooseExam;
-	// ManualExam Win
-	@FXML
-	private TextField manualExamCodeField;
-	@FXML
-	private Label errorMsg;
-	// DoComputerizeExam
-	@FXML
-	private TextField examCodeField;
-	@FXML
-	private Label errorMsg2;
-	@FXML
-	private Tab myDetails;
+	private TextField newMsgTextField;
 
-	/************* Class Useful variables *************************/
-	String subjectChoosen;
-	private ObservableList<String> ObservList ; 
-	String[] messageToServer = new String[3];
+	private static Scene homeSc = null;
+	private static Scene gradeSc = null;
+
+	// *********for student do Exam***********//
+	@FXML
+	private TextField codeTextField;
+	// *********for student see his grades***********//
+	@FXML
+	private TableView<ExamCopy> cexamGradesTable;
+	@FXML
+	private TableColumn<ExamCopy, String> examCodeColumn;
+	@FXML
+	private TableColumn<String[], String> courseCodeColumn;
+	@FXML
+	private TableColumn<String[], String> gradeColumn;
+	@FXML
+	private TableColumn<String[], String> dateColumn;
+
+	ObservableList<String[]> detailsList = FXCollections.observableArrayList();
+	// *********for student ask for copy of his exam***********//
+	@FXML
+	private ComboBox<String> examCmb;
+	
+	// move to user
+	private Calendar currentCalendar = Calendar.getInstance();
+	private Date currentTime = currentCalendar.getTime();
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
+	FXMLLoader loader = new FXMLLoader();
 
 	/*************** Class Methods *******************************/
-	// MyDetails Win
 	public void initialize(URL url, ResourceBundle rb) {
-		// ask for relevant subject from the server
-		connect(this);
-		messageToServer[0] = "getSubjects";
-		messageToServer[1] = null;
-		messageToServer[2] = null;
-		chat.handleMessageFromClientUI(messageToServer);// send the message to server
+
 	}
 
-	public void setStudentAuthorAndDate() {
-		Calendar currentCalendar = Calendar.getInstance();
-		Date currentTime = currentCalendar.getTime();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
+	/********************* general Functions *************************/
+	public void setStudentAuthor_Date_name() {// *** move to userControl rename userDetails
+		userNameLabel.setText(Globals.getFullName());
 		dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
 		authorLabel.setText("Student");
 	}
 
-	/****************************************
-	 * MyGradesWindow
-	 *******************************************************/
-	/************************** Action Listeners ***********************/
-	public void initSubjects(ArrayList<TeachingProfessionals> tpList) {
-		
-		ArrayList<String> tpNames =new ArrayList<String>(); 
-		for(TeachingProfessionals tp : tpList) {
-			tpNames.add(tp.getTp_id()+" "+tp.getName());
-		}
-		ObservList = FXCollections.observableArrayList(tpNames);
-		choosingSubject.setItems(ObservList);
-		orderChooseSubject.setItems(ObservList);
-	}
-
-	public void chooseSubjectPressed(ActionEvent e) throws IOException {
-		choosingSubject.getSelectionModel().clearSelection();
-		// clearing previous results
-		for (int i = 0; i < examsTable.getItems().size(); i++)
-			examsTable.getItems().clear();
-		// get the chosen subject by the user
-		subjectChoosen = choosingSubject.getValue();
-		// ask for executed exams for the chosen subject from the server
-		messageToServer[0] = "getExecutedExams";
-		messageToServer[1] = subjectChoosen;
+	public void logoutPressed(ActionEvent e) { // *** move to userControl
+		messageToServer[0] = "logoutProcess";
+		messageToServer[1] = Globals.getuserName();
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 	}
 
-	/******************** LoadingDate methods to GUI ********************/
-	public void showExecutedExams(ArrayList<ExamCopy> executedExamsList) {
+	// the problem is with the fact that we create a new scene each time and we need
+	// to prevent it in that way
+	private void openScreen(String screen) {// *** move to userControl ?
 		try {
-			// setting executed exam data on the table
-			ObservableList<ExamCopy> observableList = FXCollections.observableArrayList(executedExamsList);
-			examsTable.setItems(observableList);
-		} catch (Exception e) {
+			Parent root = FXMLLoader.load(getClass().getResource("/studentBoundary/" + screen + ".fxml"));
+			if (gradeSc == null) {
+				gradeSc = new Scene(root);
+			}
+			S_myGradesScreenController myGradeC = loader.getController();
+			// Scene scene2 = new Scene(root);
+			Stage stage = Main.getStage();
+			// myGradeC.setHomePScene(homeSc);
+			stage.setScene(gradeSc);
+			stage.show();
+
+			// stage.setScene(scene);
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			System.out.println("Error in opening the page");
 		}
 	}
 
-	/****************************************
-	 * ManualExamWindow
-	 *******************************************************/
-	/************************** Action Listeners ***********************/
-	public void downloadPressed(ActionEvent e) {
-		if (!manualExamCodeField.getText().isEmpty()) {
-			messageToServer[0] = "checkExamCode";
-			messageToServer[1] = manualExamCodeField.getText();
-			messageToServer[2] = null;
-			chat.handleMessageFromClientUI(messageToServer);// send the message to server
-		} else
-			errorMsg.setVisible(true);
-	}
-	/******************** LoadingData methods to GUI ********************/
-	// no data should appear , server should send the client an exam
-
-	/****************************************
-	 * DoComputerizeExam Window
-	 *******************************************************/
-	/************************** Action Listeners ***********************/
-	public void openExamPressed(ActionEvent e) {
-		if (!examCodeField.getText().isEmpty()) {
-			messageToServer[0] = "checkExamCode";
-			messageToServer[1] = examCodeField.getText();
-			messageToServer[2] = null;
-			chat.handleMessageFromClientUI(messageToServer);// send the message to server
-		} else
-			errorMsg2.setVisible(true);
+	// ***
+	public void goToHomePressed(ActionEvent e) throws Exception {
+		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
+		// Stage primaryStage = new Stage();
+		FXMLLoader loader = new FXMLLoader();
+		Pane root = loader
+				.load(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml").openStream());
+		Stage MainStage = Main.getStage();
+		Scene scene = new Scene(root);
+		MainStage.setScene(scene);
+		MainStage.show();
+		// primaryStage.setScene(scene);
+		// primaryStage.show();
 	}
 
-	/***************************
-	 * Handaling messages from the server
-	 *********************************/
+	public void setHomePScene(Scene home) {
+		homeSc = home;
+	}
+
+	/********************* Student Home Screen listeners *************************/
+	public void myGradesPressed(ActionEvent e) {
+		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
+		// S_myGradesScreenController myGradeC = loader.getController();
+		// myGradeC.getGradesFromServer();
+		openScreen("MyGradesScreen");
+	}
+
+	public void orderExamCopyPressed(ActionEvent e) {
+		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
+		openScreen("OrderExamCopyScreen");
+	}
+
+	public void excecuteMorCExamPressed(ActionEvent e) {
+		((Node) e.getSource()).getScene().getWindow().hide(); // hiding primary Window
+		openScreen("ManualAndComputerizeExamScreen");
+	}
+
+	/********************* Student see his grades *************************/
+	public void getGradesFromServer() {
+		connect(this);
+		messageToServer[0] = "getExamsByUserName";
+		messageToServer[1] = Globals.getuserName();
+		messageToServer[2] = null;
+		chat.handleMessageFromClientUI(messageToServer);// send the message to server
+	}
+
+	// for all windows
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
 		try {
-			chat.closeConnection();// close the connection
-
-			Object[] msg = (Object[]) message;
-			switch (msg[0].toString()) {
-			case ("getSubjects"): /* get the subjects list from server */
-			{
-				initSubjects((ArrayList<TeachingProfessionals>) msg[1]);
-				break;
+			chat.closeConnection();
+			Object[] msgFromServer = (Object[]) message;
+			switch (msgFromServer[0].toString()) {
+				case "logoutProcess": {
+					// need to think how to close this scene and go back to main scene !
+					break;
+				}
+				case "getExamsByUserName": {
+					showGradesOnTable((ArrayList<String[]>) msgFromServer[1]);
+				}
 			}
-			default: {
-				System.out.println("Error in input");
-			}
-			}
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IndexOutOfBoundsException e) {
-			e.printStackTrace();
 		}
 	}
+	public void showGradesOnTable(ArrayList<String[]> detailsFromS) {		}
+	public void orderExamPressed(ActionEvent e) {
+		
+		messageToServer[0] = "getExamsCopyByUserName";
+		messageToServer[1] = examCmb.getValue();
+		messageToServer[2] = null;
+		chat.handleMessageFromClientUI(messageToServer);// send the message to server
+	} 
 
 }

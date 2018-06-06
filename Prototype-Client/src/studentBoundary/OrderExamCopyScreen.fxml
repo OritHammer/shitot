@@ -5,12 +5,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="475.0" prefWidth="506.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="studentControllers.">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="studentControllers.">
    <children>
-      <Button layoutX="144.0" layoutY="254.0" mnemonicParsing="false" onAction="#orderExamPressed" prefHeight="25.0" prefWidth="163.0" text="Order exam copy" />
-      <Button fx:id="backToHomeBtn" layoutX="144.0" layoutY="413.0" mnemonicParsing="false" onAction="#goToHomePressed" prefHeight="25.0" prefWidth="163.0" text="Go back to home page" />
-      <ComboBox fx:id="subjectCmb" layoutX="33.0" layoutY="60.0" onAction="#chooseSubjectPressed" prefWidth="150.0" promptText="Choose subject" />
-      <ComboBox fx:id="examCmb" layoutX="33.0" layoutY="108.0" onAction="#chooseExamPressed" prefWidth="150.0" promptText="Choose exam" />
+      <Button layoutX="307.0" layoutY="255.0" mnemonicParsing="false" onAction="#orderExamPressed" prefHeight="25.0" prefWidth="163.0" text="Order exam copy" />
+      <Button fx:id="backToHomeBtn" layoutX="95.0" layoutY="255.0" mnemonicParsing="false" onAction="#goToHomePressed" prefHeight="25.0" prefWidth="163.0" text="Go back to home page" />
+      <ComboBox fx:id="subjectCmb" layoutX="151.0" layoutY="93.0" onAction="#chooseSubjectPressed" prefWidth="150.0" promptText="Choose subject" />
+      <ComboBox fx:id="examCmb" layoutX="157.0" layoutY="148.0" onAction="#chooseExamPressed" prefWidth="150.0" promptText="Choose exam" />
    </children>
 </AnchorPane>
- 

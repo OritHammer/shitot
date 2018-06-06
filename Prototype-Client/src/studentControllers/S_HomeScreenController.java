@@ -99,6 +99,7 @@ public class S_HomeScreenController extends UserControl implements Initializable
 			//myGradeC.setHomePScene(homeSc);
 			stage.setScene(gradeSc);
 			stage.show();
+			
 			// stage.setScene(scene);
 		} catch (Exception exception) {
 			exception.printStackTrace();

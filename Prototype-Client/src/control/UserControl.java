@@ -52,7 +52,7 @@ public class UserControl implements Initializable {
 	@FXML
 	private ImageView LoginButton;
 	@FXML
-	public Text userText;
+	public Text userText;///user name
 	@FXML
 	private Label userText1;
 	@FXML
