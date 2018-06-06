@@ -94,11 +94,16 @@ public class DirectorControl extends UserControl implements Initializable {
 			messageToServer[1] = Globals.getRequestId();
 			messageToServer[2] = null;
 			chat.handleMessageFromClientUI(messageToServer);// send the message to server
+			
 		}
+		
 	}
 
 	public void openTimeRequestTable(ActionEvent e) {
-		((Node) e.getSource()).getScene().getWindow().hide(); // hiding homePage window
+		final Node source = (Node) e.getSource();
+		Stage stage = (Stage) source.getScene().getWindow();
+	//	stage.close();
+		stage.close();
 		openScreen("TimeRequestTable");
 
 	}
@@ -114,35 +119,29 @@ public class DirectorControl extends UserControl implements Initializable {
 	}
 
 	private void openScreen(String screen) {// open the windows after login
-		try {
-			Stage primaryStage = new Stage();
-			FXMLLoader loader = new FXMLLoader();
-			Pane root = loader.load(getClass().getResource("/directorBoundary/" + screen + ".fxml").openStream());/////////// *נצטרך
-																													/////////// לשנות
-																													/////////// לבונדרי
-																													/////////// רגיל
-																													/////////// או
-																													/////////// להתאים
-																													/////////// לארור
-																													/////////// מסג'*/////////////
-
-			Scene scene = new Scene(root);
-			if (screen.equals("ErrorMessage")) {
-				ErrorControl tController = loader.getController();
-				tController.setBackwardScreen(primaryStage.getScene());// send the name to the controller
-				tController.setErrorMessage("ERROR"); // send a the error to the alert we made
+		
+			
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/directorBoundary/" + screen + ".fxml"));
+				Scene scene = new Scene(loader.load());
+				Stage stage = Main.getStage();
+				if (screen.equals("ErrorMessage")) {
+					ErrorControl dController = loader.getController();
+					dController.setBackwardScreen(stage.getScene());/* send the name to the controller */
+					dController.setErrorMessage("ERROR");// send a the error to the alert we made
+				}
+				stage.setTitle(screen);
+				stage.setScene(scene);
+				stage.show();
+			} catch (Exception exception) {
+				System.out.println("Error in opening the page");
 			}
-			primaryStage.setTitle(screen);
-			// primaryStage.getIcons().add(new
-			// Image("/Prototype-Client/Copywriting-Master-Class-Owl-200x175.png"));
-			primaryStage.setScene(scene);
-			primaryStage.show();
-
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			System.out.println("Error in opening the page");
-		}
-	}
+		
+			}
+		
+		
+	
 
 	private void openScreen(String screen, String message) {// for error message
 		try {
@@ -165,8 +164,9 @@ public class DirectorControl extends UserControl implements Initializable {
 	public void backButtonPressed(ActionEvent e) throws IOException, SQLException {
 		final Node source = (Node) e.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
-		stage.hide();
-		openScreen("HomeScreenDirector");
+		stage.close();
+		openScreen("statisticReportDirector");
+
 	}
 
 	/////// ***************************check the message that arrived from
@@ -200,22 +200,20 @@ public class DirectorControl extends UserControl implements Initializable {
 	/*******************************************************
 	 * listeners on TimeRequestTable
 	 ***********************************************************/
-	public void showDetailsButtonPressed(ActionEvent e) throws IOException, SQLException {
+	public void showDetailsButtonPressed(ActionEvent e) {
 		Globals.setRequestId(requestsTable.getSelectionModel().getSelectedItems().get(0).getRequestID());
-		;
-		final Node source = (Node) e.getSource();
-		Stage stage = (Stage) source.getScene().getWindow();
-		stage.close();
-		openScreen("‪addingTimeRequest‬"); 
+		((Node) e.getSource()).getScene().getWindow().hide(); // hiding homePage window
+		openScreen("addingTimeRequest");
 	}
 
 	@SuppressWarnings("unchecked")
 	public void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList) {
+		
 		for (RequestForChangingTimeAllocated i : requestsList) {
 			addingTimeRequestsObservable.add(i);
 
 		}
-		if (requestsTable.getColumns() != null)
+		if (requestsTable!=null && requestsTable.getColumns() != null)
 			requestsTable.getColumns().clear();
 		requestsTable.setItems(addingTimeRequestsObservable);
 		// display the id in the table view
