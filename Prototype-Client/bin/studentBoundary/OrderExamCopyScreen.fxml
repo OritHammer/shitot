@@ -7,13 +7,12 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.StudentControl">
    <children>
-      <Button layoutX="306.0" layoutY="319.0" mnemonicParsing="false" onAction="#orderExamPressed" prefHeight="25.0" prefWidth="163.0" text="Order exam copy" />
+      <Button layoutX="311.0" layoutY="139.0" mnemonicParsing="false" onAction="#orderExamPressed" prefHeight="25.0" prefWidth="163.0" text="Order exam copy" />
       <Button fx:id="backToHomeBtn" layoutX="94.0" layoutY="319.0" mnemonicParsing="false" onAction="#goToHomePressed" prefHeight="25.0" prefWidth="163.0" text="Go back to home page" />
-      <TableView layoutX="132.0" layoutY="78.0" prefHeight="200.0" prefWidth="291.0">
+      <TableView layoutX="82.0" layoutY="51.0" prefHeight="200.0" prefWidth="188.0">
         <columns>
           <TableColumn fx:id="examCodeColOrder" prefWidth="75.0" text="Exam code" />
           <TableColumn fx:id="dateColOrder" prefWidth="116.0" text="Date" />
-            <TableColumn fx:id="approveColOrder" minWidth="0.0" prefWidth="99.0" text="Get copy ? " />
         </columns>
       </TableView>
    </children>
