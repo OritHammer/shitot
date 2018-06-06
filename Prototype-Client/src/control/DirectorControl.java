@@ -59,11 +59,11 @@ public class DirectorControl extends UserControl implements Initializable {
 	private Button showDetailsButton;
 	// FAML Adding Time Requests window
 	@FXML
-	private TextField txtFATRrequestId;
-	@FXML
 	private TextField txtFATRexecutedExamId;
 	@FXML
 	private TextField txtFATRTeachName;
+	@FXML
+	private TextField txtFATRrequestId;
 	@FXML
 	private TextField txtFATRTimeAdded;
 	@FXML
@@ -253,25 +253,5 @@ public class DirectorControl extends UserControl implements Initializable {
 		this.openTimeRequestTable(e);
 		chat.handleMessageFromClientUI(messageToServer);
 	}
-/////////////////////////////move to echoServer//////////////////////////////////////////
-/*	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		case("SetStatusToApproved"){
-			con.setStatusToAddingTimeRequest(((Object[])msg)[1],"approved");
-			break;
-		}
-		case("SetStatusToReject"){
-			con.setStatusToAddingTimeRequest(((Object[])msg)[1],"rejected");
-			break;
-		}
-	}*/
-/////////////////////////////put in mysqlConnection
-/*public void setStatusToAddingTimeRequest(Object RequestID,String newStatus) {
-		try {
-		String reqID=(String)RequestID;
-		stmt = conn.createStatement();
-		stmt.executeUpdate("Update shitot.requestforchangingtimeallocated SET isApproved='"+newStatus+"' where requestID='"+reqID+"';");
-		}catch(SQLException e) {
-			e.printStackTrace();
-		}
-	}*/
+
 }

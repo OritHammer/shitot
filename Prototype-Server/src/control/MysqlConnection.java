@@ -286,7 +286,7 @@ public class MysqlConnection {
  
 			rs.next();
 			// inserting the data to String List , order by the same order in DB
-			tmpRequest = new RequestForChangingTimeAllocated(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6));
+			tmpRequest = new RequestForChangingTimeAllocated(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getTime(6).toString());
 			
 			rs.close();
 
@@ -371,7 +371,7 @@ public class MysqlConnection {
 			else {
 			stmt. executeUpdate(
 			"INSERT INTO shitot.executedexam VALUES(\""
-			+exam.getExecutedExamID().trim()+"\",0,0,0,0,0,\""+exam.getTeacherName()+"\",\""+exam.getExam_id()+"\",0,0,0,0,0,0);");
+			+exam.getExecutedExamID().trim()+"\",0,0,0,0,0,\""+exam.getTeacherName()+"\",\""+exam.getExam_id()+"\",0,0,0,0,0,0,\"open\");");
 				}
 			
 		} catch (SQLException e) {
