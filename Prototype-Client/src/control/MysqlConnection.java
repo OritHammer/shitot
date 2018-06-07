@@ -78,9 +78,9 @@ public class MysqlConnection {
 			fullQuestionNumber = (String) subject;
 			fullQuestionNumber = fullQuestionNumber + "" + String.format("%03d", questionNumber);
 			stmt.executeUpdate("INSERT INTO shitot.questions VALUES(\"" + fullQuestionNumber.trim() + "\",\""
-					+ q.getTeacherName().trim() + "\",\"" + q.getQuestionContent() + "\",\"" + q.getAnswers().get(0)
-					+ "\",\"" + q.getAnswers().get(1) + "\",\"" + q.getAnswers().get(2) + "\",\""
-					+ q.getAnswers().get(3) + "\",\"" + String.valueOf(q.getTrueAnswer()) + "\");");
+					+ q.getTeacherName().trim() + "\",\"" + q.getQuestionContent() + "\",\"" + q.getAnswer1()
+					+ "\",\"" + q.getAnswer2() + "\",\"" + q.getAnswer3() + "\",\""
+					+ q.getAnswer4() + "\",\"" + String.valueOf(q.getCorrectAnswer()) + "\");");
 
 			rs.close();
 		} catch (SQLException e) {
@@ -275,16 +275,8 @@ public class MysqlConnection {
 
 			rs.next();
 			// inserting the data to String List , order by the same order in DB
-			question = new Question();
-			question.setId(rs.getString(1));
-			question.setTeacherName(rs.getString(2));
-			ArrayList<String> answers = new ArrayList<String>();
-			answers.add(rs.getString(3));
-			answers.add(rs.getString(4));
-			answers.add(rs.getString(5));
-			answers.add(rs.getString(6));
-			question.setAnswers(answers);
-			question.setTrueAnswer(Integer.parseInt(rs.getString(7)));
+			question = new Question(rs.getString(1),rs.getString(2),null,rs.getString(3),
+					rs.getString(4),rs.getString(5),rs.getString(6),Integer.parseInt(rs.getString(7)));
 
 			rs.close();
 
@@ -514,17 +506,8 @@ public class MysqlConnection {
 					+ "AND  questioninexam.e_id = exams.e_id) QID , questions " + 
 					"where QID.id = questions.question_id;");
 			while (rs.next()) {
-				question=new Question();
-				question.setId(rs.getString(2));
-				question.setTeacherName(rs.getString(3));
-				question.setQuestionContent(rs.getString(4));
-				ArrayList<String> answers = new ArrayList<String>();
-				answers.add(rs.getString(5));
-				answers.add(rs.getString(6));
-				answers.add(rs.getString(7));
-				answers.add(rs.getString(8));
-				question.setAnswers(answers);
-				question.setTrueAnswer(Integer.parseInt(rs.getString(9)));
+				question = new Question(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5)
+						,rs.getString(6),rs.getString(7),Integer.parseInt(rs.getString(8)));
 				questionsinexam.add(question);
 			}
 			details[0]=questionsinexam;
