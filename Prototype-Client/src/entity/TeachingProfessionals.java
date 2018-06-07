@@ -10,9 +10,7 @@ public class TeachingProfessionals implements Serializable {
 	private String tp_id;
 	private String name;
 	
-	public TeachingProfessionals(String tp_id,String name) {
-		this.setTp_id(tp_id);
-		this.setName(name);
+	public TeachingProfessionals() {
 	}
 	
 	public String getName() {

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="428.0" prefWidth="465.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+   <children>
+      <Button layoutX="241.0" layoutY="389.0" mnemonicParsing="false" onAction="#closeScreen" prefHeight="25.0" prefWidth="59.0" text="Back" />
+      <Button layoutX="167.0" layoutY="389.0" mnemonicParsing="false" onAction="#lockExam" text="Lock" />
+      <Label fx:id="pageLabel" layoutX="198.0" layoutY="6.0" text="Lock exam" />
+      <TableView fx:id="executedExamTableView" layoutY="23.0" prefHeight="357.0" prefWidth="465.0">
+         <columns>
+            <TableColumn fx:id="executedExamIDTableView" prefWidth="155.0" text="executedExamID" />
+            <TableColumn fx:id="teacherNameTableView" minWidth="0.0" prefWidth="165.0" text="teacherName" />
+            <TableColumn fx:id="exam_idTableView" minWidth="0.0" prefWidth="144.0" text="exam_id" />
+         </columns>
+      </TableView>
+   </children>
+</AnchorPane>

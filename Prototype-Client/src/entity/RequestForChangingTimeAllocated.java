@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.sql.Time;
 
 public class RequestForChangingTimeAllocated implements Serializable{
 	/**
@@ -18,12 +19,12 @@ public class RequestForChangingTimeAllocated implements Serializable{
 	public RequestForChangingTimeAllocated() {
 		menagerApprove="waiting";
 	}
-	public RequestForChangingTimeAllocated(String rID,String tName,String reason,String approved,String examID,String time) {
+	public RequestForChangingTimeAllocated(String rID,String tName,String reason,String approved,String examID,Time time) {
 		RequestID=rID;
 		teacherName=tName;
 		menagerApprove=approved;
 		this.reason=reason;
-		timeAdded=time;
+		timeAdded=time.toString();
 		IDexecutedExam=examID;
 	}
 	public String getRequestID() { 
