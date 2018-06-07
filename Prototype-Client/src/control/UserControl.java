@@ -150,6 +150,7 @@ public class UserControl implements Initializable {
 									loader.setLocation(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
 									home_page_parent = loader.load();
 									StudentControl sController=loader.getController();
+									Globals.setUser(user); 
 									Globals.setFullName(user.getFullname());
 									Globals.setuserName(user.getUsername());
 									sController.setStudentAuthor_Date_name();/*send the name to the controller*/

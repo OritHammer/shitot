@@ -250,6 +250,7 @@ public class StudentControl extends UserControl implements Initializable {
 				checkExecutedExam((Object []) msgFromServer[1]);
 			}
 			}
+			
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
