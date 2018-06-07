@@ -79,34 +79,26 @@ public class StudentControl extends UserControl implements Initializable {
 	// ******************** student perform exam ************//
 	@FXML
 	private RadioButton correctRadioButton2;
-
 	@FXML
 	private RadioButton correctRadioButton1;
-
 	@FXML
 	private RadioButton correctRadioButton4;
-
 	@FXML
 	private RadioButton correctRadioButton3;
-
 	@FXML
 	private TextField answer3;
-
 	@FXML
 	private TextField answer2;
-
 	@FXML
 	private TextField answer4;
-
 	@FXML
 	private TextField answer1;
-
 	@FXML
 	private Label pageLabel;
-	
 	@FXML
 	private TextField questionContent;
-	
+	@FXML
+	private Label courseName;
 	@FXML
 	private Button nextBTN;
 	@FXML
@@ -117,6 +109,7 @@ public class StudentControl extends UserControl implements Initializable {
 		if (pageLabel.getText().equals("Perform exam")) {
 			nextQuestion(null);
 			prevBTN.setVisible(false);
+			//courseName.setText(questioninexecutedexam.get(0).getId().substring(0, 2));
 		}
 
 	}
