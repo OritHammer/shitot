@@ -111,6 +111,12 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private TableColumn<ExecutedExam, String> teacherNameTableView;
 
+
+
+	
+	
+	
+	
 	@FXML
 	private ComboBox<String> questionsComboBox;
 	@FXML
@@ -399,14 +405,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			openScreen("ErrorMessage", "Please choose subject");
 			return;
 		}
-		Question question = new Question();
-		ArrayList<String> answers = new ArrayList<String>();
-		question.setTeacherName(Globals.getuserName());
-		question.setQuestionContent(questionName.getText().trim());
-		answers.add(answer1.getText().trim());
-		answers.add(answer2.getText().trim());
-		answers.add(answer3.getText().trim());
-		answers.add(answer4.getText().trim());
+		Question question;
 
 		int correctAnswer = 0;
 		if (correctAns1.isSelected()) {
@@ -422,12 +421,12 @@ public class TeacherControl extends UserControl implements Initializable {
 			correctAnswer = 4;
 		}
 
-		if ((answers.get(0).equals("")) || ((answers.get(1).equals(""))) || (answers.get(2).equals(""))
-				|| (answers.get(3).equals("")) || (correctAnswer == 0) || (question.getQuestionContent().equals(""))) {
+		if ((answer1.getText().equals("")) || ((answer2.getText().equals(""))) || (answer3.getText().equals(""))
+				|| (answer4.getText().equals("")) || (correctAnswer == 0) || (questionName.getText().equals(""))) {
 			openScreen("ErrorMessage", "Not all fields are completely full");
 		} else {
-			question.setAnswers(answers);
-			question.setTrueAnswer(correctAnswer);
+			question = new Question(null,Globals.getuserName(),questionName.getText().trim(),answer1.getText().trim(),
+					answer2.getText().trim(), answer3.getText().trim(),answer4.getText().trim(),correctAnswer);
 			String subject = subjectsComboBox.getValue();
 			String[] subjectSubString = subject.split("-");
 			connect(this); // connecting to server
@@ -544,14 +543,13 @@ public class TeacherControl extends UserControl implements Initializable {
 			trueAnsFlag = true;// Permit to user change the correct answer
 			questionID.setText(q.getId());
 			teacherName.setText(q.getTeacherName());
-			ArrayList<String> answers = q.getAnswers();
-			answer1.setText(answers.get(0));
-			answer2.setText(answers.get(1));
-			answer3.setText(answers.get(2));
-			answer4.setText(answers.get(3));
+			answer1.setText(q.getAnswer1());
+			answer2.setText(q.getAnswer2());
+			answer3.setText(q.getAnswer3());
+			answer4.setText(q.getAnswer4());
 
 			/* set up the correct answer button */
-			switch (q.getTrueAnswer()) {/* The number of the correct answers */
+			switch (q.getCorrectAnswer()) {/* The number of the correct answers */
 			case (1): {
 				correctAns1.setSelected(true);
 				break;
