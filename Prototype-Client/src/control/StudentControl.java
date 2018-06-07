@@ -264,7 +264,7 @@ public class StudentControl extends UserControl implements Initializable {
 		else if (!userIDTextField.getText().equals((Globals.getUser().getUserID()))) {
 			openScreen("ErrorMessage", "Your ID is incorrect"); // if user ID isn't correct
 			return;
-		}
+		} 
 		//everything fine 
 		String executedID = codeTextField.getText();
 		connect(this); // connecting to server
