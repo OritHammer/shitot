@@ -113,12 +113,13 @@ public class MysqlConnection {
 			// if the user is existing
 			User newUser = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
 					rs.getString(6)); // in section 5 need to insert "connected"
-			/*
-			 * //updating user status stmt.executeUpdate( "UPDATE users " +
-			 * "SET status=\"connected\" WHERE username=\""+userID+"\" AND password=\""
-			 * +userPass+"\";");// setting a new status
-			 * System.out.println("user set as connected");
-			 */
+			
+			 //updating user status 
+		/*	 stmt.executeUpdate( "UPDATE users " +
+			  "SET status=\"connected\" WHERE username=\""+userID+"\" AND password=\""
+			  +userPass+"\";");// setting a new status
+			  System.out.println("user set as connected");*/
+			 
 			return newUser;
 			// in the end userDetails will have the UserID,userName,role
 		} catch (SQLException e) {
@@ -131,7 +132,7 @@ public class MysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate(
-					"UPDATE users " + "SET status=\"unconnected\" WHERE username=\"" + userName.toString() + "\";");
+					"UPDATE users " + "SET status=\"unconnected\" WHERE username=\"" + userName+ "\";");
 			System.out.println("user set as unconnected");
 		} catch (SQLException e) {
 			e.printStackTrace();

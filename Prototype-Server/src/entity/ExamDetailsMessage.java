@@ -3,44 +3,45 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javafx.beans.property.SimpleStringProperty;
+
 public class ExamDetailsMessage implements Serializable {
 
-	private String examID ;
-	private String examGrade;
-	private String examDate;
-	private String examCourse;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final SimpleStringProperty examID ;
+	private final SimpleStringProperty examGrade;
+	private final SimpleStringProperty examDate;
+	private final SimpleStringProperty examCourse;
 	
 	public ExamDetailsMessage(String eID,String eGrade,String eDate ) {
-		examID = eID;
-		examDate = eDate;
-		examGrade = eGrade;
-		examCourse = examID.substring(2, 4);
+		examID = new SimpleStringProperty(eID);
+		examDate = new SimpleStringProperty(eDate);
+		examGrade = new SimpleStringProperty(eGrade);
+		examCourse = new SimpleStringProperty(eID.substring(2, 4));
 	}
 
-	public String getExamID() {
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public SimpleStringProperty getExamID() {
 		return examID;
 	}
 
-	public void setExamID(String examID) {
-		this.examID = examID;
-	}
-
-	public String getExamGrade() {
+	public SimpleStringProperty getExamGrade() {
 		return examGrade;
 	}
 
-	public void setExamGrade(String examGrade) {
-		this.examGrade = examGrade;
-	}
-
-
-	public String getExamDate() {
+	public SimpleStringProperty getExamDate() {
 		return examDate;
 	}
 
-
-	public void setExamDate(String examDate) {
-		this.examDate = examDate;
+	public SimpleStringProperty getExamCourse() {
+		return examCourse;
 	}
+
 
 }

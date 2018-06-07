@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import entity.ExamCopy;
 import entity.ExamDetailsMessage;
 import entity.TeachingProfessionals;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -83,7 +84,7 @@ public class StudentControl extends UserControl implements Initializable {
 
 	/*************** Class Methods *******************************/
 	public void initialize(URL url, ResourceBundle rb) {
-connect(this);
+			//connect(this);
 	}
 
 	/********************* general Functions *************************/
@@ -93,11 +94,13 @@ connect(this);
 		authorLabel.setText("Student");
 	}
 
-	public void logoutPressed(ActionEvent e) { // *** move to userControl
+	public void logoutPressed(ActionEvent e) throws Exception, SQLException { // *** move to userControl
+		connect(this);
 		messageToServer[0] = "logoutProcess";
 		messageToServer[1] = Globals.getuserName();
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
+		closeScreen(e);
 	}
 
 	// the problem is with the fact that we create a new scene each time and we need
@@ -113,7 +116,10 @@ connect(this);
 	private void openScreen(String screen) {// open a window of screen
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/studentBoundary/" + screen + ".fxml"));
+			if(screen.equals("LoginGui")) {
+				loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));	
+			}
+			else loader.setLocation(getClass().getResource("/studentBoundary/" + screen + ".fxml"));
 			Scene scene = new Scene(loader.load());
 			Stage stage = Main.getStage();
 			if(screen.equals("NewDesignHomeScreenStudent") ) {
@@ -125,7 +131,7 @@ connect(this);
 				tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
 				tController.setErrorMessage("ERROR");// send a the error to the alert we made
 			}
-			stage.setTitle(screen);
+			//stage.setTitle(screen);
 			stage.setScene(scene);
 			stage.show();
 		} catch (Exception exception) {
@@ -210,17 +216,19 @@ connect(this);
 		getGradesFromServer();
 	}
 
-	/********************* Student Order Copy *************************/
+	/********************* Student Order Copy 
+	 * @throws IOException *************************/
 
 	// for all windows
 	@SuppressWarnings("unchecked")
-	public void checkMessage(Object message) {
+	@Override
+	public void checkMessage(Object message)  {
 		try {
 			chat.closeConnection();
 			Object[] msgFromServer = (Object[]) message;
 			switch (msgFromServer[0].toString()) {
 			case "logoutProcess": {
-				// need to think how to close this scene and go back to main scene !
+				openScreen("LoginGui");
 				break;
 			}
 			case "getExamsByUserName": {
@@ -232,14 +240,16 @@ connect(this);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} 
 	}
 
+	@SuppressWarnings("unchecked")
 	public void showGradesOnTable(ArrayList<ExamDetailsMessage> detailsFromS) {
 		for (ExamDetailsMessage edM : detailsFromS) {
 			detailsList.add(edM);
 		}
 		examGradesTable.setItems(detailsList);
+		//examGradesTable.getColumns().clear();
 		examCodeColumn.setCellValueFactory(new PropertyValueFactory<>("examID"));
 		dateColumn.setCellValueFactory(new PropertyValueFactory<>("examDate"));
 		gradeColumn.setCellValueFactory(new PropertyValueFactory<>("examGrade"));
