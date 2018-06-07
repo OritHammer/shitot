@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 
 import entity.ExamCopy;
 import entity.ExamDetailsMessage;
+import entity.Question;
 import entity.TeachingProfessionals;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -41,6 +42,8 @@ import studentControllers.S_myGradesScreenController;
 public class StudentControl extends UserControl implements Initializable {
 	private static Scene homeSc = null;
 	private static Scene gradeSc = null;
+	private ArrayList<Question> questioninexecutedexam;
+	private int index;
 	
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
@@ -75,7 +78,10 @@ public class StudentControl extends UserControl implements Initializable {
 
 	// *******for student execute or download exam*********//
 	private CheckBox correctExamCodeCB;
-
+	@FXML
+	private Label pageLabel;
+	@FXML
+	private TextField questionContent;
 	// move to user
 	private Calendar currentCalendar = Calendar.getInstance();
 	private Date currentTime = currentCalendar.getTime();
@@ -85,8 +91,14 @@ public class StudentControl extends UserControl implements Initializable {
 	/*************** Class Methods *******************************/
 	public void initialize(URL url, ResourceBundle rb) {
 			//connect(this);
+		//if(pageLabel.getText().equals("Perform exam")) {
+		//	nextQuestion(null);
+		//}
+		
 	}
-
+	private void nextQuestion(ActionEvent e) {
+		
+	}
 	/********************* general Functions *************************/
 	public void setStudentAuthor_Date_name() {// *** move to userControl rename userDetails
 		userNameLabel.setText(Globals.getFullName());
@@ -234,6 +246,9 @@ public class StudentControl extends UserControl implements Initializable {
 			case "getExamsByUserName": {
 				showGradesOnTable((ArrayList<ExamDetailsMessage>) msgFromServer[1]);
 			}
+			case "checkExecutedExam": {
+				checkExecutedExam((Object []) msgFromServer[1]);
+			}
 			}
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
@@ -241,6 +256,23 @@ public class StudentControl extends UserControl implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
+	}
+
+	@SuppressWarnings("unchecked")
+	private void checkExecutedExam(Object[] msgFromServer) {
+		if(msgFromServer==null) {
+			//openScreen("ErrorMessage","Exam Locked or not defined");
+			return;
+		}
+		String type=(String)msgFromServer[1];
+		if(type.equals("manual")){
+										//We Need To Build This Functionality !!!!!!!
+		}
+		else {
+			questioninexecutedexam=(ArrayList<Question>) msgFromServer[0];
+			openScreen("kaki");
+			//questionContent.setText("kaki");
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -267,5 +299,17 @@ public class StudentControl extends UserControl implements Initializable {
 
 	public void downloadExamPressed() {
 
+	}
+	
+	public void excecuteExam(ActionEvent e) {//click on the button "execute exam"
+		if(codeTextField.getText().equals("")) {
+			openScreen("ErrorMessage","Error in executed exam id");
+			return;
+		}
+		String executedID=codeTextField.getText();
+		connect(this); // connecting to server
+		messageToServer[0] = "checkExecutedExam";
+		messageToServer[1] = executedID;
+		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 }

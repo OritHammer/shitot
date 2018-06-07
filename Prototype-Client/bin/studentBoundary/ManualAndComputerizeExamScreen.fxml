@@ -18,7 +18,7 @@
             <Font size="15.0" />
          </font>
       </TextField>
-      <Button layoutX="203.0" layoutY="275.0" mnemonicParsing="false" text="Download\Excecute exam" />
+      <Button layoutX="203.0" layoutY="275.0" mnemonicParsing="false" onAction="#excecuteExam" text="Download\Excecute exam" />
       <CheckBox fx:id="correctExamCodeCB" layoutX="228.0" layoutY="176.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="102.0" text="Correct code" />
       <Button layoutX="209.0" layoutY="315.0" mnemonicParsing="false" onAction="#goToHomePressed" prefHeight="25.0" prefWidth="140.0" text="Go back to home page" />
    </children>

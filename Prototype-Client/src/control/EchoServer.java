@@ -94,7 +94,12 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		
+		case "checkExecutedExam": {/*check the executed exam id validity*/
+			Object[] questioninexam = con.checkExecutedExam(message[1]);
+			serverMessage[1] =questioninexam;
+			this.sendToAllClients(serverMessage);
+			break;
+		}
 		case "getExams": {/*client request all all the courses under some subject*/
 			ArrayList<String> examsList = con.getExams(message[1]);
 			serverMessage[1] =examsList;

@@ -488,4 +488,51 @@ public class MysqlConnection {
 
 	}
 
+	@SuppressWarnings("null")
+	public Object[] checkExecutedExam(Object executedExamID) {
+		executedExamID=(String)executedExamID;
+		ArrayList<Question> questionsinexam=null;
+		Object []details=new Object[2];
+		String typeOfExam;
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT executedExamID,type FROM executedexam,exams WHERE "
+					+ "executedExamID=\""+executedExamID+"\" AND status=\"open\" AND exam_id=e_id;");
+			if (!rs.isBeforeFirst()) {
+				System.out.println("no code found");
+				rs.close();
+				return(null);
+			}
+			rs.next();
+			typeOfExam=rs.getString(2);
+			questionsinexam = new ArrayList<Question>();
+			Question question;
+			rs = stmt.executeQuery("SELECT * " + 
+					"from (select questioninexam.question_ID id "+
+					"from   shitot.questioninexam , shitot.executedexam,exams"+
+					" where  executedexam.executedExamID ='"+executedExamID+"' AND exams.e_id=executedexam.exam_id "
+					+ "AND  questioninexam.e_id = exams.e_id) QID , questions " + 
+					"where QID.id = questions.question_id;");
+			while (rs.next()) {
+				question=new Question();
+				question.setId(rs.getString(2));
+				question.setTeacherName(rs.getString(3));
+				question.setQuestionContent(rs.getString(4));
+				ArrayList<String> answers = new ArrayList<String>();
+				answers.add(rs.getString(5));
+				answers.add(rs.getString(6));
+				answers.add(rs.getString(7));
+				answers.add(rs.getString(8));
+				question.setAnswers(answers);
+				question.setTrueAnswer(Integer.parseInt(rs.getString(9)));
+				questionsinexam.add(question);
+			}
+			details[0]=questionsinexam;
+			details[1]=typeOfExam;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return (details);
+	}
 }

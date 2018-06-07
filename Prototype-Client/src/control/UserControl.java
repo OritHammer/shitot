@@ -217,6 +217,7 @@ public class UserControl implements Initializable {
 		   chat.handleMessageFromClientUI(messageToServer);
 		  }
 		 }
+	
 	public void setUserText(String userNameFromDB) {/*set the user name text in the "hello user" text*/
 		this.userNameFromDB=userNameFromDB;
 		Globals.setFullName(userNameFromDB);
