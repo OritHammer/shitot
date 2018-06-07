@@ -243,17 +243,18 @@ public class StudentControl extends UserControl implements Initializable {
 		} 
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void showGradesOnTable(ArrayList<ExamDetailsMessage> detailsFromS) {
-		for (ExamDetailsMessage edM : detailsFromS) {
-			detailsList.add(edM);
+	for (ExamDetailsMessage edM : detailsFromS) {
+			detailsList.add(edM);		
 		}
+		
 		examGradesTable.setItems(detailsList);
-		//examGradesTable.getColumns().clear();
-		examCodeColumn.setCellValueFactory(new PropertyValueFactory<>("examID"));
-		dateColumn.setCellValueFactory(new PropertyValueFactory<>("examDate"));
-		gradeColumn.setCellValueFactory(new PropertyValueFactory<>("examGrade"));
-		courseCodeColumn.setCellValueFactory(new PropertyValueFactory<>("examCourse"));
+		examCodeColumn.setCellValueFactory(new PropertyValueFactory("examID"));
+		dateColumn.setCellValueFactory(new PropertyValueFactory("examDate"));
+		gradeColumn.setCellValueFactory(new PropertyValueFactory("examGrade"));
+		courseCodeColumn.setCellValueFactory(new PropertyValueFactory("examCourse"));
+		examGradesTable.getColumns().removeAll();
 		examGradesTable.getColumns().addAll(examCodeColumn,courseCodeColumn,gradeColumn,dateColumn);
 	}
 
