@@ -8,18 +8,28 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.StudentControl">
    <children>
-      <Label layoutX="27.0" layoutY="135.0" prefHeight="27.0" prefWidth="162.0" text="enter exam code:">
+      <Label layoutX="27.0" layoutY="90.0" prefHeight="27.0" prefWidth="162.0" text="Enter exam code:">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="codeTextField" layoutX="189.0" layoutY="133.0" promptText="please enter 6 digits">
+      <TextField fx:id="codeTextField" layoutX="186.0" layoutY="88.0" promptText="please enter 4 digits">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="userIDTextField" layoutX="186.0" layoutY="157.0" prefHeight="31.0" prefWidth="187.0" promptText="please enter 6 digits">
          <font>
             <Font size="15.0" />
          </font>
       </TextField>
       <Button layoutX="203.0" layoutY="275.0" mnemonicParsing="false" onAction="#excecuteExam" text="Download\Excecute exam" />
-      <CheckBox fx:id="correctExamCodeCB" layoutX="228.0" layoutY="176.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="102.0" text="Correct code" />
+      <CheckBox fx:id="correctExamCodeCB" layoutX="228.0" layoutY="127.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="102.0" text="Correct code" />
       <Button layoutX="209.0" layoutY="315.0" mnemonicParsing="false" onAction="#goToHomePressed" prefHeight="25.0" prefWidth="140.0" text="Go back to home page" />
+      <Label layoutX="27.0" layoutY="164.0" prefHeight="17.0" prefWidth="147.0" text="Enter you ID:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

@@ -14,6 +14,7 @@ import entity.ExamCopy;
 import entity.ExamDetailsMessage;
 import entity.Question;
 import entity.TeachingProfessionals;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,22 +45,24 @@ public class StudentControl extends UserControl implements Initializable {
 	private static Scene gradeSc = null;
 	private ArrayList<Question> questioninexecutedexam;
 	private int index;
-	
+
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
 	@FXML
-	private  Label userNameLabel;
+	private Label userNameLabel;
 	@FXML
-	private  Label authorLabel;
+	private Label authorLabel;
 	@FXML
-	private  Label dateLabel;
+	private Label dateLabel;
 	@FXML
 	private TextField newMsgTextField;
+	// move to user
+	private Calendar currentCalendar = Calendar.getInstance();
+	private Date currentTime = currentCalendar.getTime();
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
+	FXMLLoader loader = new FXMLLoader();
 
-	// *********for student do Exam***********//
-	@FXML
-	private TextField codeTextField;
-	// *********for student see his grades***********//
+	// *********for student see his grades AND can order exam***********//
 	@FXML
 	private TableView<ExamDetailsMessage> examGradesTable;
 	@FXML
@@ -74,31 +77,30 @@ public class StudentControl extends UserControl implements Initializable {
 	private ComboBox<String> examCodeCombo;
 
 	ObservableList<ExamDetailsMessage> detailsList = FXCollections.observableArrayList();
-	// *********for student ask for copy of his exam***********//
 
 	// *******for student execute or download exam*********//
+	@FXML
+	private TextField codeTextField;
+	@FXML
 	private CheckBox correctExamCodeCB;
+	@FXML
+	private TextField userIDTextField;
+	// ******************** student perform exam ************//
+
 	@FXML
 	private Label pageLabel;
 	@FXML
 	private TextField questionContent;
-	// move to user
-	private Calendar currentCalendar = Calendar.getInstance();
-	private Date currentTime = currentCalendar.getTime();
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
-	FXMLLoader loader = new FXMLLoader();
 
-	/*************** Class Methods *******************************/
+	/************************ Class Methods *************************/
 	public void initialize(URL url, ResourceBundle rb) {
-			//connect(this);
-		//if(pageLabel.getText().equals("Perform exam")) {
-		//	nextQuestion(null);
-		//}
-		
+		// connect(this);
+		// if(pageLabel.getText().equals("Perform exam")) {
+		// nextQuestion(null);
+		// }
+
 	}
-	private void nextQuestion(ActionEvent e) {
-		
-	}
+
 	/********************* general Functions *************************/
 	public void setStudentAuthor_Date_name() {// *** move to userControl rename userDetails
 		userNameLabel.setText(Globals.getFullName());
@@ -126,31 +128,36 @@ public class StudentControl extends UserControl implements Initializable {
 
 	// ***
 	private void openScreen(String screen) {// open a window of screen
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			if(screen.equals("LoginGui")) {
-				loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));	
+
+
+				try {
+					
+					FXMLLoader loader = new FXMLLoader();
+					if (screen.equals("LoginGui")) {
+						loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));
+					} else
+						loader.setLocation(getClass().getResource("/studentBoundary/" + screen + ".fxml"));
+					Scene scene = new Scene(loader.load());
+					Stage stage = Main.getStage();
+					if (screen.equals("NewDesignHomeScreenStudent")) {
+						StudentControl sControl = loader.getController();
+						sControl.setStudentAuthor_Date_name();
+					}
+					if (screen.equals("ErrorMessage")) {
+						ErrorControl tController = loader.getController();
+						tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
+						tController.setErrorMessage("ERROR");// send a the error to the alert we made
+					}
+					// stage.setTitle(screen);
+					stage.setScene(scene);
+					stage.show();
+
+				} catch (Exception exception) {
+					System.out.println("Error in opening the page");
+					exception.printStackTrace();
+				}
 			}
-			else loader.setLocation(getClass().getResource("/studentBoundary/" + screen + ".fxml"));
-			Scene scene = new Scene(loader.load());
-			Stage stage = Main.getStage();
-			if(screen.equals("NewDesignHomeScreenStudent") ) {
-				StudentControl sControl = loader.getController();
-				sControl.setStudentAuthor_Date_name();
-			}
-			if (screen.equals("ErrorMessage")) {
-				ErrorControl tController = loader.getController();
-				tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
-				tController.setErrorMessage("ERROR");// send a the error to the alert we made
-			}
-			//stage.setTitle(screen);
-			stage.setScene(scene);
-			stage.show();
-		} catch (Exception exception) {
-			System.out.println("Error in opening the page");
-			exception.printStackTrace();
-		}
-	}
+
 
 	// ***
 	private void openScreen(String screen, String message) {
@@ -189,6 +196,7 @@ public class StudentControl extends UserControl implements Initializable {
 			e1.printStackTrace();
 		}
 	}
+
 	public void orderExamCopyPressed(ActionEvent e) {
 		try {
 			closeScreen(e);
@@ -202,6 +210,7 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 
 	}
+
 	public void excecuteMorCExamPressed(ActionEvent e) {
 		try {
 			closeScreen(e);
@@ -228,13 +237,48 @@ public class StudentControl extends UserControl implements Initializable {
 		getGradesFromServer();
 	}
 
-	/********************* Student Order Copy 
-	 * @throws IOException *************************/
+	/*********************
+	 * Student Order Copy
+	 * 
+	 * @throws IOException
+	 *************************/
+	public void orderExamPressed(ActionEvent e) {
+		messageToServer[0] = "getExamsCopyByUserName";
+		messageToServer[1] = examCodeCombo.getValue();
+		messageToServer[2] = null;
+		chat.handleMessageFromClientUI(messageToServer);// send the message to server
+	}
 
+	public void downloadExamPressed() {
+
+	}
+
+	/*************************** Student excecute exam 
+	 * @throws SQLException 
+	 * @throws IOException ****************************/
+	public void excecuteExam(ActionEvent e) throws IOException, SQLException {// click on the button "execute exam"
+		if (codeTextField.getText().equals("")||userIDTextField.getText().equals((""))) {
+			openScreen("ErrorMessage", "Error in executed exam id");
+			return;
+		}
+		else if (!userIDTextField.getText().equals((Globals.getUser().getUserID()))) {
+			openScreen("ErrorMessage", "Your ID is incorrect"); // if user ID isn't correct
+			return;
+		}
+		//everything fine 
+		String executedID = codeTextField.getText();
+		connect(this); // connecting to server
+		messageToServer[0] = "checkExecutedExam";
+		messageToServer[1] = executedID;
+		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
+		closeScreen(e);
+	}
+
+	/************************* checking message ***********************************/
 	// for all windows
 	@SuppressWarnings("unchecked")
 	@Override
-	public void checkMessage(Object message)  {
+	public void checkMessage(Object message) {
 		try {
 			chat.closeConnection();
 			Object[] msgFromServer = (Object[]) message;
@@ -247,70 +291,52 @@ public class StudentControl extends UserControl implements Initializable {
 				showGradesOnTable((ArrayList<ExamDetailsMessage>) msgFromServer[1]);
 			}
 			case "checkExecutedExam": {
-				checkExecutedExam((Object []) msgFromServer[1]);
+				checkExecutedExam((Object[]) msgFromServer[1]);
 			}
 			}
-			
+
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 	}
 
+	/********************** Handling message from server ***********************/
 	@SuppressWarnings("unchecked")
 	private void checkExecutedExam(Object[] msgFromServer) {
-		if(msgFromServer==null) {
-			//openScreen("ErrorMessage","Exam Locked or not defined");
+		if (msgFromServer == null) {
+			// openScreen("ErrorMessage","Exam Locked or not defined");
 			return;
 		}
-		String type=(String)msgFromServer[1];
-		if(type.equals("manual")){
-										//We Need To Build This Functionality !!!!!!!
-		}
-		else {
-			questioninexecutedexam=(ArrayList<Question>) msgFromServer[0];
-			openScreen("kaki");
-			//questionContent.setText("kaki");
+		String type = (String) msgFromServer[1];
+		if (type.equals("manual")) {
+			// We Need To Build This Functionality !!!!!!!
+		} else {
+			questioninexecutedexam = (ArrayList<Question>) msgFromServer[0];
+			openScreen("ComputerizedExam");
 		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void showGradesOnTable(ArrayList<ExamDetailsMessage> detailsFromS) {
-	for (ExamDetailsMessage edM : detailsFromS) {
-			detailsList.add(edM);		
+		for (ExamDetailsMessage edM : detailsFromS) {
+			detailsList.add(edM);
 		}
-		
+
 		examGradesTable.setItems(detailsList);
 		examCodeColumn.setCellValueFactory(new PropertyValueFactory("examID"));
 		dateColumn.setCellValueFactory(new PropertyValueFactory("examDate"));
 		gradeColumn.setCellValueFactory(new PropertyValueFactory("examGrade"));
 		courseCodeColumn.setCellValueFactory(new PropertyValueFactory("examCourse"));
 		examGradesTable.getColumns().removeAll();
-		examGradesTable.getColumns().addAll(examCodeColumn,courseCodeColumn,gradeColumn,dateColumn);
+		examGradesTable.getColumns().addAll(examCodeColumn, courseCodeColumn, gradeColumn, dateColumn);
 	}
 
-	public void orderExamPressed(ActionEvent e) {
-		messageToServer[0] = "getExamsCopyByUserName";
-		messageToServer[1] = examCodeCombo.getValue();
-		messageToServer[2] = null;
-		chat.handleMessageFromClientUI(messageToServer);// send the message to server
-	}
-
-	public void downloadExamPressed() {
+	/************************ Student performing exam *************/
+	private void nextQuestion(ActionEvent e) {
 
 	}
-	
-	public void excecuteExam(ActionEvent e) {//click on the button "execute exam"
-		if(codeTextField.getText().equals("")) {
-			openScreen("ErrorMessage","Error in executed exam id");
-			return;
-		}
-		String executedID=codeTextField.getText();
-		connect(this); // connecting to server
-		messageToServer[0] = "checkExecutedExam";
-		messageToServer[1] = executedID;
-		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
-	}
+
 }

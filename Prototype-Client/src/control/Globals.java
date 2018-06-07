@@ -29,5 +29,7 @@ return requestId;
 public static void setUser (User userFromS) {
 	myUser = userFromS ;
 }
-
+public static User getUser () {
+	return myUser ; 
+}
 }
