@@ -506,8 +506,8 @@ public class MysqlConnection {
 					+ "AND  questioninexam.e_id = exams.e_id) QID , questions " + 
 					"where QID.id = questions.question_id;");
 			while (rs.next()) {
-				question = new Question(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5)
-						,rs.getString(6),rs.getString(7),Integer.parseInt(rs.getString(8)));
+				question = new Question(rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6)
+						,rs.getString(7),rs.getString(8),Integer.parseInt(rs.getString(9)));
 				questionsinexam.add(question);
 			}
 			details[0]=questionsinexam;
