@@ -35,7 +35,7 @@ public class StudentControl extends UserControl implements Initializable {
 	private static Scene homeSc = null;
 	private static Scene gradeSc = null;
 	private static ArrayList<Question> questioninexecutedexam;
-	private int index=0;
+	private int index=-1;
 
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
@@ -109,11 +109,14 @@ public class StudentControl extends UserControl implements Initializable {
 	
 	@FXML
 	private Button nextBTN;
+	@FXML
+	private Button prevBTN;
 	/************************ Class Methods *************************/
 	public void initialize(URL url, ResourceBundle rb) {
 		// connect(this);
 		if (pageLabel.getText().equals("Perform exam")) {
 			nextQuestion(null);
+			prevBTN.setVisible(false);
 		}
 
 	}
@@ -356,15 +359,30 @@ public class StudentControl extends UserControl implements Initializable {
 	/************************ Student performing exam *************/
 	@FXML
 	private void nextQuestion(ActionEvent e) {
+		index++;
+		setQuestion();
+		if(index+1==questioninexecutedexam.size()) {
+			nextBTN.setVisible(false);
+		}
+		prevBTN.setVisible(true);
+
+	}
+	private void setQuestion() {
 		questionContent.setText(questioninexecutedexam.get(index).getQuestionContent());
 		answer1.setText(questioninexecutedexam.get(index).getAnswer1());
 		answer2.setText(questioninexecutedexam.get(index).getAnswer2());
 		answer3.setText(questioninexecutedexam.get(index).getAnswer3());
-		answer4.setText(questioninexecutedexam.get(index).getAnswer4());
-		index++;
-		if(index==questioninexecutedexam.size()) {
-			nextBTN.setVisible(false);
+		answer4.setText(questioninexecutedexam.get(index).getAnswer4());		
+	}
+
+	@FXML
+	private void previousQuestion(ActionEvent e) {
+		index--;
+		setQuestion();
+		if(index==0) {
+			prevBTN.setVisible(false);
 		}
+		nextBTN.setVisible(true);
 	}
 
 }

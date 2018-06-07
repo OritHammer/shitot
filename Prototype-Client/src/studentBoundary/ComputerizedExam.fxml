@@ -23,7 +23,7 @@
             <Font name="Footlight MT Light" size="21.0" />
          </font>
       </TextField>
-      <Button layoutX="212.0" layoutY="347.0" mnemonicParsing="false" text="previous" />
+      <Button fx:id="prevBTN" layoutX="212.0" layoutY="347.0" mnemonicParsing="false" onAction="#previousQuestion" text="previous" visible="false" />
       <Button fx:id="nextBTN" layoutX="285.0" layoutY="347.0" mnemonicParsing="false" onAction="#nextQuestion" prefHeight="25.0" prefWidth="62.0" text="Next" />
       <Button layoutX="478.0" layoutY="347.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="71.0" text="Finish" />
       <Label fx:id="pageLabel" layoutX="248.0" layoutY="6.0" text="Perform exam" />
