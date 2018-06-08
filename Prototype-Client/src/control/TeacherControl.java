@@ -31,11 +31,13 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.converter.DefaultStringConverter;
 
 public class TeacherControl extends UserControl implements Initializable {
 
@@ -193,15 +195,18 @@ public class TeacherControl extends UserControl implements Initializable {
 					a4.setCellValueFactory(new PropertyValueFactory<>("answer4"));
 					correctAns.setCellValueFactory(new PropertyValueFactory<>("correctAnswer"));
 			        questionTableView.setEditable(true);
+					ObservableList<String> numbers = FXCollections.observableArrayList("1","2","3","4");
+			        qtext.setCellFactory(TextFieldTableCell.forTableColumn());
+			        a1.setCellFactory(TextFieldTableCell.forTableColumn());
+			        a2.setCellFactory(TextFieldTableCell.forTableColumn());
+			        a3.setCellFactory(TextFieldTableCell.forTableColumn());
+			        a4.setCellFactory(TextFieldTableCell.forTableColumn());
+			        correctAns.setCellFactory(TextFieldTableCell.forTableColumn());
+			        correctAns.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(),numbers));
+			        questionObservableList = FXCollections.observableArrayList((ArrayList<Question>) msg[1]);
 
 				}
-		        
-		        qtext.setCellFactory(TextFieldTableCell.forTableColumn());
-		        a1.setCellFactory(TextFieldTableCell.forTableColumn());
-		        a2.setCellFactory(TextFieldTableCell.forTableColumn());
-		        a3.setCellFactory(TextFieldTableCell.forTableColumn());
-		        a4.setCellFactory(TextFieldTableCell.forTableColumn());
-		        correctAns.setCellFactory(TextFieldTableCell.forTableColumn());
+
 		        
 				questionTableView.setItems(questionObservableList);
 				break;
