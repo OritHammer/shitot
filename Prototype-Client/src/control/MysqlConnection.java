@@ -455,7 +455,7 @@ public class MysqlConnection {
 
 	}
 
-	public ArrayList<ExecutedExam> getExecutedExam(Object teacherUserName) {////////////////////////////////////////// kaki
+	public ArrayList<ExecutedExam> getExecutedExam(Object teacherUserName) {
 		/*
 		 * The function return the course list by the given subject code
 		 */
@@ -464,7 +464,7 @@ public class MysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
-					"SELECT * FROM executedexam WHERE teacherName=\"" + teacherUserName.toString() + "\";");
+					"SELECT * FROM executedexam WHERE teacherName=\"" + teacherUserName.toString() + "\" AND status='open';");
 			while (rs.next()) {
 				executedexam.add(new ExecutedExam(rs.getString(1), Integer.parseInt(rs.getString(2)),
 						Integer.parseInt(rs.getString(3)), Integer.parseInt(rs.getString(4)),
@@ -478,7 +478,7 @@ public class MysqlConnection {
 			e.printStackTrace();
 		}
 		return executedexam;
-	}/////////////////////////////////////////////////////// kaki
+	}
 
 	public ArrayList<String> getExams(Object examIDStart) {
 		ArrayList<String> examList = new ArrayList<String>();
