@@ -261,6 +261,29 @@ public class MysqlConnection {
 		return questionList;
 	}
 
+	public ArrayList<Question> getQuestionListToTable(Object subject, Object teacherUserName) {
+		/*
+		 * The function return the question list by the given subject code
+		 */
+		// Statement stmt;
+		ArrayList<Question> questionList = new ArrayList<Question>();
+		String userName = (String) teacherUserName;
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT question_id,teacher_name,question_text,answer1,answer2,answer3,answer4,Correct_answer FROM questions,teacherincourse"
+					+ " WHERE Question_id like " + "\"" + subject + "%\" AND UserNameTeacher=\"" + userName
+					+ "\"And courseID like \"" + subject + "%\";");
+			while (rs.next()) {
+				questionList.add(new Question(rs.getString(1),rs.getString(2),rs.getString(3),
+						rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),Integer.parseInt(rs.getString(8))));
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return questionList;
+	}
+	
 	public Question getQuestionDetails(Object quest) {
 		// ArrayList<String> answerList = new ArrayList<String>();
 		// Statement stmt;
@@ -324,6 +347,22 @@ public class MysqlConnection {
 			stmt.executeUpdate("UPDATE questions SET Correct_answer=\"" + newAnswer + "\" WHERE Question_id=\""
 					+ questionID + "\";");
 			System.out.println("question:" + questionID + "new answer:" + newAnswer);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateQuestion(Object question) throws SQLException {
+		try {
+			// Statement stmt;
+			stmt = conn.createStatement();
+			Question q = (Question) question;
+			// query update on DB the correct answer of question that have the given
+			// questionID from client
+			stmt.executeUpdate("UPDATE questions SET question_text=\"" + q.getQuestionContent() + "\", answer1=\"" 
+			+ q.getAnswer1() + "\", answer2 = \"" + q.getAnswer2()+"\", answer3= \"" +q.getAnswer3()+"\","
+					+ "answer4= \"" +q.getAnswer4()+ "\", correct_answer= \"" + q.getCorrectAnswer()+"\" WHERE Question_id=\""
+					+ q.getId() + "\";");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

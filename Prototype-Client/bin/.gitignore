@@ -1,2 +1,7 @@
-/mysql-connector-java-5.1.19-bin.jar
 /control/
+<<<<<<< HEAD
+/boundary/
+/entity/
+=======
+/studentBoundary/
+>>>>>>> branch 'master' of https://github.com/avivMahulya/shitot.git

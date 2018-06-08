@@ -23,14 +23,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -51,6 +54,7 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	@FXML
 	private Label pageLabel;
+	
 
 	@FXML
 	private TextField answer1;
@@ -113,6 +117,28 @@ public class TeacherControl extends UserControl implements Initializable {
 
 
 
+	@FXML
+	private TableView<Question> questionTableView;
+	@FXML
+	private TableColumn<Question, String> qid;
+	@FXML
+	private TableColumn<Question, String> tname;
+	@FXML
+	private TableColumn<Question, String> qtext;
+	@FXML
+	private TableColumn<Question, String> a1;
+	@FXML
+	private TableColumn<Question, String> a2;
+	@FXML
+	private TableColumn<Question, String> a3;
+	@FXML
+	private TableColumn<Question, String> a4;
+	@FXML
+	private TableColumn<Question, Integer> correctAns;
+	@FXML
+	private TableColumn<Question, String> editQ;
+	@FXML
+	private TableColumn<Question, String> deleteQ;
 	
 	
 	
@@ -128,6 +154,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private ComboBox<String> typeComboBox;
 
+	ObservableList<Question> questionObservableList;
 	/* check the content message from server */
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
@@ -154,6 +181,11 @@ public class TeacherControl extends UserControl implements Initializable {
 			case ("getQuestions"): /* get the questions list from server */
 			{
 				showQuestions((ArrayList<String>) msg[1]);
+				break;
+			}
+			case ("getQuestionsToTable"): /* get the questions list from server */
+			{
+				showQuestionsInTable((ArrayList<Question>) msg[1]);
 				break;
 			}
 			case ("getExams"): /* get the subjects list from server */
@@ -199,9 +231,10 @@ public class TeacherControl extends UserControl implements Initializable {
 		teacherNameTableView.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
 		exam_idTableView.setCellValueFactory(new PropertyValueFactory<>("exam_id"));
 	}
-
+	
 	/* clear all the text fields and radio buttons */
 	public void initialize(URL url, ResourceBundle rb) {
+		
 		if (pageLabel.getText().equals("Create exam")) {
 			typeComboBox.setItems(FXCollections.observableArrayList("computerized", "manual"));
 			timeForExamHours.setText("00");
@@ -447,12 +480,17 @@ public class TeacherControl extends UserControl implements Initializable {
 		String subject = subjectsComboBox.getValue(); // get the subject code
 		if (subject == null)
 			return;
+		questionTableView.getItems().clear();
+
 		String[] subjectSubString = subject.split("-");
-		questionsComboBox.getSelectionModel().clearSelection();
-		if (!pageLabel.getText().equals("Create exam"))
-			clearForm();
+		//questionsComboBox.getSelectionModel().clearSelection();
+		//if (!pageLabel.getText().equals("Create exam"))
+			//clearForm();
 		connect(this); // connecting to server
+		if(pageLabel.getText().equals("Create exam"))
 		messageToServer[0] = "getQuestions";
+		if(pageLabel.getText().equals("Update question"))
+		messageToServer[0] = "getQuestionsToTable";
 		messageToServer[1] = subjectSubString[0].trim();
 		messageToServer[2] = Globals.getuserName();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
@@ -473,11 +511,80 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	}
 
+	
+    public void changeQuestionContentOnTable(CellEditEvent<Question, String>  edittedCell)
+    {
+    	
+        Question questionSelected =  questionTableView.getSelectionModel().getSelectedItem();
+        if(!edittedCell.getNewValue().toString().equals(questionSelected.getQuestionContent()))
+        {
+        questionSelected.setQuestionContent(edittedCell.getNewValue().toString());
+        updateQuestion(questionSelected);
+        }
+    }
+    
+    public void changeAnswer1OnTable(CellEditEvent<Question, String> edittedCell)
+    {
+        Question questionSelected =  questionTableView.getSelectionModel().getSelectedItem();
+        if(!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer1()))
+        {
+        questionSelected.setAnswer1(edittedCell.getNewValue().toString());
+        updateQuestion(questionSelected);
+        }
+    }
+    public void changeAnswer2OnTable(CellEditEvent<Question, String>  edittedCell)
+    {
+        Question questionSelected =  questionTableView.getSelectionModel().getSelectedItem();
+        if(!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer2()))
+        {
+        questionSelected.setAnswer2(edittedCell.getNewValue().toString());
+        updateQuestion(questionSelected);
+        }
+    }
+    public void changeAnswer3OnTable(CellEditEvent<Question, String>  edittedCell)
+    {
+        Question questionSelected =  questionTableView.getSelectionModel().getSelectedItem();
+        if(!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer3())) {
+        questionSelected.setAnswer3(edittedCell.getNewValue().toString());
+        updateQuestion(questionSelected);
+        }
+    }
+    public void changeAnswer4OnTable(CellEditEvent<Question, String>  edittedCell)
+    {
+        Question questionSelected =  questionTableView.getSelectionModel().getSelectedItem();
+        if(!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer4())) {
+        questionSelected.setAnswer4(edittedCell.getNewValue().toString());
+        updateQuestion(questionSelected);
+        }
+    }
+    public void changeCorrectAnswerOnTable(CellEditEvent<Question, Integer>  edittedCell)
+    {
+        Question questionSelected =  questionTableView.getSelectionModel().getSelectedItem();
+        if(!edittedCell.getNewValue().toString().equals(questionSelected.getCorrectAnswer())) {
+        questionSelected.setCorrectAnswer(Integer.parseInt(edittedCell.getNewValue().toString()));
+        updateQuestion(questionSelected);
+        }
+    }
+    
+    public void updateQuestion(Question questionSelected) {
+		messageToServer[0] = "updateQuestion";
+		messageToServer[1] = questionSelected;
+		connect(this);
+		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
+		try {
+			chat.closeConnection();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
 	/* this method show the subjects list on the combobox */
 	public void showSubjects(ArrayList<TeachingProfessionals> msg) {
 		ObservableList<String> observableList = FXCollections.observableArrayList();
 		for (TeachingProfessionals tp : msg) {
 			observableList.add(tp.getTp_id() + " - " + tp.getName());
+			
 			subjectsComboBox.setItems(observableList);
 		}
 	}
@@ -486,6 +593,23 @@ public class TeacherControl extends UserControl implements Initializable {
 	public void showQuestions(ArrayList<String> questionsList) {
 		ObservableList<String> observableList = FXCollections.observableArrayList(questionsList);
 		questionsComboBox.setItems(observableList);
+	}
+	
+	/* this method show the questions list on the Table view */
+	public void showQuestionsInTable(ArrayList<Question> questionsList) {
+		questionObservableList = FXCollections.observableArrayList(questionsList);
+		qid.setCellValueFactory(new PropertyValueFactory<>("id"));
+		tname.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
+		qtext.setCellValueFactory(new PropertyValueFactory<>("questionContent"));
+		a1.setCellValueFactory(new PropertyValueFactory<>("answer1"));
+		a2.setCellValueFactory(new PropertyValueFactory<>("answer2"));
+		a3.setCellValueFactory(new PropertyValueFactory<>("answer3"));
+		a4.setCellValueFactory(new PropertyValueFactory<>("answer4"));
+		correctAns.setCellValueFactory(new PropertyValueFactory<Question,Integer>("correctAnswer"));
+        questionTableView.setEditable(true);
+        qid.setCellFactory(TextFieldTableCell.forTableColumn());
+        qtext.setCellFactory(TextFieldTableCell.forTableColumn());
+		questionTableView.setItems(questionObservableList);
 	}
 
 	public void clearForm() {

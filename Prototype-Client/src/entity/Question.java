@@ -3,6 +3,8 @@ package entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javafx.scene.control.Button;
+
 public class Question implements Serializable{
 	/**
 	 * 
@@ -28,8 +30,8 @@ public class Question implements Serializable{
 		this.answer3 = answer3;
 		this.answer4 = answer4;
 		this.correctAnswer = correctAnswer;
-		
 	}
+	
 	public String getId() {
 		return id;
 	}

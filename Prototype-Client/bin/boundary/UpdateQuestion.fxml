@@ -6,14 +6,10 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="362.0" prefWidth="548.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+<AnchorPane prefHeight="541.0" prefWidth="1132.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
-      <Label layoutX="236.0" layoutY="97.0" text="question number" />
-      <Label layoutX="63.0" layoutY="97.0" prefHeight="17.0" prefWidth="85.0" text="teacher's name" />
-      <TextField fx:id="questionID" editable="false" layoutX="226.0" layoutY="118.0" />
-      <TextField fx:id="teacherName" editable="false" layoutX="57.0" layoutY="118.0" />
       <ComboBox fx:id="subjectsComboBox" layoutX="22.0" layoutY="33.0" onAction="#loadQuestions" prefWidth="150.0" promptText="choose subject" />
-      <Button cancelButton="true" graphicTextGap="0.0" layoutX="358.0" layoutY="326.0" mnemonicParsing="false" onAction="#closeScreen" text="Back">
+      <Button cancelButton="true" graphicTextGap="0.0" layoutX="646.0" layoutY="494.0" mnemonicParsing="false" onAction="#closeScreen" text="Back">
          <textFill>
             <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
                <stops>
@@ -23,16 +19,7 @@
             </RadialGradient>
          </textFill>
       </Button>
-      <RadioButton id="4" fx:id="correctAns4" layoutX="428.0" layoutY="266.0" mnemonicParsing="false">
-         <toggleGroup>
-            <ToggleGroup fx:id="group" />
-         </toggleGroup>
-      </RadioButton>
-      <RadioButton id="3" fx:id="correctAns3" layoutX="428.0" layoutY="232.0" mnemonicParsing="false" toggleGroup="$group" />
-      <RadioButton id="2" fx:id="correctAns2" layoutX="428.0" layoutY="195.0" mnemonicParsing="false" toggleGroup="$group" />
-      <RadioButton id="1" fx:id="correctAns1" layoutX="428.0" layoutY="158.0" mnemonicParsing="false" toggleGroup="$group" />
-      <ComboBox fx:id="questionsComboBox" layoutX="22.0" layoutY="67.0" onAction="#askForQuestionDetails" prefHeight="25.0" prefWidth="505.0" promptText="Choose question" />
-      <Button layoutX="266.0" layoutY="326.0" mnemonicParsing="false" onAction="#updateCorrectAnswer" text="Update">
+      <Button layoutX="538.0" layoutY="494.0" mnemonicParsing="false" text="Update">
          <textFill>
             <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
                <stops>
@@ -42,15 +29,18 @@
             </RadialGradient>
          </textFill>
       </Button>
-      <Label layoutX="400.0" layoutY="130.0" text="correct answer" />
-      <Label layoutX="27.0" layoutY="158.0" text="A" />
-      <Label layoutX="28.0" layoutY="195.0" text="B" />
-      <Label layoutX="27.0" layoutY="232.0" text="C" />
-      <Label layoutX="28.0" layoutY="266.0" text="D" />
-      <TextField fx:id="answer1" editable="false" layoutX="46.0" layoutY="154.0" prefHeight="25.0" prefWidth="346.0" />
-      <TextField fx:id="answer2" editable="false" layoutX="46.0" layoutY="191.0" prefHeight="25.0" prefWidth="346.0" />
-      <TextField fx:id="answer3" editable="false" layoutX="46.0" layoutY="228.0" prefHeight="25.0" prefWidth="346.0" />
-      <TextField fx:id="answer4" editable="false" layoutX="46.0" layoutY="262.0" prefHeight="25.0" prefWidth="346.0" />
-      <Label fx:id="pageLabel" layoutX="206.0" layoutY="6.0" text="Update question" />
+      <Label fx:id="pageLabel" layoutX="593.0" layoutY="14.0" text="Update question" />
+      <TableView fx:id="questionTableView" editable="true" layoutX="22.0" layoutY="118.0" prefHeight="356.0" prefWidth="1062.0">
+        <columns>
+          <TableColumn fx:id="qid" prefWidth="76.0" text="Question ID" />
+            <TableColumn fx:id="tname" prefWidth="94.0" text="Teacher name" />
+            <TableColumn fx:id="qtext" onEditCommit="#changeQuestionContentOnTable" prefWidth="367.0" text="Question text" />
+            <TableColumn fx:id="a1" onEditCommit="#changeAnswer1OnTable" prefWidth="91.0" text="Answer 1" />
+            <TableColumn fx:id="a2" onEditCommit="#changeAnswer2OnTable" prefWidth="119.0" text="Answer 2" />
+            <TableColumn fx:id="a3" onEditCommit="#changeAnswer3OnTable" prefWidth="105.0" text="Answer 3" />
+            <TableColumn fx:id="a4" onEditCommit="#changeAnswer4OnTable" prefWidth="100.0" text="Answer 4" />
+            <TableColumn fx:id="correctAns" onEditCommit="#changeCorrectAnswerOnTable" prefWidth="109.0" text="Correct answer" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>
