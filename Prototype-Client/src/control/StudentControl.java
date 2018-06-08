@@ -347,6 +347,10 @@ public class StudentControl extends UserControl implements Initializable {
 		courseCodeColumn.setCellValueFactory(new PropertyValueFactory("examCourse"));
 		examGradesTable.getColumns().removeAll();
 		examGradesTable.getColumns().addAll(examCodeColumn, courseCodeColumn, gradeColumn, dateColumn);
+		/*
+		 * also need to take from detailsFromS the exam_id's and insert
+		 * them to observeable list into the relevante combobox .
+		 */
 	}
 
 	/************************ Student performing exam *************/
@@ -361,6 +365,20 @@ public class StudentControl extends UserControl implements Initializable {
 
 	}
 	private void setQuestion() {
+		/* before setting questions need to get the answer the student selected
+		 * if there is such answer , if null need to put on the correct 
+		 * answer of the current question as null . 
+		 * 
+		 * need to use 
+		 * 	RadioButton selected = (RadioButton) group.getSelectedToggle();
+			String selectedId = selected.getId();
+			int correctAns = need to get the number of the selected answer with switch case 
+			(chcking the value of "index" can be negative ? 
+			questioninexecutedexam.get(--index).setCorrectAnswer(correctAns);
+		 */
+		
+		
+		
 		questionContent.setText(questioninexecutedexam.get(index).getQuestionContent());
 		answer1.setText(questioninexecutedexam.get(index).getAnswer1());
 		answer2.setText(questioninexecutedexam.get(index).getAnswer2());
