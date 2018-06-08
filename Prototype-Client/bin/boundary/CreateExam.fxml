@@ -37,7 +37,7 @@
       <TableView fx:id="questionsInExamTableView" editable="true" layoutX="411.0" layoutY="88.0" prefHeight="317.0" prefWidth="253.0">
          <columns>
             <TableColumn fx:id="questionNameTableView" prefWidth="132.0" text="Question name" />
-            <TableColumn fx:id="questionPointsTableView" prefWidth="120.0" text="Points" />
+            <TableColumn fx:id="questionPointsTableView" onEditCommit="#setPoints" prefWidth="120.0" text="Points" />
          </columns>
       </TableView>
    </children>

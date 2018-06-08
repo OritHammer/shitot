@@ -38,6 +38,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.converter.DefaultStringConverter;
+import javafx.util.converter.FloatStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 
 public class TeacherControl extends UserControl implements Initializable {
 
@@ -204,10 +206,8 @@ public class TeacherControl extends UserControl implements Initializable {
 			        correctAns.setCellFactory(TextFieldTableCell.forTableColumn());
 			        correctAns.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(),numbers));
 			        questionObservableList = FXCollections.observableArrayList((ArrayList<Question>) msg[1]);
-
 				}
 
-		        
 				questionTableView.setItems(questionObservableList);
 				break;
 			}
@@ -326,12 +326,15 @@ public class TeacherControl extends UserControl implements Initializable {
 		questioninexam.setPoints(Integer.parseInt(pointsText.getText()));
 		questionInExamObservable.add(questioninexam);
 		questionsInExamTableView.setItems(questionInExamObservable);
+
+		questionPointsTableView.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
 		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));// display the id in the
 																							// table view
 		questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));// display the points in the
 																							// table view
 		pointsText.setText("");// entering the question to the list and put text "" in the points component
 		questionObservableList.remove(questionTableView.getSelectionModel().getSelectedIndex());
+
 		}
 
 	public void removeFromTableView(ActionEvent e) {
@@ -434,8 +437,13 @@ public class TeacherControl extends UserControl implements Initializable {
 		 */
 	}
 
-
-
+	public void setPoints(CellEditEvent<QuestionInExam, Float>  edittedCell) {
+		QuestionInExam questionSelected =  questionsInExamTableView.getSelectionModel().getSelectedItem();
+        if(!edittedCell.getNewValue().toString().equals(questionSelected.getPoints()))
+        {
+        	questionSelected.setPoints(edittedCell.getNewValue());
+        }
+	}
 	/***************** create question screen function *****************/
 	/* initialized the update Question window */
 
