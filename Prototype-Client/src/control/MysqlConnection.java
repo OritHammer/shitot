@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 import entity.Course;
 import entity.Exam;
@@ -540,4 +542,25 @@ public class MysqlConnection {
 		return (solutionTime);
 	}
 
-}
+	public void finishExam(String[] details , HashMap<String,Integer> answers) {
+		String examID=details[0];
+		String studentId=details[1];
+		int ans;
+		int i;
+		Set<String> s=answers.keySet();
+		for(String q_id:s) {
+		ans=answers.get(q_id);
+			try {
+				stmt.executeUpdate("INSERT INTO shitot.studentanswerquestions VALUES(\"" + examID + "\",\""
+						+ studentId + "\",\"" +q_id + "\",\"" + ans	 + "\");");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	} 
+	
+	}
+
+
