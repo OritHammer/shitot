@@ -23,7 +23,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -54,7 +53,7 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	@FXML
 	private Label pageLabel;
-	
+
 
 	@FXML
 	private TextField answer1;
@@ -115,8 +114,6 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private TableColumn<ExecutedExam, String> teacherNameTableView;
 
-
-
 	@FXML
 	private TableView<Question> questionTableView;
 	@FXML
@@ -140,9 +137,6 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private TableColumn<Question, String> deleteQ;
 	
-	
-	
-	
 	@FXML
 	private ComboBox<String> questionsComboBox;
 	@FXML
@@ -165,37 +159,97 @@ public class TeacherControl extends UserControl implements Initializable {
 			switch (msg[0].toString()) {
 			case ("getSubjects"): /* get the subjects list from server */
 			{
-				showSubjects((ArrayList<TeachingProfessionals>) msg[1]);
+				ObservableList<String> observableList = FXCollections.observableArrayList();
+				for (TeachingProfessionals tp : (ArrayList<TeachingProfessionals>) msg[1]) {
+					observableList.add(tp.getTp_id() + " - " + tp.getName());
+					
+					subjectsComboBox.setItems(observableList);
+				}
 				break;
 			}
 			case ("getExecutedExams"): /* get the subjects list from server */
 			{
-				showExecutedExam((ArrayList<ExecutedExam>) msg[1]);
+				ObservableList<ExecutedExam> observablelist = FXCollections.observableArrayList((ArrayList<ExecutedExam>) msg[1]);
+				executedExamTableView.setItems(observablelist);
+				executedExamIDTableView.setCellValueFactory(new PropertyValueFactory<>("executedExamID"));
+				teacherNameTableView.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
+				exam_idTableView.setCellValueFactory(new PropertyValueFactory<>("exam_id"));
 				break;
 			}
 			case ("getCourses"): /* get the courses list from server */
 			{
-				showCourses((ArrayList<Course>) msg[1]);
+				ObservableList<String> observableList = FXCollections.observableArrayList();
+				for (Course c : (ArrayList<Course>) msg[1]) {
+					observableList.add(c.getCourseID() + " - " + c.getName());
+				}
+				coursesComboBox.setItems(observableList);
 				break;
 			}
 			case ("getQuestions"): /* get the questions list from server */
 			{
-				showQuestions((ArrayList<String>) msg[1]);
+				ObservableList<String> observableList = FXCollections.observableArrayList((ArrayList<String>) msg[1]);
+				questionsComboBox.setItems(observableList);
 				break;
 			}
 			case ("getQuestionsToTable"): /* get the questions list from server */
 			{
-				showQuestionsInTable((ArrayList<Question>) msg[1]);
+				questionObservableList = FXCollections.observableArrayList((ArrayList<Question>) msg[1]);
+				qid.setCellValueFactory(new PropertyValueFactory<>("id"));
+				tname.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
+				qtext.setCellValueFactory(new PropertyValueFactory<>("questionContent"));
+				if(pageLabel.getText().equals("Update question")) {
+					a1.setCellValueFactory(new PropertyValueFactory<>("answer1"));
+					a2.setCellValueFactory(new PropertyValueFactory<>("answer2"));
+					a3.setCellValueFactory(new PropertyValueFactory<>("answer3"));
+					a4.setCellValueFactory(new PropertyValueFactory<>("answer4"));
+					correctAns.setCellValueFactory(new PropertyValueFactory<Question,Integer>("correctAnswer"));
+			        questionTableView.setEditable(true);
+
+				}
+		        qid.setCellFactory(TextFieldTableCell.forTableColumn());
+		        qtext.setCellFactory(TextFieldTableCell.forTableColumn());
+				questionTableView.setItems(questionObservableList);
 				break;
 			}
 			case ("getExams"): /* get the subjects list from server */
 			{
-				showExams((ArrayList<String>) msg[1]);
+				ObservableList<String> observableList = FXCollections.observableArrayList((ArrayList<String>) msg[1]);
+				examComboBox.setItems(observableList);
 				break;
 			}
 			case ("getQuestionDetails"): /* get the subject list from server */
 			{
-				showQuestionDetails((Question) msg[1]);
+				Question q=(Question) msg[1];
+				try {
+					trueAnsFlag = true;// Permit to user change the correct answer
+					questionID.setText(q.getId());
+					teacherName.setText(q.getTeacherName());
+					answer1.setText(q.getAnswer1());
+					answer2.setText(q.getAnswer2());
+					answer3.setText(q.getAnswer3());
+					answer4.setText(q.getAnswer4());
+
+					/* set up the correct answer button */
+					switch (q.getCorrectAnswer()) {/* The number of the correct answers */
+					case (1): {
+						correctAns1.setSelected(true);
+						break;
+					}
+					case (2): {
+						correctAns2.setSelected(true);
+						break;
+					}
+					case (3): {
+						correctAns3.setSelected(true);
+						break;
+					}
+					case (4): {
+						correctAns4.setSelected(true);
+						break;
+					}
+					}
+				} catch (Exception e) {
+				}
 				break;
 			}
 			case ("setExamCode"): /* get the subject list from server */
@@ -222,14 +276,6 @@ public class TeacherControl extends UserControl implements Initializable {
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void showExecutedExam(ArrayList<ExecutedExam> executedexam) {
-		ObservableList<ExecutedExam> observablelist = FXCollections.observableArrayList(executedexam);
-		executedExamTableView.setItems(observablelist);
-		executedExamIDTableView.setCellValueFactory(new PropertyValueFactory<>("executedExamID"));
-		teacherNameTableView.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
-		exam_idTableView.setCellValueFactory(new PropertyValueFactory<>("exam_id"));
 	}
 	
 	/* clear all the text fields and radio buttons */
@@ -505,7 +551,6 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	}
 
-	
     public void changeQuestionContentOnTable(CellEditEvent<Question, String>  edittedCell)
     {
     	
@@ -551,7 +596,8 @@ public class TeacherControl extends UserControl implements Initializable {
         updateQuestion(questionSelected);
         }
     }
-    public void changeCorrectAnswerOnTable(CellEditEvent<Question, Integer>  edittedCell)
+    @SuppressWarnings("unlikely-arg-type")
+	public void changeCorrectAnswerOnTable(CellEditEvent<Question, Integer>  edittedCell)
     {
         Question questionSelected =  questionTableView.getSelectionModel().getSelectedItem();
         if(!edittedCell.getNewValue().toString().equals(questionSelected.getCorrectAnswer())) {
@@ -572,42 +618,6 @@ public class TeacherControl extends UserControl implements Initializable {
 			e.printStackTrace();
 		}
     }
-    
-	/* this method show the subjects list on the combobox */
-	public void showSubjects(ArrayList<TeachingProfessionals> msg) {
-		ObservableList<String> observableList = FXCollections.observableArrayList();
-		for (TeachingProfessionals tp : msg) {
-			observableList.add(tp.getTp_id() + " - " + tp.getName());
-			
-			subjectsComboBox.setItems(observableList);
-		}
-	}
-
-	/* this method show the questions list on the combobox */
-	public void showQuestions(ArrayList<String> questionsList) {
-		ObservableList<String> observableList = FXCollections.observableArrayList(questionsList);
-		questionsComboBox.setItems(observableList);
-	}
-	
-	/* this method show the questions list on the Table view */
-	public void showQuestionsInTable(ArrayList<Question> questionsList) {
-		questionObservableList = FXCollections.observableArrayList(questionsList);
-		qid.setCellValueFactory(new PropertyValueFactory<>("id"));
-		tname.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
-		qtext.setCellValueFactory(new PropertyValueFactory<>("questionContent"));
-		if(pageLabel.getText().equals("Update question")) {
-			a1.setCellValueFactory(new PropertyValueFactory<>("answer1"));
-			a2.setCellValueFactory(new PropertyValueFactory<>("answer2"));
-			a3.setCellValueFactory(new PropertyValueFactory<>("answer3"));
-			a4.setCellValueFactory(new PropertyValueFactory<>("answer4"));
-			correctAns.setCellValueFactory(new PropertyValueFactory<Question,Integer>("correctAnswer"));
-	        questionTableView.setEditable(true);//kaki
-
-		}
-        qid.setCellFactory(TextFieldTableCell.forTableColumn());
-        qtext.setCellFactory(TextFieldTableCell.forTableColumn());
-		questionTableView.setItems(questionObservableList);
-	}
 
 	public void clearForm() {
 		answer1.clear();
@@ -658,40 +668,6 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	/* this method show the question details to user */
-	public void showQuestionDetails(Question q) {
-		try {
-			trueAnsFlag = true;// Permit to user change the correct answer
-			questionID.setText(q.getId());
-			teacherName.setText(q.getTeacherName());
-			answer1.setText(q.getAnswer1());
-			answer2.setText(q.getAnswer2());
-			answer3.setText(q.getAnswer3());
-			answer4.setText(q.getAnswer4());
-
-			/* set up the correct answer button */
-			switch (q.getCorrectAnswer()) {/* The number of the correct answers */
-			case (1): {
-				correctAns1.setSelected(true);
-				break;
-			}
-			case (2): {
-				correctAns2.setSelected(true);
-				break;
-			}
-			case (3): {
-				correctAns3.setSelected(true);
-				break;
-			}
-			case (4): {
-				correctAns4.setSelected(true);
-				break;
-			}
-			}
-		} catch (Exception e) {
-		}
-	}
-
 	/* close button was pressed */
 	public void closeScreen(ActionEvent e) throws IOException, SQLException {
 		final Node source = (Node) e.getSource();
@@ -715,15 +691,6 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[1] = subjectSubString[0].trim();
 		messageToServer[2] = Globals.getuserName();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
-	}
-
-	/* this method show the Courses list on the combobox */
-	public void showCourses(ArrayList<Course> msg) {
-		ObservableList<String> observableList = FXCollections.observableArrayList();
-		for (Course c : msg) {
-			observableList.add(c.getCourseID() + " - " + c.getName());
-		}
-		coursesComboBox.setItems(observableList);
 	}
 
 	public void loadExams(ActionEvent e) throws IOException {
@@ -757,11 +724,6 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[0] = "setExecutedExamLocked";
 		messageToServer[1] = executedexam.getExecutedExamID();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
-	}
-
-	public void showExams(ArrayList<String> examList) {
-		ObservableList<String> observableList = FXCollections.observableArrayList(examList);
-		examComboBox.setItems(observableList);
 	}
 
 	public void createExtendTimeRequest(ActionEvent e) throws IOException {

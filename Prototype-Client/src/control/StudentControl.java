@@ -417,7 +417,7 @@ public class StudentControl extends UserControl implements Initializable {
 
 	}
 	private void setQuestion() {
-<<<<<<< HEAD
+
 		/* before setting questions need to get the answer the student selected
 		 * if there is such answer , if null need to put on the correct 
 		 * answer of the current question as null . 
@@ -431,7 +431,6 @@ public class StudentControl extends UserControl implements Initializable {
 		 */
 		
 		
-=======
 		correctRadioButton1.setSelected(false);
 		correctRadioButton2.setSelected(false);
 		correctRadioButton3.setSelected(false);
@@ -455,8 +454,6 @@ public class StudentControl extends UserControl implements Initializable {
 				break;
 			}
 		}
->>>>>>> branch 'master' of https://github.com/avivMahulya/shitot.git
-		
 		questionContent.setText(questioninexecutedexam.get(index).getQuestionContent());
 		answer1.setText(questioninexecutedexam.get(index).getAnswer1());
 		answer2.setText(questioninexecutedexam.get(index).getAnswer2());
