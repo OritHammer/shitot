@@ -297,13 +297,13 @@ public class TeacherControl extends UserControl implements Initializable {
 			openScreen("ErrorMessage", "Please fill the points area");
 			return;
 		}
-		if (questionsComboBox.getValue() == null) {
+		if (questionTableView.getSelectionModel().getSelectedItem() == null) {
 			openScreen("ErrorMessage", "Please choose question");
 			return;
 		}
 		QuestionInExam questioninexam = new QuestionInExam();// creating new questioninexam
-		String[] questionDetails = questionsComboBox.getValue().split("-");
-		questioninexam.setQuestionID(questionDetails[0]);
+		String questionDetails = questionTableView.getSelectionModel().getSelectedItem().getId();
+		questioninexam.setQuestionID(questionDetails);
 		questioninexam.setPoints(Integer.parseInt(pointsText.getText()));
 		questionInExamObservable.add(questioninexam);
 		questionsInExamTableView.setItems(questionInExamObservable);
@@ -312,17 +312,14 @@ public class TeacherControl extends UserControl implements Initializable {
 		questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));// display the points in the
 																							// table view
 		pointsText.setText("");// entering the question to the list and put text "" in the points component
-		questionsComboBox.getItems().remove(questionsComboBox.getValue());// removing the question from the combobox
-
-		// questionsInExamTableView.setRowFactory(value);
-	}
+		questionObservableList.remove(questionTableView.getSelectionModel().getSelectedIndex());
+		}
 
 	public void removeFromTableView(ActionEvent e) {
 		ObservableList<QuestionInExam> questiontoremove = questionsInExamTableView.getSelectionModel()
 				.getSelectedItems();
 		questiontoremove.forEach(questionInExamObservable::remove);
-		// questionsComboBox.getItems().add(questiontoremove);//removing the question
-		// from the combobox
+		//add the question back to the tableview
 	}
 
 	@SuppressWarnings("static-access")
@@ -480,16 +477,13 @@ public class TeacherControl extends UserControl implements Initializable {
 		String subject = subjectsComboBox.getValue(); // get the subject code
 		if (subject == null)
 			return;
-		questionTableView.getItems().clear();
+		//questionTableView.getItems().clear();
 
 		String[] subjectSubString = subject.split("-");
 		//questionsComboBox.getSelectionModel().clearSelection();
 		//if (!pageLabel.getText().equals("Create exam"))
 			//clearForm();
 		connect(this); // connecting to server
-		if(pageLabel.getText().equals("Create exam"))
-		messageToServer[0] = "getQuestions";
-		if(pageLabel.getText().equals("Update question"))
 		messageToServer[0] = "getQuestionsToTable";
 		messageToServer[1] = subjectSubString[0].trim();
 		messageToServer[2] = Globals.getuserName();
@@ -601,12 +595,15 @@ public class TeacherControl extends UserControl implements Initializable {
 		qid.setCellValueFactory(new PropertyValueFactory<>("id"));
 		tname.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
 		qtext.setCellValueFactory(new PropertyValueFactory<>("questionContent"));
-		a1.setCellValueFactory(new PropertyValueFactory<>("answer1"));
-		a2.setCellValueFactory(new PropertyValueFactory<>("answer2"));
-		a3.setCellValueFactory(new PropertyValueFactory<>("answer3"));
-		a4.setCellValueFactory(new PropertyValueFactory<>("answer4"));
-		correctAns.setCellValueFactory(new PropertyValueFactory<Question,Integer>("correctAnswer"));
-        questionTableView.setEditable(true);
+		if(pageLabel.getText().equals("Update question")) {
+			a1.setCellValueFactory(new PropertyValueFactory<>("answer1"));
+			a2.setCellValueFactory(new PropertyValueFactory<>("answer2"));
+			a3.setCellValueFactory(new PropertyValueFactory<>("answer3"));
+			a4.setCellValueFactory(new PropertyValueFactory<>("answer4"));
+			correctAns.setCellValueFactory(new PropertyValueFactory<Question,Integer>("correctAnswer"));
+	        questionTableView.setEditable(true);//kaki
+
+		}
         qid.setCellFactory(TextFieldTableCell.forTableColumn());
         qtext.setCellFactory(TextFieldTableCell.forTableColumn());
 		questionTableView.setItems(questionObservableList);
