@@ -122,6 +122,14 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
+		
+		case "getQuestionsToTable": {/*client request all all the questions under some subject*/
+			ArrayList<Question> questionList = con.getQuestionListToTable(message[1],message[2]);
+			serverMessage[1] = questionList;
+			this.sendToAllClients(serverMessage);
+			break;
+		}
+		
 		case "setExam": {/*client request is to create exam in DB*/
 			con.createExam(message[1],message[2]);
 			break;
@@ -149,6 +157,15 @@ public class EchoServer extends AbstractServer {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			break;
+		}
+		case "updateQuestion": {
+				try {
+					con.updateQuestion(message[1]);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			break;
 		}
 		case "checkUserDetails": {
