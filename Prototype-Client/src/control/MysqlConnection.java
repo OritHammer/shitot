@@ -277,7 +277,7 @@ public class MysqlConnection {
 					+ "\"And courseID like \"" + subject + "%\";");
 			while (rs.next()) {
 				questionList.add(new Question(rs.getString(1),rs.getString(2),rs.getString(3),
-						rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),Integer.parseInt(rs.getString(8))));
+						rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8)));
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -302,7 +302,7 @@ public class MysqlConnection {
 			rs.next();
 			// inserting the data to String List , order by the same order in DB
 			question = new Question(rs.getString(1),rs.getString(2),null,rs.getString(3),
-					rs.getString(4),rs.getString(5),rs.getString(6),Integer.parseInt(rs.getString(7)));
+					rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
 
 			rs.close();
 
@@ -549,7 +549,7 @@ public class MysqlConnection {
 					"where QID.id = questions.question_id;");
 			while (rs.next()) {
 				question = new Question(rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6)
-						,rs.getString(7),rs.getString(8),Integer.parseInt(rs.getString(9)));
+						,rs.getString(7),rs.getString(8),rs.getString(9));
 				questionsinexam.add(question);
 			}
 			details[0]=questionsinexam;

@@ -17,10 +17,10 @@ public class Question implements Serializable{
 	private String answer2;
 	private String answer3;
 	private String answer4;
-	private int correctAnswer;
+	private String correctAnswer;
 	
 	public Question(String id,String teacherName, String questionContent, String answer1, String answer2, String answer3, String answer4,
-			int correctAnswer) {
+			String correctAnswer) {
 		super();
 		this.id = id;
 		this.teacherName = teacherName;
@@ -68,10 +68,10 @@ public class Question implements Serializable{
 	public void setAnswer4(String answer4) {
 		this.answer4 = answer4;
 	}
-	public int getCorrectAnswer() {
+	public String getCorrectAnswer() {
 		return correctAnswer;
 	}
-	public void setCorrectAnswer(int correctAnswer) {
+	public void setCorrectAnswer(String correctAnswer) {
 		this.correctAnswer = correctAnswer;
 	}
 	public String getTeacherName() {

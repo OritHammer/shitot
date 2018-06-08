@@ -39,7 +39,6 @@ import javafx.stage.Stage;
 
 public class TeacherControl extends UserControl implements Initializable {
 
-	private Boolean trueAnsFlag = false;//
 	private Object[] messageToServer = new Object[3];
 	ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
 
@@ -131,14 +130,9 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private TableColumn<Question, String> a4;
 	@FXML
-	private TableColumn<Question, Integer> correctAns;
-	@FXML
-	private TableColumn<Question, String> editQ;
-	@FXML
-	private TableColumn<Question, String> deleteQ;
+	private TableColumn<Question, String> correctAns;
+
 	
-	@FXML
-	private ComboBox<String> questionsComboBox;
 	@FXML
 	private ComboBox<String> subjectsComboBox;
 	@FXML
@@ -185,12 +179,7 @@ public class TeacherControl extends UserControl implements Initializable {
 				coursesComboBox.setItems(observableList);
 				break;
 			}
-			case ("getQuestions"): /* get the questions list from server */
-			{
-				ObservableList<String> observableList = FXCollections.observableArrayList((ArrayList<String>) msg[1]);
-				questionsComboBox.setItems(observableList);
-				break;
-			}
+
 			case ("getQuestionsToTable"): /* get the questions list from server */
 			{
 				questionObservableList = FXCollections.observableArrayList((ArrayList<Question>) msg[1]);
@@ -202,12 +191,18 @@ public class TeacherControl extends UserControl implements Initializable {
 					a2.setCellValueFactory(new PropertyValueFactory<>("answer2"));
 					a3.setCellValueFactory(new PropertyValueFactory<>("answer3"));
 					a4.setCellValueFactory(new PropertyValueFactory<>("answer4"));
-					correctAns.setCellValueFactory(new PropertyValueFactory<Question,Integer>("correctAnswer"));
+					correctAns.setCellValueFactory(new PropertyValueFactory<>("correctAnswer"));
 			        questionTableView.setEditable(true);
 
 				}
-		        qid.setCellFactory(TextFieldTableCell.forTableColumn());
+		        
 		        qtext.setCellFactory(TextFieldTableCell.forTableColumn());
+		        a1.setCellFactory(TextFieldTableCell.forTableColumn());
+		        a2.setCellFactory(TextFieldTableCell.forTableColumn());
+		        a3.setCellFactory(TextFieldTableCell.forTableColumn());
+		        a4.setCellFactory(TextFieldTableCell.forTableColumn());
+		        correctAns.setCellFactory(TextFieldTableCell.forTableColumn());
+		        
 				questionTableView.setItems(questionObservableList);
 				break;
 			}
@@ -217,41 +212,7 @@ public class TeacherControl extends UserControl implements Initializable {
 				examComboBox.setItems(observableList);
 				break;
 			}
-			case ("getQuestionDetails"): /* get the subject list from server */
-			{
-				Question q=(Question) msg[1];
-				try {
-					trueAnsFlag = true;// Permit to user change the correct answer
-					questionID.setText(q.getId());
-					teacherName.setText(q.getTeacherName());
-					answer1.setText(q.getAnswer1());
-					answer2.setText(q.getAnswer2());
-					answer3.setText(q.getAnswer3());
-					answer4.setText(q.getAnswer4());
 
-					/* set up the correct answer button */
-					switch (q.getCorrectAnswer()) {/* The number of the correct answers */
-					case (1): {
-						correctAns1.setSelected(true);
-						break;
-					}
-					case (2): {
-						correctAns2.setSelected(true);
-						break;
-					}
-					case (3): {
-						correctAns3.setSelected(true);
-						break;
-					}
-					case (4): {
-						correctAns4.setSelected(true);
-						break;
-					}
-					}
-				} catch (Exception e) {
-				}
-				break;
-			}
 			case ("setExamCode"): /* get the subject list from server */
 			{
 				if ((boolean) msg[1] == true)
@@ -456,22 +417,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		 */
 	}
 
-	/***************** Update question screen function *****************/
-	/* send to server request for update correct answer */
 
-	public void updateCorrectAnswer(ActionEvent e) throws IOException, SQLException {
-		if (trueAnsFlag) {// if there is permission to update the question
-			String qID = questionID.getText();
-			RadioButton selected = (RadioButton) group.getSelectedToggle();
-			String selectedId = selected.getId();
-			messageToServer[0] = "updateCorrectAnswer";
-			messageToServer[1] = qID;
-			messageToServer[2] = selectedId;
-			connect(this);
-			chat.handleMessageFromClientUI(messageToServer); // send the request to the server
-			chat.closeConnection();
-		}
-	}
 
 	/***************** create question screen function *****************/
 	/* initialized the update Question window */
@@ -502,7 +448,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			openScreen("ErrorMessage", "Not all fields are completely full");
 		} else {
 			question = new Question(null,Globals.getuserName(),questionName.getText().trim(),answer1.getText().trim(),
-					answer2.getText().trim(), answer3.getText().trim(),answer4.getText().trim(),correctAnswer);
+					answer2.getText().trim(), answer3.getText().trim(),answer4.getText().trim(),String.valueOf(correctAnswer));
 			String subject = subjectsComboBox.getValue();
 			String[] subjectSubString = subject.split("-");
 			connect(this); // connecting to server
@@ -534,21 +480,6 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[1] = subjectSubString[0].trim();
 		messageToServer[2] = Globals.getuserName();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
-	}
-
-	public void askForQuestionDetails(ActionEvent e) throws IOException {
-
-		String selectedQuestion = questionsComboBox.getValue(); // get the selected question
-		if (selectedQuestion == null)
-			return;
-		String[] questionDetails = selectedQuestion.split("-");
-		connect(this); // connecting to server
-		messageToServer[0] = "getQuestionDetails";
-		messageToServer[1] = questionDetails[1];
-		messageToServer[2] = null;
-		clearForm();
-		chat.handleMessageFromClientUI(messageToServer);// ask for details of specific question
-
 	}
 
     public void changeQuestionContentOnTable(CellEditEvent<Question, String>  edittedCell)
@@ -596,12 +527,12 @@ public class TeacherControl extends UserControl implements Initializable {
         updateQuestion(questionSelected);
         }
     }
-    @SuppressWarnings("unlikely-arg-type")
-	public void changeCorrectAnswerOnTable(CellEditEvent<Question, Integer>  edittedCell)
+
+	public void changeCorrectAnswerOnTable(CellEditEvent<Question, String>  edittedCell)
     {
         Question questionSelected =  questionTableView.getSelectionModel().getSelectedItem();
         if(!edittedCell.getNewValue().toString().equals(questionSelected.getCorrectAnswer())) {
-        questionSelected.setCorrectAnswer(Integer.parseInt(edittedCell.getNewValue().toString()));
+        questionSelected.setCorrectAnswer(edittedCell.getNewValue().toString());
         updateQuestion(questionSelected);
         }
     }
