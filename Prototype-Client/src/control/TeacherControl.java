@@ -291,7 +291,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	public void lockSubject(ActionEvent e) {
 		subjectsComboBox.setDisable(true);
 	}
-
+ 
 	public void toQuestionInExam(ActionEvent e) {
 		if (pointsText.getText().equals("")) {
 			openScreen("ErrorMessage", "Please fill the points area");
