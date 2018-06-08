@@ -313,6 +313,13 @@ public class TeacherControl extends UserControl implements Initializable {
 			openScreen("ErrorMessage", "Please choose question");
 			return;
 		}
+		try {
+			Integer.parseInt(pointsText.getText());	
+		}catch(RuntimeException exception) {
+			openScreen("ErrorMessage", "Please fix the points");
+			return;
+		}
+
 		QuestionInExam questioninexam = new QuestionInExam();// creating new questioninexam
 		String questionDetails = questionTableView.getSelectionModel().getSelectedItem().getId();
 		questioninexam.setQuestionID(questionDetails);
@@ -342,10 +349,15 @@ public class TeacherControl extends UserControl implements Initializable {
 			openScreen("ErrorMessage", "Please fill time for exam");
 			return;
 		}
-		if (typeComboBox.getValue().equals(null)) {
+		if (typeComboBox.getValue()==null) {
 			openScreen("ErrorMessage", "Please select the type of exam");
 			return;
 		}
+		if ((Integer.parseInt(timeForExamHours.getText())<=0 && Integer.parseInt(timeForExamMinute.getText())<=0) 
+				||(Integer.parseInt(timeForExamHours.getText())>99 || Integer.parseInt(timeForExamMinute.getText())>99 )) {
+			openScreen("ErrorMessage", "invalid time");
+			return;
+		}		
 		for (QuestionInExam q : questionInExamObservable) {
 			sumOfPoints += q.getPoints();
 		}
