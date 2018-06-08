@@ -7,6 +7,7 @@ package control;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import entity.Course;
 import entity.Exam;
@@ -66,6 +67,7 @@ public class EchoServer extends AbstractServer {
 		return Integer.parseInt(Id);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		con.runDB(); 
 		//String[] message = ((String) msg).split(" ");
@@ -103,6 +105,7 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
+		
 		case "getExams": {/*client request all all the courses under some subject*/
 			ArrayList<String> examsList = con.getExams(message[1]);
 			serverMessage[1] =examsList;
@@ -215,7 +218,11 @@ public class EchoServer extends AbstractServer {
 			con.setStatusToAddingTimeRequest(((Object[])msg)[1],"rejected");
 			break;
 		}
-		
+
+		case "finishExam" :{
+			con.finishExam((String[]) message[1],(HashMap<String,Integer>)message[2]);
+			break;
+		}
 	/*	case "getExecutedExamCodeList" :{// for using on confirm request of adding time to exam
 			con.getRequestsList(message[1]);
 			break;
