@@ -5,6 +5,7 @@ package control;
 // license found at www.lloseng.com 
 
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 
 import entity.Course;
@@ -36,7 +37,7 @@ public class EchoServer extends AbstractServer {
 	final public static int DEFAULT_PORT = 5555;
 	MysqlConnection con=new MysqlConnection();
 	//Question questionDetails = new Question();
-	Object[] serverMessage=new Object[2];
+	Object[] serverMessage=new Object[3];
 	// Constructors ****************************************************
 
 	/**
@@ -96,7 +97,9 @@ public class EchoServer extends AbstractServer {
 		}
 		case "checkExecutedExam": {/*check the executed exam id validity*/
 			Object[] questioninexam = con.checkExecutedExam(message[1]);
+			Time solutionTime=con.getSolutionTime(message[1]);
 			serverMessage[1] =questioninexam;
+			serverMessage[2] =solutionTime;
 			this.sendToAllClients(serverMessage);
 			break;
 		}

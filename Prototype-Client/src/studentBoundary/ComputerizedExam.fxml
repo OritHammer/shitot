@@ -18,7 +18,7 @@
       <RadioButton fx:id="correctRadioButton3" layoutX="82.0" layoutY="263.0" mnemonicParsing="false" />
       <RadioButton fx:id="correctRadioButton4" layoutX="82.0" layoutY="300.0" mnemonicParsing="false" />
       <Label fx:id="courseName" layoutX="82.0" layoutY="39.0" text="Course Name +Code" />
-      <TextField editable="false" layoutX="451.0" layoutY="29.0" prefHeight="34.0" prefWidth="91.0" text="15 : 13">
+      <TextField fx:id="timerTxtField" editable="false" layoutX="451.0" layoutY="29.0" prefHeight="34.0" prefWidth="91.0" text="15 : 13">
          <font>
             <Font name="Footlight MT Light" size="21.0" />
          </font>

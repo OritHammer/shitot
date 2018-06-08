@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 
 import entity.Course;
@@ -518,4 +519,25 @@ public class MysqlConnection {
 		}
 		return (details);
 	}
+
+	public Time getSolutionTime(Object executedExamID) {
+		
+		Time solutionTime=null;
+		
+		try {
+			stmt = conn.createStatement();
+					 ResultSet rs = stmt.executeQuery("SELECT exams.solutionTime " + 
+							"from  shitot.executedexam,exams"+
+							" where  executedexam.executedExamID ='"+executedExamID+"' AND exams.e_id=executedexam.exam_id ");
+				rs.next();			 							
+			solutionTime=rs.getTime(1);
+			}
+		
+
+		 catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return (solutionTime);
+	}
+
 }
