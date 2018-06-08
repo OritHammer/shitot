@@ -9,15 +9,15 @@
 <AnchorPane prefHeight="423.0" prefWidth="1014.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
       <Button layoutX="747.0" layoutY="323.0" mnemonicParsing="false" onAction="#createExam" text="Create exam" />
-      <Label layoutX="406.0" layoutY="262.0" text="Points" />
-      <TextField fx:id="pointsText" layoutX="385.0" layoutY="277.0" prefHeight="25.0" prefWidth="76.0" />
+      <Label layoutX="370.0" layoutY="257.0" text="Points" />
+      <TextField fx:id="pointsText" layoutX="364.0" layoutY="275.0" prefHeight="25.0" prefWidth="47.0" />
       <Label layoutX="749.0" layoutY="142.0" text="Remarks for student" />
       <Label layoutX="749.0" layoutY="198.0" text="Remarks for teacher" />
       <TextField fx:id="remarksForStudent" layoutX="749.0" layoutY="162.0" prefHeight="25.0" prefWidth="245.0" />
       <TextField fx:id="remarksForTeacher" layoutX="749.0" layoutY="221.0" prefHeight="25.0" prefWidth="245.0" />
-      <Button layoutX="393.0" layoutY="196.0" mnemonicParsing="false" onAction="#removeFromTableView" text="Remove" />
+      <Button layoutX="373.0" layoutY="191.0" mnemonicParsing="false" onAction="#removeFromTableView" text="&lt;" />
       <ComboBox fx:id="subjectsComboBox" layoutX="27.0" layoutY="51.0" onAction="#loadQuestions" prefWidth="150.0" promptText="choose subject" />
-      <Button layoutX="379.0" layoutY="229.0" mnemonicParsing="false" onAction="#toQuestionInExam" text="Add question" />
+      <Button layoutX="373.0" layoutY="226.0" mnemonicParsing="false" onAction="#toQuestionInExam" text="&gt;" />
       <Label layoutX="28.0" layoutY="28.0" text="Questions" />
       <Label fx:id="pageLabel" layoutX="390.0" layoutY="20.0" text="Create exam" />
       <TextField fx:id="timeForExamHours" layoutX="750.0" layoutY="275.0" prefHeight="25.0" prefWidth="59.0" />
@@ -34,7 +34,7 @@
             <TableColumn fx:id="qtext" onEditCommit="#changeQuestionContentOnTable" prefWidth="161.0" text="Question text" />
          </columns>
       </TableView>
-      <TableView fx:id="questionsInExamTableView" editable="true" layoutX="480.0" layoutY="85.0" prefHeight="317.0" prefWidth="253.0">
+      <TableView fx:id="questionsInExamTableView" editable="true" layoutX="411.0" layoutY="88.0" prefHeight="317.0" prefWidth="253.0">
          <columns>
             <TableColumn fx:id="questionNameTableView" prefWidth="132.0" text="Question name" />
             <TableColumn fx:id="questionPointsTableView" prefWidth="120.0" text="Points" />
