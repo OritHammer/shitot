@@ -248,7 +248,7 @@ public class TeacherControl extends UserControl implements Initializable {
 					remarksForTeacherTable.setCellValueFactory(new PropertyValueFactory<>("remarksForTeacher"));
 					remarksForStudentTable.setCellValueFactory(new PropertyValueFactory<>("remarksForStudent"));
 					typeTable.setCellValueFactory(new PropertyValueFactory<>("type"));
-					ObservableList<String> type = FXCollections.observableArrayList("computerized","manual");
+					ObservableList<String> type = FXCollections.observableArrayList("computerized", "manual");
 					solutionTimeTable.setCellFactory(TextFieldTableCell.forTableColumn());
 					remarksForTeacherTable.setCellFactory(TextFieldTableCell.forTableColumn());
 					remarksForStudentTable.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -283,6 +283,31 @@ public class TeacherControl extends UserControl implements Initializable {
 					switch (changeQuestion) {
 					case Content: {
 						questionSelected.setQuestionContent(toChange);
+						updateQuestion(questionSelected);
+						break;
+					}
+					case Answer1: {
+						questionSelected.setAnswer1(toChange);
+						updateQuestion(questionSelected);
+						break;
+					}
+					case Answer2: {
+						questionSelected.setAnswer2(toChange);
+						updateQuestion(questionSelected);
+						break;
+					}
+					case Answer3: {
+						questionSelected.setAnswer3(toChange);
+						updateQuestion(questionSelected);
+						break;
+					}
+					case Answer4: {
+						questionSelected.setAnswer4(toChange);
+						updateQuestion(questionSelected);
+						break;
+					}
+					case CorrectAnswer: {
+						questionSelected.setCorrectAnswer(toChange);
 						updateQuestion(questionSelected);
 						break;
 					}
@@ -609,40 +634,45 @@ public class TeacherControl extends UserControl implements Initializable {
 	public void changeAnswer1OnTable(CellEditEvent<Question, String> edittedCell) {
 		Question questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer1())) {
-			questionSelected.setAnswer1(edittedCell.getNewValue().toString());
-			updateQuestion(questionSelected);
+			CheckIfQuestionOnExam(questionSelected);
+			toChange = edittedCell.getNewValue().toString();
+			changeQuestion = change.Answer1;
 		}
 	}
 
 	public void changeAnswer2OnTable(CellEditEvent<Question, String> edittedCell) {
 		Question questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer2())) {
-			questionSelected.setAnswer2(edittedCell.getNewValue().toString());
-			updateQuestion(questionSelected);
+			CheckIfQuestionOnExam(questionSelected);
+			toChange = edittedCell.getNewValue().toString();
+			changeQuestion = change.Answer2;
 		}
 	}
 
 	public void changeAnswer3OnTable(CellEditEvent<Question, String> edittedCell) {
 		Question questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer3())) {
-			questionSelected.setAnswer3(edittedCell.getNewValue().toString());
-			updateQuestion(questionSelected);
+			CheckIfQuestionOnExam(questionSelected);
+			toChange = edittedCell.getNewValue().toString();
+			changeQuestion = change.Answer3;
 		}
 	}
 
 	public void changeAnswer4OnTable(CellEditEvent<Question, String> edittedCell) {
 		Question questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer4())) {
-			questionSelected.setAnswer4(edittedCell.getNewValue().toString());
-			updateQuestion(questionSelected);
+			CheckIfQuestionOnExam(questionSelected);
+			toChange = edittedCell.getNewValue().toString();
+			changeQuestion = change.Answer4;
 		}
 	}
 
 	public void changeCorrectAnswerOnTable(CellEditEvent<Question, String> edittedCell) {
 		Question questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getCorrectAnswer())) {
-			questionSelected.setCorrectAnswer(edittedCell.getNewValue().toString());
-			updateQuestion(questionSelected);
+			CheckIfQuestionOnExam(questionSelected);
+			toChange = edittedCell.getNewValue().toString();
+			changeQuestion = change.CorrectAnswer;
 		}
 	}
 
@@ -792,25 +822,28 @@ public class TeacherControl extends UserControl implements Initializable {
 			e.printStackTrace();
 		}
 	}
+
 	public void changeRemarksForTeacherOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
 		Exam examSelected = examsTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(examSelected.getRemarksForTeacher())) {
 			examSelected.setSolutionTime(edittedCell.getNewValue().toString());
-			updateExam(examSelected);	
-			}
+			updateExam(examSelected);
+		}
 	}
+
 	public void changeRemarksForStudentOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
 		Exam examSelected = examsTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(examSelected.getRemarksForStudent())) {
 			examSelected.setSolutionTime(edittedCell.getNewValue().toString());
-			updateExam(examSelected);	
-			}
+			updateExam(examSelected);
+		}
 	}
+
 	public void changeTypeOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
 		Exam examSelected = examsTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(examSelected.getType())) {
 			examSelected.setSolutionTime(edittedCell.getNewValue().toString());
-			updateExam(examSelected);	
-			}
+			updateExam(examSelected);
+		}
 	}
 }
