@@ -146,8 +146,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	private TableColumn<Exam, String> solutionTimeTable;
 	@FXML
 	private TableColumn<Exam, String> typeTable;
-	@FXML
-	private TableColumn<Exam, String> userNameCreatedTable;
+
 	@FXML
 	private TableColumn<Exam, String> questionIDTable;
 	@FXML
@@ -232,7 +231,19 @@ public class TeacherControl extends UserControl implements Initializable {
 			case ("getExams"): /* get the subjects list from server */
 			{
 				if (pageLabel.getText().equals("Update exam")) {
-					// load to tableview
+					ObservableList<Exam> exams = FXCollections.observableArrayList((ArrayList<Exam>) msg[1]);
+					questionIDTable.setCellValueFactory(new PropertyValueFactory<>("e_id"));
+					teacherNameTable.setCellValueFactory(new PropertyValueFactory<>("teacherUserName"));
+					solutionTimeTable.setCellValueFactory(new PropertyValueFactory<>("solutionTime"));
+					remarksForTeacherTable.setCellValueFactory(new PropertyValueFactory<>("remarksForTeacher"));
+					remarksForStudentTable.setCellValueFactory(new PropertyValueFactory<>("remarksForStudent"));
+					typeTable.setCellValueFactory(new PropertyValueFactory<>("type"));
+					ObservableList<String> type = FXCollections.observableArrayList("computerized","manual");
+					solutionTimeTable.setCellFactory(TextFieldTableCell.forTableColumn());
+					remarksForTeacherTable.setCellFactory(TextFieldTableCell.forTableColumn());
+					remarksForStudentTable.setCellFactory(TextFieldTableCell.forTableColumn());
+					typeTable.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), type));
+					examsTableView.setItems(exams);
 				} else {
 					ObservableList<String> observableList = FXCollections.observableArrayList();
 					ArrayList<Exam> exams = (ArrayList<Exam>) msg[1];
@@ -702,8 +713,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			examIDStart = subjectSubString[0].trim() + "" + examSubString[0].trim();
 			if (examIDStart.equals("") || examIDStart == null)
 				return;
-		}
-		else {
+		} else {
 			String[] subjectSubString = subjectsComboBox.getValue().split("-");
 			examIDStart = subjectSubString[0].trim();
 		}
