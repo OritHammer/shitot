@@ -9,6 +9,8 @@ public class QuestionInExam implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String examID;
 	private String questionID;
+	private String teacherUserName;
+	private String questionContent;
 	private int questionIndexInExam;
 	private float points;
 	
@@ -35,6 +37,18 @@ public class QuestionInExam implements Serializable {
 	}
 	public void setExamID(String examID) {
 		this.examID = examID;
+	}
+	public String getTeacherUserName() {
+		return teacherUserName;
+	}
+	public void setTeacherUserName(String teacherUserName) {
+		this.teacherUserName = teacherUserName;
+	}
+	public String getQuestionContent() {
+		return questionContent;
+	}
+	public void setQuestionContent(String questionContent) {
+		this.questionContent = questionContent;
 	}
 
 }

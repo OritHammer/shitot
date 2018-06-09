@@ -32,6 +32,9 @@ public class Question implements Serializable{
 		this.correctAnswer = correctAnswer;
 	}
 	
+	public Question() {
+		
+	}
 	public String getId() {
 		return id;
 	}
