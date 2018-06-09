@@ -107,7 +107,7 @@ public class EchoServer extends AbstractServer {
 		}
 		
 		case "getExams": {/*client request all all the courses under some subject*/
-			ArrayList<String> examsList = con.getExams(message[1]);
+			ArrayList<Exam> examsList = con.getExams(message[1]);
 			serverMessage[1] =examsList;
 			this.sendToAllClients(serverMessage);
 			break;

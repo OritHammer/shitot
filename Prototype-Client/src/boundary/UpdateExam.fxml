@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="457.0" prefWidth="1051.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+   <children>
+      <TableView fx:id="examsTableView" editable="true" layoutY="65.0" prefHeight="356.0" prefWidth="1051.0">
+         <columns>
+            <TableColumn fx:id="questionIDTable" prefWidth="76.0" text="Question ID" />
+            <TableColumn fx:id="teacherNameTable" prefWidth="94.0" text="Teacher name" />
+            <TableColumn fx:id="examITable" prefWidth="149.0" text="exam id" />
+            <TableColumn fx:id="solutionTimeTable" prefWidth="168.0" text="solution time" />
+            <TableColumn fx:id="remarksForTeacherTable" prefWidth="193.0" text="remarks for teacher" />
+            <TableColumn fx:id="remarksForStudentTable" prefWidth="151.0" text="remarks for student" />
+            <TableColumn fx:id="typeTable" prefWidth="109.0" text="type" />
+            <TableColumn fx:id="userNameCreatedTable" prefWidth="110.0" text="username created" />
+         </columns>
+      </TableView>
+      <Label fx:id="pageLabel" layoutX="490.0" layoutY="14.0" text="Update exam" />
+      <Button fx:id="deleteBtn" layoutX="473.0" layoutY="426.0" mnemonicParsing="false" text="Delete">
+         <textFill>
+            <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
+               <stops>
+                  <Stop color="#a3b812" />
+                  <Stop color="#f52214" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Button>
+      <Button cancelButton="true" graphicTextGap="0.0" layoutX="538.0" layoutY="426.0" mnemonicParsing="false" text="Back">
+         <textFill>
+            <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
+               <stops>
+                  <Stop color="#a3b812" />
+                  <Stop color="#f52214" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Button>
+      <ComboBox fx:id="subjectsComboBox" layoutX="14.0" layoutY="31.0" onAction="#loadExams" prefWidth="150.0" promptText="choose subject" />
+   </children>
+</AnchorPane>

@@ -15,6 +15,7 @@ import entity.Question;
 import entity.QuestionInExam;
 import entity.RequestForChangingTimeAllocated;
 import entity.TeachingProfessionals;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -134,6 +135,25 @@ public class TeacherControl extends UserControl implements Initializable {
 	private TableColumn<Question, String> correctAns;
 
 	@FXML
+	private TableView<Exam> examsTableView;
+	@FXML
+	private TableColumn<Exam, String> examITable;
+	@FXML
+	private TableColumn<Exam, String> teacherNameTable;
+	@FXML
+	private TableColumn<Exam, String> remarksForTeacherTable;
+	@FXML
+	private TableColumn<Exam, String> solutionTimeTable;
+	@FXML
+	private TableColumn<Exam, String> typeTable;
+	@FXML
+	private TableColumn<Exam, String> userNameCreatedTable;
+	@FXML
+	private TableColumn<Exam, String> questionIDTable;
+	@FXML
+	private TableColumn<Exam, String> remarksForStudentTable;
+
+	@FXML
 	private ComboBox<String> subjectsComboBox;
 	@FXML
 	private ComboBox<String> coursesComboBox;
@@ -211,9 +231,17 @@ public class TeacherControl extends UserControl implements Initializable {
 			}
 			case ("getExams"): /* get the subjects list from server */
 			{
-				ObservableList<String> observableList = FXCollections.observableArrayList((ArrayList<String>) msg[1]);
-				examComboBox.setItems(observableList);
-				break;
+				if (pageLabel.getText().equals("Update exam")) {
+					// load to tableview
+				} else {
+					ObservableList<String> observableList = FXCollections.observableArrayList();
+					ArrayList<Exam> exams = (ArrayList<Exam>) msg[1];
+					for (Exam e : exams) {
+						observableList.add(e.getE_id());
+					}
+					examComboBox.setItems(observableList);
+					break;
+				}
 			}
 
 			case ("setExamCode"): /* get the subject list from server */
@@ -242,19 +270,19 @@ public class TeacherControl extends UserControl implements Initializable {
 	/* clear all the text fields and radio buttons */
 	public void initialize(URL url, ResourceBundle rb) {
 
-		if (pageLabel.getText().equals("Create exam")) {
+		if (pageLabel.getText().equals("Create exam"))
 			typeComboBox.setItems(FXCollections.observableArrayList("computerized", "manual"));
-			timeForExamHours.setText("00");
-			timeForExamMinute.setText("00");
-		}
-		if (pageLabel.getText().equals("Home screen")) {
+
+		if (pageLabel.getText().equals("Home screen"))
 			userText.setText(Globals.getFullName());
-		}
+
 		if (pageLabel.getText().equals("Create question") || pageLabel.getText().equals("Create exam")
 				|| pageLabel.getText().equals("Update question") || pageLabel.getText().equals("Create exam code")
-				|| pageLabel.getText().equals("Extend exam time") || pageLabel.getText().equals("Lock exam")) {
+				|| pageLabel.getText().equals("Extend exam time") || pageLabel.getText().equals("Lock exam")
+				|| pageLabel.getText().equals("Update exam")) {
 
 			connect(this);
+
 			if (pageLabel.getText().equals("Extend exam time") || pageLabel.getText().equals("Lock exam")) {
 
 				messageToServer[0] = "getExecutedExams";
@@ -262,9 +290,8 @@ public class TeacherControl extends UserControl implements Initializable {
 				chat.handleMessageFromClientUI(messageToServer);// send the message to server
 			}
 
-			if (pageLabel.getText().equals("Create question")) {
+			if (pageLabel.getText().equals("Create question"))
 				teacherNameOnCreate.setText(Globals.getuserName());
-			}
 
 			messageToServer[0] = "getSubjects";
 			messageToServer[1] = Globals.getuserName();
@@ -292,6 +319,10 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	public void openCreateQuestion(ActionEvent e) {
 		openScreen("CreateQuestion");
+	}
+
+	public void openUpdateExamScreen(ActionEvent e) {
+		openScreen("UpdateExam");
 	}
 
 	public void deleteQuestion(ActionEvent e) {
@@ -660,16 +691,22 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	public void loadExams(ActionEvent e) throws IOException {
-		/* ask for the exams name */
-		if (coursesComboBox.getValue() == null) {
-			return;
-		}
 		String examIDStart;
-		String[] subjectSubString = subjectsComboBox.getValue().split("-");
-		String[] examSubString = coursesComboBox.getValue().split("-");
-		examIDStart = subjectSubString[0].trim() + "" + examSubString[0].trim();
-		if (examIDStart.equals("") || examIDStart == null)
-			return;
+		/* ask for the exams name */
+		if (pageLabel.getText().equals("Create exam code")) {
+			if (coursesComboBox.getValue() == null) {
+				return;
+			}
+			String[] subjectSubString = subjectsComboBox.getValue().split("-");
+			String[] examSubString = coursesComboBox.getValue().split("-");
+			examIDStart = subjectSubString[0].trim() + "" + examSubString[0].trim();
+			if (examIDStart.equals("") || examIDStart == null)
+				return;
+		}
+		else {
+			String[] subjectSubString = subjectsComboBox.getValue().split("-");
+			examIDStart = subjectSubString[0].trim();
+		}
 		connect(this); // connecting to server
 		messageToServer[0] = "getExams";
 		messageToServer[1] = examIDStart;

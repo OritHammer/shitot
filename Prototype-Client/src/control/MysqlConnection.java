@@ -510,13 +510,21 @@ public class MysqlConnection {
 		return executedexam;
 	}
 
-	public ArrayList<String> getExams(Object examIDStart) {
-		ArrayList<String> examList = new ArrayList<String>();
+	public ArrayList<Exam> getExams(Object examIDStart) {
+		ArrayList<Exam> examList = new ArrayList<Exam>();
+		Exam exam;
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT e_id FROM exams WHERE e_id like \"" + examIDStart + "%\";");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM exams WHERE e_id like \"" + examIDStart + "%\";");
 			while (rs.next()) {
-				examList.add(rs.getString(1));
+				exam=new Exam();
+				exam.setE_id(rs.getString(1));
+				exam.setSolutionTime(rs.getString(2));
+				exam.setRemarksForStudent(rs.getString(3));
+				exam.setRemarksForTeacher(rs.getString(4));
+				exam.setType(rs.getString(5));
+				exam.setTeacherUserName(rs.getString(6));
+				examList.add(exam);
 			}
 			rs.close();
 		} catch (SQLException e) {

@@ -18,11 +18,11 @@
       <Button layoutX="373.0" layoutY="226.0" mnemonicParsing="false" onAction="#toQuestionInExam" text="&gt;" />
       <Label layoutX="28.0" layoutY="28.0" text="Questions" />
       <Label fx:id="pageLabel" layoutX="390.0" layoutY="20.0" text="Create exam" />
-      <TextField fx:id="timeForExamHours" layoutX="679.0" layoutY="281.0" prefHeight="25.0" prefWidth="59.0" />
+      <TextField fx:id="timeForExamHours" layoutX="679.0" layoutY="281.0" prefHeight="25.0" prefWidth="59.0" promptText="00" text="00" AnchorPane.leftAnchor="679.0" />
       <Label layoutX="679.0" layoutY="264.0" text="Time for exam" />
       <ComboBox fx:id="typeComboBox" layoutX="680.0" layoutY="116.0" prefWidth="150.0" />
       <Label layoutX="679.0" layoutY="99.0" text="Type" />
-      <TextField fx:id="timeForExamMinute" layoutX="755.0" layoutY="281.0" prefHeight="25.0" prefWidth="59.0" />
+      <TextField fx:id="timeForExamMinute" layoutX="755.0" layoutY="281.0" prefHeight="25.0" prefWidth="59.0" promptText="00" text="00" />
       <Label layoutX="745.0" layoutY="284.0" text=":" />
       <Button layoutX="794.0" layoutY="329.0" mnemonicParsing="false" onAction="#closeScreen" text="Back" />
       <TableView fx:id="questionTableView" editable="true" layoutX="31.0" layoutY="86.0" prefHeight="317.0" prefWidth="332.0">
