@@ -171,6 +171,17 @@ public class EchoServer extends AbstractServer {
 				}
 			break;
 		}
+		
+		case "deleteQuestion": {
+			try {
+				con.deleteQuestion(message[1]);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		break;
+	}
+		
 		case "checkUserDetails": {
 			User user=con.checkUserDetails(message[1], message[2]);
 			serverMessage[1]=user;

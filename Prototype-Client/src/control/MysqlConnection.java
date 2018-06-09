@@ -64,20 +64,37 @@ public class MysqlConnection {
 	}
 
 	public synchronized void createQuestion(Object subject, Object question) {
-
 		String fullQuestionNumber;
 		int questionNumber;
+		int first=0;
+		int last=0;
+		int flag=0;
 		Question q = (Question) question;
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT MAX(Question_id) FROM questions" + " WHERE Question_id like "
+			ResultSet rs = stmt.executeQuery("SELECT (question_id) FROM questions" + " WHERE question_id like "
 					+ "\"" + subject + "%\"" + ";");
-			rs.next();
-			if ((rs.getString(1) == null))
-				questionNumber = 0;
+			if (!rs.isBeforeFirst()) {
+				first = 0;
+			}
 			else
-				questionNumber = Integer.parseInt(rs.getString(1).substring(2, 5));
-			questionNumber = questionNumber + 1;
+			{
+				while(rs.next())
+				{
+						first = Integer.parseInt(rs.getString(1).substring(2, 5));
+						if(rs.next())
+						{
+							last = Integer.parseInt(rs.getString(1).substring(2, 5));
+							rs.previous();
+						}
+						if(last-first > 1)
+						{
+							break;
+						}
+						
+				}
+			}
+			questionNumber = first + 1;
 			fullQuestionNumber = (String) subject;
 			fullQuestionNumber = fullQuestionNumber + "" + String.format("%03d", questionNumber);
 			stmt.executeUpdate("INSERT INTO shitot.questions VALUES(\"" + fullQuestionNumber.trim() + "\",\""
@@ -88,7 +105,7 @@ public class MysqlConnection {
 			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+			}
 	}
 
 	public void setExecutedExamLocked(Object executedExamID) {
@@ -370,6 +387,19 @@ public class MysqlConnection {
 		}
 	}
 
+	public void deleteQuestion(Object question) throws SQLException {
+		try {
+			// Statement stmt;
+			stmt = conn.createStatement();
+			Question q = (Question) question;
+			// questionID from client
+			stmt.executeUpdate("DELETE FROM questions WHERE question_id=\"" + q.getId() + "\";");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	
 	public synchronized void createExam(Object questionInExams, Object examDetails) {
 		ArrayList<QuestionInExam> questionInExam = (ArrayList<QuestionInExam>) questionInExams;
 		Exam exam = (Exam) examDetails;

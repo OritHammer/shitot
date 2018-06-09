@@ -299,6 +299,25 @@ public class TeacherControl extends UserControl implements Initializable {
 		openScreen("CreateQuestion");
 	}
 
+	
+	public void deleteQuestion(ActionEvent e)
+	{
+		Question questionSelected =  questionTableView.getSelectionModel().getSelectedItem();
+		int index = questionObservableList.indexOf(questionSelected);
+		questionObservableList.remove(index);
+		messageToServer[0] = "deleteQuestion";
+		messageToServer[1] = questionSelected;
+		connect(this);
+		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
+		try {
+			chat.closeConnection();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+	}
+	
 	/***************** Create exam functions *****************/
 	public void lockSubject(ActionEvent e) {
 		subjectsComboBox.setDisable(true);

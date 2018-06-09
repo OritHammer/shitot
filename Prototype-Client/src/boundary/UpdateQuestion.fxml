@@ -9,7 +9,7 @@
 <AnchorPane prefHeight="541.0" prefWidth="1132.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
       <ComboBox fx:id="subjectsComboBox" layoutX="22.0" layoutY="33.0" onAction="#loadQuestions" prefWidth="150.0" promptText="choose subject" />
-      <Button cancelButton="true" graphicTextGap="0.0" layoutX="646.0" layoutY="494.0" mnemonicParsing="false" onAction="#closeScreen" text="Back">
+      <Button cancelButton="true" graphicTextGap="0.0" layoutX="603.0" layoutY="494.0" mnemonicParsing="false" onAction="#closeScreen" text="Back">
          <textFill>
             <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
                <stops>
@@ -19,7 +19,7 @@
             </RadialGradient>
          </textFill>
       </Button>
-      <Button layoutX="538.0" layoutY="494.0" mnemonicParsing="false" text="Update">
+      <Button fx:id="deleteBtn" layoutX="538.0" layoutY="494.0" mnemonicParsing="false" onAction="#deleteQuestion" text="Delete">
          <textFill>
             <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
                <stops>
