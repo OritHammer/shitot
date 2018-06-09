@@ -1,3 +1,6 @@
 /control/
 /entity/
 /studentControllers/
+/boundary/
+/directorBoundary/
+/studentBoundary/
