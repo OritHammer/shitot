@@ -20,6 +20,8 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -124,6 +126,14 @@ public class StudentControl extends UserControl implements Initializable {
 	public void initialize(URL url, ResourceBundle rb) {
 		// connect(this);
 		if (pageLabel.getText().equals("Perform exam")) {
+			correctRadioButton1.setVisible(true);
+			correctRadioButton2.setVisible(true);
+			correctRadioButton3.setVisible(true);
+			correctRadioButton4.setVisible(true);
+			answer1.setVisible(true);
+			answer2.setVisible(true);
+			answer3.setVisible(true);
+			answer4.setVisible(true);
 			examAnswers=new HashMap<String,Integer>();
 			nextQuestion(null);
 			prevBTN.setVisible(false);
@@ -131,13 +141,25 @@ public class StudentControl extends UserControl implements Initializable {
 			//s=solutionTime.toString();
 			//timerTextField.setText(s);
 			remainTime=solutionTime.getHours()*3600+solutionTime.getMinutes()*60+solutionTime.getSeconds();//reamin time is he time in secods
-			
+		
 			timer = new Timer(); 
 			timer.scheduleAtFixedRate(new TimerTask()
 			{ 
 				public void run()
 				{
 					int sec=setInterval();
+					if(remainTime==1) {
+						Platform.runLater(() -> openScreen("ErrorMessage", "Time is over"));
+						questionContent.setText("time is over click Finish");
+						correctRadioButton1.setVisible(false);
+						correctRadioButton2.setVisible(false);
+						correctRadioButton3.setVisible(false);
+						correctRadioButton4.setVisible(false);
+						answer1.setVisible(false);
+						answer2.setVisible(false);
+						answer3.setVisible(false);
+						answer4.setVisible(false);
+					}
 					timeToString=intToTime(sec).toString();
 					timerTextField.setText(timeToString);
 				}
@@ -151,7 +173,7 @@ public class StudentControl extends UserControl implements Initializable {
 	{
 	if (remainTime == 1) 
 	timer.cancel(); 
-	return --remainTime; 
+		return --remainTime; 
 	}
 	public static Time intToTime(int seconds)
 	{ 
