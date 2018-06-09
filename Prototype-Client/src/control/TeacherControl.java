@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMsg;
+
 import entity.Course;
 import entity.Exam;
 import entity.ExecutedExam;
@@ -45,7 +47,15 @@ import javafx.util.converter.IntegerStringConverter;
 public class TeacherControl extends UserControl implements Initializable {
 
 	private Object[] messageToServer = new Object[3];
-	ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
+	private ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
+	private String toChange;
+
+	private enum change {
+		Content, Answer1, Answer2, Answer3, Answer4, CorrectAnswer
+	};
+
+	private change changeQuestion;
+	private Question questionSelected;
 
 	/* fxml variables */
 	@FXML
@@ -162,6 +172,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	private ComboBox<String> typeComboBox;
 
 	ObservableList<Question> questionObservableList;
+	private Boolean checkIfQuestionOnExamFlag;
 
 	/* check the content message from server */
 	@SuppressWarnings("unchecked")
@@ -238,7 +249,7 @@ public class TeacherControl extends UserControl implements Initializable {
 					remarksForTeacherTable.setCellValueFactory(new PropertyValueFactory<>("remarksForTeacher"));
 					remarksForStudentTable.setCellValueFactory(new PropertyValueFactory<>("remarksForStudent"));
 					typeTable.setCellValueFactory(new PropertyValueFactory<>("type"));
-					ObservableList<String> type = FXCollections.observableArrayList("computerized","manual");
+					ObservableList<String> type = FXCollections.observableArrayList("computerized", "manual");
 					solutionTimeTable.setCellFactory(TextFieldTableCell.forTableColumn());
 					remarksForTeacherTable.setCellFactory(TextFieldTableCell.forTableColumn());
 					remarksForStudentTable.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -266,6 +277,27 @@ public class TeacherControl extends UserControl implements Initializable {
 				}
 				break;
 			}
+
+			case ("CheckIfQuestionOnExam"): /* get the subject list from server */
+			{
+				if ((boolean) msg[1] == true) {
+					switch (changeQuestion) {
+					case Content: {
+						questionSelected.setQuestionContent(toChange);
+						updateQuestion(questionSelected);
+						break;
+					}
+					default:
+						questionTableView.refresh();
+					}
+
+				} else {
+					Platform.runLater(() -> openScreen("ErrorMessage", "This question is in active exam."));
+					questionTableView.refresh();
+				}
+				break;
+			}
+
 			default: {
 				System.out.println("Error in input");
 			}
@@ -567,10 +599,11 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	public void changeQuestionContentOnTable(CellEditEvent<Question, String> edittedCell) {
 
-		Question questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getQuestionContent())) {
-			questionSelected.setQuestionContent(edittedCell.getNewValue().toString());
-			updateQuestion(questionSelected);
+			CheckIfQuestionOnExam(questionSelected);
+			toChange = edittedCell.getNewValue().toString();
+			changeQuestion = change.Content;
 		}
 	}
 
@@ -612,6 +645,15 @@ public class TeacherControl extends UserControl implements Initializable {
 			questionSelected.setCorrectAnswer(edittedCell.getNewValue().toString());
 			updateQuestion(questionSelected);
 		}
+	}
+
+	public void CheckIfQuestionOnExam(Question questionSelected) {
+		checkIfQuestionOnExamFlag = false;
+		messageToServer[0] = "CheckIfQuestionOnExam";
+		messageToServer[1] = questionSelected;
+		connect(this);
+		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
+
 	}
 
 	public void updateQuestion(Question questionSelected) {
