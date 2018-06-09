@@ -108,6 +108,31 @@ public class MysqlConnection {
 			}
 	}
 
+	public synchronized Boolean CheckIfQuestionOnExam(Object question) {
+
+		Question q = (Question) question;
+
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("select distinct questioninexam.question_ID , executedexam.executedExamID from "
+					+ "shitot.questioninexam , shitot.executedexam where questioninexam.e_id ="
+					+ " executedexam.exam_id and executedexam.status = 'open' ");
+
+				while(rs.next())
+				{
+					if(q.getId().equals(rs.getString(1)))
+						return false;
+				}
+				return true;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		// stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
+
+	}
+	
 	public void setExecutedExamLocked(Object executedExamID) {
 		try {
 			stmt = conn.createStatement();

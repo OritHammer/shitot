@@ -172,6 +172,14 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		
+		case "CheckIfQuestionOnExam": {
+				boolean flag;
+				flag = con.CheckIfQuestionOnExam(message[1]);
+				serverMessage[1] = flag;
+				this.sendToAllClients(serverMessage);
+				break;
+	}
+		
 		case "deleteQuestion": {
 			try {
 				con.deleteQuestion(message[1]);
