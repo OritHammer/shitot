@@ -156,7 +156,6 @@ public class TeacherControl extends UserControl implements Initializable {
 	private TableColumn<Exam, String> solutionTimeTable;
 	@FXML
 	private TableColumn<Exam, String> typeTable;
-
 	@FXML
 	private TableColumn<Exam, String> questionIDTable;
 	@FXML
@@ -682,7 +681,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		correctAns4.setSelected(false);
 	}
 
-	private void openScreen(String screen) {
+	public void openScreen(String screen) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));
@@ -701,7 +700,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	private void openScreen(String screen, String message) {
+	public void openScreen(String screen, String message) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));
@@ -806,5 +805,22 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[1] = request;
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 		chat.closeConnection();
+	}
+	
+	public void changeSolutionTimeOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
+		Exam questionSelected = examsTableView.getSelectionModel().getSelectedItem();
+		if (!edittedCell.getNewValue().toString().equals(questionSelected.getSolutionTime())) {
+			questionSelected.setSolutionTime(edittedCell.getNewValue().toString());
+///////////kaki
+		}
+	}
+	public void changeRemarksForTeacherOnTable(ActionEvent e) throws IOException {
+		
+	}
+	public void changeRemarksForStudentOnTable(ActionEvent e) throws IOException {
+		
+	}
+	public void changeTypeOnTable(ActionEvent e) throws IOException {
+		
 	}
 }
