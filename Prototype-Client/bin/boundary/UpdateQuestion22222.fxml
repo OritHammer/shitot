@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="541.0" prefWidth="1225.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+   <children>
+      <ComboBox fx:id="subjectsComboBox" layoutX="22.0" layoutY="33.0" onAction="#loadQuestions" prefWidth="150.0" promptText="choose subject" />
+      <Button cancelButton="true" graphicTextGap="0.0" layoutX="646.0" layoutY="494.0" mnemonicParsing="false" onAction="#closeScreen" text="Back">
+         <textFill>
+            <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
+               <stops>
+                  <Stop color="#a3b812" />
+                  <Stop color="#f52214" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Button>
+      <Button layoutX="538.0" layoutY="494.0" mnemonicParsing="false" onAction="#updateCorrectAnswer" text="Update">
+         <textFill>
+            <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
+               <stops>
+                  <Stop color="#a3b812" />
+                  <Stop color="#f52214" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Button>
+      <Label fx:id="pageLabel" layoutX="593.0" layoutY="14.0" text="Update question" />
+      <TableView fx:id="questionTableView" layoutX="22.0" layoutY="118.0" prefHeight="356.0" prefWidth="1180.0">
+        <columns>
+          <TableColumn fx:id="qid" prefWidth="79.0" text="Question ID" />
+            <TableColumn fx:id="tname" prefWidth="97.0" text="Teacher name" />
+            <TableColumn fx:id="qtext" prefWidth="385.0" text="Question text" />
+            <TableColumn fx:id="a1" prefWidth="88.0" text="Answer 1" />
+            <TableColumn fx:id="a2" prefWidth="91.0" text="Answer 2" />
+            <TableColumn fx:id="a3" prefWidth="122.0" text="Answer 3" />
+            <TableColumn fx:id="a4" prefWidth="118.0" text="Answer 4" />
+            <TableColumn fx:id="correctAns" prefWidth="94.0" text="Correct answer" />
+            <TableColumn fx:id="correctAns1" prefWidth="41.0" text="Edit" />
+            <TableColumn fx:id="correctAns11" prefWidth="65.0" text="Delete" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

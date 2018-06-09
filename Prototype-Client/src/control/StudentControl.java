@@ -368,9 +368,15 @@ public class StudentControl extends UserControl implements Initializable {
 			}
 			case "getExamsByUserName": {
 				showGradesOnTable((ArrayList<ExamDetailsMessage>) msgFromServer[1]);
+				break;
 			}
 			case "checkExecutedExam": {
 				checkExecutedExam((Object[]) msgFromServer);
+				break;
+			}
+			case "addTime": {
+				addTimeToExam(msgFromServer);
+				break;
 			}
 			}
 
@@ -405,7 +411,15 @@ public class StudentControl extends UserControl implements Initializable {
 			});
 		}
 	}
-
+	@SuppressWarnings("deprecation")
+	public void addTimeToExam(Object[]message) {
+	int timeToAdd;
+	Time timeFromMessage=(Time)message[2];
+	if(executedID.equals((String)message[1])){//if the student perform the relevant exam
+		timeToAdd=timeFromMessage.getHours()*3600+timeFromMessage.getMinutes()*60+timeFromMessage.getSeconds();//reamin time is he time in secods
+		remainTime+=timeToAdd;
+	}
+	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void showGradesOnTable(ArrayList<ExamDetailsMessage> detailsFromS) {
 		for (ExamDetailsMessage edM : detailsFromS) {
