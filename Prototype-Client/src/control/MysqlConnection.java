@@ -662,6 +662,25 @@ public class MysqlConnection {
 		}
 
 	} 
+	public synchronized Object[] getadditionalTime(String requestId) {
+		Object  details[]=new Object[3];
+		 							
+		 try {
+				stmt = conn.createStatement();
+				 ResultSet rs = stmt.executeQuery("SELECT requestforchangingtimeallocated.IDexecutedExam,requestforchangingtimeallocated.timeAdded " + 
+						"from  requestforchangingtimeallocated" +
+						" where  requestforchangingtimeallocated.requestID ='"+requestId +"'");
+				 rs.next();		
+			details[0]=rs.getString(1);
+			 details[1]=rs.getTime(2);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 return details;
+
+	} 
 	
 	}
 
