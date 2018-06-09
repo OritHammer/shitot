@@ -238,7 +238,6 @@ public class TeacherControl extends UserControl implements Initializable {
 					remarksForStudentTable.setCellValueFactory(new PropertyValueFactory<>("remarksForStudent"));
 					typeTable.setCellValueFactory(new PropertyValueFactory<>("type"));
 					ObservableList<String> type = FXCollections.observableArrayList("computerized","manual");
-					solutionTimeTable.setCellFactory(TextFieldTableCell.forTableColumn());
 					remarksForTeacherTable.setCellFactory(TextFieldTableCell.forTableColumn());
 					remarksForStudentTable.setCellFactory(TextFieldTableCell.forTableColumn());
 					typeTable.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), type));
@@ -738,47 +737,37 @@ public class TeacherControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 
-	public void createExtendTimeRequest(ActionEvent e) throws IOException {
-		if (timeForExamHours.getText().equals("") || timeForExamMinute.getText().equals("")) {
-			openScreen("ErrorMessage", "Please fill the time you want to extend by");
-			return;
-		}
-		if (reasonForChange.getText().trim().equals("")) {
-			openScreen("ErrorMessage", "Please fill the reason for changing the time");
-			return;
-		}
-		ExecutedExam executedexam = executedExamTableView.getSelectionModel().getSelectedItem();
-		if (executedexam == null) {
-			openScreen("ErrorMessage", "Please choose an exam");
-			return;
-		}
-		RequestForChangingTimeAllocated request = new RequestForChangingTimeAllocated();
-		request.setIDexecutedExam(executedexam.getExecutedExamID());
-		request.setReason(reasonForChange.getText());
-		request.setMenagerApprove("waiting");
-		request.setTeacherName(Globals.getuserName());
-		request.setTimeAdded(timeForExamHours.getText() + "" + timeForExamMinute.getText());
-		connect(this); // connecting to server
-		messageToServer[0] = "createChangingRequest";
-		messageToServer[1] = request;
-		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
-		chat.closeConnection();
-	}
-	
-	public void changeSolutionTimeOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
-		Exam questionSelected = examsTableView.getSelectionModel().getSelectedItem();
-		if (!edittedCell.getNewValue().toString().equals(questionSelected.getSolutionTime())) {
-			questionSelected.setSolutionTime(edittedCell.getNewValue().toString());
-///////////kaki
+	public void updateExam(Exam examSelected) {
+		messageToServer[0] = "updateExam";
+		messageToServer[1] = examSelected;
+		connect(this);
+		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
+		try {
+			chat.closeConnection();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
-	public void changeRemarksForTeacherOnTable(ActionEvent e) throws IOException {
-		
+	public void changeRemarksForTeacherOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
+		Exam examSelected = examsTableView.getSelectionModel().getSelectedItem();
+		if (!edittedCell.getNewValue().toString().equals(examSelected.getRemarksForTeacher())) {
+			examSelected.setSolutionTime(edittedCell.getNewValue().toString());
+			updateExam(examSelected);	
+			}
 	}
-	public void changeRemarksForStudentOnTable(ActionEvent e) throws IOException {
-		
+	public void changeRemarksForStudentOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
+		Exam examSelected = examsTableView.getSelectionModel().getSelectedItem();
+		if (!edittedCell.getNewValue().toString().equals(examSelected.getRemarksForStudent())) {
+			examSelected.setSolutionTime(edittedCell.getNewValue().toString());
+			updateExam(examSelected);	
+			}
 	}
-	public void changeTypeOnTable(ActionEvent e) throws IOException {
-		
+	public void changeTypeOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
+		Exam examSelected = examsTableView.getSelectionModel().getSelectedItem();
+		if (!edittedCell.getNewValue().toString().equals(examSelected.getType())) {
+			examSelected.setSolutionTime(edittedCell.getNewValue().toString());
+			updateExam(examSelected);	
+			}
 	}
 }

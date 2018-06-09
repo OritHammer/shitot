@@ -14,9 +14,9 @@
             <TableColumn fx:id="teacherNameTable" prefWidth="94.0" text="Teacher name" />
             <TableColumn fx:id="examITable" prefWidth="149.0" text="exam id" />
             <TableColumn fx:id="solutionTimeTable" prefWidth="168.0" text="solution time" />
-            <TableColumn fx:id="remarksForTeacherTable" prefWidth="193.0" text="remarks for teacher" />
-            <TableColumn fx:id="remarksForStudentTable" prefWidth="151.0" text="remarks for student" />
-            <TableColumn fx:id="typeTable" prefWidth="109.0" text="type" />
+            <TableColumn fx:id="remarksForTeacherTable" onEditCommit="#changeRemarksForTeacherOnTable" prefWidth="193.0" text="remarks for teacher" />
+            <TableColumn fx:id="remarksForStudentTable" onEditCommit="#changeRemarksForStudentOnTable" prefWidth="151.0" text="remarks for student" />
+            <TableColumn fx:id="typeTable" onEditCommit="#changeTypeOnTable" prefWidth="109.0" text="type" />
          </columns>
       </TableView>
       <Label fx:id="pageLabel" layoutX="442.0" layoutY="14.0" text="Update exam" />
