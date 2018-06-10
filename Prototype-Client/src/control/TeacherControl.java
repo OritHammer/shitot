@@ -51,7 +51,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private Text userText;
 	@FXML
-	private Text createExamCodeMsg;
+	private Text allertText;
 	@FXML
 	private TextField teacherNameOnCreate;
 
@@ -178,6 +178,18 @@ public class TeacherControl extends UserControl implements Initializable {
 				}
 				break;
 			}
+			case ("setExecutedExamLocked"): /* get the subjects list from server */
+			case ("setExamCode"): /* get the subject list from server */
+			{
+				if ((boolean) msg[1] == true) {
+					allertText.setFill(Color.GREEN);
+					allertText.setText("Exam code created successfully ✔");
+				} else {
+					allertText.setFill(Color.RED);
+					allertText.setText("There is already a code like that, please choose another code ❌");
+				}
+				break;
+			}
 			case ("updateExam"): /* get the subjects list from server */
 			{
 				if ((boolean) msg[1] == true) {
@@ -273,19 +285,6 @@ public class TeacherControl extends UserControl implements Initializable {
 					break;
 				}
 			}
-
-			case ("setExamCode"): /* get the subject list from server */
-			{
-				if ((boolean) msg[1] == true) {
-					createExamCodeMsg.setFill(Color.GREEN);
-					createExamCodeMsg.setText("Exam code created successfully ✔");
-				} else {
-					createExamCodeMsg.setFill(Color.RED);
-					createExamCodeMsg.setText("There is already a code like that, please choose another code ❌");
-				}
-				break;
-			}
-
 			case ("updateQuestion"): /* get the subject list from server */
 			{
 				if ((boolean) msg[1] == true) {
@@ -293,7 +292,7 @@ public class TeacherControl extends UserControl implements Initializable {
 				} else {
 					questionObservableList.remove(questionObservableList.indexOf(questionSelected));
 					questionObservableList.add(oldQuestion);
-					
+
 					Platform.runLater(() -> openScreen("ErrorMessage", "This question is in active exam."));
 					questionTableView.getSortOrder().setAll(qid);
 				}

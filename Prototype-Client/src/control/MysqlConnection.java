@@ -168,14 +168,15 @@ public class MysqlConnection {
 			return false;
 		}
 	}
-	public void setExecutedExamLocked(Object executedExamID) {
+	public synchronized boolean setExecutedExamLocked(Object executedExamID) {
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate("Update shitot.executedexam SET status=\"close\" where executedExamID=\""
 					+ executedExamID.toString() + "\";");
-
+			return(true);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return(false);
 		}
 	}
 
