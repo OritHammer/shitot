@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="418.0" prefWidth="706.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+   <children>
+      <TableView fx:id="questionsInExamTableView" editable="true" layoutX="421.0" layoutY="76.0" prefHeight="317.0" prefWidth="253.0">
+         <columns>
+            <TableColumn fx:id="questionNameTableView" prefWidth="132.0" text="Question name" />
+            <TableColumn fx:id="questionPointsTableView" onEditCommit="#setPoints" prefWidth="120.0" text="Points" />
+         </columns>
+      </TableView>
+      <TableView fx:id="questionTableView" editable="true" layoutX="41.0" layoutY="74.0" prefHeight="317.0" prefWidth="332.0">
+         <columns>
+            <TableColumn fx:id="qid" prefWidth="76.0" text="Question ID" />
+            <TableColumn fx:id="tname" prefWidth="94.0" text="Teacher name" />
+            <TableColumn fx:id="qtext" onEditCommit="#changeQuestionContentOnTable" prefWidth="161.0" text="Question text" />
+         </columns>
+      </TableView>
+      <Label fx:id="pageLabel" layoutX="307.0" layoutY="16.0" text="Update question in exam" />
+      <Label layoutX="38.0" layoutY="16.0" text="Questions" />
+      <Button layoutX="383.0" layoutY="214.0" mnemonicParsing="false" onAction="#toQuestionInExam" text="&gt;" />
+      <ComboBox fx:id="subjectsComboBox" layoutX="37.0" layoutY="39.0" onAction="#loadQuestions" prefWidth="150.0" promptText="choose subject" />
+      <Button layoutX="383.0" layoutY="179.0" mnemonicParsing="false" onAction="#removeFromTableView" text="&lt;" />
+   </children>
+</AnchorPane>

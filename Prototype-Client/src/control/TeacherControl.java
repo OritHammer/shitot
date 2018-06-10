@@ -43,7 +43,7 @@ import javafx.util.converter.FloatStringConverter;
 public class TeacherControl extends UserControl implements Initializable {
 
 	private Object[] messageToServer = new Object[3];
-	private ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
+	private static ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
 	private Question questionSelected;
 
 	/* fxml variables */
@@ -189,6 +189,13 @@ public class TeacherControl extends UserControl implements Initializable {
 				}
 				break;
 			}
+			case ("getQuestionInExam"): /* get the subjects list from server */
+			{
+				((ArrayList<QuestionInExam>) msg[1]).forEach(questionInExamObservable::add);
+				Platform.runLater(() -> openScreen("UpdateQuestionInExam"));
+				break;
+			}
+
 			case ("getExecutedExams"): /* get the subjects list from server */
 			{
 				ObservableList<ExecutedExam> observablelist = FXCollections
@@ -300,7 +307,14 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	/* clear all the text fields and radio buttons */
 	public void initialize(URL url, ResourceBundle rb) {
-
+		
+		if(pageLabel.getText().equals("Update question in exam")) {
+			questionsInExamTableView.setItems(questionInExamObservable);
+			questionPointsTableView.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
+			questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));// display the id in the																					// table view
+			questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));// display the points in the																					// table view
+		}
+		
 		if (pageLabel.getText().equals("Create exam"))
 			typeComboBox.setItems(FXCollections.observableArrayList("computerized", "manual"));
 
@@ -419,7 +433,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		questioninexam.setQuestionContent(questionDetails.getQuestionContent());
 		questioninexam.setPoints(0);
 		questionInExamObservable.add(questioninexam);
-		questionsInExamTableView.setItems(questionInExamObservable);
+		questionsInExamTableView.setItems(questionInExamObservable);// kaki
 
 		questionPointsTableView.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
 		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));// display the id in the
@@ -703,7 +717,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	public void openScreen(String screen, String message) {
+	public void openScreen(String screen, Object message) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));
@@ -711,13 +725,25 @@ public class TeacherControl extends UserControl implements Initializable {
 			Stage stage = Main.getStage();
 			ErrorControl tController = loader.getController();
 			tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
-			tController.setErrorMessage(message);// send a the error to the alert we made
+			tController.setErrorMessage((String) message);// send a the error to the alert we made
 			stage.setTitle("Error message");
 			stage.setScene(scene);
 			stage.show();
 		} catch (Exception exception) {
 			System.out.println("Error in opening the page");
 		}
+	}
+
+	private void loadQuestionInExam(Object questionInExam) {
+		questionsInExamTableView.setItems(questionInExamObservable);
+
+		questionPointsTableView.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
+
+		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));// display the id in the
+																							// table view
+		questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));// display the points in the
+																							// table view
+
 	}
 
 	/* close button was pressed */
@@ -767,11 +793,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 
-	public void openLockExamScreen(ActionEvent e) {
+	public void openLockExamScreen(ActionEvent e) throws IOException {
 		openScreen("LockExam");
 	}
 
-	public void lockExam(ActionEvent e) {
+	public void lockExam(ActionEvent e) throws IOException {
 		ExecutedExam executedexam = executedExamTableView.getSelectionModel().getSelectedItem();
 		if (executedexam == null) {
 			openScreen("ErrorMessage", "Please choose an exam");
@@ -811,6 +837,18 @@ public class TeacherControl extends UserControl implements Initializable {
 		if (!edittedCell.getNewValue().toString().equals(examSelected.getType())) {
 			examSelected.setType(edittedCell.getNewValue().toString());
 			updateExam(examSelected);
+		}
+	}
+
+	public void viewQuestion(ActionEvent e) throws IOException {
+		try {
+			Exam exam = examsTableView.getSelectionModel().getSelectedItem();
+			connect(this); // connecting to server
+			messageToServer[0] = "getQuestionInExam";
+			messageToServer[1] = exam.getE_id();
+			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
+		} catch (NullPointerException exception) {
+			openScreen("ErrorMessage", "Please select exam");
 		}
 	}
 }

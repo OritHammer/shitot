@@ -41,5 +41,15 @@
          </textFill>
       </Button>
       <ComboBox fx:id="subjectsComboBox" layoutX="14.0" layoutY="31.0" onAction="#loadExams" prefWidth="150.0" promptText="choose subject" />
+      <Button layoutX="318.0" layoutY="431.0" mnemonicParsing="false" onAction="#viewQuestion" text="View questions">
+         <textFill>
+            <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
+               <stops>
+                  <Stop color="#a3b812" />
+                  <Stop color="#f52214" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Button>
    </children>
 </AnchorPane>

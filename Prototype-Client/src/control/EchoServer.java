@@ -14,6 +14,7 @@ import entity.Exam;
 import entity.ExamDetailsMessage;
 import entity.ExecutedExam;
 import entity.Question;
+import entity.QuestionInExam;
 import entity.RequestForChangingTimeAllocated;
 import entity.TeachingProfessionals;
 import entity.User;
@@ -214,6 +215,12 @@ public class EchoServer extends AbstractServer {
 		case "getTimeRequestDetails": {
 			RequestForChangingTimeAllocated request = con.getAddingTimeRequestsDetails((String) message[1]);
 			serverMessage[1] = request;
+			this.sendToAllClients(serverMessage);
+			break;
+		}
+		case "getQuestionInExam": {
+			ArrayList <QuestionInExam> questioninexam=con.getQuestionInExam(message[1]);
+			serverMessage[1] = questioninexam;
 			this.sendToAllClients(serverMessage);
 			break;
 		}

@@ -705,6 +705,28 @@ public class MysqlConnection {
 			e.printStackTrace();
 			return false;
 		}		
+	}
+
+	public ArrayList<QuestionInExam> getQuestionInExam(Object examid) {
+		String examID=(String)examid;
+		ArrayList<QuestionInExam> questioninexam=new ArrayList<QuestionInExam>();
+		QuestionInExam question;
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM questioninexam"
+					+ " WHERE e_id = \"" + examID + "\" ;");
+			while (rs.next()) {
+				question=new QuestionInExam();
+				question.setQuestionID(rs.getString(2));
+				question.setQuestionIndexInExam(Integer.parseInt(rs.getString(3)));
+				question.setPoints(Float.parseFloat(rs.getString(4)));
+				questioninexam.add(question);
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return questioninexam;
 	} 
 	
 	}
