@@ -43,6 +43,7 @@ import javafx.util.converter.FloatStringConverter;
 public class TeacherControl extends UserControl implements Initializable {
 
 	private static ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
+	private ObservableList<Question> questionObservableList;
 	private Object[] messageToServer = new Object[3];
 	private Question questionSelected;
 
@@ -158,8 +159,6 @@ public class TeacherControl extends UserControl implements Initializable {
 	private ComboBox<String> examComboBox;
 	@FXML
 	private ComboBox<String> typeComboBox;
-
-	ObservableList<Question> questionObservableList;
 
 	/* check the content message from server */
 	@SuppressWarnings("unchecked")
@@ -743,6 +742,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		final Node source = (Node) e.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
+		questionInExamObservable.clear();
 		openScreen("HomeScreenTeacher");
 	}
 
