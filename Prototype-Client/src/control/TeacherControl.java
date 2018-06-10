@@ -159,7 +159,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	private ComboBox<String> examComboBox;
 	@FXML
 	private ComboBox<String> typeComboBox;
-
+	Question oldQuestion;
 	/* check the content message from server */
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
@@ -291,8 +291,23 @@ public class TeacherControl extends UserControl implements Initializable {
 				if ((boolean) msg[1] == true) {
 					questionTableView.refresh();
 				} else {
+					questionObservableList.remove(questionObservableList.indexOf(questionSelected));
+					questionObservableList.add(oldQuestion);
+					
 					Platform.runLater(() -> openScreen("ErrorMessage", "This question is in active exam."));
+					questionTableView.getSortOrder().setAll(qid);
+				}
+				break;
+			}
+			
+			case ("deleteQuestion"): /* get the subject list from server */
+			{
+				if ((boolean) msg[1] == true) {
+					int index = questionObservableList.indexOf(questionSelected);
+					questionObservableList.remove(index);
 					questionTableView.refresh();
+				} else {
+					Platform.runLater(() -> openScreen("ErrorMessage", "This question is in active exam."));
 				}
 				break;
 			}
@@ -398,19 +413,12 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	public void deleteQuestion(ActionEvent e) {
-		Question questionSelected = questionTableView.getSelectionModel().getSelectedItem();
-		int index = questionObservableList.indexOf(questionSelected);
-		questionObservableList.remove(index);
+		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+
 		messageToServer[0] = "deleteQuestion";
 		messageToServer[1] = questionSelected;
 		connect(this);
 		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
-		try {
-			chat.closeConnection();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 
 	}
 
@@ -632,6 +640,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	public void changeQuestionContentOnTable(CellEditEvent<Question, String> edittedCell) {
 
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		oldQuestion = createBackUpQuestion(questionSelected);
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getQuestionContent())) {
 			questionSelected.setQuestionContent(edittedCell.getNewValue().toString());
 			updateQuestion(questionSelected);
@@ -639,7 +648,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	public void changeAnswer1OnTable(CellEditEvent<Question, String> edittedCell) {
-		Question questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		oldQuestion = createBackUpQuestion(questionSelected);
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer1())) {
 			questionSelected.setAnswer1(edittedCell.getNewValue().toString());
 			updateQuestion(questionSelected);
@@ -647,7 +657,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	public void changeAnswer2OnTable(CellEditEvent<Question, String> edittedCell) {
-		Question questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		oldQuestion = createBackUpQuestion(questionSelected);
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer2())) {
 			questionSelected.setAnswer2(edittedCell.getNewValue().toString());
 			updateQuestion(questionSelected);
@@ -656,7 +667,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	public void changeAnswer3OnTable(CellEditEvent<Question, String> edittedCell) {
-		Question questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		oldQuestion = createBackUpQuestion(questionSelected);
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer3())) {
 			questionSelected.setAnswer3(edittedCell.getNewValue().toString());
 			updateQuestion(questionSelected);
@@ -665,7 +677,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	public void changeAnswer4OnTable(CellEditEvent<Question, String> edittedCell) {
-		Question questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		oldQuestion = createBackUpQuestion(questionSelected);
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer4())) {
 			questionSelected.setAnswer4(edittedCell.getNewValue().toString());
 			updateQuestion(questionSelected);
@@ -673,7 +686,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	public void changeCorrectAnswerOnTable(CellEditEvent<Question, String> edittedCell) {
-		Question questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		oldQuestion = createBackUpQuestion(questionSelected);
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getCorrectAnswer())) {
 			questionSelected.setCorrectAnswer(edittedCell.getNewValue().toString());
 			updateQuestion(questionSelected);
@@ -681,6 +695,12 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
+	public Question createBackUpQuestion(Question questionSelected) {
+		return new Question(questionSelected.getId(),questionSelected.getTeacherName(),questionSelected.getQuestionContent()
+				,questionSelected.getAnswer1(),questionSelected.getAnswer2(),questionSelected.getAnswer3(),questionSelected.getAnswer4(),
+				questionSelected.getCorrectAnswer());
+	}
+	
 	public void updateQuestion(Question questionSelected) {
 		messageToServer[0] = "updateQuestion";
 		messageToServer[1] = questionSelected;

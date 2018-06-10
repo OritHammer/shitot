@@ -143,6 +143,31 @@ public class MysqlConnection {
 
 	}
 	
+	public Boolean deleteQuestion(Object question) throws SQLException {
+		try {
+			// Statement stmt;
+			stmt = conn.createStatement();
+			Question q = (Question) question;
+			ResultSet rs = stmt.executeQuery("select distinct questioninexam.question_ID , executedexam.executedExamID from "
+					+ "shitot.questioninexam , shitot.executedexam where questioninexam.e_id ="
+					+ " executedexam.exam_id and executedexam.status = 'open' ");
+
+				while(rs.next())
+				{
+					if(q.getId().equals(rs.getString(1))) {
+						rs.close();
+						return false;
+					}
+				}
+				rs.close();
+			// questionID from client
+			stmt.executeUpdate("DELETE FROM questions WHERE question_id=\"" + q.getId() + "\";");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 	public void setExecutedExamLocked(Object executedExamID) {
 		try {
 			stmt = conn.createStatement();
@@ -405,19 +430,6 @@ public class MysqlConnection {
 			e.printStackTrace();
 		}
 	}
-	
-	public void deleteQuestion(Object question) throws SQLException {
-		try {
-			// Statement stmt;
-			stmt = conn.createStatement();
-			Question q = (Question) question;
-			// questionID from client
-			stmt.executeUpdate("DELETE FROM questions WHERE question_id=\"" + q.getId() + "\";");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 	
 	public synchronized void createExam(Object questionInExams, Object examDetails) {
 		@SuppressWarnings("unchecked")

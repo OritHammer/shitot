@@ -170,12 +170,15 @@ public class EchoServer extends AbstractServer {
 		}
 
 		case "deleteQuestion": {
-			try {
-				con.deleteQuestion(message[1]);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				Boolean flag;
+				try {
+					flag = con.deleteQuestion(message[1]);
+					serverMessage[1] = flag;
+					this.sendToAllClients(serverMessage);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			break;
 		}
 
