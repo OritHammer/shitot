@@ -313,15 +313,6 @@ public class TeacherControl extends UserControl implements Initializable {
 	/* clear all the text fields and radio buttons */
 	public void initialize(URL url, ResourceBundle rb) {
 
-		if (pageLabel.getText().equals("Update question in exam")) {
-			questionPointsTableView.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
-			questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));// display the id in the
-																								// // table view
-			questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));// display the points in
-																								// the
-			questionsInExamTableView.setItems(questionInExamObservable);// table view
-		}
-
 		if (pageLabel.getText().equals("Create exam"))
 			typeComboBox.setItems(FXCollections.observableArrayList("computerized", "manual"));
 
@@ -331,9 +322,12 @@ public class TeacherControl extends UserControl implements Initializable {
 		if (pageLabel.getText().equals("Create question") || pageLabel.getText().equals("Create exam")
 				|| pageLabel.getText().equals("Update question") || pageLabel.getText().equals("Create exam code")
 				|| pageLabel.getText().equals("Extend exam time") || pageLabel.getText().equals("Lock exam")
-				|| pageLabel.getText().equals("Update exam")) {
+				|| pageLabel.getText().equals("Update exam") || pageLabel.getText().equals("Update question in exam")) {
 
 			connect(this);
+
+			if (pageLabel.getText().equals("Update question in exam"))
+				setToQuestionInExamTableView();
 
 			if (pageLabel.getText().equals("Extend exam time") || pageLabel.getText().equals("Lock exam")) {
 
@@ -422,7 +416,6 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/***************** Create exam functions *****************/
-
 	public void lockSubject(ActionEvent e) {
 		subjectsComboBox.setDisable(true);
 	}
@@ -442,14 +435,18 @@ public class TeacherControl extends UserControl implements Initializable {
 		questioninexam.setPoints(0);
 		questionInExamObservable.add(questioninexam);
 		questionsInExamTableView.setItems(questionInExamObservable);// kaki
-
-		questionPointsTableView.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
-		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));// display the id in the
-																							// table view
-		questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));// display the points in the
-																							// table view
+		setToQuestionInExamTableView();
 		questionObservableList.remove(questionTableView.getSelectionModel().getSelectedIndex());
 
+	}
+
+	private void setToQuestionInExamTableView() {
+		questionPointsTableView.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
+		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));// display the id in the //
+																							// // table view
+		questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));// display the points in //
+																							// the
+		questionsInExamTableView.setItems(questionInExamObservable);// table view
 	}
 
 	public void removeFromTableView(ActionEvent e) {
@@ -572,7 +569,6 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	/***************** create question screen function *****************/
 	/* initialized the update Question window */
-
 	public void createQuestionClick(ActionEvent e) throws IOException {
 		if (subjectsComboBox.getValue() == null) {
 			openScreen("ErrorMessage", "Please choose subject");
