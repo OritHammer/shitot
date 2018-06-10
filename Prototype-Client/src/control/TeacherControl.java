@@ -7,9 +7,6 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMsg;
-
 import entity.Course;
 import entity.Exam;
 import entity.ExecutedExam;
@@ -42,19 +39,13 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.converter.DefaultStringConverter;
 import javafx.util.converter.FloatStringConverter;
-import javafx.util.converter.IntegerStringConverter;
 
 public class TeacherControl extends UserControl implements Initializable {
 
 	private Object[] messageToServer = new Object[3];
 	private ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
-	private String toChange;
 
-	private enum change {
-		Content, Answer1, Answer2, Answer3, Answer4, CorrectAnswer
-	};
 
-	private change changeQuestion;
 	private Question questionSelected;
 
 	/* fxml variables */
@@ -171,7 +162,6 @@ public class TeacherControl extends UserControl implements Initializable {
 	private ComboBox<String> typeComboBox;
 
 	ObservableList<Question> questionObservableList;
-	private Boolean checkIfQuestionOnExamFlag;
 
 	/* check the content message from server */
 	@SuppressWarnings("unchecked")
@@ -277,44 +267,10 @@ public class TeacherControl extends UserControl implements Initializable {
 				break;
 			}
 
-			case ("CheckIfQuestionOnExam"): /* get the subject list from server */
+			case ("updateQuestion"): /* get the subject list from server */
 			{
 				if ((boolean) msg[1] == true) {
-					switch (changeQuestion) {
-					case Content: {
-						questionSelected.setQuestionContent(toChange);
-						updateQuestion(questionSelected);
-						break;
-					}
-					case Answer1: {
-						questionSelected.setAnswer1(toChange);
-						updateQuestion(questionSelected);
-						break;
-					}
-					case Answer2: {
-						questionSelected.setAnswer2(toChange);
-						updateQuestion(questionSelected);
-						break;
-					}
-					case Answer3: {
-						questionSelected.setAnswer3(toChange);
-						updateQuestion(questionSelected);
-						break;
-					}
-					case Answer4: {
-						questionSelected.setAnswer4(toChange);
-						updateQuestion(questionSelected);
-						break;
-					}
-					case CorrectAnswer: {
-						questionSelected.setCorrectAnswer(toChange);
-						updateQuestion(questionSelected);
-						break;
-					}
-					default:
 						questionTableView.refresh();
-					}
-
 				} else {
 					Platform.runLater(() -> openScreen("ErrorMessage", "This question is in active exam."));
 					questionTableView.refresh();
@@ -650,64 +606,52 @@ public class TeacherControl extends UserControl implements Initializable {
 
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getQuestionContent())) {
-			CheckIfQuestionOnExam(questionSelected);
-			toChange = edittedCell.getNewValue().toString();
-			changeQuestion = change.Content;
+			questionSelected.setQuestionContent(edittedCell.getNewValue().toString());
+			updateQuestion(questionSelected);
 		}
 	}
 
 	public void changeAnswer1OnTable(CellEditEvent<Question, String> edittedCell) {
 		Question questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer1())) {
-			CheckIfQuestionOnExam(questionSelected);
-			toChange = edittedCell.getNewValue().toString();
-			changeQuestion = change.Answer1;
+			questionSelected.setAnswer1(edittedCell.getNewValue().toString());
+			updateQuestion(questionSelected);
 		}
 	}
 
 	public void changeAnswer2OnTable(CellEditEvent<Question, String> edittedCell) {
 		Question questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer2())) {
-			CheckIfQuestionOnExam(questionSelected);
-			toChange = edittedCell.getNewValue().toString();
-			changeQuestion = change.Answer2;
+			questionSelected.setAnswer2(edittedCell.getNewValue().toString());
+			updateQuestion(questionSelected);
+
 		}
 	}
 
 	public void changeAnswer3OnTable(CellEditEvent<Question, String> edittedCell) {
 		Question questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer3())) {
-			CheckIfQuestionOnExam(questionSelected);
-			toChange = edittedCell.getNewValue().toString();
-			changeQuestion = change.Answer3;
+			questionSelected.setAnswer3(edittedCell.getNewValue().toString());
+			updateQuestion(questionSelected);
+
 		}
 	}
 
 	public void changeAnswer4OnTable(CellEditEvent<Question, String> edittedCell) {
 		Question questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer4())) {
-			CheckIfQuestionOnExam(questionSelected);
-			toChange = edittedCell.getNewValue().toString();
-			changeQuestion = change.Answer4;
+			questionSelected.setAnswer4(edittedCell.getNewValue().toString());
+			updateQuestion(questionSelected);
 		}
 	}
 
 	public void changeCorrectAnswerOnTable(CellEditEvent<Question, String> edittedCell) {
 		Question questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getCorrectAnswer())) {
-			CheckIfQuestionOnExam(questionSelected);
-			toChange = edittedCell.getNewValue().toString();
-			changeQuestion = change.CorrectAnswer;
+			questionSelected.setCorrectAnswer(edittedCell.getNewValue().toString());
+			updateQuestion(questionSelected);
+
 		}
-	}
-
-	public void CheckIfQuestionOnExam(Question questionSelected) {
-		checkIfQuestionOnExamFlag = false;
-		messageToServer[0] = "CheckIfQuestionOnExam";
-		messageToServer[1] = questionSelected;
-		connect(this);
-		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
-
 	}
 
 	public void updateQuestion(Question questionSelected) {
@@ -715,12 +659,6 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[1] = questionSelected;
 		connect(this);
 		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
-		try {
-			chat.closeConnection();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public void clearForm() {

@@ -36,9 +36,9 @@ public class EchoServer extends AbstractServer {
 	 * The default port to listen on.
 	 */
 	final public static int DEFAULT_PORT = 5555;
-	MysqlConnection con=new MysqlConnection();
-	//Question questionDetails = new Question();
-	Object[] serverMessage=new Object[3];
+	MysqlConnection con = new MysqlConnection();
+	// Question questionDetails = new Question();
+	Object[] serverMessage = new Object[3];
 	// Constructors ****************************************************
 
 	/**
@@ -69,46 +69,47 @@ public class EchoServer extends AbstractServer {
 
 	@SuppressWarnings("unchecked")
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		con.runDB(); 
-		//String[] message = ((String) msg).split(" ");
-		Object[] message = (Object[])msg; // message = message returned from Client
+		con.runDB();
+		// String[] message = ((String) msg).split(" ");
+		Object[] message = (Object[]) msg; // message = message returned from Client
 		System.out.println("Message received: " + msg + " from " + client);
-		// split the msg to 2 strings (message[0]=the name of the method the server need to call,message[1]=search key to work with in SQL 
+		// split the msg to 2 strings (message[0]=the name of the method the server need
+		// to call,message[1]=search key to work with in SQL
 		serverMessage[0] = message[0];
-		switch ((String)message[0]) {
+		switch ((String) message[0]) {
 		case "getSubjects": { /* if the client request all the subject */
 			ArrayList<TeachingProfessionals> tp = con.getSubjectList(message[1]);
-			serverMessage[1] =tp;
+			serverMessage[1] = tp;
 			this.sendToAllClients(serverMessage);
 			System.out.println("arraylist to deliver");
 			break;
 		}
-		
-		case "getCourses": {/*client request all all the courses under some subject*/
-			ArrayList<Course> courseList = con.getCourseList(message[1],message[2]);
-			serverMessage[1] =courseList;
+
+		case "getCourses": {/* client request all all the courses under some subject */
+			ArrayList<Course> courseList = con.getCourseList(message[1], message[2]);
+			serverMessage[1] = courseList;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		
-		case "getExecutedExams": {/*client request all all the courses under some subject*/
+
+		case "getExecutedExams": {/* client request all all the courses under some subject */
 			ArrayList<ExecutedExam> executedexam = con.getExecutedExam(message[1]);
-			serverMessage[1] =executedexam;
+			serverMessage[1] = executedexam;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		case "checkExecutedExam": {/*check the executed exam id validity*/
+		case "checkExecutedExam": {/* check the executed exam id validity */
 			Object[] questioninexam = con.checkExecutedExam(message[1]);
-			Time solutionTime=con.getSolutionTime(message[1]);
-			serverMessage[1] =questioninexam;
-			serverMessage[2] =solutionTime;
+			Time solutionTime = con.getSolutionTime(message[1]);
+			serverMessage[1] = questioninexam;
+			serverMessage[2] = solutionTime;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		
-		case "getExams": {/*client request all all the courses under some subject*/
+
+		case "getExams": {/* client request all all the courses under some subject */
 			ArrayList<Exam> examsList = con.getExams(message[1]);
-			serverMessage[1] =examsList;
+			serverMessage[1] = examsList;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
@@ -116,44 +117,40 @@ public class EchoServer extends AbstractServer {
 			con.createChangingRequest(message[1]);
 			break;
 		}
-		
 
-		
-		case "getQuestions": {/*client request all all the questions under some subject*/
-			ArrayList<String> questionList = con.getQuestionList(message[1],message[2]);
-			serverMessage[1] =questionList;
-			this.sendToAllClients(serverMessage);
-			break;
-		}
-		
-		case "getQuestionsToTable": {/*client request all all the questions under some subject*/
-			ArrayList<Question> questionList = con.getQuestionListToTable(message[1],message[2]);
+		case "getQuestions": {/* client request all all the questions under some subject */
+			ArrayList<String> questionList = con.getQuestionList(message[1], message[2]);
 			serverMessage[1] = questionList;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		
-		case "setExam": {/*client request is to create exam in DB*/
-			con.createExam(message[1],message[2]);
+
+		case "getQuestionsToTable": {/* client request all all the questions under some subject */
+			ArrayList<Question> questionList = con.getQuestionListToTable(message[1], message[2]);
+			serverMessage[1] = questionList;
+			this.sendToAllClients(serverMessage);
 			break;
 		}
-		
-		
-		case "setExamCode": {/*client request is to create exam code in DB*/
+
+		case "setExam": {/* client request is to create exam in DB */
+			con.createExam(message[1], message[2]);
+			break;
+		}
+
+		case "setExamCode": {/* client request is to create exam code in DB */
 			Boolean createExamCodeStatus;
 			createExamCodeStatus = con.createExamCode(message[1]);
 			serverMessage[1] = createExamCodeStatus;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		
-		case "getQuestionDetails" :
-			{
-				Question q=con.getQuestionDetails(message[1]);
-				serverMessage[1]=q;
-				this.sendToAllClients(serverMessage);
-				break;
-			}
+
+		case "getQuestionDetails": {
+			Question q = con.getQuestionDetails(message[1]);
+			serverMessage[1] = q;
+			this.sendToAllClients(serverMessage);
+			break;
+		}
 		case "updateCorrectAnswer": {
 			try {
 				con.updateAnswer(message[1], message[2]);
@@ -162,24 +159,15 @@ public class EchoServer extends AbstractServer {
 			}
 			break;
 		}
+
 		case "updateQuestion": {
-				try {
-					con.updateQuestion(message[1]);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			boolean flag;
+			flag = con.updateQuestion(message[1]);
+			serverMessage[1] = flag;
+			this.sendToAllClients(serverMessage);
 			break;
 		}
-		
-		case "CheckIfQuestionOnExam": {
-				boolean flag;
-				flag = con.CheckIfQuestionOnExam(message[1]);
-				serverMessage[1] = flag;
-				this.sendToAllClients(serverMessage);
-				break;
-	}
-		
+
 		case "deleteQuestion": {
 			try {
 				con.deleteQuestion(message[1]);
@@ -187,12 +175,12 @@ public class EchoServer extends AbstractServer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		break;
-	}
-		
+			break;
+		}
+
 		case "checkUserDetails": {
-			User user=con.checkUserDetails(message[1], message[2]);
-			serverMessage[1]=user;
+			User user = con.checkUserDetails(message[1], message[2]);
+			serverMessage[1] = user;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
@@ -204,63 +192,63 @@ public class EchoServer extends AbstractServer {
 		case "SetQuestion": {
 			con.createQuestion(message[1], message[2]);
 			break;
-		} 
-		case "logoutProcess" :{
+		}
+		case "logoutProcess": {
 			con.performLogout(message[1]);
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		case "getTimeRequestList":{
-			ArrayList<RequestForChangingTimeAllocated> requestsList=con.getAddingTimeRequests();
-			serverMessage[1]=requestsList;
+		case "getTimeRequestList": {
+			ArrayList<RequestForChangingTimeAllocated> requestsList = con.getAddingTimeRequests();
+			serverMessage[1] = requestsList;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		case "getTimeRequestDetails":{
-			RequestForChangingTimeAllocated request=con.getAddingTimeRequestsDetails((String)message[1]);
-			serverMessage[1]=request;
-			this.sendToAllClients(serverMessage);
-			break;
-		}   
-		case  "getExamsByUserName" : {
-			ArrayList<ExamDetailsMessage> examsPrefDetails = con.getPrefExamDetails((String)message[1]);
-			serverMessage[1] = examsPrefDetails ; 
+		case "getTimeRequestDetails": {
+			RequestForChangingTimeAllocated request = con.getAddingTimeRequestsDetails((String) message[1]);
+			serverMessage[1] = request;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		
-		case "SetStatusToApproved" :{
-			con.setStatusToAddingTimeRequest(((Object[])msg)[1],"approved");
-			Object tmp[]=con.getadditionalTime((String)((Object[])msg)[1]);
-			serverMessage[0] = "addTime" ; 
-			serverMessage[1] = tmp[0] ;// serverMessage[0]=requestId(String)
-			serverMessage[2] = tmp[1] ;// serverMessage[0]=time to add (Time)
+		case "getExamsByUserName": {
+			ArrayList<ExamDetailsMessage> examsPrefDetails = con.getPrefExamDetails((String) message[1]);
+			serverMessage[1] = examsPrefDetails;
 			this.sendToAllClients(serverMessage);
-			break;
-		}
-		case "SetStatusToReject" :{
-			con.setStatusToAddingTimeRequest(((Object[])msg)[1],"rejected");
-			
 			break;
 		}
 
-		case "finishExam" :{
-			con.finishExam((String[]) message[1],(HashMap<String,Integer>)message[2]);
+		case "SetStatusToApproved": {
+			con.setStatusToAddingTimeRequest(((Object[]) msg)[1], "approved");
+			Object tmp[] = con.getadditionalTime((String) ((Object[]) msg)[1]);
+			serverMessage[0] = "addTime";
+			serverMessage[1] = tmp[0];// serverMessage[0]=requestId(String)
+			serverMessage[2] = tmp[1];// serverMessage[0]=time to add (Time)
+			this.sendToAllClients(serverMessage);
 			break;
 		}
-	/*	case "getExecutedExamCodeList" :{// for using on confirm request of adding time to exam
-			con.getRequestsList(message[1]);
+		case "SetStatusToReject": {
+			con.setStatusToAddingTimeRequest(((Object[]) msg)[1], "rejected");
+
 			break;
-		} */ 
-			default:{
-				System.out.println("Error on switch case ");
-			}
 		}
-		
+
+		case "finishExam": {
+			con.finishExam((String[]) message[1], (HashMap<String, Integer>) message[2]);
+			break;
+		}
+		/*
+		 * case "getExecutedExamCodeList" :{// for using on confirm request of adding
+		 * time to exam con.getRequestsList(message[1]); break; }
+		 */
+		default: {
+			System.out.println("Error on switch case ");
+		}
+		}
+
 		// saveUserToDB(con, (ArrayList<String>)msg);
 		/* System.out.println("Message received: " + msg + " from " + client); */
-		//this.sendToAllClients(msg);
-		System.out.println("Handle massege success  " + (String)message[0]);
+		// this.sendToAllClients(msg);
+		System.out.println("Handle massege success  " + (String) message[0]);
 	}
 
 	/**
@@ -290,7 +278,7 @@ public class EchoServer extends AbstractServer {
 	 *            entered.
 	 */
 	public static void main(String[] args) {
-	 	int port = 0; // Port to listen on
+		int port = 0; // Port to listen on
 
 		try {
 			port = Integer.parseInt(args[0]); // Get port from command line

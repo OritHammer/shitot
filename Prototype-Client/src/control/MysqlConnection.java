@@ -108,7 +108,7 @@ public class MysqlConnection {
 			}
 	}
 
-	public synchronized Boolean CheckIfQuestionOnExam(Object question) {
+	public synchronized Boolean updateQuestion(Object question) {
 
 		Question q = (Question) question;
 
@@ -120,9 +120,19 @@ public class MysqlConnection {
 
 				while(rs.next())
 				{
-					if(q.getId().equals(rs.getString(1)))
+					if(q.getId().equals(rs.getString(1))) {
+						rs.close();
 						return false;
+					}
 				}
+				rs.close();
+				// query update on DB the correct answer of question that have the given
+				// questionID from client
+				stmt.executeUpdate("UPDATE questions SET question_text=\"" + q.getQuestionContent() + "\", answer1=\"" 
+				+ q.getAnswer1() + "\", answer2 = \"" + q.getAnswer2()+"\", answer3= \"" +q.getAnswer3()+"\","
+						+ "answer4= \"" +q.getAnswer4()+ "\", correct_answer= \"" + q.getCorrectAnswer()+"\" WHERE Question_id=\""
+						+ q.getId() + "\";");
+				
 				return true;
 
 		} catch (SQLException e) {
@@ -396,22 +406,6 @@ public class MysqlConnection {
 		}
 	}
 	
-	public void updateQuestion(Object question) throws SQLException {
-		try {
-			// Statement stmt;
-			stmt = conn.createStatement();
-			Question q = (Question) question;
-			// query update on DB the correct answer of question that have the given
-			// questionID from client
-			stmt.executeUpdate("UPDATE questions SET question_text=\"" + q.getQuestionContent() + "\", answer1=\"" 
-			+ q.getAnswer1() + "\", answer2 = \"" + q.getAnswer2()+"\", answer3= \"" +q.getAnswer3()+"\","
-					+ "answer4= \"" +q.getAnswer4()+ "\", correct_answer= \"" + q.getCorrectAnswer()+"\" WHERE Question_id=\""
-					+ q.getId() + "\";");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void deleteQuestion(Object question) throws SQLException {
 		try {
 			// Statement stmt;
