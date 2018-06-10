@@ -715,14 +715,19 @@ public class MysqlConnection {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM questioninexam"
 					+ " WHERE e_id = \"" + examID + "\" ;");
-			while (rs.next()) {
-				question=new QuestionInExam();
-				question.setQuestionID(rs.getString(2));
-				question.setQuestionIndexInExam(Integer.parseInt(rs.getString(3)));
-				question.setPoints(Float.parseFloat(rs.getString(4)));
-				questioninexam.add(question);
+			if(rs.isBeforeFirst()) {
+				while (rs.next()) {
+					question=new QuestionInExam();
+					question.setQuestionID(rs.getString(2));
+					question.setQuestionIndexInExam(Integer.parseInt(rs.getString(3)));
+					question.setPoints(Float.parseFloat(rs.getString(4)));
+					questioninexam.add(question);
+				}
+				rs.close();
 			}
-			rs.close();
+			else {
+				return null;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

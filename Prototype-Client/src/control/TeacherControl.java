@@ -42,8 +42,8 @@ import javafx.util.converter.FloatStringConverter;
 
 public class TeacherControl extends UserControl implements Initializable {
 
-	private Object[] messageToServer = new Object[3];
 	private static ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
+	private Object[] messageToServer = new Object[3];
 	private Question questionSelected;
 
 	/* fxml variables */
@@ -191,8 +191,13 @@ public class TeacherControl extends UserControl implements Initializable {
 			}
 			case ("getQuestionInExam"): /* get the subjects list from server */
 			{
-				((ArrayList<QuestionInExam>) msg[1]).forEach(questionInExamObservable::add);
-				Platform.runLater(() -> openScreen("UpdateQuestionInExam"));
+				try {
+					((ArrayList<QuestionInExam>) msg[1]).forEach(questionInExamObservable::add);
+					Platform.runLater(() -> openScreen("UpdateQuestionInExam"));
+				} catch (NullPointerException exception) {
+					Platform.runLater(() -> openScreen("ErrorMessage", "exam does not have any question"));
+
+				}
 				break;
 			}
 
@@ -307,14 +312,16 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	/* clear all the text fields and radio buttons */
 	public void initialize(URL url, ResourceBundle rb) {
-		
-		if(pageLabel.getText().equals("Update question in exam")) {
-			questionsInExamTableView.setItems(questionInExamObservable);
+
+		if (pageLabel.getText().equals("Update question in exam")) {
 			questionPointsTableView.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
-			questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));// display the id in the																					// table view
-			questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));// display the points in the																					// table view
+			questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));// display the id in the
+																								// // table view
+			questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));// display the points in
+																								// the
+			questionsInExamTableView.setItems(questionInExamObservable);// table view
 		}
-		
+
 		if (pageLabel.getText().equals("Create exam"))
 			typeComboBox.setItems(FXCollections.observableArrayList("computerized", "manual"));
 
@@ -415,6 +422,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/***************** Create exam functions *****************/
+
 	public void lockSubject(ActionEvent e) {
 		subjectsComboBox.setDisable(true);
 	}
@@ -732,18 +740,6 @@ public class TeacherControl extends UserControl implements Initializable {
 		} catch (Exception exception) {
 			System.out.println("Error in opening the page");
 		}
-	}
-
-	private void loadQuestionInExam(Object questionInExam) {
-		questionsInExamTableView.setItems(questionInExamObservable);
-
-		questionPointsTableView.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
-
-		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));// display the id in the
-																							// table view
-		questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));// display the points in the
-																							// table view
-
 	}
 
 	/* close button was pressed */
