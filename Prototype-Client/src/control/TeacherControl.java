@@ -44,8 +44,6 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	private Object[] messageToServer = new Object[3];
 	private ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
-
-
 	private Question questionSelected;
 
 	/* fxml variables */
@@ -181,6 +179,16 @@ public class TeacherControl extends UserControl implements Initializable {
 				}
 				break;
 			}
+			case ("updateExam"): /* get the subjects list from server */
+			{
+				if ((boolean) msg[1] == true) {
+					examsTableView.refresh();
+				} else {
+					Platform.runLater(() -> openScreen("ErrorMessage", "This exam is in active exam."));
+					questionTableView.refresh();
+				}
+				break;
+			}
 			case ("getExecutedExams"): /* get the subjects list from server */
 			{
 				ObservableList<ExecutedExam> observablelist = FXCollections
@@ -270,7 +278,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			case ("updateQuestion"): /* get the subject list from server */
 			{
 				if ((boolean) msg[1] == true) {
-						questionTableView.refresh();
+					questionTableView.refresh();
 				} else {
 					Platform.runLater(() -> openScreen("ErrorMessage", "This question is in active exam."));
 					questionTableView.refresh();
@@ -322,6 +330,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			chat.handleMessageFromClientUI(messageToServer);// send the message to server
 		}
 	}
+
 	public void createExtendTimeRequest(ActionEvent e) throws IOException {
 		if (timeForExamHours.getText().equals("") || timeForExamMinute.getText().equals("")) {
 			openScreen("ErrorMessage", "Please fill the time you want to extend by");
@@ -348,6 +357,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 		chat.closeConnection();
 	}
+
 	/***************** Opening screens action-events *****************/
 	public void openExtendExamTimeScreen(ActionEvent e) {
 		openScreen("ExtendExamTime");
@@ -778,18 +788,12 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[1] = examSelected;
 		connect(this);
 		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
-		try {
-			chat.closeConnection();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public void changeRemarksForTeacherOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
 		Exam examSelected = examsTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(examSelected.getRemarksForTeacher())) {
-			examSelected.setSolutionTime(edittedCell.getNewValue().toString());
+			examSelected.setRemarksForTeacher(edittedCell.getNewValue().toString());
 			updateExam(examSelected);
 		}
 	}
@@ -797,7 +801,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	public void changeRemarksForStudentOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
 		Exam examSelected = examsTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(examSelected.getRemarksForStudent())) {
-			examSelected.setSolutionTime(edittedCell.getNewValue().toString());
+			examSelected.setRemarksForStudent(edittedCell.getNewValue().toString());
 			updateExam(examSelected);
 		}
 	}
@@ -805,7 +809,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	public void changeTypeOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
 		Exam examSelected = examsTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(examSelected.getType())) {
-			examSelected.setSolutionTime(edittedCell.getNewValue().toString());
+			examSelected.setType(edittedCell.getNewValue().toString());
 			updateExam(examSelected);
 		}
 	}

@@ -420,6 +420,7 @@ public class MysqlConnection {
 
 	
 	public synchronized void createExam(Object questionInExams, Object examDetails) {
+		@SuppressWarnings("unchecked")
 		ArrayList<QuestionInExam> questionInExam = (ArrayList<QuestionInExam>) questionInExams;
 		Exam exam = (Exam) examDetails;
 		String fullExamNumber;
@@ -674,6 +675,36 @@ public class MysqlConnection {
 		}
 		 return details;
 
+	}
+
+	public Boolean updateExam(Object examToChange) {
+		Exam exam = (Exam)examToChange;
+
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("select distinct executedexam.exam_id from "
+					+ "shitot.executedexam where executedexam.status = 'open' AND executedexam.numOfStudentStarted>'0'");
+
+				while(rs.next())
+				{
+					if(exam.getE_id().equals(rs.getString(1))) {
+						rs.close();
+						return false;
+					}
+				}
+				rs.close();
+				// query update on DB the correct answer of question that have the given
+				// questionID from client
+				stmt.executeUpdate("UPDATE exams SET solutionTime=\"" + exam.getSolutionTime() + "\", remarksForTeacher=\"" 
+				+ exam.getRemarksForTeacher() + "\", remarksForStudent = \"" +exam.getRemarksForStudent()+"\", type= \"" +exam.getType()+"\","
+						+ "tUserName=\""+exam.getTeacherUserName()+"\" WHERE e_id=\""+exam.getE_id()+"\";");
+				
+				return true;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}		
 	} 
 	
 	}
