@@ -247,7 +247,6 @@ public class EchoServer extends AbstractServer {
 		}
 		case "SetStatusToReject": {
 			con.setStatusToAddingTimeRequest(((Object[]) msg)[1], "rejected");
-
 			break;
 		}
 

@@ -98,7 +98,15 @@ public class DirectorControl extends UserControl implements Initializable {
 			messageToServer[1] = Globals.getRequestId();
 			messageToServer[2] = null;
 			chat.handleMessageFromClientUI(messageToServer);// send the message to server
-		}else if (pageLabel.getText().contentEquals("Adding time requests"));
+		}else if(pageLabel.getText().contentEquals("Statistic report")){
+			ObservableList<String> observableList = FXCollections.observableArrayList();
+				observableList.add("Student");
+				observableList.add("Teacher");
+				observableList.add("Course");
+				reportBy.setItems(observableList);
+		}else if (pageLabel.getText().contentEquals("")) {//system information
+			
+		}
 		
 	}
 
@@ -172,8 +180,7 @@ public class DirectorControl extends UserControl implements Initializable {
 
 	}
 
-	/////// ***************************check the message that arrived from
-	/////// server***************************/
+	//***********check the message that arrived from server**************//
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
 		try {
@@ -211,7 +218,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		openScreen("addingTimeRequest");
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")//showing list of request that waiting to answer
 	public void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList) throws NullPointerException{
 		
 		for (RequestForChangingTimeAllocated i : requestsList) {
@@ -228,16 +235,14 @@ public class DirectorControl extends UserControl implements Initializable {
 		timeAddedColumn.setCellValueFactory(new PropertyValueFactory<>("timeAdded"));
 		// requestsTable.getColumns().clear();
 		requestsTable.getColumns().addAll(examIDColumn, teacherNameColumn, timeAddedColumn);
-		
 	}
-
+//initialize the field in details of request
 	public void initAddingTimeRequestDetails(RequestForChangingTimeAllocated request) {
 		txtFATRTeachName.setText(request.getTeacherName());
 		txtFATRTimeAdded.setText(request.getTimeAdded());
 		txtFATRreasonAddingTime.setText(request.getReason());
 		txtFATRrequestId.setText(request.getRequestID());
 		txtFATRexecutedExamId.setText(request.getIDexecutedExam());
-
 	}
  
 	/*******************************************************
@@ -255,5 +260,10 @@ public class DirectorControl extends UserControl implements Initializable {
 		this.openTimeRequestTable(e);
 		chat.handleMessageFromClientUI(messageToServer);
 	}
-
+	/*******************************************************
+	 * listeners on statistic Report
+	 ***********************************************************/
+	public void showListForChooseObject(ActionEvent e){//display the list of student/courses/teachers
+		
+	}
 }

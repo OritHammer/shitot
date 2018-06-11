@@ -11,18 +11,18 @@
       <Label layoutX="189.0" layoutY="78.0" text="Average" />
       <TextField layoutX="366.0" layoutY="74.0" prefHeight="25.0" prefWidth="48.0" />
       <TextField layoutX="243.0" layoutY="74.0" prefHeight="25.0" prefWidth="49.0" />
-      <ComboBox layoutX="376.0" layoutY="36.0" prefHeight="25.0" prefWidth="120.0" />
+      <ComboBox fx:id="chooseNameOrID" layoutX="376.0" layoutY="36.0" prefHeight="25.0" prefWidth="120.0" />
       <Label layoutX="118.0" layoutY="40.0" prefHeight="17.0" prefWidth="141.0" text="Get  Statistic Report By" />
       <NumberAxis layoutX="451.0" layoutY="146.0" prefHeight="210.0" prefWidth="28.0" side="LEFT" />
       <BarChart layoutX="84.0" layoutY="107.0" prefHeight="269.0" prefWidth="427.0">
          <xAxis>
-            <CategoryAxis prefHeight="13.0" prefWidth="369.0" side="BOTTOM" />
+            <CategoryAxis prefHeight="12.0" prefWidth="369.0" side="BOTTOM" />
          </xAxis>
          <yAxis>
             <NumberAxis prefHeight="210.0" prefWidth="28.0" side="LEFT" />
          </yAxis>
       </BarChart>
-      <ComboBox layoutX="247.0" layoutY="36.0" prefHeight="25.0" prefWidth="120.0" />
+      <ComboBox fx:id="reportBy" layoutX="247.0" layoutY="36.0" onAction="#showListForChooseObject" prefHeight="25.0" prefWidth="120.0" />
       <Label fx:id="pageLabel" layoutX="268.0" layoutY="14.0" text="Statistic report" />
       <Button fx:id="backButton" layoutX="277.0" layoutY="371.0" mnemonicParsing="false" onAction="#backButtonPressed" text="back" />
    </children>
