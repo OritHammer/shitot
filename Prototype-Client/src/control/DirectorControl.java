@@ -185,13 +185,13 @@ public class DirectorControl extends UserControl implements Initializable {
 				break;
 			}
 			case ("getTimeRequestDetails"): { /* get the subjects list from server */
-				if ((RequestForChangingTimeAllocated) msg[1]!= null)
 				initAddingTimeRequestDetails((RequestForChangingTimeAllocated) msg[1]);
-				else openScreen("ErrorControl","There is no request to confirm .");
 				break;
 			}
  
 			}
+		}catch (NullPointerException e) {
+			openScreen("ErrorMessage","There is no request to confirm .");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -210,7 +210,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList) {
+	public void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList) throws NullPointerException{
 		
 		for (RequestForChangingTimeAllocated i : requestsList) {
 			addingTimeRequestsObservable.add(i);
@@ -226,7 +226,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		timeAddedColumn.setCellValueFactory(new PropertyValueFactory<>("timeAdded"));
 		// requestsTable.getColumns().clear();
 		requestsTable.getColumns().addAll(examIDColumn, teacherNameColumn, timeAddedColumn);
-
+		
 	}
 
 	public void initAddingTimeRequestDetails(RequestForChangingTimeAllocated request) {

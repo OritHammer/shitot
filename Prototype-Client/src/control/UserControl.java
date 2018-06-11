@@ -72,7 +72,7 @@ public class UserControl implements Initializable {
 
 	protected Object[] messageToServer = new Object[3];
 	/* connections variables */
-	protected String ip;// server ip
+	static String ip;// server ip
 
 	final public static int DEFAULT_PORT = 5555;
 
@@ -89,7 +89,7 @@ public class UserControl implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("enter server ip");
-		 //this.ip = "77.138.70.98";
+		// this.ip = "77.138.70.98";
 		this.ip = "localhost";
 		// this.ip = sc.nextLine();
 		sc.close(); 
