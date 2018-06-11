@@ -160,6 +160,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private ComboBox<String> typeComboBox;
 	Question oldQuestion;
+	static String tempExamId;
 	/* check the content message from server */
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
@@ -427,7 +428,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	public void toQuestionInExam(ActionEvent e) {
-
+		int flag=0;
 		if (questionTableView.getSelectionModel().getSelectedItem() == null) {
 			openScreen("ErrorMessage", "Please choose question");
 			return;
@@ -439,10 +440,17 @@ public class TeacherControl extends UserControl implements Initializable {
 		questioninexam.setTeacherUserName(questionDetails.getTeacherName());
 		questioninexam.setQuestionContent(questionDetails.getQuestionContent());
 		questioninexam.setPoints(0);
-		questionInExamObservable.add(questioninexam);
-		questionsInExamTableView.setItems(questionInExamObservable);// kaki
 		setToQuestionInExamTableView();
-		questionObservableList.remove(questionTableView.getSelectionModel().getSelectedIndex());
+		for (QuestionInExam item : questionInExamObservable) {
+		    if(item.getQuestionID().equals(questionDetails.getId()))
+		    	flag=1;
+		}
+			if(flag == 0) 
+			{
+				questionObservableList.remove(questionTableView.getSelectionModel().getSelectedIndex());
+				questionInExamObservable.add(questioninexam);
+				questionsInExamTableView.getSortOrder().setAll(questionNameTableView);
+			}
 
 	}
 
@@ -457,13 +465,23 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	public void removeFromTableView(ActionEvent e) {
 		ObservableList<QuestionInExam> questiontoremove;
+		int flag=0;
 		try {
 			questiontoremove = questionsInExamTableView.getSelectionModel().getSelectedItems();
 			Question question = new Question();
 			question.setQuestionContent(questiontoremove.get(0).getQuestionContent());
 			question.setTeacherName(questiontoremove.get(0).getTeacherUserName());
 			question.setId(questiontoremove.get(0).getQuestionID());
-			questionObservableList.add(question);
+			for (Question item : questionObservableList) {
+			    if(item.getId().equals(question.getId()))
+			    	flag=1;
+			}
+				if(flag == 0) 
+				{
+					questionObservableList.add(question);
+					questionTableView.getSortOrder().setAll(qid);
+				}
+			
 			questiontoremove.forEach(questionInExamObservable::remove);
 		} catch (RuntimeException exception) {
 			openScreen("ErrorMessage", "Please choose question to delete");
@@ -524,6 +542,30 @@ public class TeacherControl extends UserControl implements Initializable {
 		} // close the connection
 	}
 
+	public void updateExam(ActionEvent e) {
+		int sumOfPoints = 0;
+		for (QuestionInExam q : questionInExamObservable) {
+			sumOfPoints += q.getPoints();
+		}
+		if (sumOfPoints != 100) {
+			openScreen("ErrorMessage", "Points are not match to 100");
+			return;
+		}
+		ArrayList<QuestionInExam> questioninexam = (ArrayList<QuestionInExam>) questionInExamObservable.stream()
+				.collect(Collectors.toList());// making the observable a lis
+		messageToServer[0] = "updateFinishedExam";
+		messageToServer[1] = questioninexam;
+		messageToServer[2] = tempExamId;
+		connect(this);
+		chat.handleMessageFromClientUI(messageToServer);// send the message to server
+		try {
+			chat.closeConnection();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} // close the connection
+	}
+	
 	public void createExamCode(ActionEvent e) {
 		ExecutedExam exam;
 		String examID = examComboBox.getValue();
@@ -857,6 +899,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			connect(this); // connecting to server
 			messageToServer[0] = "getQuestionInExam";
 			messageToServer[1] = exam.getE_id();
+			tempExamId = exam.getE_id();
 			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 		} catch (NullPointerException exception) {
 			openScreen("ErrorMessage", "Please select exam");

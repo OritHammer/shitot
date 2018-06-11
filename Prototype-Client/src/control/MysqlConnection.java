@@ -469,6 +469,28 @@ public class MysqlConnection {
 		// stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
 
 	}
+	
+	public synchronized void updateFinishedExam(Object questionInExams, Object examId) {
+		@SuppressWarnings("unchecked")
+		int questionCounter = 1;
+		ArrayList<QuestionInExam> questionInExam = (ArrayList<QuestionInExam>) questionInExams;
+		try {
+			stmt = conn.createStatement();
+			for (QuestionInExam q : questionInExam) {
+				stmt.executeUpdate("DELETE FROM questioninexam WHERE e_id=\"" + (String)examId + "\" ;");
+				
+			}
+			for (QuestionInExam q : questionInExam) {
+				stmt.executeUpdate("INSERT INTO shitot.questioninexam VALUES(\"" + (String)examId + "\",\""
+						+ q.getQuestionID() + "\",\"" + (questionCounter++) + "\",\"" + q.getPoints() + "\");");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		// stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
+
+	}
 
 	public synchronized Boolean createExamCode(Object excutedExam) {
 
