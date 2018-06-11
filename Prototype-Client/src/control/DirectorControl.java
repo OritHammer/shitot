@@ -75,7 +75,10 @@ public class DirectorControl extends UserControl implements Initializable {
 	private Button btnATRreject;
 
 	// FXML Statistic Reports
-
+	@FXML 
+	private ComboBox<String> reportBy;
+	@FXML 
+	private ComboBox<String> chooseNameOrID;
 	// FXML System information
 	/******************************************************************
 	 * homePageButtons
@@ -95,8 +98,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			messageToServer[1] = Globals.getRequestId();
 			messageToServer[2] = null;
 			chat.handleMessageFromClientUI(messageToServer);// send the message to server
-			
-		}
+		}else if (pageLabel.getText().contentEquals("Adding time requests"));
 		
 	}
 

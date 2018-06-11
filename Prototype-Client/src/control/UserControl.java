@@ -127,6 +127,7 @@ public class UserControl implements Initializable {
 									Globals.setFullName(user.getFullname());
 									Globals.setuserName(user.getUsername());
 									home_page_scene = new Scene(home_page_parent);
+									Main.getStage().setTitle("HomeScreenTeacher");
 									Main.getStage().setScene(home_page_scene);
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
@@ -156,6 +157,7 @@ public class UserControl implements Initializable {
 									sController.setStudentAuthor_Date_name();/*send the name to the controller*/
 									home_page_scene = new Scene(home_page_parent);
 									//	sController.setHomePScene(home_page_scene);
+									Main.getStage().setTitle("HomeScreenStudent");
 									Main.getStage().setScene(home_page_scene);
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
@@ -175,6 +177,7 @@ public class UserControl implements Initializable {
 								try {
 									FXMLLoader loader=new FXMLLoader();
 									loader.setLocation(getClass().getResource("/directorBoundary/HomeScreenDirector.fxml"));
+									
 									home_page_parent = loader.load();
 									Globals.setFullName(user.getFullname());
 									Globals.setuserName(user.getUsername());
@@ -182,6 +185,7 @@ public class UserControl implements Initializable {
 									String userName=user.getFullname().toLowerCase();/*get the name of the user*/
 									dController.setUserText(userName);/*send the name to the controller*/
 									home_page_scene = new Scene(home_page_parent);
+									Main.getStage().setTitle("HomeScreenDirector");
 									Main.getStage().setScene(home_page_scene);
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
