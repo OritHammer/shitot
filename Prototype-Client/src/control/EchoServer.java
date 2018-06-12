@@ -265,8 +265,8 @@ public class EchoServer extends AbstractServer {
 			serverMessage[0]="getTeachersList";
 			serverMessage[1]=teacherList;
 			this.sendToAllClients(serverMessage);
+			break;
 		}
-
 		case "finishExam": {
 			con.finishExam((String[]) message[1], (HashMap<String, Integer>) message[2]);
 			break;

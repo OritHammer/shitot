@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -67,7 +68,8 @@ public class UserControl implements Initializable {
 		Stage stage = (Stage) closeButton.getScene().getWindow();
 		stage.close();
 	} 
-
+	protected ComboBox<String> subjectsComboBox;
+	protected ComboBox<String> coursesComboBox;
 	protected ChatClient chat;
 
 	protected Object[] messageToServer = new Object[3];
@@ -231,6 +233,22 @@ public class UserControl implements Initializable {
 		return;
 		}
 		 userText.setText(userNameFromDB);
+	}
+	//functions relevant for all users 
+	public void loadCourses(String typeList) throws IOException {
+		/* ask for the courses name */
+		String subject = subjectsComboBox.getValue(); // get the subject code
+		if (subject == null)
+			return;
+		String[] subjectSubString = subject.split("-");
+		coursesComboBox.getSelectionModel().clearSelection();
+		connect(this); // connecting to server
+		messageToServer[0] = "getCourses";
+		messageToServer[1] = subjectSubString[0].trim();
+		if(typeList=="All")
+			messageToServer[2] = null;
+		else messageToServer[2] = Globals.getuserName();
+		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 
 }

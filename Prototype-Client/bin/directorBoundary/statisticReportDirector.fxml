@@ -7,14 +7,16 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.DirectorControl">
    <children>
-      <Label layoutX="315.0" layoutY="78.0" text="Median" />
-      <Label layoutX="189.0" layoutY="78.0" text="Average" />
-      <TextField layoutX="366.0" layoutY="74.0" prefHeight="25.0" prefWidth="48.0" />
-      <TextField layoutX="243.0" layoutY="74.0" prefHeight="25.0" prefWidth="49.0" />
-      <ComboBox fx:id="chooseNameOrID" layoutX="376.0" layoutY="36.0" prefHeight="25.0" prefWidth="120.0" />
-      <Label layoutX="118.0" layoutY="40.0" prefHeight="17.0" prefWidth="141.0" text="Get  Statistic Report By" />
+      <Label layoutX="315.0" layoutY="91.0" text="Median" />
+      <Label layoutX="189.0" layoutY="91.0" text="Average" />
+      <TextField editable="false" layoutX="366.0" layoutY="87.0" prefHeight="25.0" prefWidth="48.0" />
+      <TextField editable="false" layoutX="243.0" layoutY="87.0" prefHeight="25.0" prefWidth="49.0" />
+      <ComboBox fx:id="chooseUserComboBox" layoutX="355.0" layoutY="36.0" prefHeight="25.0" prefWidth="141.0" promptText="choose user Name" />
+      <ComboBox fx:id="coursesComboBox" layoutX="454.0" layoutY="36.0" prefHeight="25.0" prefWidth="84.0" />
+      <ComboBox fx:id="subjectsComboBox" layoutX="355.0" layoutY="36.0" onAction="#loadCourses" prefHeight="25.0" prefWidth="93.0" />
+      <Label layoutX="108.0" layoutY="40.0" prefHeight="17.0" prefWidth="141.0" text="Get  Statistic Report By" />
       <NumberAxis layoutX="451.0" layoutY="146.0" prefHeight="210.0" prefWidth="28.0" side="LEFT" />
-      <BarChart layoutX="84.0" layoutY="107.0" prefHeight="269.0" prefWidth="427.0">
+      <BarChart layoutX="84.0" layoutY="112.0" prefHeight="269.0" prefWidth="427.0">
          <xAxis>
             <CategoryAxis prefHeight="12.0" prefWidth="369.0" side="BOTTOM" />
          </xAxis>
@@ -22,7 +24,7 @@
             <NumberAxis prefHeight="210.0" prefWidth="28.0" side="LEFT" />
          </yAxis>
       </BarChart>
-      <ComboBox fx:id="reportBy" layoutX="247.0" layoutY="36.0" onAction="#showListForChooseObject" prefHeight="25.0" prefWidth="120.0" />
+      <ComboBox fx:id="reportByComboBox" layoutX="232.0" layoutY="36.0" onAction="#showListForChooseObject" prefHeight="25.0" prefWidth="112.0" />
       <Label fx:id="pageLabel" layoutX="268.0" layoutY="14.0" text="Statistic report" />
       <Button fx:id="backButton" layoutX="277.0" layoutY="371.0" mnemonicParsing="false" onAction="#backButtonPressed" text="back" />
    </children>
