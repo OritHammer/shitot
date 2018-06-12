@@ -100,15 +100,18 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		case "checkExecutedExam": {/* check the executed exam id validity */
-			if (((String)message[2]).equals("Copy") ) {
-				serverMessage[2] = "data of exam Copy";
+			Object[] questioninexam = con.checkExecutedExam(message[1]);
+			String[] msgFromClient = ((String)message[2]).split(" ");
+			if (msgFromClient[0].equals("Copy") ) {
+				serverMessage[0] = "showingCopy" ; 
+				HashMap<String,Integer> studentAns = con.getStudentAns(msgFromClient[0],(String)message[1]);
+				serverMessage[2] =studentAns ;
 			}
 			else {
-			Object[] questioninexam = con.checkExecutedExam(message[1]);
 			Time solutionTime = con.getSolutionTime(message[1]);
-			serverMessage[1] = questioninexam;
 			serverMessage[2] = solutionTime;
 			}
+			serverMessage[1] = questioninexam;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
