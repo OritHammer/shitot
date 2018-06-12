@@ -482,6 +482,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
+	/* opening the screen LockExam */
+	public void openLockExamScreen(ActionEvent e) throws IOException {
+		openScreen("LockExam");
+	}
+
 	/* open the screen ErrorMessage and sending an object */
 	public void openScreen(String screen, Object message) {
 		try {
@@ -500,6 +505,109 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
+	/* close button was pressed */
+	public void closeScreen(ActionEvent e) throws IOException, SQLException {
+		final Node source = (Node) e.getSource();
+		Stage stage = (Stage) source.getScene().getWindow();
+		stage.close();
+		questionInExamObservable.clear();
+		openScreen("HomeScreenTeacher");
+	}
+
+	/***************** update question screen *****************/
+	/* make a new question to save the oldest question before changing it */
+	public Question createBackUpQuestion(Question questionSelected) {
+		return new Question(questionSelected.getId(), questionSelected.getTeacherName(),
+				questionSelected.getQuestionContent(), questionSelected.getAnswer1(), questionSelected.getAnswer2(),
+				questionSelected.getAnswer3(), questionSelected.getAnswer4(), questionSelected.getCorrectAnswer());
+	}
+
+	/* request to load questions to table view */
+	public void loadQuestions(ActionEvent e) throws IOException {
+		/* ask for the qustions text */
+		String subject = subjectsComboBox.getValue(); // get the subject code
+		if (subject == null)
+			return;
+		String[] subjectSubString = subject.split("-");
+		connect(this); // connecting to server
+		messageToServer[0] = "getQuestionsToTable";
+		messageToServer[1] = subjectSubString[0].trim();
+		messageToServer[2] = Globals.getuserName();
+		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
+	}
+
+	/* change the question content on table view */
+	public void changeQuestionContentOnTable(CellEditEvent<Question, String> edittedCell) {
+
+		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		oldQuestion = createBackUpQuestion(questionSelected);
+		if (!edittedCell.getNewValue().toString().equals(questionSelected.getQuestionContent())) {
+			questionSelected.setQuestionContent(edittedCell.getNewValue().toString());
+			updateQuestion(questionSelected);
+		}
+	}
+
+	/* change the answer 1 on table view */
+	public void changeAnswer1OnTable(CellEditEvent<Question, String> edittedCell) {
+		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		oldQuestion = createBackUpQuestion(questionSelected);
+		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer1())) {
+			questionSelected.setAnswer1(edittedCell.getNewValue().toString());
+			updateQuestion(questionSelected);
+		}
+	}
+
+	/* change the answer 2 content on table view */
+	public void changeAnswer2OnTable(CellEditEvent<Question, String> edittedCell) {
+		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		oldQuestion = createBackUpQuestion(questionSelected);
+		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer2())) {
+			questionSelected.setAnswer2(edittedCell.getNewValue().toString());
+			updateQuestion(questionSelected);
+
+		}
+	}
+
+	/* change the answer 3 content on table view */
+	public void changeAnswer3OnTable(CellEditEvent<Question, String> edittedCell) {
+		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		oldQuestion = createBackUpQuestion(questionSelected);
+		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer3())) {
+			questionSelected.setAnswer3(edittedCell.getNewValue().toString());
+			updateQuestion(questionSelected);
+
+		}
+	}
+
+	/* change the answer 4 content on table view */
+	public void changeAnswer4OnTable(CellEditEvent<Question, String> edittedCell) {
+		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		oldQuestion = createBackUpQuestion(questionSelected);
+		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer4())) {
+			questionSelected.setAnswer4(edittedCell.getNewValue().toString());
+			updateQuestion(questionSelected);
+		}
+	}
+
+	/* change the correct answer on table view */
+	public void changeCorrectAnswerOnTable(CellEditEvent<Question, String> edittedCell) {
+		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		oldQuestion = createBackUpQuestion(questionSelected);
+		if (!edittedCell.getNewValue().toString().equals(questionSelected.getCorrectAnswer())) {
+			questionSelected.setCorrectAnswer(edittedCell.getNewValue().toString());
+			updateQuestion(questionSelected);
+
+		}
+	}
+
+	/* updating the question that has been selected */
+	public void updateQuestion(Question questionSelected) {
+		messageToServer[0] = "updateQuestion";
+		messageToServer[1] = questionSelected;
+		connect(this);
+		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
+	}
+
 	/* deleting question from the tableview and from the database */
 	public void deleteQuestion(ActionEvent e) {
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
@@ -507,6 +615,47 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[1] = questionSelected;
 		connect(this);
 		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
+	}
+
+	/***************** create question screen *****************/
+	/* create a new question */
+	public void createQuestionClick(ActionEvent e) throws IOException {
+		if (subjectsComboBox.getValue() == null) {
+			openScreen("ErrorMessage", "Please choose subject");
+			return;
+		}
+		Question question;
+
+		int correctAnswer = 0;
+		if (correctAns1.isSelected()) {
+			correctAnswer = 1;
+		}
+		if (correctAns2.isSelected()) {
+			correctAnswer = 2;
+		}
+		if (correctAns3.isSelected()) {
+			correctAnswer = 3;
+		}
+		if (correctAns4.isSelected()) {
+			correctAnswer = 4;
+		}
+
+		if ((answer1.getText().equals("")) || ((answer2.getText().equals(""))) || (answer3.getText().equals(""))
+				|| (answer4.getText().equals("")) || (correctAnswer == 0) || (questionName.getText().equals(""))) {
+			openScreen("ErrorMessage", "Not all fields are completely full");
+		} else {
+			question = new Question(null, Globals.getuserName(), questionName.getText().trim(),
+					answer1.getText().trim(), answer2.getText().trim(), answer3.getText().trim(),
+					answer4.getText().trim(), String.valueOf(correctAnswer));
+			String subject = subjectsComboBox.getValue();
+			String[] subjectSubString = subject.split("-");
+			connect(this); // connecting to server
+			messageToServer[0] = "SetQuestion";
+			messageToServer[1] = subjectSubString[0].trim();
+			messageToServer[2] = question;
+			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
+			chat.closeConnection();// close the connection
+		}
 	}
 
 	/* locking the subject function (subject combobox) */
@@ -662,8 +811,8 @@ public class TeacherControl extends UserControl implements Initializable {
 			e1.printStackTrace();
 		}
 	}
-	/* removing the question from the tableview */
 
+	/* removing the exam from the database */
 	public void deleteExam(ActionEvent e) {
 		examSelected = examsTableView.getSelectionModel().getSelectedItem();
 		messageToServer[0] = "deleteExam";
@@ -672,6 +821,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
 	}
 
+	/* creating exam code */
 	public void createExamCode(ActionEvent e) {
 		ExecutedExam exam;
 		String examID = examComboBox.getValue();
@@ -707,11 +857,6 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[0] = "setExamCode";
 		messageToServer[1] = exam;
 		connect(this);
-		chat.handleMessageFromClientUI(messageToServer);// send the message to server
-		/*
-		 * try { chat.closeConnection(); } catch (IOException e1) { // TODO
-		 * Auto-generated catch block e1.printStackTrace(); } // close the connection
-		 */
 	}
 
 	/* set new points in the table view */
@@ -720,147 +865,6 @@ public class TeacherControl extends UserControl implements Initializable {
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getPoints())) {
 			questionSelected.setPoints(edittedCell.getNewValue());
 		}
-	}
-
-	/* create a new question */
-	public void createQuestionClick(ActionEvent e) throws IOException {
-		if (subjectsComboBox.getValue() == null) {
-			openScreen("ErrorMessage", "Please choose subject");
-			return;
-		}
-		Question question;
-
-		int correctAnswer = 0;
-		if (correctAns1.isSelected()) {
-			correctAnswer = 1;
-		}
-		if (correctAns2.isSelected()) {
-			correctAnswer = 2;
-		}
-		if (correctAns3.isSelected()) {
-			correctAnswer = 3;
-		}
-		if (correctAns4.isSelected()) {
-			correctAnswer = 4;
-		}
-
-		if ((answer1.getText().equals("")) || ((answer2.getText().equals(""))) || (answer3.getText().equals(""))
-				|| (answer4.getText().equals("")) || (correctAnswer == 0) || (questionName.getText().equals(""))) {
-			openScreen("ErrorMessage", "Not all fields are completely full");
-		} else {
-			question = new Question(null, Globals.getuserName(), questionName.getText().trim(),
-					answer1.getText().trim(), answer2.getText().trim(), answer3.getText().trim(),
-					answer4.getText().trim(), String.valueOf(correctAnswer));
-			String subject = subjectsComboBox.getValue();
-			String[] subjectSubString = subject.split("-");
-			connect(this); // connecting to server
-			messageToServer[0] = "SetQuestion";
-			messageToServer[1] = subjectSubString[0].trim();
-			messageToServer[2] = question;
-			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
-			chat.closeConnection();// close the connection
-		}
-	}
-
-	/* request to load questions to table view */
-	public void loadQuestions(ActionEvent e) throws IOException {
-		/* ask for the qustions text */
-		String subject = subjectsComboBox.getValue(); // get the subject code
-		if (subject == null)
-			return;
-		String[] subjectSubString = subject.split("-");
-		connect(this); // connecting to server
-		messageToServer[0] = "getQuestionsToTable";
-		messageToServer[1] = subjectSubString[0].trim();
-		messageToServer[2] = Globals.getuserName();
-		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
-	}
-
-	/* change the question content on table view */
-	public void changeQuestionContentOnTable(CellEditEvent<Question, String> edittedCell) {
-
-		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
-		oldQuestion = createBackUpQuestion(questionSelected);
-		if (!edittedCell.getNewValue().toString().equals(questionSelected.getQuestionContent())) {
-			questionSelected.setQuestionContent(edittedCell.getNewValue().toString());
-			updateQuestion(questionSelected);
-		}
-	}
-
-	/* change the answer 1 on table view */
-	public void changeAnswer1OnTable(CellEditEvent<Question, String> edittedCell) {
-		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
-		oldQuestion = createBackUpQuestion(questionSelected);
-		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer1())) {
-			questionSelected.setAnswer1(edittedCell.getNewValue().toString());
-			updateQuestion(questionSelected);
-		}
-	}
-
-	/* change the answer 2 content on table view */
-	public void changeAnswer2OnTable(CellEditEvent<Question, String> edittedCell) {
-		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
-		oldQuestion = createBackUpQuestion(questionSelected);
-		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer2())) {
-			questionSelected.setAnswer2(edittedCell.getNewValue().toString());
-			updateQuestion(questionSelected);
-
-		}
-	}
-
-	/* change the answer 3 content on table view */
-	public void changeAnswer3OnTable(CellEditEvent<Question, String> edittedCell) {
-		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
-		oldQuestion = createBackUpQuestion(questionSelected);
-		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer3())) {
-			questionSelected.setAnswer3(edittedCell.getNewValue().toString());
-			updateQuestion(questionSelected);
-
-		}
-	}
-
-	/* change the answer 4 content on table view */
-	public void changeAnswer4OnTable(CellEditEvent<Question, String> edittedCell) {
-		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
-		oldQuestion = createBackUpQuestion(questionSelected);
-		if (!edittedCell.getNewValue().toString().equals(questionSelected.getAnswer4())) {
-			questionSelected.setAnswer4(edittedCell.getNewValue().toString());
-			updateQuestion(questionSelected);
-		}
-	}
-
-	/* change the correct answer on table view */
-	public void changeCorrectAnswerOnTable(CellEditEvent<Question, String> edittedCell) {
-		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
-		oldQuestion = createBackUpQuestion(questionSelected);
-		if (!edittedCell.getNewValue().toString().equals(questionSelected.getCorrectAnswer())) {
-			questionSelected.setCorrectAnswer(edittedCell.getNewValue().toString());
-			updateQuestion(questionSelected);
-
-		}
-	}
-
-	public Question createBackUpQuestion(Question questionSelected) {
-		return new Question(questionSelected.getId(), questionSelected.getTeacherName(),
-				questionSelected.getQuestionContent(), questionSelected.getAnswer1(), questionSelected.getAnswer2(),
-				questionSelected.getAnswer3(), questionSelected.getAnswer4(), questionSelected.getCorrectAnswer());
-	}
-
-	/* updating the question that has been selected */
-	public void updateQuestion(Question questionSelected) {
-		messageToServer[0] = "updateQuestion";
-		messageToServer[1] = questionSelected;
-		connect(this);
-		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
-	}
-
-	/* close button was pressed */
-	public void closeScreen(ActionEvent e) throws IOException, SQLException {
-		final Node source = (Node) e.getSource();
-		Stage stage = (Stage) source.getScene().getWindow();
-		stage.close();
-		questionInExamObservable.clear();
-		openScreen("HomeScreenTeacher");
 	}
 
 	/* close button was pressed */
@@ -902,11 +906,6 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[1] = examIDStart;
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
-	
-	/* opening the screen LockExam */
-	public void openLockExamScreen(ActionEvent e) throws IOException {
-		openScreen("LockExam");
-	}
 
 	/* locking the exam */
 	public void lockExam(ActionEvent e) throws IOException {
@@ -945,7 +944,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			updateExam(examSelected);
 		}
 	}
-	
+
 	/* changing the remarks for student on the table view */
 	public void changeRemarksForStudentOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
 		Exam examSelected = examsTableView.getSelectionModel().getSelectedItem();
@@ -963,7 +962,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			updateExam(examSelected);
 		}
 	}
-	
+
 	/* get the question in a specific exam */
 	public void viewQuestion(ActionEvent e) throws IOException {
 		try {
