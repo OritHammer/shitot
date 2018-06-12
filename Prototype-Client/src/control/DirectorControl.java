@@ -57,7 +57,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	private TableColumn<RequestForChangingTimeAllocated, String> timeAddedColumn;
 	@FXML
 	private Button showDetailsButton;
-	
+
 	// FAML Adding Time Requests window
 	@FXML
 	private TextField txtFATRexecutedExamId;
@@ -75,10 +75,11 @@ public class DirectorControl extends UserControl implements Initializable {
 	private Button btnATRreject;
 
 	// FXML Statistic Reports
-	@FXML 
+	@FXML
 	private ComboBox<String> reportBy;
-	@FXML 
+	@FXML
 	private ComboBox<String> chooseNameOrID;
+
 	// FXML System information
 	/******************************************************************
 	 * homePageButtons
@@ -98,22 +99,23 @@ public class DirectorControl extends UserControl implements Initializable {
 			messageToServer[1] = Globals.getRequestId();
 			messageToServer[2] = null;
 			chat.handleMessageFromClientUI(messageToServer);// send the message to server
-		}else if(pageLabel.getText().contentEquals("Statistic report")){
+		} else if (pageLabel.getText().contentEquals("Statistic report")) {
 			ObservableList<String> observableList = FXCollections.observableArrayList();
-				observableList.add("Student");
-				observableList.add("Teacher");
-				observableList.add("Course");
-				reportBy.setItems(observableList);
-		}else if (pageLabel.getText().contentEquals("")) {//system information
-			
+			observableList.add("Student");
+			observableList.add("Teacher");
+			observableList.add("Course");
+			reportBy.setItems(observableList);
+			chooseNameOrID.setDisable(true);
+		} else if (pageLabel.getText().contentEquals("")) {// system information
+
 		}
-		
+
 	}
 
 	public void openTimeRequestTable(ActionEvent e) {
 		final Node source = (Node) e.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
-	//	stage.close();
+		// stage.close();
 		stage.close();
 		openScreen("TimeRequestTable");
 
@@ -130,29 +132,25 @@ public class DirectorControl extends UserControl implements Initializable {
 	}
 
 	private void openScreen(String screen) {// open the windows after login
-		
-			
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/directorBoundary/" + screen + ".fxml"));
-				Scene scene = new Scene(loader.load());
-				Stage stage = Main.getStage();
-				if (screen.equals("ErrorMessage")) {
-					ErrorControl dController = loader.getController();
-					dController.setBackwardScreen(stage.getScene());/* send the name to the controller */
-					dController.setErrorMessage("ERROR");// send a the error to the alert we made
-				}
-				stage.setTitle(screen);
-				stage.setScene(scene);
-				stage.show();
-			} catch (Exception exception) {
-				System.out.println("Error in opening the page");
+
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/directorBoundary/" + screen + ".fxml"));
+			Scene scene = new Scene(loader.load());
+			Stage stage = Main.getStage();
+			if (screen.equals("ErrorMessage")) {
+				ErrorControl dController = loader.getController();
+				dController.setBackwardScreen(stage.getScene());/* send the name to the controller */
+				dController.setErrorMessage("ERROR");// send a the error to the alert we made
 			}
-		
-			}
-		
-		
-	
+			stage.setTitle(screen);
+			stage.setScene(scene);
+			stage.show();
+		} catch (Exception exception) {
+			System.out.println("Error in opening the page");
+		}
+
+	}
 
 	private void openScreen(String screen, String message) {// for error message
 		try {
@@ -180,13 +178,13 @@ public class DirectorControl extends UserControl implements Initializable {
 
 	}
 
-	//***********check the message that arrived from server**************//
+	// ***********check the message that arrived from server**************//
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
 		try {
 			chat.closeConnection();// close the connection
 
-			Object[] msg = (Object[])message;
+			Object[] msg = (Object[]) message;
 
 			switch (msg[0].toString()) {
 			case ("getTimeRequestList"): { /* get the subjects list from server */
@@ -197,10 +195,17 @@ public class DirectorControl extends UserControl implements Initializable {
 				initAddingTimeRequestDetails((RequestForChangingTimeAllocated) msg[1]);
 				break;
 			}
- 
+			case "getStudentsList":
+			case "getTeachersList": {
+				ObservableList<String> observableList = FXCollections.observableArrayList();
+				for(String item: (ArrayList<String>)msg[1]) 
+					observableList.add(item);
+				chooseNameOrID.setItems(observableList);
 			}
-		}catch (NullPointerException e) {
-			openScreen("ErrorMessage","There is no request to confirm .");
+
+			}
+		} catch (NullPointerException e) {
+			openScreen("ErrorMessage", "There is no request to confirm .");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -218,13 +223,14 @@ public class DirectorControl extends UserControl implements Initializable {
 		openScreen("addingTimeRequest");
 	}
 
-	@SuppressWarnings("unchecked")//showing list of request that waiting to answer
-	public void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList) throws NullPointerException{
-		
+	@SuppressWarnings("unchecked") // showing list of request that waiting to answer
+	public void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList)
+			throws NullPointerException {
+
 		for (RequestForChangingTimeAllocated i : requestsList) {
 			addingTimeRequestsObservable.add(i);
 		}
-		if (requestsTable!=null && requestsTable.getColumns() != null)
+		if (requestsTable != null && requestsTable.getColumns() != null)
 			requestsTable.getColumns().clear();
 		requestsTable.setItems(addingTimeRequestsObservable);
 		// display the id in the table view
@@ -236,7 +242,8 @@ public class DirectorControl extends UserControl implements Initializable {
 		// requestsTable.getColumns().clear();
 		requestsTable.getColumns().addAll(examIDColumn, teacherNameColumn, timeAddedColumn);
 	}
-//initialize the field in details of request
+
+	// initialize the field in details of request
 	public void initAddingTimeRequestDetails(RequestForChangingTimeAllocated request) {
 		txtFATRTeachName.setText(request.getTeacherName());
 		txtFATRTimeAdded.setText(request.getTimeAdded());
@@ -244,26 +251,43 @@ public class DirectorControl extends UserControl implements Initializable {
 		txtFATRrequestId.setText(request.getRequestID());
 		txtFATRexecutedExamId.setText(request.getIDexecutedExam());
 	}
- 
+
 	/*******************************************************
 	 * listeners on addingTimeRequest
 	 ***********************************************************/
 	public void answerRequest(ActionEvent e) {
 		String requestID = txtFATRrequestId.getText();
 		connect(this);
-		if (e.getSource() == btnATRApprove)//press on approved button
+		if (e.getSource() == btnATRApprove)// press on approved button
 			messageToServer[0] = "SetStatusToApproved";
-		else if (e.getSource() == btnATRreject)//press on reject button
+		else if (e.getSource() == btnATRreject)// press on reject button
 			messageToServer[0] = "SetStatusToReject";
 		messageToServer[1] = requestID;
-		messageToServer[2]=null;
+		messageToServer[2] = null;
 		this.openTimeRequestTable(e);
 		chat.handleMessageFromClientUI(messageToServer);
 	}
+
 	/*******************************************************
 	 * listeners on statistic Report
 	 ***********************************************************/
-	public void showListForChooseObject(ActionEvent e){//display the list of student/courses/teachers
-		
+	public void showListForChooseObject(ActionEvent e) {// display the list of student/courses/teachers
+		String reportByChoose = reportBy.getValue();
+		connect(this);
+		switch (reportByChoose) {
+		case "Student": {
+		messageToServer[0]= "getStudentsList";
+			break;
+		}
+		case "Teacher": {
+		messageToServer[0]= "getTeachersList";
+			break;
+		}
+		case "Course": {
+		messageToServer[0]= "getCoursesList";
+			break;
+		}
+		}
+		chat.handleMessageFromClientUI(messageToServer);
 	}
 }
