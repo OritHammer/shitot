@@ -254,6 +254,17 @@ public class EchoServer extends AbstractServer {
 		case "SetStatusToReject": {
 			con.setStatusToAddingTimeRequest(((Object[]) msg)[1], "rejected");
 			break;
+		}case "getStudentsList":{
+			ArrayList<String> studentList=con.returnListForGetReport("Student");
+			serverMessage[0]="getStudentsList";
+			serverMessage[1]=studentList;
+			this.sendToAllClients(serverMessage);
+			break;
+		}case "getTeachersList":{
+			ArrayList<String> teacherList=con.returnListForGetReport("Teacher");
+			serverMessage[0]="getTeachersList";
+			serverMessage[1]=teacherList;
+			this.sendToAllClients(serverMessage);
 		}
 
 		case "finishExam": {

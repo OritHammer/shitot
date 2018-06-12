@@ -197,10 +197,13 @@ public class DirectorControl extends UserControl implements Initializable {
 			}
 			case "getStudentsList":
 			case "getTeachersList": {
+				
 				ObservableList<String> observableList = FXCollections.observableArrayList();
 				for(String item: (ArrayList<String>)msg[1]) 
 					observableList.add(item);
+				chooseNameOrID.setDisable(false);
 				chooseNameOrID.setItems(observableList);
+				break;
 			}
 
 			}
