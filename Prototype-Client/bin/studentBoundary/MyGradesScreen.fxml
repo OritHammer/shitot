@@ -18,7 +18,7 @@
         </columns>
       </TableView> 
       <Button fx:id="backToHomeBtn" layoutX="38.0" layoutY="348.0" mnemonicParsing="false" onAction="#goToHomePressed" prefHeight="25.0" prefWidth="150.0" text="Go back to home page" />
-      <Label layoutX="214.0" layoutY="40.0" prefHeight="27.0" prefWidth="150.0" text="My Grades sheet " underline="true">
+      <Label fx:id="pageLabel" layoutX="214.0" layoutY="40.0" prefHeight="27.0" prefWidth="150.0" text="My Grades sheet " underline="true">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
