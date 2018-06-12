@@ -23,6 +23,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -44,8 +45,10 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	private static ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
 	private ObservableList<Question> questionObservableList;
+	private ObservableList<Exam> exams;
 	private Object[] messageToServer = new Object[3];
 	private Question questionSelected;
+	private Exam examSelected;
 
 	/* fxml variables */
 	@FXML
@@ -159,8 +162,13 @@ public class TeacherControl extends UserControl implements Initializable {
 	private ComboBox<String> examComboBox;
 	@FXML
 	private ComboBox<String> typeComboBox;
-	Question oldQuestion;
-	static String tempExamId;
+	@FXML
+	private Button left;
+	@FXML
+	private Button right;
+	private Question oldQuestion;
+	private Exam oldExam;
+	private static String tempExamId;
 
 	/* check the content message from server */
 	@SuppressWarnings("unchecked")
@@ -197,8 +205,10 @@ public class TeacherControl extends UserControl implements Initializable {
 				if ((boolean) msg[1] == true) {
 					examsTableView.refresh();
 				} else {
+					exams.remove(exams.indexOf(examSelected));
+					exams.add(oldExam);
 					Platform.runLater(() -> openScreen("ErrorMessage", "This exam is in active exam."));
-					questionTableView.refresh();
+					examsTableView.getSortOrder().setAll(questionIDTable);
 				}
 				break;
 			}
@@ -207,6 +217,7 @@ public class TeacherControl extends UserControl implements Initializable {
 				try {
 					((ArrayList<QuestionInExam>) msg[1]).forEach(questionInExamObservable::add);
 					Platform.runLater(() -> openScreen("UpdateQuestionInExam"));
+					//left.setDisable(true);
 				} catch (NullPointerException exception) {
 					Platform.runLater(() -> openScreen("ErrorMessage", "exam does not have any question"));
 
@@ -264,7 +275,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			case ("getExams"): /* get the subjects list from server */
 			{
 				if (pageLabel.getText().equals("Update exam")) {
-					ObservableList<Exam> exams = FXCollections.observableArrayList((ArrayList<Exam>) msg[1]);
+					exams = FXCollections.observableArrayList((ArrayList<Exam>) msg[1]);
 					questionIDTable.setCellValueFactory(new PropertyValueFactory<>("e_id"));
 					teacherNameTable.setCellValueFactory(new PropertyValueFactory<>("teacherUserName"));
 					solutionTimeTable.setCellValueFactory(new PropertyValueFactory<>("solutionTime"));
@@ -487,7 +498,6 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[1] = questionSelected;
 		connect(this);
 		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
-
 	}
 
 	/* locking the subject function (subject combobox) */
@@ -578,8 +588,14 @@ public class TeacherControl extends UserControl implements Initializable {
 			openScreen("ErrorMessage", "invalid time");
 			return;
 		}
+		
 		for (QuestionInExam q : questionInExamObservable) {
 			sumOfPoints += q.getPoints();
+			if(q.getPoints()==0)
+			{
+				openScreen("ErrorMessage", "You cant set a question with 0 points.");
+				return;
+			}
 		}
 		if (sumOfPoints != 100) {
 			openScreen("ErrorMessage", "Points are not match to 100");
@@ -612,10 +628,15 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/* removing the question from the tableview */
-	public void updateExam(ActionEvent e) {
+	public void updateQuestionInExam(ActionEvent e) {
 		int sumOfPoints = 0;
 		for (QuestionInExam q : questionInExamObservable) {
 			sumOfPoints += q.getPoints();
+			if(q.getPoints()==0)
+			{
+				openScreen("ErrorMessage", "You cant set a question with 0 points.");
+				return;
+			}
 		}
 		if (sumOfPoints != 100) {
 			openScreen("ErrorMessage", "Points are not match to 100");
@@ -623,7 +644,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 		ArrayList<QuestionInExam> questioninexam = (ArrayList<QuestionInExam>) questionInExamObservable.stream()
 				.collect(Collectors.toList());// making the observable a lis
-		messageToServer[0] = "updateFinishedExam";
+		messageToServer[0] = "updateQuestionInExam";
 		messageToServer[1] = questioninexam;
 		messageToServer[2] = tempExamId;
 		connect(this);
@@ -635,7 +656,15 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 	/* removing the question from the tableview */
-
+	
+	public void deleteExam(ActionEvent e)
+	{
+		examSelected = examsTableView.getSelectionModel().getSelectedItem();
+		messageToServer[0] = "deleteExam";
+		messageToServer[1] = examSelected;
+		connect(this);
+		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
+	}
 	public void createExamCode(ActionEvent e) {
 		ExecutedExam exam;
 		String examID = examComboBox.getValue();
@@ -891,7 +920,15 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	public void changeRemarksForTeacherOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
-		Exam examSelected = examsTableView.getSelectionModel().getSelectedItem();
+		examSelected = examsTableView.getSelectionModel().getSelectedItem();
+		oldExam = new Exam();
+		oldExam.setE_id(examSelected.getE_id());
+		oldExam.setSolutionTime(examSelected.getSolutionTime());
+		oldExam.setRemarksForTeacher(examSelected.getRemarksForTeacher());
+		oldExam.setRemarksForStudent(examSelected.getRemarksForStudent());
+		oldExam.setType(examSelected.getType());
+		oldExam.setTeacherUserName(examSelected.getTeacherUserName());
+		
 		if (!edittedCell.getNewValue().toString().equals(examSelected.getRemarksForTeacher())) {
 			examSelected.setRemarksForTeacher(edittedCell.getNewValue().toString());
 			updateExam(examSelected);

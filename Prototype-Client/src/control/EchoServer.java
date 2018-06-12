@@ -67,7 +67,7 @@ public class EchoServer extends AbstractServer {
 	public int parsingTheData(String Id) {
 		return Integer.parseInt(Id);
 	}
-
+ 
 	@SuppressWarnings("unchecked")
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		con.runDB();
@@ -204,8 +204,15 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		
-		case "updateFinishedExam": {
-			con.updateFinishedExam(message[1],message[2]);
+		case "updateQuestionInExam": {
+			con.updateQuestionInExam(message[1],message[2]);
+			this.sendToAllClients(serverMessage);
+			break;
+		}
+		
+		case "deleteExam": {
+			Boolean inserted = con.deleteExam(message[1]);
+			serverMessage[1] = inserted;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
@@ -273,8 +280,8 @@ public class EchoServer extends AbstractServer {
 			serverMessage[0]="getTeachersList";
 			serverMessage[1]=teacherList;
 			this.sendToAllClients(serverMessage);
+			break;
 		}
-
 		case "finishExam": {
 			con.finishExam((String[]) message[1], (HashMap<String, Integer>) message[2]);
 			break;
