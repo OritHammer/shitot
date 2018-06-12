@@ -192,15 +192,9 @@ public class EchoServer extends AbstractServer {
 			serverMessage[1] = inserted;
 			this.sendToAllClients(serverMessage);
 			break;
-		}
-<<<<<<< HEAD
-		case "updateFinishedExam": {
-			con.updateFinishedExam(message[1],message[2]);
-=======
-		
+		}		
 		case "updateQuestionInExam": {
 			con.updateQuestionInExam(message[1],message[2]);
-			
 			this.sendToAllClients(serverMessage);
 			break;
 		}
@@ -208,10 +202,9 @@ public class EchoServer extends AbstractServer {
 		case "deleteExam": {
 			Boolean inserted = con.deleteExam(message[1]);
 			serverMessage[1] = inserted;
->>>>>>> refs/remotes/origin/master
 			this.sendToAllClients(serverMessage);
 			break;
-		}
+		}		
 		case "setExecutedExamLocked": {
 			Boolean isLocked = con.setExecutedExamLocked(message[1]);
 			serverMessage[1] = isLocked;
@@ -282,9 +275,9 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		case "getReportUser":{
-			ArrayList<String> teacherList=con.returnListForGetReport(((String)msg)[1]);
+			ArrayList<ArrayList<String>> userReportDetails=con.returnUserReportDetails(message[1]);
 			serverMessage[0]="getReportUser";
-			serverMessage[1]=teacherList;
+			serverMessage[1]=userReportDetails;
 			this.sendToAllClients(serverMessage);
 			break;
 		}

@@ -844,5 +844,10 @@ public class MysqlConnection {
 		return stdAns;
 }
 
+	public ArrayList<ArrayList<String>> returnUserReportDetails(Object object) {
+		
+		return null;
+	}
+
 
 }
