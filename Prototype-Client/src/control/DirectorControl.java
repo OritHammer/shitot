@@ -35,7 +35,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ocsf.server.ConnectionToClient;
- 
+
 public class DirectorControl extends UserControl implements Initializable { 
 	ObservableList<RequestForChangingTimeAllocated> addingTimeRequestsObservable = FXCollections.observableArrayList();
 	/// HOME TAB
