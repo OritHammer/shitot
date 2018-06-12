@@ -41,7 +41,7 @@ import javafx.stage.Stage;
 
 public class StudentControl extends UserControl implements Initializable {
 	private static Scene homeSc = null;
-	private static Scene gradeSc = null;
+	private static Scene gradeSc = null; 
 	private static ArrayList<Question> questioninexecutedexam;
 	public static Time solutionTime;
 	public static int remainTime;
@@ -152,14 +152,7 @@ private Label selectedAnswer ;
 			// timerTextField.setText("123");
 			// s=solutionTime.toString();
 			// timerTextField.setText(s);
-			remainTime = solutionTime.getHours() * 3600 + solutionTime.getMinutes() * 60 + solutionTime.getSeconds();// reamin
-																														// time
-																														// is
-																														// he
-																														// time
-																														// in
-																														// secods
-
+			remainTime = solutionTime.getHours() * 3600 + solutionTime.getMinutes() * 60 + solutionTime.getSeconds();//reamain is the time in seconds
 			timer = new Timer();
 			timer.scheduleAtFixedRate(new TimerTask() {
 				public void run() {
@@ -425,6 +418,7 @@ private Label selectedAnswer ;
 	@SuppressWarnings("unchecked")
 	private void checkExecutedExam(Object[] message) {
 		Object[] msgFromServer = (Object[]) message[1];
+<<<<<<< HEAD
 		if (msgFromServer == null) {
 			openScreen("ErrorMessage", "Exam Locked or not defined");
 			return;
@@ -433,16 +427,30 @@ private Label selectedAnswer ;
 			if (type.equals("manual")) {
 				// We Need To Build This Functionality !!!!!!!
 			} else {
+=======
+//		if (msgFromServer == null) {
+//			openScreen("ErrorMessage", "Exam Locked or not defined");
+//			return;
+//		} else if (((String) msgFromServer[2]).equals("data of exam Copy")) {
+//  
+//		} else {
+//			String type = (String) msgFromServer[1];
+//			if (type.equals("manual")) {
+//				// We Need To Build This Functionality !!!!!!!
+//			} else {
+>>>>>>> branch 'master' of https://github.com/avivMahulya/shitot.git
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
 						solutionTime = (Time) message[2];
 						questioninexecutedexam = (ArrayList<Question>) msgFromServer[0];
+						
 						openScreen("ComputerizedExam");
 
 					}
 				});
 			}
+<<<<<<< HEAD
 		}
 	}
 	public void showingCopy(ArrayList<Question> ques ,HashMap<String, Integer>ans) {
@@ -458,6 +466,10 @@ private Label selectedAnswer ;
 		});
 	}
 
+=======
+		//}
+//	}
+>>>>>>> branch 'master' of https://github.com/avivMahulya/shitot.git
 
 	@SuppressWarnings("deprecation")
 	public void addTimeToExam(Object[] message) {

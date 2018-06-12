@@ -42,6 +42,8 @@ public class UserControl implements Initializable {
 	@FXML
 	private Label errorMsg;
 	@FXML
+	private ImageView errorImg;
+	@FXML
 	private Label errorMsg1;
 	@FXML
 	private Label errorMsg2;
@@ -95,16 +97,22 @@ public class UserControl implements Initializable {
 		this.ip = "localhost";
 		// this.ip = sc.nextLine();
 		sc.close(); 
+		errorMsg.setVisible(false);
+		errorImg.setVisible(false);
 		LoginBtn.setDefaultButton(true);
 	}
  
 	public void checkMessage(Object message) {
 		try {
-			chat.closeConnection();// close the connection
+			chat.closeConnection();// close the connection 
 			Object[] msg = (Object[]) message;
 			User user = (User) msg[1];
 			if (user==null) {
-				errorMsg.setVisible(true);
+				Platform.runLater(()->	{
+					errorMsg.setVisible(true);
+					errorImg.setVisible(true);
+				});
+			
 				return;
 			}
 			if (msg[0].toString().equals("checkUserDetails")) {
@@ -212,12 +220,21 @@ public class UserControl implements Initializable {
 		errorMsg3.setVisible(false);*/
 		  connect(this);
 		  if (userName.getText().equals("") && password.getText().equals(""))
-			  errorMsg1.setVisible(true);
+		  {
+			  errorMsg.setVisible(true);
+		  	errorImg.setVisible(true);
+		  }
 		  else if(userName.getText().equals(""))
-			  errorMsg2.setVisible(true);
+		  {
+			  errorMsg.setVisible(true);
+			errorImg.setVisible(true);
+		  }
 			else if(password.getText().equals(""))
-				errorMsg3.setVisible(true);
-		  else {
+			{
+				errorMsg.setVisible(true);
+				errorImg.setVisible(true);
+			}
+				else {
 		   messageToServer[0] = "checkUserDetails";
 		   messageToServer[1] = userName.getText();
 		   messageToServer[2] = password.getText();
