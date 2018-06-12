@@ -418,39 +418,26 @@ private Label selectedAnswer ;
 	@SuppressWarnings("unchecked")
 	private void checkExecutedExam(Object[] message) {
 		Object[] msgFromServer = (Object[]) message[1];
-<<<<<<< HEAD
+
 		if (msgFromServer == null) {
 			openScreen("ErrorMessage", "Exam Locked or not defined");
 			return;
-		}  else {
+		} else if (((String) msgFromServer[2]).equals("data of exam Copy")) {
+  
+		} else {
 			String type = (String) msgFromServer[1];
 			if (type.equals("manual")) {
 				// We Need To Build This Functionality !!!!!!!
 			} else {
-=======
-//		if (msgFromServer == null) {
-//			openScreen("ErrorMessage", "Exam Locked or not defined");
-//			return;
-//		} else if (((String) msgFromServer[2]).equals("data of exam Copy")) {
-//  
-//		} else {
-//			String type = (String) msgFromServer[1];
-//			if (type.equals("manual")) {
-//				// We Need To Build This Functionality !!!!!!!
-//			} else {
->>>>>>> branch 'master' of https://github.com/avivMahulya/shitot.git
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
 						solutionTime = (Time) message[2];
 						questioninexecutedexam = (ArrayList<Question>) msgFromServer[0];
-						
 						openScreen("ComputerizedExam");
-
 					}
 				});
 			}
-<<<<<<< HEAD
 		}
 	}
 	public void showingCopy(ArrayList<Question> ques ,HashMap<String, Integer>ans) {
@@ -466,10 +453,7 @@ private Label selectedAnswer ;
 		});
 	}
 
-=======
-		//}
-//	}
->>>>>>> branch 'master' of https://github.com/avivMahulya/shitot.git
+
 
 	@SuppressWarnings("deprecation")
 	public void addTimeToExam(Object[] message) {
