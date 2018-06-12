@@ -254,12 +254,17 @@ public class MysqlConnection {
 			subjectList = new ArrayList<TeachingProfessionals>();
 			// Statement stmt;
 			TeachingProfessionals teachingprofessions;
-			try {
+		 	try {
 				stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(
+				ResultSet rs=null;
+				if(teacherUserName==null) {	
+					rs = stmt.executeQuery("SELECT tp.tp_ID,tp.name FROM teachingprofessionals tp;");
+				}
+				else {	rs = stmt.executeQuery(
 						"SELECT tp.tp_ID,tp.name FROM teachingprofessionals tp,teacherincourse tc,courses c WHERE "
 								+ "tp.tp_ID=c.tp_ID AND c.courseID=tc.courseID AND tc.UserNameTeacher=\""
 								+ teacherUserName.toString() + "\";");
+				}
 				while (rs.next()) {
 					teachingprofessions = new TeachingProfessionals();
 					teachingprofessions.setTp_id(rs.getString(1));
@@ -281,12 +286,18 @@ public class MysqlConnection {
 		 */
 		// Statement stmt;
 		ArrayList<Course> courseList = new ArrayList<Course>();
+		ResultSet rs=null;
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT c.courseID,c.name FROM courses c,teacherincourse tc"
+			if(teacherUserName==null) {
+				rs = stmt.executeQuery("SELECT c.courseID,c.name FROM courses c,teacherincourse tc"
+						+ " WHERE tp_ID=\"" + subject + "\" AND tc.courseID=c.courseID");
+			}
+			else {
+				rs = stmt.executeQuery("SELECT c.courseID,c.name FROM courses c,teacherincourse tc"
 					+ " WHERE tp_ID=\"" + subject + "\" AND tc.courseID=c.courseID AND tc.UserNameTeacher=\""
 					+ teacherUserName.toString() + "\";");
-			while (rs.next()) {
+			}while (rs.next()) {
 				courseList.add(new Course(rs.getString(1), rs.getString(2)));
 			}
 			rs.close();

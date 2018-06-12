@@ -67,7 +67,7 @@ public class EchoServer extends AbstractServer {
 	public int parsingTheData(String Id) {
 		return Integer.parseInt(Id);
 	}
-
+ 
 	@SuppressWarnings("unchecked")
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		con.runDB();
@@ -100,10 +100,15 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		case "checkExecutedExam": {/* check the executed exam id validity */
+			if (((String)message[2]).equals("Copy") ) {
+				serverMessage[2] = "data of exam Copy";
+			}
+			else {
 			Object[] questioninexam = con.checkExecutedExam(message[1]);
 			Time solutionTime = con.getSolutionTime(message[1]);
 			serverMessage[1] = questioninexam;
 			serverMessage[2] = solutionTime;
+			}
 			this.sendToAllClients(serverMessage);
 			break;
 		}
@@ -272,8 +277,8 @@ public class EchoServer extends AbstractServer {
 			serverMessage[0]="getTeachersList";
 			serverMessage[1]=teacherList;
 			this.sendToAllClients(serverMessage);
+			break;
 		}
-
 		case "finishExam": {
 			con.finishExam((String[]) message[1], (HashMap<String, Integer>) message[2]);
 			break;

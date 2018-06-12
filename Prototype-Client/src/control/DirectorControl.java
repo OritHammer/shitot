@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import entity.Course;
 import entity.QuestionInExam;
 import entity.RequestForChangingTimeAllocated;
 import entity.TeachingProfessionals;
@@ -76,9 +77,13 @@ public class DirectorControl extends UserControl implements Initializable {
 
 	// FXML Statistic Reports
 	@FXML
-	private ComboBox<String> reportBy;
+	private ComboBox<String> reportByComboBox;
 	@FXML
-	private ComboBox<String> chooseNameOrID;
+	private ComboBox<String> chooseUserComboBox;
+	@FXML
+	private ComboBox<String> subjectsComboBox;
+	@FXML
+	private ComboBox<String> coursesComboBox;
 
 	// FXML System information
 	/******************************************************************
@@ -104,8 +109,11 @@ public class DirectorControl extends UserControl implements Initializable {
 			observableList.add("Student");
 			observableList.add("Teacher");
 			observableList.add("Course");
-			reportBy.setItems(observableList);
-			chooseNameOrID.setDisable(true);
+			reportByComboBox.setItems(observableList);
+			chooseUserComboBox.setVisible(false);
+			subjectsComboBox.setVisible(false);
+			coursesComboBox.setVisible(false);
+			
 		} else if (pageLabel.getText().contentEquals("")) {// system information
 
 		}
@@ -197,12 +205,29 @@ public class DirectorControl extends UserControl implements Initializable {
 			}
 			case "getStudentsList":
 			case "getTeachersList": {
-				
 				ObservableList<String> observableList = FXCollections.observableArrayList();
 				for(String item: (ArrayList<String>)msg[1]) 
 					observableList.add(item);
-				chooseNameOrID.setDisable(false);
-				chooseNameOrID.setItems(observableList);
+				chooseUserComboBox.setVisible(true);
+				chooseUserComboBox.setItems(observableList);
+				break;
+				}
+				case "getSubjects":{
+					ObservableList<String> observableList = FXCollections.observableArrayList();
+					for (TeachingProfessionals tp : (ArrayList<TeachingProfessionals>) msg[1]) {
+						observableList.add(tp.getTp_id() + " - " + tp.getName());
+						subjectsComboBox.setVisible(true);
+						subjectsComboBox.setItems(observableList);
+					}
+					break;
+				}
+			case "getCourses":{
+				ObservableList<String> observableList = FXCollections.observableArrayList();
+				for (Course c : (ArrayList<Course>) msg[1]) {
+					observableList.add(c.getCourseID() + " - " + c.getName());
+				}
+				coursesComboBox.setVisible(true);
+				coursesComboBox.setItems(observableList);
 				break;
 			}
 
@@ -275,22 +300,31 @@ public class DirectorControl extends UserControl implements Initializable {
 	 * listeners on statistic Report
 	 ***********************************************************/
 	public void showListForChooseObject(ActionEvent e) {// display the list of student/courses/teachers
-		String reportByChoose = reportBy.getValue();
+		String reportByChoose = reportByComboBox.getValue();
 		connect(this);
 		switch (reportByChoose) {
 		case "Student": {
 		messageToServer[0]= "getStudentsList";
+		messageToServer[1]=null;
+		messageToServer[2]=null;
 			break;
 		}
 		case "Teacher": {
 		messageToServer[0]= "getTeachersList";
+		messageToServer[1]=null;
+		messageToServer[2]=null;
 			break;
-		}
+		} 
 		case "Course": {
-		messageToServer[0]= "getCoursesList";
+		messageToServer[0]= "getSubjects";
+		messageToServer[1]=null;
+		messageToServer[2]=null;
 			break;
 		}
 		}
 		chat.handleMessageFromClientUI(messageToServer);
+	}
+	public void loadCourses(ActionEvent e) throws IOException {
+		loadCourses("All");
 	}
 }
