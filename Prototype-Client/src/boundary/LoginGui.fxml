@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
@@ -51,5 +52,14 @@
       </Label>
       <PasswordField fx:id="password" layoutX="65.0" layoutY="207.0" prefHeight="25.0" prefWidth="149.0" promptText="please enter your password" />
       <Button fx:id="LoginBtn" layoutX="121.0" layoutY="242.0" mnemonicParsing="false" onAction="#loginPressed" text="login" />
+      <Label fx:id="errorMsg" layoutX="212.0" layoutY="277.0" text="wrong password" />
+      <ImageView fx:id="errorImg" blendMode="MULTIPLY" fitHeight="69.0" fitWidth="68.0" layoutX="150.0" layoutY="251.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+         <effect>
+            <Blend />
+         </effect>
+         <image>
+            <Image url="@../images.jpg" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
