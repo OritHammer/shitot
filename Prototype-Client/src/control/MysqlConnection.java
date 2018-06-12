@@ -734,7 +734,7 @@ public class MysqlConnection {
 		Exam exam = (Exam) examToChange;
 
 		try {
-			if(!checkInExamActive(examToChange))
+			if(!checkInExamActive(exam.getE_id()))
 				return false; 
 			// query update on DB the correct answer of question that have the given
 			// questionID from client
@@ -753,7 +753,7 @@ public class MysqlConnection {
 	
 	public Boolean checkInExamActive(Object examToChange) {
 		// TODO Auto-generated method stub
-		Exam exam = (Exam) examToChange;
+		String exam = (String) examToChange;
 
 		try {
 			stmt = conn.createStatement();
@@ -761,7 +761,7 @@ public class MysqlConnection {
 					+ "shitot.executedexam where executedexam.status = 'open' AND executedexam.numOfStudentStarted>'0'");
 
 			while (rs.next()) {
-				if (exam.getE_id().equals(rs.getString(1))) {
+				if (exam.equals(rs.getString(1))) {
 					rs.close();
 					return false;
 				}

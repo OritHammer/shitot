@@ -217,8 +217,12 @@ public class TeacherControl extends UserControl implements Initializable {
 				{
 					try {
 						((ArrayList<QuestionInExam>) msg[1]).forEach(questionInExamObservable::add);
+						final boolean flag1=(boolean) msg[2];
 						Platform.runLater(() -> {
+							if(flag1 == false)
 							blockLeftButton = true;
+							else
+								blockLeftButton = false;
 							openScreen("UpdateQuestionInExam");
 						});
 					} catch (NullPointerException exception) {
@@ -947,7 +951,14 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	/* changing the remarks for student on the table view */
 	public void changeRemarksForStudentOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
-		Exam examSelected = examsTableView.getSelectionModel().getSelectedItem();
+		examSelected = examsTableView.getSelectionModel().getSelectedItem();
+		oldExam = new Exam();
+		oldExam.setE_id(examSelected.getE_id());
+		oldExam.setSolutionTime(examSelected.getSolutionTime());
+		oldExam.setRemarksForTeacher(examSelected.getRemarksForTeacher());
+		oldExam.setRemarksForStudent(examSelected.getRemarksForStudent());
+		oldExam.setType(examSelected.getType());
+		oldExam.setTeacherUserName(examSelected.getTeacherUserName());
 		if (!edittedCell.getNewValue().toString().equals(examSelected.getRemarksForStudent())) {
 			examSelected.setRemarksForStudent(edittedCell.getNewValue().toString());
 			updateExam(examSelected);
@@ -956,7 +967,14 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	/* changing the type of the exam */
 	public void changeTypeOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
-		Exam examSelected = examsTableView.getSelectionModel().getSelectedItem();
+		examSelected = examsTableView.getSelectionModel().getSelectedItem();
+		oldExam = new Exam();
+		oldExam.setE_id(examSelected.getE_id());
+		oldExam.setSolutionTime(examSelected.getSolutionTime());
+		oldExam.setRemarksForTeacher(examSelected.getRemarksForTeacher());
+		oldExam.setRemarksForStudent(examSelected.getRemarksForStudent());
+		oldExam.setType(examSelected.getType());
+		oldExam.setTeacherUserName(examSelected.getTeacherUserName());
 		if (!edittedCell.getNewValue().toString().equals(examSelected.getType())) {
 			examSelected.setType(edittedCell.getNewValue().toString());
 			updateExam(examSelected);

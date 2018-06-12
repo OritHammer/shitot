@@ -233,11 +233,11 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		case "getQuestionInExam": {
-			Boolean flag;
+			Boolean examFlag;
 			ArrayList <QuestionInExam> questioninexam=con.getQuestionInExam(message[1]);
-			flag = con.checkInExamActive(message[1]);
+			examFlag = con.checkInExamActive(message[1]);
 			serverMessage[1] = questioninexam;
-			serverMessage[2] = flag;
+			serverMessage[2] = examFlag;
 			this.sendToAllClients(serverMessage);
 			break;
 		}  
