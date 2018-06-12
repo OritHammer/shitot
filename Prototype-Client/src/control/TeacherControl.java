@@ -161,6 +161,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	private ComboBox<String> typeComboBox;
 	Question oldQuestion;
 	static String tempExamId;
+
 	/* check the content message from server */
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
@@ -299,7 +300,7 @@ public class TeacherControl extends UserControl implements Initializable {
 				}
 				break;
 			}
-			
+
 			case ("deleteQuestion"): /* get the subject list from server */
 			{
 				if ((boolean) msg[1] == true) {
@@ -324,42 +325,60 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	/* clear all the text fields and radio buttons */
+	/* intialize function go first after loading fxml */
 	public void initialize(URL url, ResourceBundle rb) {
 
-		if (pageLabel.getText().equals("Create exam"))
-			typeComboBox.setItems(FXCollections.observableArrayList("computerized", "manual"));
-
-		if (pageLabel.getText().equals("Home screen"))
+		switch (pageLabel.getText()) {
+		case ("Home screen"): {
 			userText.setText(Globals.getFullName());
-
-		if (pageLabel.getText().equals("Create question") || pageLabel.getText().equals("Create exam")
-				|| pageLabel.getText().equals("Update question") || pageLabel.getText().equals("Create exam code")
-				|| pageLabel.getText().equals("Extend exam time") || pageLabel.getText().equals("Lock exam")
-				|| pageLabel.getText().equals("Update exam") || pageLabel.getText().equals("Update question in exam")) {
+			break;
+		}
+		case ("Create question"):
+		case ("Create exam"):
+		case ("Update question"):
+		case ("Create exam code"):
+		case ("Extend exam time"):
+		case ("Lock exam"):
+		case ("Update exam"):
+		case ("Update question in exam"): {
 
 			connect(this);
 
-			if (pageLabel.getText().equals("Update question in exam"))
+			switch (pageLabel.getText()) {
+			case ("Create exam"): {
+				typeComboBox.setItems(FXCollections.observableArrayList("computerized", "manual"));
+				break;
+			}
+			case ("Update question in exam"): {
 				setToQuestionInExamTableView();
-
-			if (pageLabel.getText().equals("Extend exam time") || pageLabel.getText().equals("Lock exam")) {
-
+				break;
+			}
+			case ("Extend exam time"):
+			case ("Lock exam"): {
 				messageToServer[0] = "getExecutedExams";
 				messageToServer[1] = Globals.getuserName();
 				chat.handleMessageFromClientUI(messageToServer);// send the message to server
+				break;
+			}
+			case ("Create question"): {
+				teacherNameOnCreate.setText(Globals.getuserName());
+				break;
 			}
 
-			if (pageLabel.getText().equals("Create question"))
-				teacherNameOnCreate.setText(Globals.getuserName());
-
+			}
 			messageToServer[0] = "getSubjects";
 			messageToServer[1] = Globals.getuserName();
 			messageToServer[2] = null;
 			chat.handleMessageFromClientUI(messageToServer);// send the message to server
+			break;
+
 		}
+
+		}
+
 	}
 
+	/* creatin an extend time request */
 	public void createExtendTimeRequest(ActionEvent e) throws IOException {
 		if (timeForExamHours.getText().equals("") || timeForExamMinute.getText().equals("")) {
 			openScreen("ErrorMessage", "Please fill the time you want to extend by");
@@ -388,47 +407,88 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/***************** Opening screens action-events *****************/
+	/* open the screen ExtendExamTime */
 	public void openExtendExamTimeScreen(ActionEvent e) {
 		openScreen("ExtendExamTime");
 	}
 
+	/* open the screen UpdateQuestion */
 	public void openUpdateQuestionScreen(ActionEvent e) {
 		openScreen("UpdateQuestion");
 	}
 
+	/* open the screen CreateExamCode */
 	public void openExamCodeScreen(ActionEvent e) {
 		openScreen("CreateExamCode");
 	}
 
+	/* open the screen CreateExam */
 	public void openCreateExam(ActionEvent e) {
 		openScreen("CreateExam");
 	}
 
+	/* open the screen CreateQuestion */
 	public void openCreateQuestion(ActionEvent e) {
 		openScreen("CreateQuestion");
 	}
 
+	/* open the screen UpdateExam */
 	public void openUpdateExamScreen(ActionEvent e) {
 		openScreen("UpdateExam");
 	}
 
+	/* open the screen as requested */
+	public void openScreen(String screen) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));
+			Scene scene = new Scene(loader.load());
+			Stage stage = Main.getStage();
+			if (screen.equals("ErrorMessage")) {
+				ErrorControl tController = loader.getController();
+				tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
+				tController.setErrorMessage("ERROR");// send a the error to the alert we made
+			}
+			stage.setTitle(screen);
+			stage.setScene(scene);
+			stage.show();
+		} catch (Exception exception) {
+			System.out.println("Error in opening the page");
+		}
+	}
+	/* open the screen ErrorMessage and sending an object */
+	public void openScreen(String screen, Object message) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));
+			Scene scene = new Scene(loader.load());
+			Stage stage = Main.getStage();
+			ErrorControl tController = loader.getController();
+			tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
+			tController.setErrorMessage((String) message);// send a the error to the alert we made
+			stage.setTitle("Error message");
+			stage.setScene(scene);
+			stage.show();
+		} catch (Exception exception) {
+			System.out.println("Error in opening the page");
+		}
+	}
+	/* deleting question from the tableview and from the database */
 	public void deleteQuestion(ActionEvent e) {
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
-
 		messageToServer[0] = "deleteQuestion";
 		messageToServer[1] = questionSelected;
 		connect(this);
 		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
 
 	}
-
-	/***************** Create exam functions *****************/
+	/* locking the subject function (subject combobox) */
 	public void lockSubject(ActionEvent e) {
 		subjectsComboBox.setDisable(true);
 	}
-
+	/* moving the question to the question in exam table view */
 	public void toQuestionInExam(ActionEvent e) {
-		int flag=0;
+		int flag = 0;
 		if (questionTableView.getSelectionModel().getSelectedItem() == null) {
 			openScreen("ErrorMessage", "Please choose question");
 			return;
@@ -442,15 +502,14 @@ public class TeacherControl extends UserControl implements Initializable {
 		questioninexam.setPoints(0);
 		setToQuestionInExamTableView();
 		for (QuestionInExam item : questionInExamObservable) {
-		    if(item.getQuestionID().equals(questionDetails.getId()))
-		    	flag=1;
+			if (item.getQuestionID().equals(questionDetails.getId()))
+				flag = 1;
 		}
-			if(flag == 0) 
-			{
-				questionObservableList.remove(questionTableView.getSelectionModel().getSelectedIndex());
-				questionInExamObservable.add(questioninexam);
-				questionsInExamTableView.getSortOrder().setAll(questionNameTableView);
-			}
+		if (flag == 0) {
+			questionObservableList.remove(questionTableView.getSelectionModel().getSelectedIndex());
+			questionInExamObservable.add(questioninexam);
+			questionsInExamTableView.getSortOrder().setAll(questionNameTableView);
+		}
 
 	}
 
@@ -465,7 +524,7 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	public void removeFromTableView(ActionEvent e) {
 		ObservableList<QuestionInExam> questiontoremove;
-		int flag=0;
+		int flag = 0;
 		try {
 			questiontoremove = questionsInExamTableView.getSelectionModel().getSelectedItems();
 			Question question = new Question();
@@ -473,15 +532,14 @@ public class TeacherControl extends UserControl implements Initializable {
 			question.setTeacherName(questiontoremove.get(0).getTeacherUserName());
 			question.setId(questiontoremove.get(0).getQuestionID());
 			for (Question item : questionObservableList) {
-			    if(item.getId().equals(question.getId()))
-			    	flag=1;
+				if (item.getId().equals(question.getId()))
+					flag = 1;
 			}
-				if(flag == 0) 
-				{
-					questionObservableList.add(question);
-					questionTableView.getSortOrder().setAll(qid);
-				}
-			
+			if (flag == 0) {
+				questionObservableList.add(question);
+				questionTableView.getSortOrder().setAll(qid);
+			}
+
 			questiontoremove.forEach(questionInExamObservable::remove);
 		} catch (RuntimeException exception) {
 			openScreen("ErrorMessage", "Please choose question to delete");
@@ -565,7 +623,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			e1.printStackTrace();
 		} // close the connection
 	}
-	
+
 	public void createExamCode(ActionEvent e) {
 		ExecutedExam exam;
 		String examID = examComboBox.getValue();
@@ -616,7 +674,6 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/***************** create question screen function *****************/
-	/* initialized the update Question window */
 	public void createQuestionClick(ActionEvent e) throws IOException {
 		if (subjectsComboBox.getValue() == null) {
 			openScreen("ErrorMessage", "Please choose subject");
@@ -655,10 +712,6 @@ public class TeacherControl extends UserControl implements Initializable {
 			chat.closeConnection();// close the connection
 		}
 	}
-
-	/*****************
-	 * functions that all most of the screens uses
-	 *****************/
 
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/* ask for the qustions text */
@@ -737,11 +790,11 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	public Question createBackUpQuestion(Question questionSelected) {
-		return new Question(questionSelected.getId(),questionSelected.getTeacherName(),questionSelected.getQuestionContent()
-				,questionSelected.getAnswer1(),questionSelected.getAnswer2(),questionSelected.getAnswer3(),questionSelected.getAnswer4(),
-				questionSelected.getCorrectAnswer());
+		return new Question(questionSelected.getId(), questionSelected.getTeacherName(),
+				questionSelected.getQuestionContent(), questionSelected.getAnswer1(), questionSelected.getAnswer2(),
+				questionSelected.getAnswer3(), questionSelected.getAnswer4(), questionSelected.getCorrectAnswer());
 	}
-	
+
 	public void updateQuestion(Question questionSelected) {
 		messageToServer[0] = "updateQuestion";
 		messageToServer[1] = questionSelected;
@@ -762,42 +815,6 @@ public class TeacherControl extends UserControl implements Initializable {
 		correctAns4.setSelected(false);
 	}
 
-	public void openScreen(String screen) {
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));
-			Scene scene = new Scene(loader.load());
-			Stage stage = Main.getStage();
-			if (screen.equals("ErrorMessage")) {
-				ErrorControl tController = loader.getController();
-				tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
-				tController.setErrorMessage("ERROR");// send a the error to the alert we made
-			}
-			stage.setTitle(screen);
-			stage.setScene(scene);
-			stage.show();
-		} catch (Exception exception) {
-			System.out.println("Error in opening the page");
-		}
-	}
-
-	public void openScreen(String screen, Object message) {
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));
-			Scene scene = new Scene(loader.load());
-			Stage stage = Main.getStage();
-			ErrorControl tController = loader.getController();
-			tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
-			tController.setErrorMessage((String) message);// send a the error to the alert we made
-			stage.setTitle("Error message");
-			stage.setScene(scene);
-			stage.show();
-		} catch (Exception exception) {
-			System.out.println("Error in opening the page");
-		}
-	}
-
 	/* close button was pressed */
 	public void closeScreen(ActionEvent e) throws IOException, SQLException {
 		final Node source = (Node) e.getSource();
@@ -807,9 +824,6 @@ public class TeacherControl extends UserControl implements Initializable {
 		openScreen("HomeScreenTeacher");
 	}
 
-	/*****************
-	 * create Exam and extend extend time code screen function
-	 *****************/
 	public void loadCourses(ActionEvent e) throws IOException {
 		/* ask for the courses name */
 		String subject = subjectsComboBox.getValue(); // get the subject code
