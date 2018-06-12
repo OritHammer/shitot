@@ -16,7 +16,7 @@ public class ExamDetailsMessage implements Serializable {
 	private final String examDate;
 	private final String examCourse;
 	private final String excecutedExamID ;
-	
+	 
 	public String getExcecutedExamID() {
 		return excecutedExamID;
 	}

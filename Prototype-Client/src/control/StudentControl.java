@@ -357,7 +357,7 @@ public class StudentControl extends UserControl implements Initializable {
 	public void excecuteExam(ActionEvent e) throws IOException, SQLException {// click on the button "execute exam"
 		if (codeTextField.getText().equals("") || userIDTextField.getText().equals((""))) {
 			openScreen("ErrorMessage", "Error in executed exam id");
-			return;
+			return;  
 		} else if (!userIDTextField.getText().equals((Globals.getUser().getUserID()))) {
 			openScreen("ErrorMessage", "Your ID is incorrect"); // if user ID isn't correct
 			return;
