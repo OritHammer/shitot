@@ -233,7 +233,7 @@ public class UserControl implements Initializable {
 		return;
 		}
 		 userText.setText(userNameFromDB);
-	}
+	} 
 	//functions relevant for all users 
 	public void loadCourses(String typeList) throws IOException {
 		/* ask for the courses name */

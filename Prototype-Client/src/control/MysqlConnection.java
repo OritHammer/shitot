@@ -254,7 +254,7 @@ public class MysqlConnection {
 			subjectList = new ArrayList<TeachingProfessionals>();
 			// Statement stmt;
 			TeachingProfessionals teachingprofessions;
-			try {
+		 	try {
 				stmt = conn.createStatement();
 				ResultSet rs=null;
 				if(teacherUserName==null) {	

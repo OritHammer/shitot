@@ -314,7 +314,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		messageToServer[1]=null;
 		messageToServer[2]=null;
 			break;
-		}
+		} 
 		case "Course": {
 		messageToServer[0]= "getSubjects";
 		messageToServer[1]=null;

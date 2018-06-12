@@ -67,7 +67,7 @@ public class EchoServer extends AbstractServer {
 	public int parsingTheData(String Id) {
 		return Integer.parseInt(Id);
 	}
-
+ 
 	@SuppressWarnings("unchecked")
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		con.runDB();
