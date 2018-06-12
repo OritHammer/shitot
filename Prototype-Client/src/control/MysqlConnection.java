@@ -224,7 +224,7 @@ public class MysqlConnection {
 		ArrayList<ExamDetailsMessage> detailsList = new ArrayList<ExamDetailsMessage>();
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT  E.exam_id  , stdE.grade  , stdE.date "
+			ResultSet rs = stmt.executeQuery("SELECT  E.exam_id  , stdE.grade  , stdE.date , E.executedExamID "
 					+ " FROM shitot.executedexam  E , shitot.studentperformedexam  stdE "
 					+ "WHERE E.executedExamID = stdE.executedexam_id AND stdE.student_UserName =\"" + userName
 					+ "\" AND E.status = 'close'  ; ");
@@ -233,7 +233,7 @@ public class MysqlConnection {
 			 */
 
 			while (rs.next()) {
-				detailsList.add(new ExamDetailsMessage( rs.getString(1), ""+rs.getString(1), rs.getDate(3).toString()));
+				detailsList.add(new ExamDetailsMessage( rs.getString(1), ""+rs.getString(1), rs.getDate(3).toString(), rs.getString(4)));
 			}
 		} catch (NullPointerException e) {
 			System.out.println("No data from server");
