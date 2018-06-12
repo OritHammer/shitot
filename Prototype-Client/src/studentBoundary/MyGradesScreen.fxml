@@ -8,12 +8,13 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.StudentControl">
    <children>
-      <TableView fx:id="examGradesTable" layoutX="38.0" layoutY="75.0" prefHeight="251.0" prefWidth="353.0">
+      <TableView fx:id="examGradesTable" layoutX="10.0" layoutY="75.0" prefHeight="251.0" prefWidth="399.0">
         <columns>
-          <TableColumn fx:id="examCodeColumn" prefWidth="96.0" text="Exam code" />
-          <TableColumn fx:id="courseCodeColumn" prefWidth="95.0" text="Course Code" />
-            <TableColumn fx:id="gradeColumn" prefWidth="89.0" text="Grade" />
-            <TableColumn fx:id="dateColumn" minWidth="4.0" prefWidth="73.0" text="Date" />
+          <TableColumn fx:id="examCodeColumn" prefWidth="81.0" text="Exam code" />
+          <TableColumn fx:id="courseCodeColumn" text="Course Code" />
+            <TableColumn fx:id="gradeColumn" prefWidth="52.0" text="Grade" />
+            <TableColumn fx:id="dateColumn" minWidth="4.0" prefWidth="107.0" text="Date" />
+            <TableColumn fx:id="executedIDCol" prefWidth="78.0" text="Executed ID" />
         </columns>
       </TableView> 
       <Button fx:id="backToHomeBtn" layoutX="38.0" layoutY="348.0" mnemonicParsing="false" onAction="#goToHomePressed" prefHeight="25.0" prefWidth="150.0" text="Go back to home page" />
@@ -23,12 +24,12 @@
          </font>
       </Label>
       <Button layoutX="300.0" layoutY="348.0" mnemonicParsing="false" onAction="#refreshTable" text="Refresh" />
-      <Label layoutX="402.0" layoutY="91.0" prefHeight="88.0" prefWidth="184.0" text="Choose exam code from list and press 'Order exam' for ordering exam copy" wrapText="true">
+      <Label layoutX="445.0" layoutY="67.0" prefHeight="143.0" prefWidth="140.0" text="Choose exam code from list and press 'Order exam' for ordering exam copy" wrapText="true">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <ComboBox fx:id="examCodeCombo" layoutX="413.0" layoutY="179.0" prefWidth="150.0" promptText="exams code" />
+      <ComboBox fx:id="examCodeCombo" layoutX="413.0" layoutY="197.0" prefHeight="25.0" prefWidth="180.0" promptText="Excecuted exams code" />
       <Button layoutX="440.0" layoutY="348.0" mnemonicParsing="false" onAction="#orderExamPressed" prefHeight="25.0" prefWidth="96.0" text="Order exam" />
    </children>
 </AnchorPane>

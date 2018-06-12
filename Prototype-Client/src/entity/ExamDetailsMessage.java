@@ -15,12 +15,18 @@ public class ExamDetailsMessage implements Serializable {
 	private final String examGrade;
 	private final String examDate;
 	private final String examCourse;
+	private final String excecutedExamID ;
 	
-	public ExamDetailsMessage(String eID,String eGrade,String eDate ) {
+	public String getExcecutedExamID() {
+		return excecutedExamID;
+	}
+
+	public ExamDetailsMessage(String eID,String eGrade,String eDate ,String excecuted) {
 		examID = eID;
 		examDate = eDate;
 		examGrade = eGrade;
 		examCourse = eID.substring(2, 4);
+		excecutedExamID = excecuted ; 
 	}
 
 	public static long getSerialversionuid() {

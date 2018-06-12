@@ -80,6 +80,9 @@ public class StudentControl extends UserControl implements Initializable {
 	@FXML
 	private TableColumn<ExamDetailsMessage, String> dateColumn;
 	@FXML
+	private TableColumn<ExamDetailsMessage, String> executedIDCol;
+
+	@FXML
 	private ComboBox<String> examCodeCombo;
 
 	ObservableList<ExamDetailsMessage> detailsList = FXCollections.observableArrayList();
@@ -256,6 +259,7 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 
 	// ***
+	@FXML
 	public void goToHomePressed(ActionEvent e) throws Exception {
 		closeScreen(e);
 		openScreen("NewDesignHomeScreenStudent");
@@ -431,6 +435,7 @@ public class StudentControl extends UserControl implements Initializable {
 		dateColumn.setCellValueFactory(new PropertyValueFactory("examDate"));
 		gradeColumn.setCellValueFactory(new PropertyValueFactory("examGrade"));
 		courseCodeColumn.setCellValueFactory(new PropertyValueFactory("examCourse"));
+		executedIDCol.setCellValueFactory(new PropertyValueFactory<>("excecutedExamID"));
 		examGradesTable.getColumns().removeAll();
 		examGradesTable.getColumns().addAll(examCodeColumn, courseCodeColumn, gradeColumn, dateColumn);
 		/*
