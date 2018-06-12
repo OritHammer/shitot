@@ -128,7 +128,9 @@ public class StudentControl extends UserControl implements Initializable {
 	/************************ Class Methods *************************/
 	public void initialize(URL url, ResourceBundle rb) {
 		// connect(this);
-		if (pageLabel.getText().equals("Perform exam")) {
+		switch (pageLabel.getText() ) { 
+		case ("Perform exam") :
+		{ 
 			correctRadioButton1.setVisible(true);
 			correctRadioButton2.setVisible(true);
 			correctRadioButton3.setVisible(true);
@@ -169,8 +171,18 @@ public class StudentControl extends UserControl implements Initializable {
 			}
 				, 1000, 1000);
 			//courseName.setText(questioninexecutedexam.get(0).getId().substring(0, 2));
-		
+		break ; 
 		}
+		case ("My Grades sheet " ) : 
+		{
+			getGradesFromServer();
+			break ; 
+		}
+		default : return ; 
+		}
+		}
+		 {
+			
 	}
 	private static final int setInterval() 
 	{
@@ -437,7 +449,7 @@ public class StudentControl extends UserControl implements Initializable {
 		courseCodeColumn.setCellValueFactory(new PropertyValueFactory("examCourse"));
 		executedIDCol.setCellValueFactory(new PropertyValueFactory<>("excecutedExamID"));
 		examGradesTable.getColumns().removeAll();
-		examGradesTable.getColumns().addAll(examCodeColumn, courseCodeColumn, gradeColumn, dateColumn);
+		examGradesTable.getColumns().addAll(examCodeColumn, courseCodeColumn, gradeColumn, dateColumn,executedIDCol);
 		/*
 		 * also need to take from detailsFromS the exam_id's and insert
 		 * them to observeable list into the relevante combobox .
