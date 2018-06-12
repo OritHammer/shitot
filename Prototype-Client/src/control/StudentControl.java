@@ -420,7 +420,7 @@ public class StudentControl extends UserControl implements Initializable {
 			openScreen("ErrorMessage", "Exam Locked or not defined");
 			return;
 		} else if (((String) msgFromServer[2]).equals("data of exam Copy")) {
-
+  
 		} else {
 			String type = (String) msgFromServer[1];
 			if (type.equals("manual")) {
