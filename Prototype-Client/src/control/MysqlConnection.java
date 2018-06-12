@@ -734,6 +734,28 @@ public class MysqlConnection {
 		Exam exam = (Exam) examToChange;
 
 		try {
+			if(!checkInExamActive(examToChange))
+				return false; 
+			// query update on DB the correct answer of question that have the given
+			// questionID from client
+			stmt.executeUpdate("UPDATE exams SET solutionTime=\"" + exam.getSolutionTime() + "\", remarksForTeacher=\""
+					+ exam.getRemarksForTeacher() + "\", remarksForStudent = \"" + exam.getRemarksForStudent()
+					+ "\", type= \"" + exam.getType() + "\"," + "tUserName=\"" + exam.getTeacherUserName()
+					+ "\" WHERE e_id=\"" + exam.getE_id() + "\";");
+
+			return true;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public Boolean checkInExamActive(Object examToChange) {
+		// TODO Auto-generated method stub
+		Exam exam = (Exam) examToChange;
+
+		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("select distinct executedexam.exam_id from "
 					+ "shitot.executedexam where executedexam.status = 'open' AND executedexam.numOfStudentStarted>'0'");
@@ -745,13 +767,6 @@ public class MysqlConnection {
 				}
 			}
 			rs.close();
-			// query update on DB the correct answer of question that have the given
-			// questionID from client
-			stmt.executeUpdate("UPDATE exams SET solutionTime=\"" + exam.getSolutionTime() + "\", remarksForTeacher=\""
-					+ exam.getRemarksForTeacher() + "\", remarksForStudent = \"" + exam.getRemarksForStudent()
-					+ "\", type= \"" + exam.getType() + "\"," + "tUserName=\"" + exam.getTeacherUserName()
-					+ "\" WHERE e_id=\"" + exam.getE_id() + "\";");
-
 			return true;
 
 		} catch (SQLException e) {
@@ -784,7 +799,9 @@ public class MysqlConnection {
 		}
 		return questioninexam;
 	}
+	
 
+	
 	public ArrayList<String> returnListForGetReport(String getBy) {
 		ArrayList<String> listForGetReport = new ArrayList<String>();
 		try {
@@ -826,4 +843,6 @@ public class MysqlConnection {
 	}
 		return stdAns;
 }
+
+
 }
