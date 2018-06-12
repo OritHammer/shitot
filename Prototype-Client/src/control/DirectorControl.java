@@ -88,15 +88,12 @@ public class DirectorControl extends UserControl implements Initializable {
 	private ComboBox<String> subjectsComboBox;
 	@FXML
 	private ComboBox<String> coursesComboBox;
-<<<<<<< HEAD
+
 	@FXML
 	private BarChart<?,?> barChart;
 	
 	// FXML System information
-=======
 
-	// FXML System information 
->>>>>>> refs/remotes/origin/master
 	/******************************************************************
 	 * homePageButtons
 	 **********************************************************/
