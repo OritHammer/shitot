@@ -448,7 +448,7 @@ public class StudentControl extends UserControl implements Initializable {
 			if(examCodeCombo != null && examCodeCombo.getItems() != null )
 				examCodeCombo.getItems().clear();
 			examCodeCombo.setItems(executeExamList);
-		examGradesTable.setItems(detailsList);
+		examGradesTable.setItems(detailsList);  
 		examCodeColumn.setCellValueFactory(new PropertyValueFactory("examID"));
 		dateColumn.setCellValueFactory(new PropertyValueFactory("examDate"));
 		gradeColumn.setCellValueFactory(new PropertyValueFactory("examGrade"));
