@@ -98,15 +98,18 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		case "checkExecutedExam": {/* check the executed exam id validity */
-			if (((String)message[2]).equals("Copy") ) {
-				serverMessage[2] = "data of exam Copy";
+			Object[] questioninexam = con.checkExecutedExam(message[1]);
+			String[] msgFromClient = ((String)message[2]).split(" ");
+			if (msgFromClient[0].equals("Copy") ) {
+				serverMessage[0] = "showingCopy" ; 
+				HashMap<String,Integer> studentAns = con.getStudentAns(msgFromClient[1]+" "+msgFromClient[2],(String)message[1]);
+				serverMessage[2] =studentAns ;
 			}
 			else {
-			Object[] questioninexam = con.checkExecutedExam(message[1]);
 			Time solutionTime = con.getSolutionTime(message[1]);
-			serverMessage[1] = questioninexam;
 			serverMessage[2] = solutionTime;
 			}
+			serverMessage[1] = questioninexam;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
@@ -190,8 +193,22 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
+<<<<<<< HEAD
 		case "updateFinishedExam": {
 			con.updateFinishedExam(message[1],message[2]);
+=======
+		
+		case "updateQuestionInExam": {
+			con.updateQuestionInExam(message[1],message[2]);
+			
+			this.sendToAllClients(serverMessage);
+			break;
+		}
+		
+		case "deleteExam": {
+			Boolean inserted = con.deleteExam(message[1]);
+			serverMessage[1] = inserted;
+>>>>>>> refs/remotes/origin/master
 			this.sendToAllClients(serverMessage);
 			break;
 		}
@@ -223,7 +240,9 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		case "getQuestionInExam": {
+			Boolean flag;
 			ArrayList <QuestionInExam> questioninexam=con.getQuestionInExam(message[1]);
+			
 			serverMessage[1] = questioninexam;
 			this.sendToAllClients(serverMessage);
 			break;

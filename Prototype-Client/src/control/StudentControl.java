@@ -41,12 +41,13 @@ import javafx.stage.Stage;
 
 public class StudentControl extends UserControl implements Initializable {
 	private static Scene homeSc = null;
-	private static Scene gradeSc = null;
+	private static Scene gradeSc = null; 
 	private static ArrayList<Question> questioninexecutedexam;
 	public static Time solutionTime;
 	public static int remainTime;
 	public static Timer timer;
 	private int index = -1;
+	private static Boolean copyFlag = false ; 
 	public static String timeToString;
 	public static HashMap<String, Integer> examAnswers;// saves the question id and the answers
 	/********************* Variable declaration *************************/
@@ -126,6 +127,11 @@ public class StudentControl extends UserControl implements Initializable {
 	private Button prevBTN;
 	@FXML
 	private TextField timerTextField;
+	// ******************** Showing exam copy  ************//
+@FXML
+private Label studentAnswer ; 	
+@FXML
+private Label selectedAnswer ; 	
 
 	/************************ Class Methods *************************/
 	public void initialize(URL url, ResourceBundle rb) {
@@ -146,14 +152,7 @@ public class StudentControl extends UserControl implements Initializable {
 			// timerTextField.setText("123");
 			// s=solutionTime.toString();
 			// timerTextField.setText(s);
-			remainTime = solutionTime.getHours() * 3600 + solutionTime.getMinutes() * 60 + solutionTime.getSeconds();// reamin
-																														// time
-																														// is
-																														// he
-																														// time
-																														// in
-																														// secods
-
+			remainTime = solutionTime.getHours() * 3600 + solutionTime.getMinutes() * 60 + solutionTime.getSeconds();//reamain is the time in seconds
 			timer = new Timer();
 			timer.scheduleAtFixedRate(new TimerTask() {
 				public void run() {
@@ -344,10 +343,10 @@ public class StudentControl extends UserControl implements Initializable {
 		 * examCodeCombo.getValue(); messageToServer[2] = null;
 		 * chat.handleMessageFromClientUI(messageToServer);// send the message to server
 		 */
-
+		connect(this);  
 		messageToServer[0] = "checkExecutedExam";
-		messageToServer[1] = examCodeCombo.getValue();
-		messageToServer[2] = "Copy";
+		messageToServer[1] = examCodeCombo.getValue(); // sending executed exam id 
+		messageToServer[2] = "Copy "+Globals.getUser().getUsername(); // sending the user name 
 		chat.handleMessageFromClientUI(messageToServer);
 	}
 
@@ -402,6 +401,9 @@ public class StudentControl extends UserControl implements Initializable {
 				addTimeToExam(msgFromServer);
 				break;
 			}
+			case "showingCopy" : 
+				showingCopy((ArrayList<Question>)msgFromServer[1],(HashMap<String, Integer>)msgFromServer[2]);
+				break;
 			}
 
 		} catch (IndexOutOfBoundsException e) {
@@ -416,28 +418,58 @@ public class StudentControl extends UserControl implements Initializable {
 	@SuppressWarnings("unchecked")
 	private void checkExecutedExam(Object[] message) {
 		Object[] msgFromServer = (Object[]) message[1];
+<<<<<<< HEAD
 		if (msgFromServer == null) {
 			openScreen("ErrorMessage", "Exam Locked or not defined");
 			return;
-		} else if (((String) msgFromServer[2]).equals("data of exam Copy")) {
-  
-		} else {
+		}  else {
 			String type = (String) msgFromServer[1];
 			if (type.equals("manual")) {
 				// We Need To Build This Functionality !!!!!!!
 			} else {
+=======
+//		if (msgFromServer == null) {
+//			openScreen("ErrorMessage", "Exam Locked or not defined");
+//			return;
+//		} else if (((String) msgFromServer[2]).equals("data of exam Copy")) {
+//  
+//		} else {
+//			String type = (String) msgFromServer[1];
+//			if (type.equals("manual")) {
+//				// We Need To Build This Functionality !!!!!!!
+//			} else {
+>>>>>>> branch 'master' of https://github.com/avivMahulya/shitot.git
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
 						solutionTime = (Time) message[2];
 						questioninexecutedexam = (ArrayList<Question>) msgFromServer[0];
+						
 						openScreen("ComputerizedExam");
 
 					}
 				});
 			}
+<<<<<<< HEAD
 		}
 	}
+	public void showingCopy(ArrayList<Question> ques ,HashMap<String, Integer>ans) {
+		
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				examAnswers = (HashMap<String, Integer>) ans;
+				questioninexecutedexam = (ArrayList<Question>) ques;
+				copyFlag = true ; 
+				openScreen("ComputerizedExam");
+			}
+		});
+	}
+
+=======
+		//}
+//	}
+>>>>>>> branch 'master' of https://github.com/avivMahulya/shitot.git
 
 	@SuppressWarnings("deprecation")
 	public void addTimeToExam(Object[] message) {
@@ -529,6 +561,27 @@ public class StudentControl extends UserControl implements Initializable {
 		answer2.setText(questioninexecutedexam.get(index).getAnswer2());
 		answer3.setText(questioninexecutedexam.get(index).getAnswer3());
 		answer4.setText(questioninexecutedexam.get(index).getAnswer4());
+		
+		if(copyFlag==true) {
+		studentAnswer.setVisible(true) ; 	
+		selectedAnswer.setVisible(true);
+		switch(questioninexecutedexam.get(index).getCorrectAnswer()) {
+		case "1": {
+			correctRadioButton1.setSelected(true);
+			break;
+		}
+		case "2":
+			correctRadioButton2.setSelected(true);
+			break;
+		case "3":
+			correctRadioButton3.setSelected(true);
+			break;
+		case "4":
+			correctRadioButton4.setSelected(true);
+			break;
+		}
+		selectedAnswer.setText(examAnswers.get(questioninexecutedexam.get(index).getId()).toString());
+		}
 	}
 
 	@FXML
