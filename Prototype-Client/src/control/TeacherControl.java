@@ -224,7 +224,6 @@ public class TeacherControl extends UserControl implements Initializable {
 				} catch (NullPointerException exception) {
 					Platform.runLater(() -> openScreen("ErrorMessage", "exam does not have any question"));
 					blockLeftButton=false;
-
 				}
 				break;
 			}
