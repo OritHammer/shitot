@@ -1,5 +1,9 @@
 /entity/
 /studentControllers/
+<<<<<<< HEAD
 /control/
+=======
+/directorBoundary/
+>>>>>>> branch 'master' of https://github.com/avivMahulya/shitot.git
 /boundary/
 /images.jpg
