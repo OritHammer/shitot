@@ -376,7 +376,7 @@ public class StudentControl extends UserControl implements Initializable {
 	public void checkMessage(Object message) {
 		try {
 			chat.closeConnection();
-			Object[] msgFromServer = (Object[]) message;
+			final Object[] msgFromServer = (Object[]) message;
 			switch (msgFromServer[0].toString()) {
 			case "logoutProcess": {
 				openScreen("LoginGui");
