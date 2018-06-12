@@ -86,6 +86,7 @@ public class StudentControl extends UserControl implements Initializable {
 	private ComboBox<String> examCodeCombo;
 
 	ObservableList<ExamDetailsMessage> detailsList = FXCollections.observableArrayList();
+	ObservableList<String> executeExamList = FXCollections.observableArrayList();
 
 	// *******for student execute or download exam*********//
 	@FXML
@@ -175,7 +176,7 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 		case ("My Grades sheet " ) : 
 		{
-			getGradesFromServer();
+				getGradesFromServer();
 			break ; 
 		}
 		default : return ; 
@@ -327,10 +328,7 @@ public class StudentControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 	}
 
-	public void refreshTable(ActionEvent e) {
-		detailsList.clear();  
-		getGradesFromServer();
-	}
+	
 
 	/*********************
 	 * Student Order Copy
@@ -442,11 +440,14 @@ public class StudentControl extends UserControl implements Initializable {
 		
 		for (ExamDetailsMessage edM : detailsFromS) {
 			detailsList.add(edM);
+			executeExamList.add(edM.getExcecutedExamID());
 		}
-		
-		if(examGradesTable != null && examGradesTable.getColumns() != null )
-			examGradesTable.getColumns().clear();
-		
+	
+			if(examGradesTable != null && examGradesTable.getColumns() != null )
+				examGradesTable.getColumns().clear();
+			if(examCodeCombo != null && examCodeCombo.getItems() != null )
+				examCodeCombo.getItems().clear();
+			examCodeCombo.setItems(executeExamList);
 		examGradesTable.setItems(detailsList);
 		examCodeColumn.setCellValueFactory(new PropertyValueFactory("examID"));
 		dateColumn.setCellValueFactory(new PropertyValueFactory("examDate"));

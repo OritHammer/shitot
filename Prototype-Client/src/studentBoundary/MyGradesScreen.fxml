@@ -23,7 +23,6 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Button layoutX="300.0" layoutY="348.0" mnemonicParsing="false" onAction="#refreshTable" text="Refresh" />
       <Label layoutX="445.0" layoutY="67.0" prefHeight="143.0" prefWidth="140.0" text="Choose exam code from list and press 'Order exam' for ordering exam copy" wrapText="true">
          <font>
             <Font size="15.0" />
