@@ -104,7 +104,7 @@ public class EchoServer extends AbstractServer {
 			String[] msgFromClient = ((String)message[2]).split(" ");
 			if (msgFromClient[0].equals("Copy") ) {
 				serverMessage[0] = "showingCopy" ; 
-				HashMap<String,Integer> studentAns = con.getStudentAns(msgFromClient[0],(String)message[1]);
+				HashMap<String,Integer> studentAns = con.getStudentAns(msgFromClient[1]+" "+msgFromClient[2],(String)message[1]);
 				serverMessage[2] =studentAns ;
 			}
 			else {

@@ -815,7 +815,7 @@ public class MysqlConnection {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery( 
 					"		select questionID , answer" + 
-					"		from shitot.studentanswerquestions \r\n" + 
+					"		from shitot.studentanswerquestions " + 
 					"		where executedID = '"+executedExamID+"' AND studentUserName = '"+userName+"' ; ");
 		while(rs.next()) {
 			stdAns.put(rs.getString(0), rs.getInt(1));
