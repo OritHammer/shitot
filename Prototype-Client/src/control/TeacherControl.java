@@ -809,25 +809,13 @@ public class TeacherControl extends UserControl implements Initializable {
 				questionSelected.getQuestionContent(), questionSelected.getAnswer1(), questionSelected.getAnswer2(),
 				questionSelected.getAnswer3(), questionSelected.getAnswer4(), questionSelected.getCorrectAnswer());
 	}
-
+	
+	/* updating the question that has been selected */
 	public void updateQuestion(Question questionSelected) {
 		messageToServer[0] = "updateQuestion";
 		messageToServer[1] = questionSelected;
 		connect(this);
 		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
-	}
-
-	public void clearForm() {
-		answer1.clear();
-		answer2.clear();
-		answer3.clear();
-		answer4.clear();
-		questionID.clear();
-		teacherName.clear();
-		correctAns1.setSelected(false);
-		correctAns2.setSelected(false);
-		correctAns3.setSelected(false);
-		correctAns4.setSelected(false);
 	}
 
 	/* close button was pressed */
