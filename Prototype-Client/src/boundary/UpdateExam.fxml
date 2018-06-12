@@ -20,7 +20,7 @@
          </columns>
       </TableView>
       <Label fx:id="pageLabel" layoutX="442.0" layoutY="14.0" text="Update exam" />
-      <Button fx:id="deleteBtn" layoutX="426.0" layoutY="431.0" mnemonicParsing="false" text="Delete">
+      <Button fx:id="deleteBtn" layoutX="426.0" layoutY="431.0" mnemonicParsing="false" onAction="#deleteExam" text="Delete">
          <textFill>
             <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
                <stops>

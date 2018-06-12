@@ -470,7 +470,7 @@ public class MysqlConnection {
 
 	}
 
-	public synchronized void updateFinishedExam(Object questionInExams, Object examId) {
+	public synchronized void updateQuestionInExam(Object questionInExams, Object examId) {
 		@SuppressWarnings("unchecked")
 		int questionCounter = 1;
 		ArrayList<QuestionInExam> questionInExam = (ArrayList<QuestionInExam>) questionInExams;
@@ -492,6 +492,12 @@ public class MysqlConnection {
 
 	}
 
+	public Boolean deleteExam(Object exam)
+	{
+		
+		return true;
+	}
+	
 	public synchronized Boolean createExamCode(Object excutedExam) {
 
 		ExecutedExam exam = (ExecutedExam) excutedExam;
@@ -575,8 +581,8 @@ public class MysqlConnection {
 				exam = new Exam();
 				exam.setE_id(rs.getString(1));
 				exam.setSolutionTime(rs.getString(2));
-				exam.setRemarksForStudent(rs.getString(3));
-				exam.setRemarksForTeacher(rs.getString(4));
+				exam.setRemarksForTeacher(rs.getString(3));
+				exam.setRemarksForStudent(rs.getString(4));
 				exam.setType(rs.getString(5));
 				exam.setTeacherUserName(rs.getString(6));
 				examList.add(exam);
