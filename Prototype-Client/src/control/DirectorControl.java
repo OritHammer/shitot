@@ -22,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -87,7 +88,9 @@ public class DirectorControl extends UserControl implements Initializable {
 	private ComboBox<String> subjectsComboBox;
 	@FXML
 	private ComboBox<String> coursesComboBox;
-
+	@FXML
+	private BarChart<?,?> barChart;
+	
 	// FXML System information
 	/******************************************************************
 	 * homePageButtons
@@ -336,11 +339,15 @@ public class DirectorControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer);
 	}
 
-	public void loadCourses(ActionEvent e) throws IOException {
+	public void loadCourses(ActionEvent e) throws IOException {//load list of courses to combobox
 		String subject = subjectsComboBox.getValue(); // get the subject code
 		loadCourses("All", subject);
 	}
-	public void getReportUser(ActionEvent e) {
+	public void getReportUser(ActionEvent e) {//load Statistic details on window
 		String userName=chooseUserComboBox.getValue();
+		messageToServer[0]="getReportUser";
+		messageToServer[1] = userName;
+		messageToServer[2] = null;
+		chat.handleMessageFromClientUI(messageToServer);
 	}
 }

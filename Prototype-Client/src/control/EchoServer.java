@@ -85,14 +85,12 @@ public class EchoServer extends AbstractServer {
 			System.out.println("arraylist to deliver");
 			break;
 		}
-
 		case "getCourses": {/* client request all all the courses under some subject */
 			ArrayList<Course> courseList = con.getCourseList(message[1], message[2]);
 			serverMessage[1] = courseList;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-
 		case "getExecutedExams": {/* client request all all the courses under some subject */
 			ArrayList<ExecutedExam> executedexam = con.getExecutedExam(message[1]);
 			serverMessage[1] = executedexam;
@@ -112,7 +110,6 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-
 		case "getExams": {/* client request all all the courses under some subject */
 			ArrayList<Exam> examsList = con.getExams(message[1]);
 			serverMessage[1] = examsList;
@@ -137,12 +134,10 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-
 		case "setExam": {/* client request is to create exam in DB */
 			con.createExam(message[1], message[2]);
 			break;
 		}
-
 		case "setExamCode": {/* client request is to create exam code in DB */
 			Boolean createExamCodeStatus;
 			createExamCodeStatus = con.createExamCode(message[1]);
@@ -150,7 +145,6 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-
 		case "getQuestionDetails": {
 			Question q = con.getQuestionDetails(message[1]);
 			serverMessage[1] = q;
@@ -165,7 +159,6 @@ public class EchoServer extends AbstractServer {
 			}
 			break;
 		}
-
 		case "updateQuestion": {
 			boolean flag;
 			flag = con.updateQuestion(message[1]);
@@ -173,7 +166,6 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-
 		case "deleteQuestion": {
 				Boolean flag;
 				try {
@@ -186,27 +178,23 @@ public class EchoServer extends AbstractServer {
 				}
 			break;
 		}
-
 		case "checkUserDetails": {
 			User user = con.checkUserDetails(message[1], message[2]);
 			serverMessage[1] = user;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		
 		case "updateExam": {
 			Boolean inserted = con.updateExam(message[1]);
 			serverMessage[1] = inserted;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		
 		case "updateFinishedExam": {
 			con.updateFinishedExam(message[1],message[2]);
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-
 		case "setExecutedExamLocked": {
 			Boolean isLocked = con.setExecutedExamLocked(message[1]);
 			serverMessage[1] = isLocked;
@@ -246,10 +234,9 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-
 		case "SetStatusToApproved": {
 			con.setStatusToAddingTimeRequest(((Object[]) msg)[1], "approved");
-			Object tmp[] = con.getadditionalTime((String) ((Object[]) msg)[1]);
+			Object tmp[] = con.getadditionalTime((String) ((Object[]) message)[1]);
 			serverMessage[0] = "addTime";
 			serverMessage[1] = tmp[0];// serverMessage[0]=requestId(String)
 			serverMessage[2] = tmp[1];// serverMessage[0]=time to add (Time)
@@ -259,15 +246,24 @@ public class EchoServer extends AbstractServer {
 		case "SetStatusToReject": {
 			con.setStatusToAddingTimeRequest(((Object[]) msg)[1], "rejected");
 			break;
-		}case "getStudentsList":{
+		}
+		case "getStudentsList":{
 			ArrayList<String> studentList=con.returnListForGetReport("Student");
 			serverMessage[0]="getStudentsList";
 			serverMessage[1]=studentList;
 			this.sendToAllClients(serverMessage);
 			break;
-		}case "getTeachersList":{
+		}
+		case "getTeachersList":{
 			ArrayList<String> teacherList=con.returnListForGetReport("Teacher");
 			serverMessage[0]="getTeachersList";
+			serverMessage[1]=teacherList;
+			this.sendToAllClients(serverMessage);
+			break;
+		}
+		case "getReportUser":{
+			ArrayList<String> teacherList=con.returnListForGetReport(((String)msg)[1]);
+			serverMessage[0]="getReportUser";
 			serverMessage[1]=teacherList;
 			this.sendToAllClients(serverMessage);
 			break;
