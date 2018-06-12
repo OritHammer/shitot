@@ -35,7 +35,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ocsf.server.ConnectionToClient;
 
-public class DirectorControl extends UserControl implements Initializable {
+public class DirectorControl extends UserControl implements Initializable { 
 	ObservableList<RequestForChangingTimeAllocated> addingTimeRequestsObservable = FXCollections.observableArrayList();
 	/// HOME TAB
 	@FXML
@@ -88,7 +88,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	@FXML
 	private ComboBox<String> coursesComboBox;
 
-	// FXML System information
+	// FXML System information 
 	/******************************************************************
 	 * homePageButtons
 	 **********************************************************/
@@ -124,12 +124,13 @@ public class DirectorControl extends UserControl implements Initializable {
 	}
 
 	public void openTimeRequestTable(ActionEvent e) {
+		Platform.runLater(()->{
 		final Node source = (Node) e.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
 		// stage.close();
 		stage.close();
 		openScreen("TimeRequestTable");
-
+		});
 	}
 
 	public void openStatisticReport(ActionEvent e) {
@@ -265,7 +266,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	@SuppressWarnings("unchecked") // showing list of request that waiting to answer
 	public void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList)
 			throws NullPointerException {
-
+		Platform.runLater(()->{
 		for (RequestForChangingTimeAllocated i : requestsList) {
 			addingTimeRequestsObservable.add(i);
 		}
@@ -280,8 +281,8 @@ public class DirectorControl extends UserControl implements Initializable {
 		timeAddedColumn.setCellValueFactory(new PropertyValueFactory<>("timeAdded"));
 		// requestsTable.getColumns().clear();
 		requestsTable.getColumns().addAll(examIDColumn, teacherNameColumn, timeAddedColumn);
+	});
 	}
-
 	// initialize the field in details of request
 	public void initAddingTimeRequestDetails(RequestForChangingTimeAllocated request) {
 		txtFATRTeachName.setText(request.getTeacherName());
