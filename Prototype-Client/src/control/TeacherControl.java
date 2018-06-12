@@ -827,11 +827,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		openScreen("HomeScreenTeacher");
 	}
 
+	/* close button was pressed */
 	public void loadCourses(ActionEvent e) throws IOException {
 		/* ask for the courses name */
+		try {
 		String subject = subjectsComboBox.getValue(); // get the subject code
-		if (subject == null)
-			return;
 		String[] subjectSubString = subject.split("-");
 		coursesComboBox.getSelectionModel().clearSelection();
 		connect(this); // connecting to server
@@ -839,6 +839,10 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[1] = subjectSubString[0].trim();
 		messageToServer[2] = Globals.getuserName();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
+		}
+		catch(NullPointerException exception) {
+			return;
+		}
 	}
 
 	public void loadExams(ActionEvent e) throws IOException {
