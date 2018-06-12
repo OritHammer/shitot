@@ -46,9 +46,9 @@ public class StudentControl extends UserControl implements Initializable {
 	public static Time solutionTime;
 	public static int remainTime;
 	public static Timer timer;
-	private int index=-1;
+	private int index = -1;
 	public static String timeToString;
-	public static HashMap<String,Integer> examAnswers;//saves the question id and the answers
+	public static HashMap<String, Integer> examAnswers;// saves the question id and the answers
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
 	@FXML
@@ -65,7 +65,7 @@ public class StudentControl extends UserControl implements Initializable {
 	private Calendar currentCalendar = Calendar.getInstance();
 	private Date currentTime = currentCalendar.getTime();
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
-	private static String executedID ;
+	private static String executedID;
 	FXMLLoader loader = new FXMLLoader();
 
 	// *********for student see his grades AND can order exam***********//
@@ -86,6 +86,7 @@ public class StudentControl extends UserControl implements Initializable {
 	private ComboBox<String> examCodeCombo;
 
 	ObservableList<ExamDetailsMessage> detailsList = FXCollections.observableArrayList();
+	ObservableList<String> executeExamList = FXCollections.observableArrayList();
 
 	// *******for student execute or download exam*********//
 	@FXML
@@ -95,7 +96,7 @@ public class StudentControl extends UserControl implements Initializable {
 	@FXML
 	private TextField userIDTextField;
 	@FXML
-	private Button 	finishButton;
+	private Button finishButton;
 	// ******************** student perform exam ************//
 	@FXML
 	private RadioButton correctRadioButton2;
@@ -125,12 +126,12 @@ public class StudentControl extends UserControl implements Initializable {
 	private Button prevBTN;
 	@FXML
 	private TextField timerTextField;
+
 	/************************ Class Methods *************************/
 	public void initialize(URL url, ResourceBundle rb) {
 		// connect(this);
-		switch (pageLabel.getText() ) { 
-		case ("Perform exam") :
-		{ 
+		switch (pageLabel.getText()) {
+		case ("Perform exam"): {
 			correctRadioButton1.setVisible(true);
 			correctRadioButton2.setVisible(true);
 			correctRadioButton3.setVisible(true);
@@ -139,21 +140,25 @@ public class StudentControl extends UserControl implements Initializable {
 			answer2.setVisible(true);
 			answer3.setVisible(true);
 			answer4.setVisible(true);
-			examAnswers=new HashMap<String,Integer>();
+			examAnswers = new HashMap<String, Integer>();
 			nextQuestion(null);
 			prevBTN.setVisible(false);
-			//timerTextField.setText("123");
-			//s=solutionTime.toString();
-			//timerTextField.setText(s);
-			remainTime=solutionTime.getHours()*3600+solutionTime.getMinutes()*60+solutionTime.getSeconds();//reamin time is he time in secods
-		
-			timer = new Timer(); 
-			timer.scheduleAtFixedRate(new TimerTask()
-			{ 
-				public void run()
-				{
-					int sec=setInterval();
-					if(remainTime==1) {
+			// timerTextField.setText("123");
+			// s=solutionTime.toString();
+			// timerTextField.setText(s);
+			remainTime = solutionTime.getHours() * 3600 + solutionTime.getMinutes() * 60 + solutionTime.getSeconds();// reamin
+																														// time
+																														// is
+																														// he
+																														// time
+																														// in
+																														// secods
+
+			timer = new Timer();
+			timer.scheduleAtFixedRate(new TimerTask() {
+				public void run() {
+					int sec = setInterval();
+					if (remainTime == 1) {
 						Platform.runLater(() -> openScreen("ErrorMessage", "Time is over"));
 						questionContent.setText("time is over click Finish");
 						correctRadioButton1.setVisible(false);
@@ -165,39 +170,40 @@ public class StudentControl extends UserControl implements Initializable {
 						answer3.setVisible(false);
 						answer4.setVisible(false);
 					}
-					timeToString=intToTime(sec).toString();
+					timeToString = intToTime(sec).toString();
 					timerTextField.setText(timeToString);
 				}
-			}
-				, 1000, 1000);
-			//courseName.setText(questioninexecutedexam.get(0).getId().substring(0, 2));
-		break ; 
+			}, 1000, 1000);
+			// courseName.setText(questioninexecutedexam.get(0).getId().substring(0, 2));
+			break;
 		}
-		case ("My Grades sheet " ) : 
-		{
+		case ("My Grades sheet "): {
 			getGradesFromServer();
-			break ; 
+			break;
 		}
-		default : return ; 
+		default:
+			return;
 		}
-		}
-		 {
-			
 	}
-	private static final int setInterval() 
+
 	{
-	if (remainTime == 1) 
-	timer.cancel(); 
-		return --remainTime; 
+
 	}
-	public static Time intToTime(int seconds)
-	{ 
-		int hours=seconds/3600;
-		int minutes=(seconds%3600)/60;
-		int sec=seconds%60;
-		Time t=new Time(hours,minutes,sec);
+
+	private static final int setInterval() {
+		if (remainTime == 1)
+			timer.cancel();
+		return --remainTime;
+	}
+
+	public static Time intToTime(int seconds) {
+		int hours = seconds / 3600;
+		int minutes = (seconds % 3600) / 60;
+		int sec = seconds % 60;
+		Time t = new Time(hours, minutes, sec);
 		return t;
 	}
+
 	/********************* general Functions *************************/
 	public void setStudentAuthor_Date_name() {// *** move to userControl rename userDetails
 		userNameLabel.setText(Globals.getFullName());
@@ -327,21 +333,22 @@ public class StudentControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 	}
 
-	public void refreshTable(ActionEvent e) {
-		detailsList.clear();  
-		getGradesFromServer();
-	}
-
 	/*********************
 	 * Student Order Copy
 	 * 
 	 * @throws IOException
 	 *************************/
 	public void orderExamPressed(ActionEvent e) {
-		messageToServer[0] = "getExamsCopyByUserName";
+		/*
+		 * messageToServer[0] = "getExamsCopyByUserName"; messageToServer[1] =
+		 * examCodeCombo.getValue(); messageToServer[2] = null;
+		 * chat.handleMessageFromClientUI(messageToServer);// send the message to server
+		 */
+
+		messageToServer[0] = "checkExecutedExam";
 		messageToServer[1] = examCodeCombo.getValue();
-		messageToServer[2] = null;
-		chat.handleMessageFromClientUI(messageToServer);// send the message to server
+		messageToServer[2] = "Copy";
+		chat.handleMessageFromClientUI(messageToServer);
 	}
 
 	public void downloadExamPressed() {
@@ -357,13 +364,13 @@ public class StudentControl extends UserControl implements Initializable {
 	public void excecuteExam(ActionEvent e) throws IOException, SQLException {// click on the button "execute exam"
 		if (codeTextField.getText().equals("") || userIDTextField.getText().equals((""))) {
 			openScreen("ErrorMessage", "Error in executed exam id");
-			return;  
+			return;
 		} else if (!userIDTextField.getText().equals((Globals.getUser().getUserID()))) {
 			openScreen("ErrorMessage", "Your ID is incorrect"); // if user ID isn't correct
 			return;
 		}
 		// everything fine
-		 executedID = codeTextField.getText();
+		executedID = codeTextField.getText();
 		connect(this); // connecting to server
 		messageToServer[0] = "checkExecutedExam";
 		messageToServer[1] = executedID;
@@ -408,95 +415,101 @@ public class StudentControl extends UserControl implements Initializable {
 	/********************** Handling message from server ***********************/
 	@SuppressWarnings("unchecked")
 	private void checkExecutedExam(Object[] message) {
-		 Object[] msgFromServer=(Object[]) message[1];
+		Object[] msgFromServer = (Object[]) message[1];
 		if (msgFromServer == null) {
-			 openScreen("ErrorMessage","Exam Locked or not defined");
+			openScreen("ErrorMessage", "Exam Locked or not defined");
 			return;
-		}
-		String type = (String) msgFromServer[1];
-		if (type.equals("manual")) {
-			// We Need To Build This Functionality !!!!!!!
+		} else if (((String) msgFromServer[2]).equals("data of exam Copy")) {
+  
 		} else {
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					solutionTime=(Time)message[2];
-					questioninexecutedexam = (ArrayList<Question>) msgFromServer[0];
-					openScreen("ComputerizedExam");
-					
-				}
-			});
+			String type = (String) msgFromServer[1];
+			if (type.equals("manual")) {
+				// We Need To Build This Functionality !!!!!!!
+			} else {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						solutionTime = (Time) message[2];
+						questioninexecutedexam = (ArrayList<Question>) msgFromServer[0];
+						openScreen("ComputerizedExam");
+
+					}
+				});
+			}
 		}
 	}
+
 	@SuppressWarnings("deprecation")
-	public void addTimeToExam(Object[]message) {
-	int timeToAdd;
-	Time timeFromMessage=(Time)message[2];
-	if(executedID.equals((String)message[1])){//if the student perform the relevant exam
-		timeToAdd=timeFromMessage.getHours()*3600+timeFromMessage.getMinutes()*60+timeFromMessage.getSeconds();//reamin time is he time in secods
-		remainTime+=timeToAdd;
+	public void addTimeToExam(Object[] message) {
+		int timeToAdd;
+		Time timeFromMessage = (Time) message[2];
+		if (executedID.equals((String) message[1])) {// if the student perform the relevant exam
+			timeToAdd = timeFromMessage.getHours() * 3600 + timeFromMessage.getMinutes() * 60
+					+ timeFromMessage.getSeconds();// reamin time is he time in secods
+			remainTime += timeToAdd;
+		}
 	}
-	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void showGradesOnTable(ArrayList<ExamDetailsMessage> detailsFromS) {
-		
+
 		for (ExamDetailsMessage edM : detailsFromS) {
 			detailsList.add(edM);
+			executeExamList.add(edM.getExcecutedExamID());
 		}
-		
-		if(examGradesTable != null && examGradesTable.getColumns() != null )
+
+		if (examGradesTable != null && examGradesTable.getColumns() != null)
 			examGradesTable.getColumns().clear();
-		
+		if (examCodeCombo != null && examCodeCombo.getItems() != null)
+			examCodeCombo.getItems().clear();
+		examCodeCombo.setItems(executeExamList);
 		examGradesTable.setItems(detailsList);
 		examCodeColumn.setCellValueFactory(new PropertyValueFactory("examID"));
 		dateColumn.setCellValueFactory(new PropertyValueFactory("examDate"));
 		gradeColumn.setCellValueFactory(new PropertyValueFactory("examGrade"));
 		courseCodeColumn.setCellValueFactory(new PropertyValueFactory("examCourse"));
 		executedIDCol.setCellValueFactory(new PropertyValueFactory<>("excecutedExamID"));
-		examGradesTable.getColumns().addAll(examCodeColumn, courseCodeColumn, gradeColumn, dateColumn,executedIDCol);
+		examGradesTable.getColumns().addAll(examCodeColumn, courseCodeColumn, gradeColumn, dateColumn, executedIDCol);
 		/*
-		 * also need to take from detailsFromS the exam_id's and insert
-		 * them to observeable list into the relevante combobox .
+		 * also need to take from detailsFromS the exam_id's and insert them to
+		 * observeable list into the relevante combobox .
 		 */
 	}
 
 	/************************ Student performing exam *************/
 	@FXML
 	private void nextQuestion(ActionEvent e) {
-		if(index>=0)
-		addAnswerToHashMap();
+		if (index >= 0)
+			addAnswerToHashMap();
 		index++;
 		setQuestion();
-		if(index+1==questioninexecutedexam.size()) {
+		if (index + 1 == questioninexecutedexam.size()) {
 			nextBTN.setVisible(false);
 		}
 		prevBTN.setVisible(true);
 
 	}
+
 	private void setQuestion() {
 
-		/* before setting questions need to get the answer the student selected
-		 * if there is such answer , if null need to put on the correct 
-		 * answer of the current question as null . 
+		/*
+		 * before setting questions need to get the answer the student selected if there
+		 * is such answer , if null need to put on the correct answer of the current
+		 * question as null .
 		 * 
-		 * need to use 
-		 * 	RadioButton selected = (RadioButton) group.getSelectedToggle();
-			String selectedId = selected.getId();
-			int correctAns = need to get the number of the selected answer with switch case 
-			(chcking the value of "index" can be negative ? 
-			questioninexecutedexam.get(--index).setCorrectAnswer(correctAns);
+		 * need to use RadioButton selected = (RadioButton) group.getSelectedToggle();
+		 * String selectedId = selected.getId(); int correctAns = need to get the number
+		 * of the selected answer with switch case (chcking the value of "index" can be
+		 * negative ? questioninexecutedexam.get(--index).setCorrectAnswer(correctAns);
 		 */
-		
-		
+
 		correctRadioButton1.setSelected(false);
 		correctRadioButton2.setSelected(false);
 		correctRadioButton3.setSelected(false);
 		correctRadioButton4.setSelected(false);
 
-		if(examAnswers.containsKey(questioninexecutedexam.get(index).getId()))
-		{
-			switch (examAnswers.get(questioninexecutedexam.get(index).getId()))
-			{
+		if (examAnswers.containsKey(questioninexecutedexam.get(index).getId())) {
+			switch (examAnswers.get(questioninexecutedexam.get(index).getId())) {
 			case 1:
 				correctRadioButton1.setSelected(true);
 				break;
@@ -515,7 +528,7 @@ public class StudentControl extends UserControl implements Initializable {
 		answer1.setText(questioninexecutedexam.get(index).getAnswer1());
 		answer2.setText(questioninexecutedexam.get(index).getAnswer2());
 		answer3.setText(questioninexecutedexam.get(index).getAnswer3());
-		answer4.setText(questioninexecutedexam.get(index).getAnswer4());		
+		answer4.setText(questioninexecutedexam.get(index).getAnswer4());
 	}
 
 	@FXML
@@ -523,17 +536,18 @@ public class StudentControl extends UserControl implements Initializable {
 		addAnswerToHashMap();
 		index--;
 		setQuestion();
-		if(index==0) {
+		if (index == 0) {
 			prevBTN.setVisible(false);
 		}
 		nextBTN.setVisible(true);
 	}
+
 	@FXML
 	private void finishExam(ActionEvent e) {
 		addAnswerToHashMap();
-		String details[]=new String [2];
-		details[0]=executedID;
-		details[1]=Globals.getUser().getUsername();
+		String details[] = new String[2];
+		details[0] = executedID;
+		details[1] = Globals.getUser().getUsername();
 		connect(this);
 		messageToServer[0] = "finishExam";
 		messageToServer[1] = details;
@@ -550,33 +564,28 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 		openScreen("NewDesignHomeScreenStudent");
 	}
-	
-    public void addAnswerToHashMap() {
-    	int selectedAnswer=0;
-    	if(index<=-1)
-    		return;
-    	String q_id=questioninexecutedexam.get(index).getId();
-    	
-    	if(correctRadioButton1.isSelected()) {
-    		selectedAnswer=1;
-    	}
-    	else if(correctRadioButton2.isSelected()) {
-    		selectedAnswer=2;
-    	}
-    	else if(correctRadioButton3.isSelected()) {
-    		selectedAnswer=3;
-    	}
-    	else if(correctRadioButton4.isSelected()) {
-    		selectedAnswer=4;
-    	}
-    	if(examAnswers.containsKey(q_id))
-    	{
-    		examAnswers.replace(q_id, selectedAnswer);
-    	}
-    	else {
-    		examAnswers.put(q_id, selectedAnswer);
-    	}
-    	
-    }
-	
+
+	public void addAnswerToHashMap() {
+		int selectedAnswer = 0;
+		if (index <= -1)
+			return;
+		String q_id = questioninexecutedexam.get(index).getId();
+
+		if (correctRadioButton1.isSelected()) {
+			selectedAnswer = 1;
+		} else if (correctRadioButton2.isSelected()) {
+			selectedAnswer = 2;
+		} else if (correctRadioButton3.isSelected()) {
+			selectedAnswer = 3;
+		} else if (correctRadioButton4.isSelected()) {
+			selectedAnswer = 4;
+		}
+		if (examAnswers.containsKey(q_id)) {
+			examAnswers.replace(q_id, selectedAnswer);
+		} else {
+			examAnswers.put(q_id, selectedAnswer);
+		}
+
+	}
+
 }
