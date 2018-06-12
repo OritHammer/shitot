@@ -791,4 +791,22 @@ public class MysqlConnection {
 		}
 		return listForGetReport;
 	}
+
+	public HashMap<String,Integer> getStudentAns(String userName, String executedExamID) {
+		HashMap<String, Integer> stdAns = new HashMap<String, Integer>();
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery( 
+					"		select questionID , answer" + 
+					"		from shitot.studentanswerquestions \r\n" + 
+					"		where executedID = '"+executedExamID+"' AND studentUserName = '"+userName+"' ; ");
+		while(rs.next()) {
+			stdAns.put(rs.getString(0), rs.getInt(1));
+		}
+		
+	}catch (SQLException e) {
+		e.printStackTrace();
+	}
+		return stdAns;
+}
 }

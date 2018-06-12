@@ -47,6 +47,7 @@ public class StudentControl extends UserControl implements Initializable {
 	public static int remainTime;
 	public static Timer timer;
 	private int index = -1;
+	private Boolean copyFlag = false ; 
 	public static String timeToString;
 	public static HashMap<String, Integer> examAnswers;// saves the question id and the answers
 	/********************* Variable declaration *************************/
@@ -126,6 +127,11 @@ public class StudentControl extends UserControl implements Initializable {
 	private Button prevBTN;
 	@FXML
 	private TextField timerTextField;
+	// ******************** Showing exam copy  ************//
+@FXML
+private Label studentAnswer ; 	
+@FXML
+private Label selectedAnswer ; 	
 
 	/************************ Class Methods *************************/
 	public void initialize(URL url, ResourceBundle rb) {
@@ -346,8 +352,8 @@ public class StudentControl extends UserControl implements Initializable {
 		 */
 
 		messageToServer[0] = "checkExecutedExam";
-		messageToServer[1] = examCodeCombo.getValue();
-		messageToServer[2] = "Copy";
+		messageToServer[1] = examCodeCombo.getValue(); // sending executed exam id 
+		messageToServer[2] = "Copy "+Globals.getUser().getUsername(); // sending the user name 
 		chat.handleMessageFromClientUI(messageToServer);
 	}
 
@@ -402,6 +408,8 @@ public class StudentControl extends UserControl implements Initializable {
 				addTimeToExam(msgFromServer);
 				break;
 			}
+			case "showingCopy" : 
+				showingCopy((ArrayList<Question>)msgFromServer[1],(HashMap<String, Integer>)msgFromServer[2]);
 			}
 
 		} catch (IndexOutOfBoundsException e) {
@@ -419,9 +427,7 @@ public class StudentControl extends UserControl implements Initializable {
 		if (msgFromServer == null) {
 			openScreen("ErrorMessage", "Exam Locked or not defined");
 			return;
-		} else if (((String) msgFromServer[2]).equals("data of exam Copy")) {
-  
-		} else {
+		}  else {
 			String type = (String) msgFromServer[1];
 			if (type.equals("manual")) {
 				// We Need To Build This Functionality !!!!!!!
@@ -438,6 +444,19 @@ public class StudentControl extends UserControl implements Initializable {
 			}
 		}
 	}
+	public void showingCopy(ArrayList<Question> ques ,HashMap<String, Integer>ans) {
+		
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				examAnswers = (HashMap<String, Integer>) ans;
+				questioninexecutedexam = (ArrayList<Question>) ques;
+				copyFlag = true ; 
+				openScreen("ComputerizedExam");
+			}
+		});
+	}
+
 
 	@SuppressWarnings("deprecation")
 	public void addTimeToExam(Object[] message) {
@@ -529,6 +548,27 @@ public class StudentControl extends UserControl implements Initializable {
 		answer2.setText(questioninexecutedexam.get(index).getAnswer2());
 		answer3.setText(questioninexecutedexam.get(index).getAnswer3());
 		answer4.setText(questioninexecutedexam.get(index).getAnswer4());
+		
+		if(copyFlag==true) {
+		studentAnswer.setVisible(true) ; 	
+		selectedAnswer.setVisible(true);
+		switch(questioninexecutedexam.get(index).getCorrectAnswer()) {
+		case "1": {
+			correctRadioButton1.setSelected(true);
+			break;
+		}
+		case "2":
+			correctRadioButton2.setSelected(true);
+			break;
+		case "3":
+			correctRadioButton3.setSelected(true);
+			break;
+		case "4":
+			correctRadioButton4.setSelected(true);
+			break;
+		}
+		selectedAnswer.setText(examAnswers.get(questioninexecutedexam.get(index).getId()).toString());
+		}
 	}
 
 	@FXML
