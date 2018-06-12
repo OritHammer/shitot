@@ -112,7 +112,7 @@ public class MysqlConnection {
 			ResultSet rs = stmt
 					.executeQuery("select distinct questioninexam.question_ID , executedexam.executedExamID from "
 							+ "shitot.questioninexam , shitot.executedexam where questioninexam.e_id ="
-							+ " executedexam.exam_id and executedexam.status = 'open' ");
+							+ " executedexam.exam_id and executedexam.status = 'open' AND executedexam.numOfStudentStarted>0");
 
 			while (rs.next()) {
 				if (q.getId().equals(rs.getString(1))) {
