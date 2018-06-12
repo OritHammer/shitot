@@ -45,10 +45,13 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	private static ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
 	private ObservableList<Question> questionObservableList;
-	private ObservableList<Exam> exams;
 	private Object[] messageToServer = new Object[3];
+	private static boolean blockLeftButton;
+	private ObservableList<Exam> exams;
 	private Question questionSelected;
+	private static String tempExamId;
 	private Exam examSelected;
+	private Exam oldExam;
 
 	/* fxml variables */
 	@FXML
@@ -167,8 +170,6 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private Button right;
 	private Question oldQuestion;
-	private Exam oldExam;
-	private static String tempExamId;
 
 	/* check the content message from server */
 	@SuppressWarnings("unchecked")
@@ -216,10 +217,13 @@ public class TeacherControl extends UserControl implements Initializable {
 			{
 				try {
 					((ArrayList<QuestionInExam>) msg[1]).forEach(questionInExamObservable::add);
-					Platform.runLater(() -> openScreen("UpdateQuestionInExam"));
-					//left.setDisable(true);
+					Platform.runLater(() -> {
+					blockLeftButton=true;
+					openScreen("UpdateQuestionInExam");
+					});
 				} catch (NullPointerException exception) {
 					Platform.runLater(() -> openScreen("ErrorMessage", "exam does not have any question"));
+					blockLeftButton=false;
 
 				}
 				break;
@@ -345,6 +349,9 @@ public class TeacherControl extends UserControl implements Initializable {
 			break;
 		}
 		case ("Update question in exam"): {
+			if(blockLeftButton) {
+				left.setDisable(true);
+			}
 			setToQuestionInExamTableView();
 			connect(this); // connecting to server
 			messageToServer[0] = "getQuestionsToTable";
