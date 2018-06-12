@@ -333,14 +333,22 @@ public class TeacherControl extends UserControl implements Initializable {
 			userText.setText(Globals.getFullName());
 			break;
 		}
+		case ("Update question in exam"): {
+			setToQuestionInExamTableView();
+			connect(this); // connecting to server
+			messageToServer[0] = "getQuestionsToTable";
+			messageToServer[1] = questionInExamObservable.get(0).getQuestionID().substring(0, 2);
+			messageToServer[2] = Globals.getuserName();
+			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
+			break;
+		}
 		case ("Create question"):
 		case ("Create exam"):
 		case ("Update question"):
 		case ("Create exam code"):
 		case ("Extend exam time"):
 		case ("Lock exam"):
-		case ("Update exam"):
-		case ("Update question in exam"): {
+		case ("Update exam"): {
 
 			connect(this);
 
@@ -349,10 +357,7 @@ public class TeacherControl extends UserControl implements Initializable {
 				typeComboBox.setItems(FXCollections.observableArrayList("computerized", "manual"));
 				break;
 			}
-			case ("Update question in exam"): {
-				setToQuestionInExamTableView();
-				break;
-			}
+
 			case ("Extend exam time"):
 			case ("Lock exam"): {
 				messageToServer[0] = "getExecutedExams";
@@ -512,16 +517,14 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 
 	}
-
+	/* setting the question in the table view (question in exam) */
 	private void setToQuestionInExamTableView() {
 		questionPointsTableView.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
-		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));// display the id in the //
-																							// // table view
-		questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));// display the points in //
-																							// the
-		questionsInExamTableView.setItems(questionInExamObservable);// table view
+		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));// display the id in the table view
+		questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));// display the points in table view												// the
+		questionsInExamTableView.setItems(questionInExamObservable);
 	}
-
+	/* removing the question from the tableview */
 	public void removeFromTableView(ActionEvent e) {
 		ObservableList<QuestionInExam> questiontoremove;
 		int flag = 0;
@@ -547,7 +550,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 		// add the question back to the tableview
 	}
-
+	/* creating exam */
 	@SuppressWarnings("static-access")
 	public void createExam(ActionEvent e) {
 		int sumOfPoints = 0;
@@ -595,11 +598,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		try {
 			chat.closeConnection();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		} // close the connection
+		}
 	}
-
+	
+	/* removing the question from the tableview */
 	public void updateExam(ActionEvent e) {
 		int sumOfPoints = 0;
 		for (QuestionInExam q : questionInExamObservable) {
@@ -619,9 +622,8 @@ public class TeacherControl extends UserControl implements Initializable {
 		try {
 			chat.closeConnection();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		} // close the connection
+		} 
 	}
 
 	public void createExamCode(ActionEvent e) {
