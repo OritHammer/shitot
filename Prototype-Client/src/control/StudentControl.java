@@ -47,7 +47,7 @@ public class StudentControl extends UserControl implements Initializable {
 	public static int remainTime;
 	public static Timer timer;
 	private int index = -1;
-	private Boolean copyFlag = false ; 
+	private static Boolean copyFlag = false ; 
 	public static String timeToString;
 	public static HashMap<String, Integer> examAnswers;// saves the question id and the answers
 	/********************* Variable declaration *************************/
