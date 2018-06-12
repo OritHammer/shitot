@@ -328,6 +328,7 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 
 	public void refreshTable(ActionEvent e) {
+		detailsList.clear();  
 		getGradesFromServer();
 	}
 
@@ -438,17 +439,20 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void showGradesOnTable(ArrayList<ExamDetailsMessage> detailsFromS) {
+		
 		for (ExamDetailsMessage edM : detailsFromS) {
 			detailsList.add(edM);
 		}
-
+		
+		if(examGradesTable != null && examGradesTable.getColumns() != null )
+			examGradesTable.getColumns().clear();
+		
 		examGradesTable.setItems(detailsList);
 		examCodeColumn.setCellValueFactory(new PropertyValueFactory("examID"));
 		dateColumn.setCellValueFactory(new PropertyValueFactory("examDate"));
 		gradeColumn.setCellValueFactory(new PropertyValueFactory("examGrade"));
 		courseCodeColumn.setCellValueFactory(new PropertyValueFactory("examCourse"));
 		executedIDCol.setCellValueFactory(new PropertyValueFactory<>("excecutedExamID"));
-		examGradesTable.getColumns().removeAll();
 		examGradesTable.getColumns().addAll(examCodeColumn, courseCodeColumn, gradeColumn, dateColumn,executedIDCol);
 		/*
 		 * also need to take from detailsFromS the exam_id's and insert

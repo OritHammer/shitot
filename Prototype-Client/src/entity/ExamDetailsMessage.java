@@ -23,8 +23,8 @@ public class ExamDetailsMessage implements Serializable {
 
 	public ExamDetailsMessage(String eID,String eGrade,String eDate ,String excecuted) {
 		examID = eID;
-		examDate = eDate;
 		examGrade = eGrade;
+		examDate = eDate;
 		examCourse = eID.substring(2, 4);
 		excecutedExamID = excecuted ; 
 	}

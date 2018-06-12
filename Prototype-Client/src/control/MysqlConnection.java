@@ -233,8 +233,9 @@ public class MysqlConnection {
 			 */
 
 			while (rs.next()) {
-				detailsList.add(new ExamDetailsMessage( rs.getString(1), ""+rs.getString(1), rs.getDate(3).toString(), rs.getString(4)));
+				detailsList.add(new ExamDetailsMessage( rs.getString(1), ""+rs.getString(2), rs.getDate(3).toString(), rs.getString(4)));
 			}
+			rs.close();
 		} catch (NullPointerException e) {
 			System.out.println("No data from server");
 			return null;
