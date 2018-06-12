@@ -66,46 +66,41 @@ public class MysqlConnection {
 	public synchronized void createQuestion(Object subject, Object question) {
 		String fullQuestionNumber;
 		int questionNumber;
-		int first=0;
-		int last=0;
-		int flag=0;
+		int first = 0;
+		int last = 0;
+		int flag = 0;
 		Question q = (Question) question;
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT (question_id) FROM questions" + " WHERE question_id like "
-					+ "\"" + subject + "%\"" + ";");
+			ResultSet rs = stmt.executeQuery(
+					"SELECT (question_id) FROM questions" + " WHERE question_id like " + "\"" + subject + "%\"" + ";");
 			if (!rs.isBeforeFirst()) {
 				first = 0;
-			}
-			else
-			{
-				while(rs.next())
-				{
-						first = Integer.parseInt(rs.getString(1).substring(2, 5));
-						if(rs.next())
-						{
-							last = Integer.parseInt(rs.getString(1).substring(2, 5));
-							rs.previous();
-						}
-						if(last-first > 1)
-						{
-							break;
-						}
-						
+			} else {
+				while (rs.next()) {
+					first = Integer.parseInt(rs.getString(1).substring(2, 5));
+					if (rs.next()) {
+						last = Integer.parseInt(rs.getString(1).substring(2, 5));
+						rs.previous();
+					}
+					if (last - first > 1) {
+						break;
+					}
+
 				}
 			}
 			questionNumber = first + 1;
 			fullQuestionNumber = (String) subject;
 			fullQuestionNumber = fullQuestionNumber + "" + String.format("%03d", questionNumber);
 			stmt.executeUpdate("INSERT INTO shitot.questions VALUES(\"" + fullQuestionNumber.trim() + "\",\""
-					+ q.getTeacherName().trim() + "\",\"" + q.getQuestionContent() + "\",\"" + q.getAnswer1()
-					+ "\",\"" + q.getAnswer2() + "\",\"" + q.getAnswer3() + "\",\""
-					+ q.getAnswer4() + "\",\"" + String.valueOf(q.getCorrectAnswer()) + "\");");
+					+ q.getTeacherName().trim() + "\",\"" + q.getQuestionContent() + "\",\"" + q.getAnswer1() + "\",\""
+					+ q.getAnswer2() + "\",\"" + q.getAnswer3() + "\",\"" + q.getAnswer4() + "\",\""
+					+ String.valueOf(q.getCorrectAnswer()) + "\");");
 
 			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			}
+		}
 	}
 
 	public synchronized Boolean updateQuestion(Object question) {
@@ -114,26 +109,26 @@ public class MysqlConnection {
 
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("select distinct questioninexam.question_ID , executedexam.executedExamID from "
-					+ "shitot.questioninexam , shitot.executedexam where questioninexam.e_id ="
-					+ " executedexam.exam_id and executedexam.status = 'open' ");
+			ResultSet rs = stmt
+					.executeQuery("select distinct questioninexam.question_ID , executedexam.executedExamID from "
+							+ "shitot.questioninexam , shitot.executedexam where questioninexam.e_id ="
+							+ " executedexam.exam_id and executedexam.status = 'open' ");
 
-				while(rs.next())
-				{
-					if(q.getId().equals(rs.getString(1))) {
-						rs.close();
-						return false;
-					}
+			while (rs.next()) {
+				if (q.getId().equals(rs.getString(1))) {
+					rs.close();
+					return false;
 				}
-				rs.close();
-				// query update on DB the correct answer of question that have the given
-				// questionID from client
-				stmt.executeUpdate("UPDATE questions SET question_text=\"" + q.getQuestionContent() + "\", answer1=\"" 
-				+ q.getAnswer1() + "\", answer2 = \"" + q.getAnswer2()+"\", answer3= \"" +q.getAnswer3()+"\","
-						+ "answer4= \"" +q.getAnswer4()+ "\", correct_answer= \"" + q.getCorrectAnswer()+"\" WHERE Question_id=\""
-						+ q.getId() + "\";");
-				
-				return true;
+			}
+			rs.close();
+			// query update on DB the correct answer of question that have the given
+			// questionID from client
+			stmt.executeUpdate("UPDATE questions SET question_text=\"" + q.getQuestionContent() + "\", answer1=\""
+					+ q.getAnswer1() + "\", answer2 = \"" + q.getAnswer2() + "\", answer3= \"" + q.getAnswer3() + "\","
+					+ "answer4= \"" + q.getAnswer4() + "\", correct_answer= \"" + q.getCorrectAnswer()
+					+ "\" WHERE Question_id=\"" + q.getId() + "\";");
+
+			return true;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -142,24 +137,24 @@ public class MysqlConnection {
 		// stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
 
 	}
-	
+
 	public Boolean deleteQuestion(Object question) throws SQLException {
 		try {
 			// Statement stmt;
 			stmt = conn.createStatement();
 			Question q = (Question) question;
-			ResultSet rs = stmt.executeQuery("select distinct questioninexam.question_ID , executedexam.executedExamID from "
-					+ "shitot.questioninexam , shitot.executedexam where questioninexam.e_id ="
-					+ " executedexam.exam_id and executedexam.status = 'open' ");
+			ResultSet rs = stmt
+					.executeQuery("select distinct questioninexam.question_ID , executedexam.executedExamID from "
+							+ "shitot.questioninexam , shitot.executedexam where questioninexam.e_id ="
+							+ " executedexam.exam_id and executedexam.status = 'open' ");
 
-				while(rs.next())
-				{
-					if(q.getId().equals(rs.getString(1))) {
-						rs.close();
-						return false;
-					}
+			while (rs.next()) {
+				if (q.getId().equals(rs.getString(1))) {
+					rs.close();
+					return false;
 				}
-				rs.close();
+			}
+			rs.close();
 			// questionID from client
 			stmt.executeUpdate("DELETE FROM questions WHERE question_id=\"" + q.getId() + "\";");
 			return true;
@@ -168,15 +163,16 @@ public class MysqlConnection {
 			return false;
 		}
 	}
+
 	public synchronized boolean setExecutedExamLocked(Object executedExamID) {
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate("Update shitot.executedexam SET status=\"close\" where executedExamID=\""
 					+ executedExamID.toString() + "\";");
-			return(true);
+			return (true);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return(false);
+			return (false);
 		}
 	}
 
@@ -194,13 +190,15 @@ public class MysqlConnection {
 			// if the user is existing
 			User newUser = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
 					rs.getString(6)); // in section 5 need to insert "connected"
-			
-			 //updating user status 
-		/*	 stmt.executeUpdate( "UPDATE users " +
-			  "SET status=\"connected\" WHERE username=\""+userID+"\" AND password=\""
-			  +userPass+"\";");// setting a new status
-			  System.out.println("user set as connected");*/
-			 
+
+			// updating user status
+			/*
+			 * stmt.executeUpdate( "UPDATE users " +
+			 * "SET status=\"connected\" WHERE username=\""+userID+"\" AND password=\""
+			 * +userPass+"\";");// setting a new status
+			 * System.out.println("user set as connected");
+			 */
+
 			return newUser;
 			// in the end userDetails will have the UserID,userName,role
 		} catch (SQLException e) {
@@ -212,8 +210,7 @@ public class MysqlConnection {
 	public void performLogout(Object userName) {
 		try {
 			stmt = conn.createStatement();
-			stmt.executeUpdate(
-					"UPDATE users " + "SET status=\"unconnected\" WHERE username=\"" + userName+ "\";");
+			stmt.executeUpdate("UPDATE users " + "SET status=\"unconnected\" WHERE username=\"" + userName + "\";");
 			System.out.println("user set as unconnected");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -227,13 +224,14 @@ public class MysqlConnection {
 			ResultSet rs = stmt.executeQuery("SELECT  E.exam_id  , stdE.grade  , stdE.date , E.executedExamID "
 					+ " FROM shitot.executedexam  E , shitot.studentperformedexam  stdE "
 					+ "WHERE E.executedExamID = stdE.executedexam_id AND stdE.student_UserName =\"" + userName
-					+ "\" AND E.status = 'close'  ; "); 
+					+ "\" AND E.status = 'close'  ; ");
 			/*
 			 * if (!rs.first()) { return null; }
 			 */
 
 			while (rs.next()) {
-				detailsList.add(new ExamDetailsMessage( rs.getString(1), ""+rs.getString(2), rs.getDate(3).toString(), rs.getString(4)));
+				detailsList.add(new ExamDetailsMessage(rs.getString(1), "" + rs.getString(2), rs.getDate(3).toString(),
+						rs.getString(4)));
 			}
 			rs.close();
 		} catch (NullPointerException e) {
@@ -308,10 +306,10 @@ public class MysqlConnection {
 			ResultSet rs = stmt
 					.executeQuery("SELECT * FROM shitot.requestforchangingtimeallocated where isApproved='waiting';");
 			while (rs.next()) {
-				
+
 				requestList.add(new RequestForChangingTimeAllocated(rs.getString(1), rs.getString(2), rs.getString(3),
-					rs.getString(4), rs.getString(5),rs.getTime(6)));
-				
+						rs.getString(4), rs.getString(5), rs.getTime(6)));
+
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -351,12 +349,13 @@ public class MysqlConnection {
 		String userName = (String) teacherUserName;
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT question_id,teacher_name,question_text,answer1,answer2,answer3,answer4,Correct_answer FROM questions,teacherincourse"
-					+ " WHERE Question_id like " + "\"" + subject + "%\" AND UserNameTeacher=\"" + userName
-					+ "\"And courseID like \"" + subject + "%\";");
+			ResultSet rs = stmt.executeQuery(
+					"SELECT question_id,teacher_name,question_text,answer1,answer2,answer3,answer4,Correct_answer FROM questions,teacherincourse"
+							+ " WHERE Question_id like " + "\"" + subject + "%\" AND UserNameTeacher=\"" + userName
+							+ "\"And courseID like \"" + subject + "%\";");
 			while (rs.next()) {
-				questionList.add(new Question(rs.getString(1),rs.getString(2),rs.getString(3),
-						rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8)));
+				questionList.add(new Question(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+						rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8)));
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -364,7 +363,7 @@ public class MysqlConnection {
 		}
 		return questionList;
 	}
-	
+
 	public Question getQuestionDetails(Object quest) {
 		// ArrayList<String> answerList = new ArrayList<String>();
 		// Statement stmt;
@@ -380,8 +379,8 @@ public class MysqlConnection {
 
 			rs.next();
 			// inserting the data to String List , order by the same order in DB
-			question = new Question(rs.getString(1),rs.getString(2),null,rs.getString(3),
-					rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7));
+			question = new Question(rs.getString(1), rs.getString(2), null, rs.getString(3), rs.getString(4),
+					rs.getString(5), rs.getString(6), rs.getString(7));
 
 			rs.close();
 
@@ -432,7 +431,7 @@ public class MysqlConnection {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public synchronized void createExam(Object questionInExams, Object examDetails) {
 		@SuppressWarnings("unchecked")
 		ArrayList<QuestionInExam> questionInExam = (ArrayList<QuestionInExam>) questionInExams;
@@ -470,7 +469,7 @@ public class MysqlConnection {
 		// stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
 
 	}
-	
+
 	public synchronized void updateFinishedExam(Object questionInExams, Object examId) {
 		@SuppressWarnings("unchecked")
 		int questionCounter = 1;
@@ -478,11 +477,11 @@ public class MysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			for (QuestionInExam q : questionInExam) {
-				stmt.executeUpdate("DELETE FROM questioninexam WHERE e_id=\"" + (String)examId + "\" ;");
-				
+				stmt.executeUpdate("DELETE FROM questioninexam WHERE e_id=\"" + (String) examId + "\" ;");
+
 			}
 			for (QuestionInExam q : questionInExam) {
-				stmt.executeUpdate("INSERT INTO shitot.questioninexam VALUES(\"" + (String)examId + "\",\""
+				stmt.executeUpdate("INSERT INTO shitot.questioninexam VALUES(\"" + (String) examId + "\",\""
 						+ q.getQuestionID() + "\",\"" + (questionCounter++) + "\",\"" + q.getPoints() + "\");");
 			}
 
@@ -549,8 +548,8 @@ public class MysqlConnection {
 		ArrayList<ExecutedExam> executedexam = new ArrayList<ExecutedExam>();
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(
-					"SELECT * FROM executedexam WHERE teacherName=\"" + teacherUserName.toString() + "\" AND status='open';");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM executedexam WHERE teacherName=\""
+					+ teacherUserName.toString() + "\" AND status='open';");
 			while (rs.next()) {
 				executedexam.add(new ExecutedExam(rs.getString(1), Integer.parseInt(rs.getString(2)),
 						Integer.parseInt(rs.getString(3)), Integer.parseInt(rs.getString(4)),
@@ -573,7 +572,7 @@ public class MysqlConnection {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM exams WHERE e_id like \"" + examIDStart + "%\";");
 			while (rs.next()) {
-				exam=new Exam();
+				exam = new Exam();
 				exam.setE_id(rs.getString(1));
 				exam.setSolutionTime(rs.getString(2));
 				exam.setRemarksForStudent(rs.getString(3));
@@ -618,36 +617,36 @@ public class MysqlConnection {
 
 	@SuppressWarnings("null")
 	public Object[] checkExecutedExam(Object executedExamID) {
-		executedExamID=(String)executedExamID;
-		ArrayList<Question> questionsinexam=null;
-		Object []details=new Object[2];
+		executedExamID = (String) executedExamID;
+		ArrayList<Question> questionsinexam = null;
+		Object[] details = new Object[2];
 		String typeOfExam;
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT executedExamID,type FROM executedexam,exams WHERE "
-					+ "executedExamID=\""+executedExamID+"\" AND status=\"open\" AND exam_id=e_id;");
+					+ "executedExamID=\"" + executedExamID + "\" AND status=\"open\" AND exam_id=e_id;");
 			if (!rs.isBeforeFirst()) {
 				System.out.println("no code found");
 				rs.close();
-				return(null);
+				return (null);
 			}
 			rs.next();
-			typeOfExam=rs.getString(2);
+			typeOfExam = rs.getString(2);
 			questionsinexam = new ArrayList<Question>();
 			Question question;
-			rs = stmt.executeQuery("SELECT * " + 
-					"from (select questioninexam.question_ID id "+
-					"from   shitot.questioninexam , shitot.executedexam,exams"+
-					" where  executedexam.executedExamID ='"+executedExamID+"' AND exams.e_id=executedexam.exam_id "
-					+ "AND  questioninexam.e_id = exams.e_id) QID , questions " + 
-					"where QID.id = questions.question_id;");
+			rs = stmt.executeQuery("SELECT * " + "from (select questioninexam.question_ID id "
+					+ "from   shitot.questioninexam , shitot.executedexam,exams"
+					+ " where  executedexam.executedExamID ='" + executedExamID
+					+ "' AND exams.e_id=executedexam.exam_id "
+					+ "AND  questioninexam.e_id = exams.e_id) QID , questions "
+					+ "where QID.id = questions.question_id;");
 			while (rs.next()) {
-				question = new Question(rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6)
-						,rs.getString(7),rs.getString(8),rs.getString(9));
+				question = new Question(rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
+						rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9));
 				questionsinexam.add(question);
 			}
-			details[0]=questionsinexam;
-			details[1]=typeOfExam;
+			details[0] = questionsinexam;
+			details[1] = typeOfExam;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -656,120 +655,140 @@ public class MysqlConnection {
 	}
 
 	public Time getSolutionTime(Object executedExamID) {
-		
-		Time solutionTime=null;
-		
+
+		Time solutionTime = null;
+
 		try {
 			stmt = conn.createStatement();
-					 ResultSet rs = stmt.executeQuery("SELECT exams.solutionTime " + 
-							"from  shitot.executedexam,exams"+
-							" where  executedexam.executedExamID ='"+executedExamID+"' AND exams.e_id=executedexam.exam_id ");
-				rs.next();			 							
-			solutionTime=rs.getTime(1);
-			}
-		
+			ResultSet rs = stmt.executeQuery("SELECT exams.solutionTime " + "from  shitot.executedexam,exams"
+					+ " where  executedexam.executedExamID ='" + executedExamID
+					+ "' AND exams.e_id=executedexam.exam_id ");
+			rs.next();
+			solutionTime = rs.getTime(1);
+		}
 
-		 catch (SQLException e) {
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return (solutionTime);
 	}
 
-	public void finishExam(String[] details , HashMap<String,Integer> answers) {
-		String examID=details[0];
-		String studentId=details[1];
+	public void finishExam(String[] details, HashMap<String, Integer> answers) {
+		String examID = details[0];
+		String studentId = details[1];
 		int ans;
 		int i;
-		Set<String> s=answers.keySet();
-		for(String q_id:s) {
-		ans=answers.get(q_id);
+		Set<String> s = answers.keySet();
+		for (String q_id : s) {
+			ans = answers.get(q_id);
 			try {
-				stmt.executeUpdate("INSERT INTO shitot.studentanswerquestions VALUES(\"" + examID + "\",\""
-						+ studentId + "\",\"" +q_id + "\",\"" + ans	 + "\");");
+				stmt.executeUpdate("INSERT INTO shitot.studentanswerquestions VALUES(\"" + examID + "\",\"" + studentId
+						+ "\",\"" + q_id + "\",\"" + ans + "\");");
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 
-	} 
+	}
+
 	public synchronized Object[] getadditionalTime(String requestId) {
-		Object  details[]=new Object[3];
-		 							
-		 try {
-				stmt = conn.createStatement();
-				 ResultSet rs = stmt.executeQuery("SELECT requestforchangingtimeallocated.IDexecutedExam,requestforchangingtimeallocated.timeAdded " + 
-						"from  requestforchangingtimeallocated" +
-						" where  requestforchangingtimeallocated.requestID ='"+requestId +"'");
-				 rs.next();		
-			details[0]=rs.getString(1);
-			 details[1]=rs.getTime(2);
-			
+		Object details[] = new Object[3];
+
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(
+					"SELECT requestforchangingtimeallocated.IDexecutedExam,requestforchangingtimeallocated.timeAdded "
+							+ "from  requestforchangingtimeallocated"
+							+ " where  requestforchangingtimeallocated.requestID ='" + requestId + "'");
+			rs.next();
+			details[0] = rs.getString(1);
+			details[1] = rs.getTime(2);
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 return details;
+		return details;
 
 	}
 
 	public Boolean updateExam(Object examToChange) {
-		Exam exam = (Exam)examToChange;
+		Exam exam = (Exam) examToChange;
 
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("select distinct executedexam.exam_id from "
 					+ "shitot.executedexam where executedexam.status = 'open' AND executedexam.numOfStudentStarted>'0'");
 
-				while(rs.next())
-				{
-					if(exam.getE_id().equals(rs.getString(1))) {
-						rs.close();
-						return false;
-					}
+			while (rs.next()) {
+				if (exam.getE_id().equals(rs.getString(1))) {
+					rs.close();
+					return false;
 				}
-				rs.close();
-				// query update on DB the correct answer of question that have the given
-				// questionID from client
-				stmt.executeUpdate("UPDATE exams SET solutionTime=\"" + exam.getSolutionTime() + "\", remarksForTeacher=\"" 
-				+ exam.getRemarksForTeacher() + "\", remarksForStudent = \"" +exam.getRemarksForStudent()+"\", type= \"" +exam.getType()+"\","
-						+ "tUserName=\""+exam.getTeacherUserName()+"\" WHERE e_id=\""+exam.getE_id()+"\";");
-				
-				return true;
+			}
+			rs.close();
+			// query update on DB the correct answer of question that have the given
+			// questionID from client
+			stmt.executeUpdate("UPDATE exams SET solutionTime=\"" + exam.getSolutionTime() + "\", remarksForTeacher=\""
+					+ exam.getRemarksForTeacher() + "\", remarksForStudent = \"" + exam.getRemarksForStudent()
+					+ "\", type= \"" + exam.getType() + "\"," + "tUserName=\"" + exam.getTeacherUserName()
+					+ "\" WHERE e_id=\"" + exam.getE_id() + "\";");
+
+			return true;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
-		}		
+		}
 	}
 
 	public ArrayList<QuestionInExam> getQuestionInExam(Object examid) {
-		String examID=(String)examid;
-		ArrayList<QuestionInExam> questioninexam=new ArrayList<QuestionInExam>();
+		String examID = (String) examid;
+		ArrayList<QuestionInExam> questioninexam = new ArrayList<QuestionInExam>();
 		QuestionInExam question;
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM questioninexam"
-					+ " WHERE e_id = \"" + examID + "\" ;");
-			if(rs.isBeforeFirst()) {
+			ResultSet rs = stmt.executeQuery("SELECT * FROM questioninexam" + " WHERE e_id = \"" + examID + "\" ;");
+			if (rs.isBeforeFirst()) {
 				while (rs.next()) {
-					question=new QuestionInExam();
+					question = new QuestionInExam();
 					question.setQuestionID(rs.getString(2));
 					question.setQuestionIndexInExam(Integer.parseInt(rs.getString(3)));
 					question.setPoints(Float.parseFloat(rs.getString(4)));
 					questioninexam.add(question);
 				}
 				rs.close();
-			}
-			else {
+			} else {
 				return null;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return questioninexam;
-	} 
-	
 	}
 
-
+	public ArrayList<String> returnListForGetReport(String getBy) {
+		ArrayList<String> listForGetReport = new ArrayList<String>();
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = null;
+			switch (getBy) {
+			case "Student": {
+				rs = stmt.executeQuery("SELECT UserName FROM shitot.users where role='student';");
+				break;
+			}
+			case "Teacher": {
+				rs = stmt.executeQuery("SELECT UserName FROM shitot.users where role='teacher';");
+				break;
+			}
+			}
+			while (rs.next())
+				listForGetReport.add(rs.getString(1));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return listForGetReport;
+	}
+}
