@@ -234,7 +234,7 @@ public class EchoServer extends AbstractServer {
 			serverMessage[1] = questioninexam;
 			this.sendToAllClients(serverMessage);
 			break;
-		}
+		}  
 		case "getExamsByUserName": {
 			ArrayList<ExamDetailsMessage> examsPrefDetails = con.getPrefExamDetails((String) message[1]);
 			serverMessage[1] = examsPrefDetails;

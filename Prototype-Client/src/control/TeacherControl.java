@@ -333,14 +333,22 @@ public class TeacherControl extends UserControl implements Initializable {
 			userText.setText(Globals.getFullName());
 			break;
 		}
+		case ("Update question in exam"): {
+			setToQuestionInExamTableView();
+			connect(this); // connecting to server
+			messageToServer[0] = "getQuestionsToTable";
+			messageToServer[1] = questionInExamObservable.get(0).getQuestionID().substring(0, 2);
+			messageToServer[2] = Globals.getuserName();
+			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
+			break;
+		}
 		case ("Create question"):
 		case ("Create exam"):
 		case ("Update question"):
 		case ("Create exam code"):
 		case ("Extend exam time"):
 		case ("Lock exam"):
-		case ("Update exam"):
-		case ("Update question in exam"): {
+		case ("Update exam"): {
 
 			connect(this);
 
@@ -349,10 +357,7 @@ public class TeacherControl extends UserControl implements Initializable {
 				typeComboBox.setItems(FXCollections.observableArrayList("computerized", "manual"));
 				break;
 			}
-			case ("Update question in exam"): {
-				setToQuestionInExamTableView();
-				break;
-			}
+
 			case ("Extend exam time"):
 			case ("Lock exam"): {
 				messageToServer[0] = "getExecutedExams";
@@ -456,6 +461,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			System.out.println("Error in opening the page");
 		}
 	}
+
 	/* open the screen ErrorMessage and sending an object */
 	public void openScreen(String screen, Object message) {
 		try {
@@ -473,6 +479,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			System.out.println("Error in opening the page");
 		}
 	}
+
 	/* deleting question from the tableview and from the database */
 	public void deleteQuestion(ActionEvent e) {
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
@@ -482,10 +489,12 @@ public class TeacherControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
 
 	}
+
 	/* locking the subject function (subject combobox) */
 	public void lockSubject(ActionEvent e) {
 		subjectsComboBox.setDisable(true);
 	}
+
 	/* moving the question to the question in exam table view */
 	public void toQuestionInExam(ActionEvent e) {
 		int flag = 0;
@@ -513,15 +522,17 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	}
 
+	/* setting the question in the table view (question in exam) */
 	private void setToQuestionInExamTableView() {
 		questionPointsTableView.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
-		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));// display the id in the //
-																							// // table view
-		questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));// display the points in //
-																							// the
-		questionsInExamTableView.setItems(questionInExamObservable);// table view
+		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));// display the id in the
+																							// table view
+		questionPointsTableView.setCellValueFactory(new PropertyValueFactory<>("points"));// display the points in table
+																							// view // the
+		questionsInExamTableView.setItems(questionInExamObservable);
 	}
 
+	/* removing the question from the tableview */
 	public void removeFromTableView(ActionEvent e) {
 		ObservableList<QuestionInExam> questiontoremove;
 		int flag = 0;
@@ -548,6 +559,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		// add the question back to the tableview
 	}
 
+	/* creating exam */
 	@SuppressWarnings("static-access")
 	public void createExam(ActionEvent e) {
 		int sumOfPoints = 0;
@@ -595,11 +607,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		try {
 			chat.closeConnection();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		} // close the connection
+		}
 	}
 
+	/* removing the question from the tableview */
 	public void updateExam(ActionEvent e) {
 		int sumOfPoints = 0;
 		for (QuestionInExam q : questionInExamObservable) {
@@ -619,10 +631,10 @@ public class TeacherControl extends UserControl implements Initializable {
 		try {
 			chat.closeConnection();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		} // close the connection
+		}
 	}
+	/* removing the question from the tableview */
 
 	public void createExamCode(ActionEvent e) {
 		ExecutedExam exam;
@@ -666,14 +678,15 @@ public class TeacherControl extends UserControl implements Initializable {
 		 */
 	}
 
+	/* set new points in the table view */
 	public void setPoints(CellEditEvent<QuestionInExam, Float> edittedCell) {
 		QuestionInExam questionSelected = questionsInExamTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getPoints())) {
 			questionSelected.setPoints(edittedCell.getNewValue());
 		}
 	}
-
-	/***************** create question screen function *****************/
+	
+	/* create a new question */
 	public void createQuestionClick(ActionEvent e) throws IOException {
 		if (subjectsComboBox.getValue() == null) {
 			openScreen("ErrorMessage", "Please choose subject");
@@ -712,18 +725,14 @@ public class TeacherControl extends UserControl implements Initializable {
 			chat.closeConnection();// close the connection
 		}
 	}
-
+	
+	/* request to load questions to table view */
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/* ask for the qustions text */
 		String subject = subjectsComboBox.getValue(); // get the subject code
 		if (subject == null)
 			return;
-		// questionTableView.getItems().clear();
-
 		String[] subjectSubString = subject.split("-");
-		// questionsComboBox.getSelectionModel().clearSelection();
-		// if (!pageLabel.getText().equals("Create exam"))
-		// clearForm();
 		connect(this); // connecting to server
 		messageToServer[0] = "getQuestionsToTable";
 		messageToServer[1] = subjectSubString[0].trim();
@@ -731,6 +740,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 
+	/* change the question content on table view */
 	public void changeQuestionContentOnTable(CellEditEvent<Question, String> edittedCell) {
 
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
@@ -740,7 +750,8 @@ public class TeacherControl extends UserControl implements Initializable {
 			updateQuestion(questionSelected);
 		}
 	}
-
+	
+	/* change the answer 1 on table view */
 	public void changeAnswer1OnTable(CellEditEvent<Question, String> edittedCell) {
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		oldQuestion = createBackUpQuestion(questionSelected);
@@ -750,6 +761,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
+	/* change the answer 2 content on table view */
 	public void changeAnswer2OnTable(CellEditEvent<Question, String> edittedCell) {
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		oldQuestion = createBackUpQuestion(questionSelected);
@@ -760,6 +772,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
+	/* change the answer 3 content on table view */
 	public void changeAnswer3OnTable(CellEditEvent<Question, String> edittedCell) {
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		oldQuestion = createBackUpQuestion(questionSelected);
@@ -769,7 +782,8 @@ public class TeacherControl extends UserControl implements Initializable {
 
 		}
 	}
-
+	
+	/* change the answer 4 content on table view */
 	public void changeAnswer4OnTable(CellEditEvent<Question, String> edittedCell) {
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		oldQuestion = createBackUpQuestion(questionSelected);
@@ -779,6 +793,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
+	/* change the correct answer on table view */
 	public void changeCorrectAnswerOnTable(CellEditEvent<Question, String> edittedCell) {
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		oldQuestion = createBackUpQuestion(questionSelected);
@@ -794,25 +809,13 @@ public class TeacherControl extends UserControl implements Initializable {
 				questionSelected.getQuestionContent(), questionSelected.getAnswer1(), questionSelected.getAnswer2(),
 				questionSelected.getAnswer3(), questionSelected.getAnswer4(), questionSelected.getCorrectAnswer());
 	}
-
+	
+	/* updating the question that has been selected */
 	public void updateQuestion(Question questionSelected) {
 		messageToServer[0] = "updateQuestion";
 		messageToServer[1] = questionSelected;
 		connect(this);
 		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
-	}
-
-	public void clearForm() {
-		answer1.clear();
-		answer2.clear();
-		answer3.clear();
-		answer4.clear();
-		questionID.clear();
-		teacherName.clear();
-		correctAns1.setSelected(false);
-		correctAns2.setSelected(false);
-		correctAns3.setSelected(false);
-		correctAns4.setSelected(false);
 	}
 
 	/* close button was pressed */

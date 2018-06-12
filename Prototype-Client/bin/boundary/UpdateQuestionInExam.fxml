@@ -21,9 +21,7 @@
          </columns>
       </TableView>
       <Label fx:id="pageLabel" layoutX="307.0" layoutY="16.0" text="Update question in exam" />
-      <Label layoutX="38.0" layoutY="16.0" text="Questions" />
       <Button layoutX="383.0" layoutY="214.0" mnemonicParsing="false" onAction="#toQuestionInExam" text="&gt;" />
-      <ComboBox fx:id="subjectsComboBox" layoutX="37.0" layoutY="39.0" onAction="#loadQuestions" prefWidth="150.0" promptText="choose subject" />
       <Button layoutX="383.0" layoutY="179.0" mnemonicParsing="false" onAction="#removeFromTableView" text="&lt;" />
       <Button layoutX="412.0" layoutY="406.0" mnemonicParsing="false" onAction="#closeScreen" text="Back" />
       <Button layoutX="294.0" layoutY="406.0" mnemonicParsing="false" onAction="#updateExam" text="Update exam" />

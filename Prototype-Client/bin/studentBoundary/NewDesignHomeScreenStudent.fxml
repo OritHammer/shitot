@@ -40,8 +40,7 @@
          </font>
       </Label>
       <Button fx:id="logOutBtn" layoutX="410.0" layoutY="332.0" mnemonicParsing="false" onAction="#logoutPressed" text="Logout" />
-      <Button layoutX="239.0" layoutY="86.0" mnemonicParsing="false" onAction="#myGradesPressed" text="My grades" />
-      <Button layoutX="222.0" layoutY="117.0" mnemonicParsing="false" onAction="#orderExamCopyPressed" text="Order exam copy" />
+      <Button layoutX="239.0" layoutY="112.0" mnemonicParsing="false" onAction="#myGradesPressed" text="My grades" />
       <Button layoutX="175.0" layoutY="153.0" mnemonicParsing="false" onAction="#excecuteMorCExamPressed" text="Execute manual\computerize exam" />
       <TextField fx:id="newMsgTextField" layoutX="140.0" layoutY="192.0" prefHeight="103.0" prefWidth="269.0" promptText="New Messages">
          <font>

@@ -80,6 +80,9 @@ public class StudentControl extends UserControl implements Initializable {
 	@FXML
 	private TableColumn<ExamDetailsMessage, String> dateColumn;
 	@FXML
+	private TableColumn<ExamDetailsMessage, String> executedIDCol;
+
+	@FXML
 	private ComboBox<String> examCodeCombo;
 
 	ObservableList<ExamDetailsMessage> detailsList = FXCollections.observableArrayList();
@@ -125,7 +128,9 @@ public class StudentControl extends UserControl implements Initializable {
 	/************************ Class Methods *************************/
 	public void initialize(URL url, ResourceBundle rb) {
 		// connect(this);
-		if (pageLabel.getText().equals("Perform exam")) {
+		switch (pageLabel.getText() ) { 
+		case ("Perform exam") :
+		{ 
 			correctRadioButton1.setVisible(true);
 			correctRadioButton2.setVisible(true);
 			correctRadioButton3.setVisible(true);
@@ -166,8 +171,18 @@ public class StudentControl extends UserControl implements Initializable {
 			}
 				, 1000, 1000);
 			//courseName.setText(questioninexecutedexam.get(0).getId().substring(0, 2));
-		
+		break ; 
 		}
+		case ("My Grades sheet " ) : 
+		{
+			getGradesFromServer();
+			break ; 
+		}
+		default : return ; 
+		}
+		}
+		 {
+			
 	}
 	private static final int setInterval() 
 	{
@@ -256,6 +271,7 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 
 	// ***
+	@FXML
 	public void goToHomePressed(ActionEvent e) throws Exception {
 		closeScreen(e);
 		openScreen("NewDesignHomeScreenStudent");
@@ -312,6 +328,7 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 
 	public void refreshTable(ActionEvent e) {
+		detailsList.clear();  
 		getGradesFromServer();
 	}
 
@@ -340,7 +357,7 @@ public class StudentControl extends UserControl implements Initializable {
 	public void excecuteExam(ActionEvent e) throws IOException, SQLException {// click on the button "execute exam"
 		if (codeTextField.getText().equals("") || userIDTextField.getText().equals((""))) {
 			openScreen("ErrorMessage", "Error in executed exam id");
-			return;
+			return;  
 		} else if (!userIDTextField.getText().equals((Globals.getUser().getUserID()))) {
 			openScreen("ErrorMessage", "Your ID is incorrect"); // if user ID isn't correct
 			return;
@@ -360,7 +377,7 @@ public class StudentControl extends UserControl implements Initializable {
 	public void checkMessage(Object message) {
 		try {
 			chat.closeConnection();
-			Object[] msgFromServer = (Object[]) message;
+			final Object[] msgFromServer = (Object[]) message;
 			switch (msgFromServer[0].toString()) {
 			case "logoutProcess": {
 				openScreen("LoginGui");
@@ -422,17 +439,21 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void showGradesOnTable(ArrayList<ExamDetailsMessage> detailsFromS) {
+		
 		for (ExamDetailsMessage edM : detailsFromS) {
 			detailsList.add(edM);
 		}
-
+		
+		if(examGradesTable != null && examGradesTable.getColumns() != null )
+			examGradesTable.getColumns().clear();
+		
 		examGradesTable.setItems(detailsList);
 		examCodeColumn.setCellValueFactory(new PropertyValueFactory("examID"));
 		dateColumn.setCellValueFactory(new PropertyValueFactory("examDate"));
 		gradeColumn.setCellValueFactory(new PropertyValueFactory("examGrade"));
 		courseCodeColumn.setCellValueFactory(new PropertyValueFactory("examCourse"));
-		examGradesTable.getColumns().removeAll();
-		examGradesTable.getColumns().addAll(examCodeColumn, courseCodeColumn, gradeColumn, dateColumn);
+		executedIDCol.setCellValueFactory(new PropertyValueFactory<>("excecutedExamID"));
+		examGradesTable.getColumns().addAll(examCodeColumn, courseCodeColumn, gradeColumn, dateColumn,executedIDCol);
 		/*
 		 * also need to take from detailsFromS the exam_id's and insert
 		 * them to observeable list into the relevante combobox .
