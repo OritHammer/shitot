@@ -187,7 +187,6 @@ public class TeacherControl extends UserControl implements Initializable {
 						observableList.add(tp.getTp_id() + " - " + tp.getName());
 					}
 					subjectsComboBox.setItems(observableList);
-
 					break;
 				}
 				case ("setExecutedExamLocked"): /* get the subjects list from server */
@@ -881,6 +880,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
+	/* requesting the exams from the database */
 	public void loadExams(ActionEvent e) throws IOException {
 		String examIDStart;
 		/* ask for the exams name */
@@ -902,11 +902,13 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[1] = examIDStart;
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
-
+	
+	/* opening the screen LockExam */
 	public void openLockExamScreen(ActionEvent e) throws IOException {
 		openScreen("LockExam");
 	}
 
+	/* locking the exam */
 	public void lockExam(ActionEvent e) throws IOException {
 		ExecutedExam executedexam = executedExamTableView.getSelectionModel().getSelectedItem();
 		if (executedexam == null) {
@@ -919,6 +921,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 
+	/* updating the exam in the database */
 	public void updateExam(Exam examSelected) {
 		messageToServer[0] = "updateExam";
 		messageToServer[1] = examSelected;
@@ -926,6 +929,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
 	}
 
+	/* changing the remarks for teacher */
 	public void changeRemarksForTeacherOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
 		examSelected = examsTableView.getSelectionModel().getSelectedItem();
 		oldExam = new Exam();
@@ -941,7 +945,8 @@ public class TeacherControl extends UserControl implements Initializable {
 			updateExam(examSelected);
 		}
 	}
-
+	
+	/* changing the remarks for student on the table view */
 	public void changeRemarksForStudentOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
 		Exam examSelected = examsTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(examSelected.getRemarksForStudent())) {
@@ -950,6 +955,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
+	/* changing the type of the exam */
 	public void changeTypeOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
 		Exam examSelected = examsTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(examSelected.getType())) {
@@ -957,7 +963,8 @@ public class TeacherControl extends UserControl implements Initializable {
 			updateExam(examSelected);
 		}
 	}
-
+	
+	/* get the question in a specific exam */
 	public void viewQuestion(ActionEvent e) throws IOException {
 		try {
 			Exam exam = examsTableView.getSelectionModel().getSelectedItem();
