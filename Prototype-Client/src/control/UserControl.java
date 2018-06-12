@@ -235,13 +235,11 @@ public class UserControl implements Initializable {
 		 userText.setText(userNameFromDB);
 	} 
 	//functions relevant for all users 
-	public void loadCourses(String typeList) throws IOException {
+	public void loadCourses(String typeList,String subject) throws IOException {
 		/* ask for the courses name */
-		String subject = subjectsComboBox.getValue(); // get the subject code
 		if (subject == null)
 			return;
 		String[] subjectSubString = subject.split("-");
-		coursesComboBox.getSelectionModel().clearSelection();
 		connect(this); // connecting to server
 		messageToServer[0] = "getCourses";
 		messageToServer[1] = subjectSubString[0].trim();

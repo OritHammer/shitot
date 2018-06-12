@@ -7,10 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
+
 import entity.Course;
 import entity.QuestionInExam;
 import entity.RequestForChangingTimeAllocated;
 import entity.TeachingProfessionals;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -113,7 +116,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			chooseUserComboBox.setVisible(false);
 			subjectsComboBox.setVisible(false);
 			coursesComboBox.setVisible(false);
-			
+
 		} else if (pageLabel.getText().contentEquals("")) {// system information
 
 		}
@@ -183,7 +186,6 @@ public class DirectorControl extends UserControl implements Initializable {
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
 		openScreen("HomeScreenDirector");
-
 	}
 
 	// ***********check the message that arrived from server**************//
@@ -192,11 +194,13 @@ public class DirectorControl extends UserControl implements Initializable {
 		try {
 			chat.closeConnection();// close the connection
 
-			Object[] msg = (Object[]) message;
-
+			final Object[] msg = (Object[]) message;
+			Platform.runLater(()->{
+				
 			switch (msg[0].toString()) {
 			case ("getTimeRequestList"): { /* get the subjects list from server */
 				initAddingTimeRequests((ArrayList<RequestForChangingTimeAllocated>) msg[1]);
+
 				break;
 			}
 			case ("getTimeRequestDetails"): { /* get the subjects list from server */
@@ -206,22 +210,28 @@ public class DirectorControl extends UserControl implements Initializable {
 			case "getStudentsList":
 			case "getTeachersList": {
 				ObservableList<String> observableList = FXCollections.observableArrayList();
-				for(String item: (ArrayList<String>)msg[1]) 
+				for (String item : (ArrayList<String>) msg[1])
 					observableList.add(item);
 				chooseUserComboBox.setVisible(true);
+				subjectsComboBox.setVisible(false);
+				coursesComboBox.setVisible(false);
+				if(chooseUserComboBox.getSelectionModel()!=null)
+				chooseUserComboBox.getSelectionModel().clearSelection();
 				chooseUserComboBox.setItems(observableList);
 				break;
+			}
+			case "getSubjects": {
+				ObservableList<String> observableList = FXCollections.observableArrayList();
+				for (TeachingProfessionals tp : (ArrayList<TeachingProfessionals>) msg[1]) {
+					observableList.add(tp.getTp_id() + " - " + tp.getName());
+					chooseUserComboBox.setVisible(false);
+					subjectsComboBox.setVisible(true);
+						coursesComboBox.getSelectionModel().clearSelection();
+					subjectsComboBox.setItems(observableList);
 				}
-				case "getSubjects":{
-					ObservableList<String> observableList = FXCollections.observableArrayList();
-					for (TeachingProfessionals tp : (ArrayList<TeachingProfessionals>) msg[1]) {
-						observableList.add(tp.getTp_id() + " - " + tp.getName());
-						subjectsComboBox.setVisible(true);
-						subjectsComboBox.setItems(observableList);
-					}
-					break;
-				}
-			case "getCourses":{
+				break;
+			}
+			case "getCourses": {
 				ObservableList<String> observableList = FXCollections.observableArrayList();
 				for (Course c : (ArrayList<Course>) msg[1]) {
 					observableList.add(c.getCourseID() + " - " + c.getName());
@@ -232,6 +242,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			}
 
 			}
+			});
 		} catch (NullPointerException e) {
 			openScreen("ErrorMessage", "There is no request to confirm .");
 		} catch (IOException e) {
@@ -304,27 +315,32 @@ public class DirectorControl extends UserControl implements Initializable {
 		connect(this);
 		switch (reportByChoose) {
 		case "Student": {
-		messageToServer[0]= "getStudentsList";
-		messageToServer[1]=null;
-		messageToServer[2]=null;
+			messageToServer[0] = "getStudentsList";
+			messageToServer[1] = null;
+			messageToServer[2] = null;
 			break;
 		}
 		case "Teacher": {
-		messageToServer[0]= "getTeachersList";
-		messageToServer[1]=null;
-		messageToServer[2]=null;
+			messageToServer[0] = "getTeachersList";
+			messageToServer[1] = null;
+			messageToServer[2] = null;
 			break;
-		} 
+		}
 		case "Course": {
-		messageToServer[0]= "getSubjects";
-		messageToServer[1]=null;
-		messageToServer[2]=null;
+			messageToServer[0] = "getSubjects";
+			messageToServer[1] = null;
+			messageToServer[2] = null;
 			break;
 		}
 		}
 		chat.handleMessageFromClientUI(messageToServer);
 	}
+
 	public void loadCourses(ActionEvent e) throws IOException {
-		loadCourses("All");
+		String subject = subjectsComboBox.getValue(); // get the subject code
+		loadCourses("All", subject);
+	}
+	public void getReportUser(ActionEvent e) {
+		String userName=chooseUserComboBox.getValue();
 	}
 }
