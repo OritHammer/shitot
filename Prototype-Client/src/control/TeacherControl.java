@@ -184,9 +184,9 @@ public class TeacherControl extends UserControl implements Initializable {
 				ObservableList<String> observableList = FXCollections.observableArrayList();
 				for (TeachingProfessionals tp : (ArrayList<TeachingProfessionals>) msg[1]) {
 					observableList.add(tp.getTp_id() + " - " + tp.getName());
-
-					subjectsComboBox.setItems(observableList);
 				}
+					subjectsComboBox.setItems(observableList);
+				
 				break;
 			}
 			case ("setExecutedExamLocked"): /* get the subjects list from server */
@@ -298,8 +298,9 @@ public class TeacherControl extends UserControl implements Initializable {
 						observableList.add(e.getE_id());
 					}
 					examComboBox.setItems(observableList);
-					break;
+					
 				}
+				break;
 			}
 			case ("updateQuestion"): /* get the subject list from server */
 			{
