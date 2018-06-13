@@ -15,7 +15,7 @@ public class Main extends Application {
    /*display update question UI*/
    //Parent root = FXMLLoader.load(getClass().getResource("/boundary/updateQuestion.fxml"));
 	  
-   Parent root = FXMLLoader.load(getClass().getResource("/studentBoundry/ManualExam.fxml"));
+   Parent root = FXMLLoader.load(getClass().getResource("/boundary/LoginGui.fxml"));
    //Parent root = FXMLLoader.load(getClass().getResource("/boundary/HomeScreenTeacher.fxml"));
    guiStage = primaryStage;
    Scene scene = new Scene(root);

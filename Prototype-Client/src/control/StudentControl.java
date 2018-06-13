@@ -684,13 +684,13 @@ private Label selectedAnswer ;
 		}
 
 	}
-	
+	@FXML
 	public void dragOver(DragEvent e) {
 		if (e.getDragboard().hasFiles()) {
 			e.acceptTransferModes(TransferMode.ANY);
 		}
 	}
-
+	@FXML
 	public void dropFile(DragEvent e) {
 		List<File> file = e.getDragboard().getFiles();
 		String[] name = file.get(0).getName().split("docx");
