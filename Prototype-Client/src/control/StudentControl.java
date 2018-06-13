@@ -153,10 +153,15 @@ private Label selectedAnswer ;
 			correctRadioButton2.setVisible(true);
 			correctRadioButton3.setVisible(true);
 			correctRadioButton4.setVisible(true);
+			answer1.setStyle("-fx-background-color: white;");
+			answer2.setStyle("-fx-background-color: white;");
+			answer3.setStyle("-fx-background-color: white;");
+			answer4.setStyle("-fx-background-color: white;");
 			answer1.setVisible(true);
 			answer2.setVisible(true);
 			answer3.setVisible(true);
 			answer4.setVisible(true);
+			
 			nextQuestion(null);
 			prevBTN.setVisible(false);
 			if(copyFlag==false) {
