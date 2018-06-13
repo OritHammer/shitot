@@ -843,7 +843,7 @@ public class MysqlConnection {
 	}
 		return stdAns;
 }
- 
+  
 	public ArrayList<ExecutedExam> returnReportDetailsByTeacherOrCourse(Object reportBy, Object id) {
 		ArrayList<ExecutedExam> executedExamList=new ArrayList<ExecutedExam>(); 	
 		try {
