@@ -446,7 +446,7 @@ private Label selectedAnswer ;
 				examAnswers = ans;
 				questioninexecutedexam =  ques;
 				copyFlag = true ; 
-				openScreen("ComputerizedExam");
+				openScreen("ComputerizedExam");  
 			}
 		});
 	}
