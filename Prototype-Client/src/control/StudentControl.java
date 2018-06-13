@@ -323,7 +323,7 @@ private Label selectedAnswer ;
 		}
 	}
 
-	/********************* Student see his grades *************************/
+	/********************* Student see his grades or get copy *************************/
 	public void getGradesFromServer() {
 		connect(this);
 		messageToServer[0] = "getExamsByUserName";
@@ -350,9 +350,7 @@ private Label selectedAnswer ;
 		chat.handleMessageFromClientUI(messageToServer);
 	}
 
-	public void downloadExamPressed() {
-
-	}
+	
 
 	/***************************
 	 * Student excecute exam
@@ -375,7 +373,9 @@ private Label selectedAnswer ;
 		messageToServer[1] = executedID;
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
+	public void downloadExamPressed() {
 
+	}
 	/************************* checking message ***********************************/
 	// for all windows
 	@SuppressWarnings("unchecked")
@@ -422,8 +422,6 @@ private Label selectedAnswer ;
 		if (msgFromServer == null) {
 			openScreen("ErrorMessage", "Exam Locked or not defined");
 			return;
-		} else if (((String) msgFromServer[2]).equals("data of exam Copy")) {
-  
 		} else {
 			String type = (String) msgFromServer[1];
 			if (type.equals("manual")) {
