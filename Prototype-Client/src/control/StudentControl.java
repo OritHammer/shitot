@@ -443,8 +443,8 @@ private Label selectedAnswer ;
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				examAnswers = (HashMap<String, Integer>) ans;
-				questioninexecutedexam = (ArrayList<Question>) ques;
+				examAnswers = ans;
+				questioninexecutedexam =  ques;
 				copyFlag = true ; 
 				openScreen("ComputerizedExam");
 			}
