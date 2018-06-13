@@ -443,11 +443,11 @@ public class MysqlConnection {
 		}
 	}
 
-	public synchronized void createExam(Object questionInExams, Object examDetails) {
+	public synchronized String createExam(Object questionInExams, Object examDetails) {
 		@SuppressWarnings("unchecked")
 		ArrayList<QuestionInExam> questionInExam = (ArrayList<QuestionInExam>) questionInExams;
 		Exam exam = (Exam) examDetails;
-		String fullExamNumber;
+		String fullExamNumber = null;
 		String examNumber = exam.getE_id();
 		int examNum;
 		int questionCounter = 1;
@@ -478,9 +478,66 @@ public class MysqlConnection {
 			e.printStackTrace();
 		}
 		// stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
-
+		return fullExamNumber;
 	}
 
+	public synchronized ArrayList<Question> getQuestions(Object questionInExams) {
+		@SuppressWarnings("unchecked")
+		ArrayList<QuestionInExam> questionInExam = (ArrayList<QuestionInExam>) questionInExams;
+		ArrayList<Question>questions=new	ArrayList<Question>();
+		Question q;
+	for(QuestionInExam qIa:questionInExam)
+	{
+		q=new Question();
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(
+					"SELECT * FROM questions" + " WHERE question_id = " + "\"" + qIa.getQuestionID() + "\"" + ";");
+			rs.next();
+			q.setId(rs.getString(1));
+			q.setTeacherName(rs.getString(2));
+			q.setQuestionContent(rs.getString(3));
+			q.setAnswer1(rs.getString(4));
+			q.setAnswer2(rs.getString(5));
+			q.setAnswer3(rs.getString(6));
+			q.setAnswer4(rs.getString(7));
+			q.setCorrectAnswer(rs.getString(8));
+			questions.add(q);
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+		return questions;
+	}
+	////////
+	public synchronized Exam getExam(Object examID) {
+		@SuppressWarnings("unchecked")
+		String examId=(String)examID;
+		Exam exam=new Exam();
+	
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(
+					"SELECT * FROM exams" + " WHERE e_id = " + "\"" + examId + "\"" + ";");
+			rs.next();
+			exam.setE_id(rs.getString(1));
+			exam.setSolutionTime(rs.getString(1));
+			exam.setRemarksForTeacher(rs.getString(3));
+			exam.setRemarksForStudent(rs.getString(4));
+			exam.setType(rs.getString(5));
+			exam.setTeacherUserName(rs.getString(6));
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	
+		return exam;
+	}
+	
+	
+	
+	///////
 	public synchronized void updateQuestionInExam(Object questionInExams, Object examId) {
 		@SuppressWarnings("unchecked")
 		int questionCounter = 1;

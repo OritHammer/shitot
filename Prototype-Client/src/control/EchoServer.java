@@ -1,5 +1,10 @@
 package control;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 // This file contains material supporting section 3.7 of the textbook:
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
@@ -8,6 +13,11 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import entity.Course;
 import entity.Exam;
@@ -27,7 +37,7 @@ import ocsf.server.*;
  * @author Dr Timothy C. Lethbridge
  * @author Dr Robert Lagani&egrave;re
  * @author Fran&ccedil;ois B&eacute;langer
- * @author Paul Holden
+ * @author Paul Holden 
  * @version July 2000
  */
 public class EchoServer extends AbstractServer {
@@ -112,6 +122,7 @@ public class EchoServer extends AbstractServer {
  				HashMap<String,Integer> studentAns = con.getStudentAns(userName,(String)message[1]);
 				serverMessage[2] =studentAns ;
 				serverMessage[1]=questioninexam;
+				this.sendToAllClients(serverMessage);
 			break;
 		}
 		case "getExams": {/* client request all all the courses under some subject */
@@ -139,7 +150,13 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		case "setExam": {/* client request is to create exam in DB */
-			con.createExam(message[1], message[2]);
+			String examId=con.createExam(message[1], message[2]);
+			if(((Exam)message[2]).getType().equals("Manual"))
+			{
+			ArrayList<Question> questions=con.getQuestions(message[1]);
+			((Exam)message[2]).setE_id(examId);
+			createManualExam((Exam)message[2],questions );//This method create word(docx)file to manual exam
+			}
 			break;
 		}
 		case "setExamCode": {/* client request is to create exam code in DB */
@@ -196,6 +213,11 @@ public class EchoServer extends AbstractServer {
 		}		
 		case "updateQuestionInExam": {
 			con.updateQuestionInExam(message[1],message[2]);
+			Exam exam=con.getExam(message[2]);
+			if(exam.getType().equals("Manual")) {
+			ArrayList<Question> questions=con.getQuestions(message[1]);
+			createManualExam(exam,questions );//This method create word(docx)file to manual exam
+			}
 			this.sendToAllClients(serverMessage);
 			break;
 		}
@@ -344,5 +366,81 @@ public class EchoServer extends AbstractServer {
 			System.out.println("ERROR - Could not listen for clients!");
 		}
 	}
+	public static void createManualExam(Exam exam, ArrayList<Question>qustionsInExam){
+		/*
+		 * who ever touch this function,notice that:
+		*		the function recieves Exam
+		*		the function recieves arraylist of Question
+		*/
+			int i=1;
+			System.out.println("Im here");
+			XWPFDocument wordExam=new XWPFDocument();
+			try {
+				FileOutputStream out=new FileOutputStream(new File("d:/shitot/" + exam.getE_id() + ".docx"));
+				XWPFParagraph title=wordExam.createParagraph();
+				XWPFRun	run=title.createRun();
+				
+				title.setAlignment(ParagraphAlignment.RIGHT);
+				run.setText(" Manual Exam:" );
+				 run.setBold(true);
+				  XWPFRun	runExamId=title.createRun();
+				  runExamId.setText(exam.getE_id());
+				  runExamId.addCarriageReturn();
+				XWPFRun	run1=title.createRun();
+				run1.setText(" note:" );
+				run1.setBold(true);
+				XWPFRun	runNote=title.createRun();
+				runNote.setText( exam.getRemarksForStudent());
+				runNote.addCarriageReturn();
+				XWPFRun	run2=title.createRun();
+				run2.setText( " Time for exam:");
+				run2.setBold(true);
+				XWPFRun	runSolutionTime=title.createRun();
+				runSolutionTime.setText( exam.getSolutionTime());
+				runSolutionTime.addCarriageReturn();
+				System.out.println("Im here123");
+				for(Question q:qustionsInExam) {
+					
+						title=wordExam.createParagraph();
+						run=title.createRun();
+						run.setText(i +") "+ q.getQuestionContent());
+						run.setBold(true);
+						run.addCarriageReturn();
+						run=title.createRun();
+						run.setText( "1." + q.getAnswer1());
+						run.addCarriageReturn();
+						run=title.createRun();
+						run.setText( "2." + q.getAnswer2());
+						run.addCarriageReturn();
+						run=title.createRun();
+						run.setText( "3." + q.getAnswer3());
+						run.addCarriageReturn();
+						run=title.createRun();
+						run.setText( "4." + q.getAnswer4());
+						run.addCarriageReturn();
+					title.setAlignment(ParagraphAlignment.RIGHT);
+					i++;
+				}
+				System.out.println("Im here34");
+				 title=wordExam.createParagraph();
+					run=title.createRun();
+					run.setText("Good luck!");
+					run.setBold(true);
+					title.setAlignment(ParagraphAlignment.CENTER);
+					run.setFontSize(42);
+				wordExam.write(out);
+				out.close();
+				wordExam.close();
+				System.out.println("now im hehre");
+				System.exit(0);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 }
 // End of EchoServer class
