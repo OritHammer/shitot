@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import entity.Exam;
 import entity.ExamDetailsMessage;
 import entity.Question;
 import javafx.animation.AnimationTimer;
@@ -423,15 +424,15 @@ private Label selectedAnswer ;
 			openScreen("ErrorMessage", "Exam Locked or not defined");
 			return;
 		} else {
-			String type = (String) msgFromServer[1];
-			if (type.equals("manual")) {
+			final Exam exam = (Exam) msgFromServer[2];
+			if (exam.getType().equals("manual")) {
 				// We Need To Build This Functionality !!!!!!!
 			} else {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						solutionTime = (Time) message[2];
-						questioninexecutedexam = (ArrayList<Question>) msgFromServer[0];
+						solutionTime = Time.valueOf(exam.getSolutionTime());
+						questioninexecutedexam = (ArrayList<Question>) msgFromServer[1];
 						openScreen("ComputerizedExam");
 					}
 				});
