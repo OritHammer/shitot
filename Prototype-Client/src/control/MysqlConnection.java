@@ -700,7 +700,7 @@ public class MysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT E.e_id,E.solutionTime,E.remarksForTeacher,"
-					+ "E.remarksForStudent,E.type,E.teacherUserName FROM executedexam EE,exams E WHERE "
+					+ "E.remarksForStudent,E.type,E.tUserName FROM executedexam EE,exams E WHERE "
 					+ "EE.executedExamID=\"" + executedExamID + "\" AND EE.status=\"open\" AND EE.exam_id=E.e_id;");
 			if (!rs.isBeforeFirst()) {
 				System.out.println("no code found");
@@ -711,8 +711,9 @@ public class MysqlConnection {
 			exam.setE_id(rs.getString(1));
 			exam.setSolutionTime(rs.getString(2));
 			exam.setRemarksForTeacher(rs.getString(3));
-			exam.setRemarksForTeacher(rs.getString(4));
-			exam.setTeacherUserName(rs.getString(5));
+			exam.setRemarksForStudent(rs.getString(4));
+			exam.setType(rs.getString(5));
+			exam.setTeacherUserName(rs.getString(6));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

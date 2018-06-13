@@ -15,8 +15,10 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import entity.Exam;
 import entity.ExamDetailsMessage;
 import entity.Question;
+import entity.QuestionInExam;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -435,26 +437,15 @@ private Label selectedAnswer ;
 	/********************** Handling message from server ***********************/
 	@SuppressWarnings("unchecked")
 	private void checkExecutedExam(Object[] message) {
-		Object[] msgFromServer = (Object[]) message[1];
-
-		if (msgFromServer == null) {
-			openScreen("ErrorMessage", "Exam Locked or not defined");
-			return;
-		} else {
-			String type = (String) msgFromServer[1];
-			if (type.equals("manual")) {
-				// We Need To Build This Functionality !!!!!!!
+			ArrayList<Question> questioninexam = (ArrayList<Question>) message[1];
+			Exam exam=(Exam) message[2];
+			solutionTime = Time.valueOf(exam.getSolutionTime());
+			questioninexecutedexam =  questioninexam;
+			if (exam.getType().equals("manual")) {
+				Platform.runLater(()->openScreen("ManualExam"));
 			} else {
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						solutionTime = (Time) message[2];
-						questioninexecutedexam = (ArrayList<Question>) msgFromServer[0];
-						openScreen("ComputerizedExam");
-					}
-				});
+				Platform.runLater(()->openScreen("ComputerizedExam"));
 			}
-		}
 	}
 	public void showingCopy(ArrayList<Question> ques ,HashMap<String, Integer>ans) {
 
