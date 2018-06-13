@@ -1,5 +1,6 @@
 package control;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -8,7 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;  
+import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -33,6 +35,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -127,6 +132,12 @@ public class StudentControl extends UserControl implements Initializable {
 	private Button prevBTN;
 	@FXML
 	private TextField timerTextField;
+	@FXML
+	private ImageView imageDraging;
+	@FXML
+	private ImageView wordLogo;
+	@FXML
+	private ImageView uploadImage;
 	// ******************** Showing exam copy  ************//
 @FXML
 private Label studentAnswer ; 	
@@ -667,6 +678,21 @@ private Label selectedAnswer ;
 			examAnswers.put(q_id, selectedAnswer);
 		}
 
+	}
+	
+	public void dragOver(DragEvent e) {
+		if (e.getDragboard().hasFiles()) {
+			e.acceptTransferModes(TransferMode.ANY);
+		}
+	}
+
+	public void dropFile(DragEvent e) {
+		List<File> file = e.getDragboard().getFiles();
+		String[] name = file.get(0).getName().split("docx");
+		if (name != null) {
+			wordLogo.setVisible(false);
+			uploadImage.setVisible(true);
+		}
 	}
 
 }
