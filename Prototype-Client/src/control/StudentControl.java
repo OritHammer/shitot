@@ -1,5 +1,6 @@
 package control;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -33,6 +35,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -127,6 +132,12 @@ public class StudentControl extends UserControl implements Initializable {
 	private Button prevBTN;
 	@FXML
 	private TextField timerTextField;
+	@FXML
+	private ImageView imageDraging;
+	@FXML
+	private ImageView wordLogo;
+	@FXML
+	private ImageView uploadImage;
 	// ******************** Showing exam copy  ************//
 @FXML
 private Label studentAnswer ; 	
@@ -142,13 +153,19 @@ private Label selectedAnswer ;
 			correctRadioButton2.setVisible(true);
 			correctRadioButton3.setVisible(true);
 			correctRadioButton4.setVisible(true);
+			answer1.setStyle("-fx-background-color: white;");
+			answer2.setStyle("-fx-background-color: white;");
+			answer3.setStyle("-fx-background-color: white;");
+			answer4.setStyle("-fx-background-color: white;");
 			answer1.setVisible(true);
 			answer2.setVisible(true);
 			answer3.setVisible(true);
 			answer4.setVisible(true);
-			examAnswers = new HashMap<String, Integer>();
+			
 			nextQuestion(null);
 			prevBTN.setVisible(false);
+			if(copyFlag==false) {
+			examAnswers = new HashMap<String, Integer>();
 			// timerTextField.setText("123");
 			// s=solutionTime.toString();
 			// timerTextField.setText(s);
@@ -173,6 +190,7 @@ private Label selectedAnswer ;
 					timerTextField.setText(timeToString);
 				}
 			}, 1000, 1000);
+			}
 			// courseName.setText(questioninexecutedexam.get(0).getId().substring(0, 2));
 			break;
 		}
@@ -493,7 +511,7 @@ private Label selectedAnswer ;
 	/************************ Student performing exam *************/
 	@FXML
 	private void nextQuestion(ActionEvent e) {
-		if (index >= 0)
+		if (index >= 0 && copyFlag == false )
 			addAnswerToHashMap();
 		index++;
 		setQuestion();
@@ -545,21 +563,62 @@ private Label selectedAnswer ;
 		answer4.setText(questioninexecutedexam.get(index).getAnswer4());
 		
 		if(copyFlag==true) {
+		Boolean correctAns = false ; 
+		String stdSelected = examAnswers.get(questioninexecutedexam.get(index).getId()).toString() ;
+		String qustionAnswer = questioninexecutedexam.get(index).getCorrectAnswer() ;
+		answer1.setStyle("-fx-background-color: white;");
+		answer2.setStyle("-fx-background-color: white;");
+		answer3.setStyle("-fx-background-color: white;");
+		answer4.setStyle("-fx-background-color: white;");
 		studentAnswer.setVisible(true) ; 	
 		selectedAnswer.setVisible(true);
-		switch(questioninexecutedexam.get(index).getCorrectAnswer()) {
-		case "1": {
+		switch(qustionAnswer) {
+		case "1": 
+			if(stdSelected.equals("1")) {
+				answer1.setStyle("-fx-background-color: green;");
+				correctAns = true ; 
+			}
 			correctRadioButton1.setSelected(true);
 			break;
-		}
 		case "2":
+			if(stdSelected.equals("2")) {
+				answer2.setStyle("-fx-background-color: green;");
+				correctAns = true ; 
+			}
 			correctRadioButton2.setSelected(true);
 			break;
 		case "3":
+			if(stdSelected.equals("3")) {
+				answer3.setStyle("-fx-background-color: green;");
+				correctAns = true ; 
+			}
 			correctRadioButton3.setSelected(true);
 			break;
 		case "4":
+			if(stdSelected.equals("4")) {
+				answer4.setStyle("-fx-background-color: green;");
+				correctAns = true ; 
+			}
 			correctRadioButton4.setSelected(true);
+			break;
+		}
+		
+		switch(stdSelected) {
+		case "1": 
+			if(correctAns == false) 
+				answer1.setStyle("-fx-background-color: red;");
+			break;
+		case "2":
+			if(correctAns == false) 
+				answer2.setStyle("-fx-background-color: red;");
+			break;
+		case "3":
+			if(correctAns == false) 
+				answer3.setStyle("-fx-background-color: red;");
+			break;
+		case "4":
+			if(correctAns == false) 
+				answer4.setStyle("-fx-background-color: red;");
 			break;
 		}
 		selectedAnswer.setText(examAnswers.get(questioninexecutedexam.get(index).getId()).toString());
@@ -568,6 +627,7 @@ private Label selectedAnswer ;
 
 	@FXML
 	private void previousQuestion(ActionEvent e) {
+		if(copyFlag == false)
 		addAnswerToHashMap();
 		index--;
 		setQuestion();
@@ -579,6 +639,7 @@ private Label selectedAnswer ;
 
 	@FXML
 	private void finishExam(ActionEvent e) {
+		if(copyFlag == false) {
 		addAnswerToHashMap();
 		String details[] = new String[2];
 		details[0] = executedID;
@@ -596,6 +657,7 @@ private Label selectedAnswer ;
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		}
 		}
 		openScreen("NewDesignHomeScreenStudent");
 	}
@@ -621,6 +683,21 @@ private Label selectedAnswer ;
 			examAnswers.put(q_id, selectedAnswer);
 		}
 
+	}
+	
+	public void dragOver(DragEvent e) {
+		if (e.getDragboard().hasFiles()) {
+			e.acceptTransferModes(TransferMode.ANY);
+		}
+	}
+
+	public void dropFile(DragEvent e) {
+		List<File> file = e.getDragboard().getFiles();
+		String[] name = file.get(0).getName().split("docx");
+		if (name != null) {
+			wordLogo.setVisible(false);
+			uploadImage.setVisible(true);
+		}
 	}
 
 }
