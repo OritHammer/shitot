@@ -892,7 +892,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getPoints())) {
 			questionSelected.setPoints(edittedCell.getNewValue());
 		}
+		if(pageLabel.getText().equals("Update question in exam"))
+		{
 		updateBtn.setDisable(false);
+		
+		}
 		backButton.setDisable(false);
 	}
 
