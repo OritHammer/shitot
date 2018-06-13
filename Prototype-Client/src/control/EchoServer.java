@@ -102,7 +102,7 @@ public class EchoServer extends AbstractServer {
 			String[] msgFromClient = ((String)message[2]).split(" ");
 			if (msgFromClient[0].equals("Copy") ) {
 				serverMessage[0] = "showingCopy" ; 
-				HashMap<String,Integer> studentAns = con.getStudentAns(msgFromClient[1]+" "+msgFromClient[2],(String)message[1]);
+ 				HashMap<String,Integer> studentAns = con.getStudentAns(msgFromClient[1]+" "+msgFromClient[2],(String)message[1]);
 				serverMessage[2] =studentAns ;
 			}
 			else {
@@ -111,6 +111,11 @@ public class EchoServer extends AbstractServer {
 			}
 			serverMessage[1] = questioninexam;
 			this.sendToAllClients(serverMessage);
+			break;
+		}
+		case "getStudentAnswers":
+		{
+			
 			break;
 		}
 		case "getExams": {/* client request all all the courses under some subject */
@@ -274,15 +279,12 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		case "getReportByTeacher":{
-			ArrayList<ExecutedExam> teacherReportDetails=con.returnReportDetailsByTeacherOrCourse(message[0],message[1]);
-			serverMessage[0]="getReportByTeacher";
-			serverMessage[1]=teacherReportDetails;
+		case "getReportUser":{
+			ArrayList<ArrayList<String>> userReportDetails=con.returnUserReportDetails(message[1]);
+			serverMessage[0]="getReportUser";
+			serverMessage[1]=userReportDetails;
 			this.sendToAllClients(serverMessage);
 			break;
-		}
-		case "getReportByStudent": {
-			
 		}
 		case "finishExam": {
 			con.finishExam((String[]) message[1], (HashMap<String, Integer>) message[2]);

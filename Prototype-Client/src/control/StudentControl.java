@@ -344,7 +344,7 @@ private Label selectedAnswer ;
 		 * chat.handleMessageFromClientUI(messageToServer);// send the message to server
 		 */
 		connect(this);  
-		messageToServer[0] = "checkExecutedExam";
+		messageToServer[0] = "getStudentAnswers";
 		messageToServer[1] = examCodeCombo.getValue(); // sending executed exam id 
 		messageToServer[2] = "Copy "+Globals.getUser().getUsername(); // sending the user name 
 		chat.handleMessageFromClientUI(messageToServer);
