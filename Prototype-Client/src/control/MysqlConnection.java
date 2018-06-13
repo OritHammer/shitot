@@ -837,7 +837,7 @@ public class MysqlConnection {
 		while(rs.next()) {
 			stdAns.put(rs.getString(0), rs.getInt(1));
 		}
-		
+		rs.close(); 
 	}catch (SQLException e) {
 		e.printStackTrace();
 	}
