@@ -36,7 +36,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ocsf.server.ConnectionToClient;
 
-public class DirectorControl extends UserControl implements Initializable { 
+public class DirectorControl extends UserControl implements Initializable {
 	ObservableList<RequestForChangingTimeAllocated> addingTimeRequestsObservable = FXCollections.observableArrayList();
 	/// HOME TAB
 	@FXML
@@ -88,10 +88,11 @@ public class DirectorControl extends UserControl implements Initializable {
 	private ComboBox<String> subjectsComboBox;
 	@FXML
 	private ComboBox<String> coursesComboBox;
+	private String reportByChoose;
 
 	@FXML
-	private BarChart<?,?> barChart;
-	
+	private BarChart<?, ?> barChart;
+
 	// FXML System information
 
 	/******************************************************************
@@ -129,12 +130,12 @@ public class DirectorControl extends UserControl implements Initializable {
 	}
 
 	public void openTimeRequestTable(ActionEvent e) {
-		Platform.runLater(()->{
-		final Node source = (Node) e.getSource();
-		Stage stage = (Stage) source.getScene().getWindow();
-		// stage.close();
-		stage.close();
-		openScreen("TimeRequestTable");
+		Platform.runLater(() -> {
+			final Node source = (Node) e.getSource();
+			Stage stage = (Stage) source.getScene().getWindow();
+			// stage.close();
+			stage.close();
+			openScreen("TimeRequestTable");
 		});
 	}
 
@@ -201,53 +202,53 @@ public class DirectorControl extends UserControl implements Initializable {
 			chat.closeConnection();// close the connection
 
 			final Object[] msg = (Object[]) message;
-			Platform.runLater(()->{
-				
-			switch (msg[0].toString()) {
-			case ("getTimeRequestList"): { /* get the subjects list from server */
-				initAddingTimeRequests((ArrayList<RequestForChangingTimeAllocated>) msg[1]);
+			Platform.runLater(() -> {
 
-				break;
-			}
-			case ("getTimeRequestDetails"): { /* get the subjects list from server */
-				initAddingTimeRequestDetails((RequestForChangingTimeAllocated) msg[1]);
-				break;
-			}
-			case "getStudentsList":
-			case "getTeachersList": {
-				ObservableList<String> observableList = FXCollections.observableArrayList();
-				for (String item : (ArrayList<String>) msg[1])
-					observableList.add(item);
-				chooseUserComboBox.setVisible(true);
-				subjectsComboBox.setVisible(false);
-				coursesComboBox.setVisible(false);
-				if(chooseUserComboBox.getSelectionModel()!=null)
-				chooseUserComboBox.getSelectionModel().clearSelection();
-				chooseUserComboBox.setItems(observableList);
-				break;
-			}
-			case "getSubjects": {
-				ObservableList<String> observableList = FXCollections.observableArrayList();
-				for (TeachingProfessionals tp : (ArrayList<TeachingProfessionals>) msg[1]) {
-					observableList.add(tp.getTp_id() + " - " + tp.getName());
-					chooseUserComboBox.setVisible(false);
-					subjectsComboBox.setVisible(true);
+				switch (msg[0].toString()) {
+				case ("getTimeRequestList"): { /* get the subjects list from server */
+					initAddingTimeRequests((ArrayList<RequestForChangingTimeAllocated>) msg[1]);
+
+					break;
+				}
+				case ("getTimeRequestDetails"): { /* get the subjects list from server */
+					initAddingTimeRequestDetails((RequestForChangingTimeAllocated) msg[1]);
+					break;
+				}
+				case "getStudentsList":
+				case "getTeachersList": {
+					ObservableList<String> observableList = FXCollections.observableArrayList();
+					for (String item : (ArrayList<String>) msg[1])
+						observableList.add(item);
+					chooseUserComboBox.setVisible(true);
+					subjectsComboBox.setVisible(false);
+					coursesComboBox.setVisible(false);
+					if (chooseUserComboBox.getSelectionModel() != null)
+						chooseUserComboBox.getSelectionModel().clearSelection();
+					chooseUserComboBox.setItems(observableList);
+					break;
+				}
+				case "getSubjects": {
+					ObservableList<String> observableList = FXCollections.observableArrayList();
+					for (TeachingProfessionals tp : (ArrayList<TeachingProfessionals>) msg[1]) {
+						observableList.add(tp.getTp_id() + " - " + tp.getName());
+						chooseUserComboBox.setVisible(false);
+						subjectsComboBox.setVisible(true);
 						coursesComboBox.getSelectionModel().clearSelection();
-					subjectsComboBox.setItems(observableList);
+						subjectsComboBox.setItems(observableList);
+					}
+					break;
 				}
-				break;
-			}
-			case "getCourses": {
-				ObservableList<String> observableList = FXCollections.observableArrayList();
-				for (Course c : (ArrayList<Course>) msg[1]) {
-					observableList.add(c.getCourseID() + " - " + c.getName());
+				case "getCourses": {
+					ObservableList<String> observableList = FXCollections.observableArrayList();
+					for (Course c : (ArrayList<Course>) msg[1]) {
+						observableList.add(c.getCourseID() + " - " + c.getName());
+					}
+					coursesComboBox.setVisible(true);
+					coursesComboBox.setItems(observableList);
+					break;
 				}
-				coursesComboBox.setVisible(true);
-				coursesComboBox.setItems(observableList);
-				break;
-			}
 
-			}
+				}
 			});
 		} catch (NullPointerException e) {
 			openScreen("ErrorMessage", "There is no request to confirm .");
@@ -271,23 +272,24 @@ public class DirectorControl extends UserControl implements Initializable {
 	@SuppressWarnings("unchecked") // showing list of request that waiting to answer
 	public void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList)
 			throws NullPointerException {
-		Platform.runLater(()->{
-		for (RequestForChangingTimeAllocated i : requestsList) {
-			addingTimeRequestsObservable.add(i);
-		}
-		if (requestsTable != null && requestsTable.getColumns() != null)
-			requestsTable.getColumns().clear();
-		requestsTable.setItems(addingTimeRequestsObservable);
-		// display the id in the table view
-		examIDColumn.setCellValueFactory(new PropertyValueFactory<>("IDexecutedExam"));
+		Platform.runLater(() -> {
+			for (RequestForChangingTimeAllocated i : requestsList) {
+				addingTimeRequestsObservable.add(i);
+			}
+			if (requestsTable != null && requestsTable.getColumns() != null)
+				requestsTable.getColumns().clear();
+			requestsTable.setItems(addingTimeRequestsObservable);
+			// display the id in the table view
+			examIDColumn.setCellValueFactory(new PropertyValueFactory<>("IDexecutedExam"));
 
-		teacherNameColumn.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
+			teacherNameColumn.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
 
-		timeAddedColumn.setCellValueFactory(new PropertyValueFactory<>("timeAdded"));
-		// requestsTable.getColumns().clear();
-		requestsTable.getColumns().addAll(examIDColumn, teacherNameColumn, timeAddedColumn);
-	});
+			timeAddedColumn.setCellValueFactory(new PropertyValueFactory<>("timeAdded"));
+			// requestsTable.getColumns().clear();
+			requestsTable.getColumns().addAll(examIDColumn, teacherNameColumn, timeAddedColumn);
+		});
 	}
+
 	// initialize the field in details of request
 	public void initAddingTimeRequestDetails(RequestForChangingTimeAllocated request) {
 		txtFATRTeachName.setText(request.getTeacherName());
@@ -317,7 +319,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	 * listeners on statistic Report
 	 ***********************************************************/
 	public void showListForChooseObject(ActionEvent e) {// display the list of student/courses/teachers
-		String reportByChoose = reportByComboBox.getValue();
+		reportByChoose = reportByComboBox.getValue();
 		connect(this);
 		switch (reportByChoose) {
 		case "Student": {
@@ -342,13 +344,18 @@ public class DirectorControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer);
 	}
 
-	public void loadCourses(ActionEvent e) throws IOException {//load list of courses to combobox
+	public void loadCourses(ActionEvent e) throws IOException {// load list of courses to combobox
 		String subject = subjectsComboBox.getValue(); // get the subject code
 		loadCourses("All", subject);
 	}
-	public void getReportUser(ActionEvent e) {//load Statistic details on window
-		String userName=chooseUserComboBox.getValue();
-		messageToServer[0]="getReportUser";
+
+	public void getReportUser(ActionEvent e) {// load Statistic details on window
+		connect(this);
+		String userName = chooseUserComboBox.getValue();
+		if (reportByChoose == "Teacher")
+			messageToServer[0] = "getReportByTeacher";
+		else
+			messageToServer[0] = "getReportByStudent";
 		messageToServer[1] = userName;
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);

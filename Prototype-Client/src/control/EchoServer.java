@@ -274,12 +274,15 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		case "getReportUser":{
-			ArrayList<ArrayList<String>> userReportDetails=con.returnUserReportDetails(message[1]);
-			serverMessage[0]="getReportUser";
-			serverMessage[1]=userReportDetails;
+		case "getReportByTeacher":{
+			ArrayList<ExecutedExam> teacherReportDetails=con.returnReportDetailsByTeacherOrCourse(message[0],message[1]);
+			serverMessage[0]="getReportByTeacher";
+			serverMessage[1]=teacherReportDetails;
 			this.sendToAllClients(serverMessage);
 			break;
+		}
+		case "getReportByStudent": {
+			
 		}
 		case "finishExam": {
 			con.finishExam((String[]) message[1], (HashMap<String, Integer>) message[2]);

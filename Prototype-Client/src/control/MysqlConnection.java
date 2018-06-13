@@ -844,8 +844,23 @@ public class MysqlConnection {
 		return stdAns;
 }
 
-	public ArrayList<ArrayList<String>> returnUserReportDetails(Object object) {
-		
+	public ArrayList<ExecutedExam> returnReportDetailsByTeacherOrCourse(Object reportBy, Object id) {
+		ArrayList<ExecutedExam> executedExamList=new ArrayList<ExecutedExam>(); 	
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery("SELECT numOfStudentStarted,average,median,0until55,55until65,65until75,75until85,85until95,95until100 FROM shitot.executedexam where status='close' AND teacherName='k' AND average IS NOT NULL; ");
+			while (rs.next()) {
+	//			executedExamList.add(new ExecutedExam())
+	/* ExecutedExam(String executedExamID, int numOfStudentStarted, int numOfStudentFinished,
+				int numOfStudentDidntFinished, float average, float median, String teacherName, String exam_id,
+				int range0to55, int range55to65, int range65to75, int range75to85, int range85to95, int range95to100,String status)	*/
+			}
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
