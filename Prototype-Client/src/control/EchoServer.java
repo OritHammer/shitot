@@ -112,6 +112,7 @@ public class EchoServer extends AbstractServer {
  				HashMap<String,Integer> studentAns = con.getStudentAns(userName,(String)message[1]);
 				serverMessage[2] =studentAns ;
 				serverMessage[1]=questioninexam;
+				this.sendToAllClients(serverMessage);
 			break;
 		}
 		case "getExams": {/* client request all all the courses under some subject */

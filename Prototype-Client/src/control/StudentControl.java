@@ -439,13 +439,13 @@ private Label selectedAnswer ;
 		}
 	}
 	public void showingCopy(ArrayList<Question> ques ,HashMap<String, Integer>ans) {
-		
+
+		examAnswers = ans;
+		questioninexecutedexam =  ques;
+		copyFlag = true ; 
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				examAnswers = ans;
-				questioninexecutedexam =  ques;
-				copyFlag = true ; 
 				openScreen("ComputerizedExam");  
 			}
 		});
