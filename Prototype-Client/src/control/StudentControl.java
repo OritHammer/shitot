@@ -13,7 +13,6 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import entity.Exam;
 import entity.ExamDetailsMessage;
 import entity.Question;
 import javafx.animation.AnimationTimer;
@@ -347,7 +346,7 @@ private Label selectedAnswer ;
 		connect(this);  
 		messageToServer[0] = "getStudentAnswers";
 		messageToServer[1] = examCodeCombo.getValue(); // sending executed exam id 
-		messageToServer[2] = "Copy "+Globals.getUser().getUsername(); // sending the user name 
+		messageToServer[2] = Globals.getUser().getUsername(); // sending the user name 
 		chat.handleMessageFromClientUI(messageToServer);
 	}
 
@@ -424,15 +423,15 @@ private Label selectedAnswer ;
 			openScreen("ErrorMessage", "Exam Locked or not defined");
 			return;
 		} else {
-			final Exam exam = (Exam) msgFromServer[2];
-			if (exam.getType().equals("manual")) {
+			String type = (String) msgFromServer[1];
+			if (type.equals("manual")) {
 				// We Need To Build This Functionality !!!!!!!
 			} else {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						solutionTime = Time.valueOf(exam.getSolutionTime());
-						questioninexecutedexam = (ArrayList<Question>) msgFromServer[1];
+						solutionTime = (Time) message[2];
+						questioninexecutedexam = (ArrayList<Question>) msgFromServer[0];
 						openScreen("ComputerizedExam");
 					}
 				});

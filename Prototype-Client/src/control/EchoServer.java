@@ -106,12 +106,12 @@ public class EchoServer extends AbstractServer {
 		}
 		case "getStudentAnswers":
 		{
-			Object[] questioninexam = con.checkExecutedExam(message[1]);
-			String[] msgFromClient = ((String)message[2]).split(" ");
+			ArrayList<Question> questioninexam = con.getQuestionFromCloseExam((String)message[1]);
+			String userName = (String)message[2];
 				serverMessage[0] = "showingCopy" ; 
- 				HashMap<String,Integer> studentAns = con.getStudentAns(msgFromClient[1]+" "+msgFromClient[2],(String)message[1]);
+ 				HashMap<String,Integer> studentAns = con.getStudentAns(userName,(String)message[1]);
 				serverMessage[2] =studentAns ;
-				serverMessage[1]=questioninexam[0];
+				serverMessage[1]=questioninexam;
 			break;
 		}
 		case "getExams": {/* client request all all the courses under some subject */

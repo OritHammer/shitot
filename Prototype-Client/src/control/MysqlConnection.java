@@ -842,11 +842,13 @@ public class MysqlConnection {
 		HashMap<String, Integer> stdAns = new HashMap<>();
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("select questionID , answer " + "from shitot.studentanswerquestions "
-					+ "where executedID = '" + executedExamID + "' AND studentUserName = '" + userName + "' ; ");
+			ResultSet rs = stmt.executeQuery("select saq.questionID , saq.answer" + 
+					" from shitot.studentanswerquestions saq " + 
+					"where saq.executedID = \""+executedExamID+"\" AND saq.studentUserName =\""+userName+"\" ;  ");
 
 			while (rs.next()) {
-				stdAns.put(rs.getString(0), rs.getInt(1));
+				int ans = rs.getInt(2);
+				stdAns.put(rs.getString(1), ans);
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -860,4 +862,11 @@ public class MysqlConnection {
 		return null;
 	}
 
+	public ArrayList<Question> getQuestionFromCloseExam(String executedECode) {
+		return getQuestionByExecutedExam(executedECode);
+	}
+
+
+	
+	
 }
