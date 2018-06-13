@@ -223,8 +223,8 @@ public class EchoServer extends AbstractServer {
 		}
 		
 		case "deleteExam": {
-			Boolean inserted = con.deleteExam(message[1]);
-			serverMessage[1] = inserted;
+			Boolean deleted = con.deleteExam(message[1]);
+			serverMessage[1] = deleted;
 			this.sendToAllClients(serverMessage);
 			break;
 		}		
@@ -258,7 +258,7 @@ public class EchoServer extends AbstractServer {
 		case "getQuestionInExam": {
 			Boolean examFlag;
 			ArrayList <QuestionInExam> questioninexam=con.getQuestionInExam(message[1]);
-			examFlag = con.checkInExamActive(message[1]);
+			examFlag = con.checkIfExamIsNotActive(message[1]);
 			serverMessage[1] = questioninexam;
 			serverMessage[2] = examFlag;
 			this.sendToAllClients(serverMessage);

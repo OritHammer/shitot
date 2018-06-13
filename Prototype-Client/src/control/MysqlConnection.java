@@ -83,6 +83,12 @@ public class MysqlConnection {
 						last = Integer.parseInt(rs.getString(1).substring(2, 5));
 						rs.previous();
 					}
+					if(first != 1)
+					{
+						first=0;
+						break;
+					}
+						
 					if (last - first > 1) {
 						break;
 					}
@@ -561,7 +567,20 @@ public class MysqlConnection {
 	}
 
 	public Boolean deleteExam(Object exam) {
-
+		Exam ex = (Exam) exam;
+		
+		if(!checkIfExamIsNotActive(ex.getE_id()))
+			return false;
+		
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("DELETE FROM questioninexam WHERE e_id=\"" + ex.getE_id() + "\";");
+			stmt.executeUpdate("DELETE FROM exams WHERE e_id=\"" + ex.getE_id() + "\";");
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return true;
 	}
 
@@ -806,7 +825,7 @@ public class MysqlConnection {
 		Exam exam = (Exam) examToChange;
 
 		try {
-			if (!checkInExamActive(exam.getE_id()))
+			if (!checkIfExamIsNotActive(exam.getE_id()))
 				return false;
 			// query update on DB the correct answer of question that have the given
 			// questionID from client
@@ -823,7 +842,7 @@ public class MysqlConnection {
 		}
 	}
 
-	public Boolean checkInExamActive(Object examToChange) {
+	public Boolean checkIfExamIsNotActive(Object examToChange) {
 		// TODO Auto-generated method stub
 		String exam = (String) examToChange;
 
