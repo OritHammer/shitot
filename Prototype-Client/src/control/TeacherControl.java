@@ -47,6 +47,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	private ObservableList<Question> questionObservableList;
 	private Object[] messageToServer = new Object[3];
 	private static boolean blockLeftButton;
+	private static boolean blockRightButton;
 	private ObservableList<Exam> exams;
 	private Question questionSelected;
 	private static String tempExamId;
@@ -169,7 +170,14 @@ public class TeacherControl extends UserControl implements Initializable {
 	private Button left;
 	@FXML
 	private Button right;
+	
 	private Question oldQuestion;
+    @FXML
+    private Button backButton;
+    @FXML
+    private Button updateBtn;
+    
+
 
 	/* check the content message from server */
 	@SuppressWarnings("unchecked")
@@ -220,14 +228,22 @@ public class TeacherControl extends UserControl implements Initializable {
 						final boolean flag1=(boolean) msg[2];
 						Platform.runLater(() -> {
 							if(flag1 == false)
+							{
+
 							blockLeftButton = true;
+							blockRightButton = true;
+							}
 							else
+							{
 								blockLeftButton = false;
+								blockRightButton = false;
+							}
 							openScreen("UpdateQuestionInExam");
 						});
 					} catch (NullPointerException exception) {
 						Platform.runLater(() -> openScreen("ErrorMessage", "exam does not have any question"));
 						blockLeftButton = false;
+						blockRightButton = false;
 					}
 					break;
 				}
@@ -355,8 +371,15 @@ public class TeacherControl extends UserControl implements Initializable {
 			break;
 		}
 		case ("Update question in exam"): {
+			updateBtn.setDisable(true);
 			if (blockLeftButton) {
 				left.setDisable(true);
+				questionsInExamTableView.setEditable(false);
+				allertText.setFill(Color.RED);
+				allertText.setText("You can't edit this exam cause its an active exam");
+			}
+			if (blockLeftButton) {
+				right.setDisable(true);
 			}
 			setToQuestionInExamTableView();
 			connect(this); // connecting to server
@@ -869,6 +892,8 @@ public class TeacherControl extends UserControl implements Initializable {
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getPoints())) {
 			questionSelected.setPoints(edittedCell.getNewValue());
 		}
+		updateBtn.setDisable(false);
+		backButton.setDisable(false);
 	}
 
 	/* close button was pressed */
@@ -993,5 +1018,9 @@ public class TeacherControl extends UserControl implements Initializable {
 		} catch (NullPointerException exception) {
 			openScreen("ErrorMessage", "Please select exam");
 		}
+	}
+	
+	public void blockBackButton() {
+		backButton.setDisable(true);
 	}
 }
