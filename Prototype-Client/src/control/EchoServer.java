@@ -98,10 +98,9 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		case "checkExecutedExam": {/* check the executed exam id validity */
-			Object[] questioninexam = con.checkExecutedExam(message[1]);
-			Time solutionTime = con.getSolutionTime(message[1]);
-			serverMessage[1] = questioninexam;
-			serverMessage[2] = solutionTime;
+			Object[] executedexam = con.checkExecutedExam(message[1]);
+			serverMessage[1] = executedexam[0];//question in exam
+			serverMessage[2] = executedexam[1];//exam
 			this.sendToAllClients(serverMessage);
 			break;
 		}

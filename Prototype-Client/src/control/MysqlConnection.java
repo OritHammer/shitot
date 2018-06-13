@@ -632,23 +632,29 @@ public class MysqlConnection {
 
 	}
 
+
 	@SuppressWarnings("null")
 	public Object[] checkExecutedExam(Object executedExamID) {
 		executedExamID = (String) executedExamID;
 		ArrayList<Question> questionsinexam = null;
 		Object[] details = new Object[2];
-		String typeOfExam;
+		Exam exam=new Exam();
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT executedExamID,type FROM executedexam,exams WHERE "
-					+ "executedExamID=\"" + executedExamID + "\" AND status=\"open\" AND exam_id=e_id;");
+			ResultSet rs = stmt.executeQuery("SELECT E.e_id,E.solutionTime,E.remarksForTeacher,"
+					+ "E.remarksForStudent,E.type,E.teacherUserName FROM executedexam EE,exams E WHERE "
+					+ "EE.executedExamID=\"" + executedExamID + "\" AND EE.status=\"open\" AND EE.exam_id=E.e_id;");
 			if (!rs.isBeforeFirst()) {
 				System.out.println("no code found");
 				rs.close();
 				return (null);
 			}
 			rs.next();
-			typeOfExam = rs.getString(2);
+			exam.setE_id(rs.getString(1));
+			exam.setSolutionTime(rs.getString(2));
+			exam.setRemarksForTeacher(rs.getString(3));
+			exam.setRemarksForTeacher(rs.getString(4));
+			exam.setTeacherUserName(rs.getString(5));
 			questionsinexam = new ArrayList<Question>();
 			Question question;
 			rs = stmt.executeQuery("SELECT * " + "from (select questioninexam.question_ID id "
@@ -663,7 +669,7 @@ public class MysqlConnection {
 				questionsinexam.add(question);
 			}
 			details[0] = questionsinexam;
-			details[1] = typeOfExam;
+			details[1] = exam;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
