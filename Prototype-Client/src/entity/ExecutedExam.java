@@ -12,18 +12,18 @@ public class ExecutedExam implements Serializable {
 	private float median;
 	private String teacherName;
 	private String exam_id;
-	private int range0to55;
-	private int range55to65;
-	private int range65to75;
-	private int range75to85;
-	private int range85to95;
+	private int range0to54;
+	private int range55to64;
+	private int range65to74;
+	private int range75to84;
+	private int range85to94;
 	private int range95to100;
 	private String status;
 	
 	
 	public ExecutedExam(String executedExamID, int numOfStudentStarted, int numOfStudentFinished,
 			int numOfStudentDidntFinished, float average, float median, String teacherName, String exam_id,
-			int range0to55, int range55to65, int range65to75, int range75to85, int range85to95, int range95to100,String status) {
+			int range0to54, int range55to64, int range65to74, int range75to84, int range85to94, int range95to100,String status) {
 		super();
 		this.executedExamID = executedExamID;
 		this.numOfStudentStarted = numOfStudentStarted;
@@ -33,13 +33,49 @@ public class ExecutedExam implements Serializable {
 		this.median = median;
 		this.teacherName = teacherName;
 		this.exam_id = exam_id;
-		this.range0to55 = range0to55;
-		this.range55to65 = range55to65;
-		this.range65to75 = range65to75;
-		this.range75to85 = range75to85;
-		this.range85to95 = range85to95;
+		this.range0to54 = range0to54;
+		this.range55to64 = range55to64;
+		this.range65to74 = range65to74;
+		this.range75to84 = range75to84;
+		this.range85to94 = range85to94;
 		this.range95to100 = range95to100;
 		this.status=status;
+	}
+	public int getRange0to54() {
+		return range0to54;
+	}
+	public void setRange0to54(int range0to54) {
+		this.range0to54 = range0to54;
+	}
+	public int getRange55to64() {
+		return range55to64;
+	}
+	public void setRange55to64(int range55to64) {
+		this.range55to64 = range55to64;
+	}
+	public int getRange65to74() {
+		return range65to74;
+	}
+	public void setRange65to74(int range65to74) {
+		this.range65to74 = range65to74;
+	}
+	public int getRange75to84() {
+		return range75to84;
+	}
+	public void setRange75to84(int range75to84) {
+		this.range75to84 = range75to84;
+	}
+	public int getRange85to94() {
+		return range85to94;
+	}
+	public void setRange85to94(int range85to94) {
+		this.range85to94 = range85to94;
+	}
+	public int getRange95to100() {
+		return range95to100;
+	}
+	public void setRange95to100(int range95to100) {
+		this.range95to100 = range95to100;
 	}
 	public ExecutedExam() {
 		// TODO Auto-generated constructor stub
@@ -92,42 +128,7 @@ public class ExecutedExam implements Serializable {
 	public void setExam_id(String exam_id) {
 		this.exam_id = exam_id;
 	}
-	public int getRange0to55() {
-		return range0to55;
-	}
-	public void setRange0to55(int range0to55) {
-		this.range0to55 = range0to55;
-	}
-	public int getRange55to65() {
-		return range55to65;
-	}
-	public void setRange55to65(int range55to65) {
-		this.range55to65 = range55to65;
-	}
-	public int getRange65to75() {
-		return range65to75;
-	}
-	public void setRange65to75(int range65to75) {
-		this.range65to75 = range65to75;
-	}
-	public int getRange75to85() {
-		return range75to85;
-	}
-	public void setRange75to85(int range75to85) {
-		this.range75to85 = range75to85;
-	}
-	public int getRange85to95() {
-		return range85to95;
-	}
-	public void setRange85to95(int range85to95) {
-		this.range85to95 = range85to95;
-	}
-	public int getRange95to100() {
-		return range95to100;
-	}
-	public void setRange95to100(int range95to100) {
-		this.range95to100 = range95to100;
-	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}

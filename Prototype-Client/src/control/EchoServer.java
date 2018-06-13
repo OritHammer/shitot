@@ -283,28 +283,40 @@ public class EchoServer extends AbstractServer {
 			con.setStatusToAddingTimeRequest(((Object[]) msg)[1], "rejected");
 			break;
 		}
-		case "getStudentsList":{
+		case "getStudentsList":{//send to client list of all the student in the system
 			ArrayList<String> studentList=con.returnListForGetReport("Student");
 			serverMessage[0]="getStudentsList";
 			serverMessage[1]=studentList;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		case "getTeachersList":{
+		case "getTeachersList":{//send to client list of all the teachers in the system
 			ArrayList<String> teacherList=con.returnListForGetReport("Teacher");
 			serverMessage[0]="getTeachersList";
 			serverMessage[1]=teacherList;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		case "getReportUser":{
-			ArrayList<ArrayList<String>> userReportDetails=con.returnUserReportDetails(message[1]);
-			serverMessage[0]="getReportUser";
-			serverMessage[1]=userReportDetails;
+		case "getReportByTeacher":{////send to client statistic report of all the exam that teacher dose 
+			ArrayList<ExecutedExam> teacherReportDetails=con.returnReportByTeacherOrCoursesDetails(message[0],message[1]);
+			serverMessage[0]="getReportByTeacher";
+			serverMessage[1]=teacherReportDetails;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		case "finishExam": {
+		case "getReportByCourse":{
+			ArrayList<ExecutedExam> courseReportDetails=con.returnReportByTeacherOrCoursesDetails(message[0],message[1]);
+			serverMessage[0]="getReportByCourse";
+			serverMessage[1]=courseReportDetails;
+			this.sendToAllClients(serverMessage);
+			break;
+		}case "getReportByStudent":{
+			ArrayList<Integer> studentReportDetails=con.returnReportByStudent(message[1]);
+			serverMessage[0]="getReportByStudent";
+			serverMessage[1]=studentReportDetails;
+			this.sendToAllClients(serverMessage);
+			break;
+		}case "finishExam": {
 			con.finishExam((String[]) message[1], (HashMap<String, Integer>) message[2]);
 			break;
 		}

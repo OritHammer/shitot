@@ -923,7 +923,53 @@ public class MysqlConnection {
 	public ArrayList<Question> getQuestionFromCloseExam(String executedECode) {
 		return getQuestionByExecutedExam(executedECode);
 	}
+	public ArrayList<ExecutedExam> returnReportByTeacherOrCoursesDetails(Object reportBy, Object idOrUserName) {
+		ArrayList<ExecutedExam> executedExamList = new ArrayList<ExecutedExam>();
+		String id_userName = (String)idOrUserName;
+		ResultSet rs = null;
+		try {
+			stmt = conn.createStatement();
+			switch ((String) reportBy) {
+			case "getReportByTeacher": 
+				rs = stmt.executeQuery(
+						"SELECT numOfStudentStarted,average,median,between0to54,between55to64,between65to74,between75to84,between85to94,between95to100 FROM shitot.executedexam where teacherName='"
+								+ id_userName + "'AND status='close' AND average IS NOT NULL;");
+				break;
+			case "getReportByCourses":
+				rs = stmt.executeQuery(
+						"SELECT numOfStudentStarted,average,median,between0to54,between55to64,between65to74,between75to84,between85to94,between95to100 FROM shitot.executedexam where exam_id like \"__"
+								+ id_userName + "%\" AND status='close' AND average IS NOT NULL;");
+				break;
+			}
+			while (rs.next()) {
+				executedExamList.add(new ExecutedExam(null, Integer.parseInt(rs.getString(1)), 0, 0,
+						Float.parseFloat(rs.getString(2)), Float.parseFloat(rs.getString(3)), null, null,
+						Integer.parseInt(rs.getString(4)), Integer.parseInt(rs.getString(5)),
+						Integer.parseInt(rs.getString(6)), Integer.parseInt(rs.getString(7)),
+						Integer.parseInt(rs.getString(8)), Integer.parseInt(rs.getString(9)), null));
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return executedExamList;
+	}
 
+	public ArrayList<Integer> returnReportByStudent(Object userName) {
+		ArrayList<Integer> studentGradesList=new ArrayList<Integer>();
+		String studentName =(String)userName;
+		ResultSet rs = null;
+			try {
+				stmt = conn.createStatement();
+				rs=stmt.executeQuery("SELECT grade FROM shitot.studentperformedexam WHERE student_UserName='"+studentName+"'AND finished='yes' AND grade IS NOT NULL;");
+				while (rs.next())
+					studentGradesList.add(Integer.parseInt(rs.getString(1)));
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return studentGradesList;
+	}
 
 	
 	

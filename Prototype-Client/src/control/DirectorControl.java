@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 
 import entity.Course;
+import entity.ExecutedExam;
 import entity.QuestionInExam;
 import entity.RequestForChangingTimeAllocated;
 import entity.TeachingProfessionals;
@@ -23,6 +25,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -92,6 +95,10 @@ public class DirectorControl extends UserControl implements Initializable {
 
 	@FXML
 	private BarChart<?, ?> barChart;
+	@FXML
+	private TextField averageTextField;
+	@FXML
+	private TextField medianTextField;
 
 	// FXML System information
 
@@ -246,6 +253,50 @@ public class DirectorControl extends UserControl implements Initializable {
 					coursesComboBox.setVisible(true);
 					coursesComboBox.setItems(observableList);
 					break;
+				}case "getReportByTeacher":{ 
+					int sumGrades=0;
+					int sumStudent=0;
+					break;
+				}
+				case "getReportByCourse":{
+					
+					break;
+				}case "getReportByStudent":{
+					ArrayList<Integer> studentGradeList=(ArrayList<Integer>)msg[1];
+					Collections.sort(studentGradeList);
+					medianTextField.setText(" "+studentGradeList.get(studentGradeList.size()/2));
+					int sum=0;
+					int range0to54=0;
+					int range55to64=0;
+					int range65to74=0;
+					int range75to84=0;
+					int range85to94=0;
+					int range95to100=0;
+					for(Integer grade: studentGradeList) {
+						sum+=grade;
+						if (grade<55)//grade between0to54 
+							range0to54++;
+						else if(grade>54&&grade<65)//grade between55to64
+							range55to64++;
+						else if (grade>64&&grade<75)//grade between 65to74
+							range65to74++;
+						else if(grade>74&&grade<85)//grade between 75to84
+							range75to84++;
+						else if(grade>84&&grade<95)//grade between 85to94
+							range85to94++;
+						else if(grade>94)//grade between 95to100
+							range95to100++;
+					}
+					averageTextField.setText(" "+sum/studentGradeList.size());
+					//set values in the bar chart
+					XYChart.Series histogram =new XYChart.Series<>(); 
+					histogram.getData().add(new XYChart.Data("0-54", range0to54));
+					histogram.getData().add(new XYChart.Data("55-65", range55to64));
+					histogram.getData().add(new XYChart.Data("65-75", range65to74));
+					histogram.getData().add(new XYChart.Data("75-84", range75to84));
+					histogram.getData().add(new XYChart.Data("85-94", range85to94));
+					histogram.getData().add(new XYChart.Data("95-100", range95to100));
+					barChart.getData().addAll(histogram);
 				}
 
 				}
@@ -349,7 +400,8 @@ public class DirectorControl extends UserControl implements Initializable {
 		loadCourses("All", subject);
 	}
 
-	public void getReportUser(ActionEvent e) {// load Statistic details on window
+	
+	public void getReportUser(ActionEvent e) {// load Statistic details of user on window
 		connect(this);
 		String userName = chooseUserComboBox.getValue();
 		if (reportByChoose == "Teacher")
@@ -359,5 +411,13 @@ public class DirectorControl extends UserControl implements Initializable {
 		messageToServer[1] = userName;
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);
+	} 
+	public void getReportByCourseCode(ActionEvent e) {// load Statistic details of course on window
+		connect(this);
+		String courseName = coursesComboBox.getValue();
+		 messageToServer[0]="getgetReportByCourse";
+		 messageToServer[1]=courseName;
+		 messageToServer[2] = null;
+		 chat.handleMessageFromClientUI(messageToServer);
 	}
 }
