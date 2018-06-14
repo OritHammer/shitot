@@ -298,7 +298,7 @@ public class DirectorControl extends UserControl implements Initializable {
 					Platform.runLater(() -> {barChart.getData().addAll(histogram);});
 				}
  
-				}
+				} 
 			});
 		} catch (NullPointerException e) {
 			openScreen("ErrorMessage", "There is no request to confirm .");
