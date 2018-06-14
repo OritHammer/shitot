@@ -69,13 +69,15 @@ public class UserControl implements Initializable {
 	protected ComboBox<String> subjectsComboBox;
 	protected ComboBox<String> coursesComboBox;
 	protected ChatClient chat;
-
+	
 	protected Object[] messageToServer = new Object[3];
 	/* connections variables */
 	static String ip;// server ip
 
 	final public static int DEFAULT_PORT = 5555;
 
+	private static User myUser = new User();
+	
 	/* this method connected between client and server */
 	public void connect(UserControl user) {
 		try {
@@ -130,8 +132,9 @@ public class UserControl implements Initializable {
 									TeacherControl tController=loader.getController();
 									String userName=user.getFullname().toLowerCase();
 									tController.setUserText(userName);/*send the name to the controller*/
-									Globals.setFullName(user.getFullname());
-									Globals.setuserName(user.getUsername());
+									getMyUser().setFullname(user.getFullname());
+									getMyUser().setUsername(user.getUsername());
+									
 									home_page_scene = new Scene(home_page_parent);
 									Main.getStage().setTitle("HomeScreenTeacher");
 									Main.getStage().setScene(home_page_scene);
@@ -157,9 +160,9 @@ public class UserControl implements Initializable {
 									loader.setLocation(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
 									home_page_parent = loader.load();
 									StudentControl sController=loader.getController();
-									Globals.setUser(user); 
-									Globals.setFullName(user.getFullname());
-									Globals.setuserName(user.getUsername());
+									setMyUser(user); 
+									getMyUser().setFullname(user.getFullname());
+									getMyUser().setUsername(user.getUsername());
 									sController.setStudentAuthor_Date_name();/*send the name to the controller*/
 									home_page_scene = new Scene(home_page_parent);
 									//	sController.setHomePScene(home_page_scene);
@@ -185,8 +188,8 @@ public class UserControl implements Initializable {
 									loader.setLocation(getClass().getResource("/directorBoundary/HomeScreenDirector.fxml"));
 									
 									home_page_parent = loader.load();
-									Globals.setFullName(user.getFullname());
-									Globals.setuserName(user.getUsername());
+									getMyUser().setFullname(user.getFullname());
+									getMyUser().setUsername(user.getUsername());
 									DirectorControl dController=loader.getController();
 									String userName=user.getFullname().toLowerCase();/*get the name of the user*/
 									dController.setUserText(userName);/*send the name to the controller*/
@@ -240,7 +243,7 @@ public class UserControl implements Initializable {
 	
 	public void setUserText(String userNameFromDB) {/*set the user name text in the "hello user" text*/
 		this.userNameFromDB=userNameFromDB;
-		Globals.setFullName(userNameFromDB);
+		getMyUser().setFullname(userNameFromDB);
 		if(this instanceof DirectorControl) {
 			 userText1.setText(userNameFromDB);
 		return;
@@ -258,8 +261,18 @@ public class UserControl implements Initializable {
 		messageToServer[1] = subjectSubString[0].trim();
 		if(typeList=="All")
 			messageToServer[2] = null;
-		else messageToServer[2] = Globals.getuserName();
+		else messageToServer[2] = getMyUser().getUsername();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
+	}
+
+	
+	public static User getMyUser() {
+		return myUser;
+	}
+
+	
+	public static void setMyUser(User myUser) {
+		UserControl.myUser = myUser;
 	}
 
 }
