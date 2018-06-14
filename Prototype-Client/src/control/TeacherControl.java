@@ -46,8 +46,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	private static ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
 	private ObservableList<Question> questionObservableList;
 	private Object[] messageToServer = new Object[3];
-	private static boolean blockLeftButton;
-	private static boolean blockRightButton;
+	private static boolean blockPassQuestionButton;
+
 	private ObservableList<Exam> exams;
 	private Question questionSelected;
 	private static String tempExamId;
@@ -167,9 +167,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private ComboBox<String> typeComboBox;
 	@FXML
-	private Button left;
-	@FXML
-	private Button right;
+	private Button passQuestion;
+
 	
 	private Question oldQuestion;
     @FXML
@@ -242,20 +241,20 @@ public class TeacherControl extends UserControl implements Initializable {
 							if(flag1 == false)
 							{
 
-							blockLeftButton = true;
-							blockRightButton = true;
+							blockPassQuestionButton = true;
+							
 							}
 							else
 							{
-								blockLeftButton = false;
-								blockRightButton = false;
+								blockPassQuestionButton = false;
+								
 							}
 							openScreen("UpdateQuestionInExam");
 						});
 					} catch (NullPointerException exception) {
 						Platform.runLater(() -> openScreen("ErrorMessage", "exam does not have any question"));
-						blockLeftButton = false;
-						blockRightButton = false;
+						blockPassQuestionButton = false;
+						
 					}
 					break;
 				}
@@ -384,15 +383,13 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 		case ("Update question in exam"): {
 			updateBtn.setDisable(true);
-			if (blockLeftButton) {
-				left.setDisable(true);
+			if (blockPassQuestionButton) {
+				passQuestion.setDisable(true);
 				questionsInExamTableView.setEditable(false);
 				allertText.setFill(Color.RED);
 				allertText.setText("You can't edit this exam cause its an active exam");
 			}
-			if (blockLeftButton) {
-				right.setDisable(true);
-			}
+
 			setToQuestionInExamTableView();
 			connect(this); // connecting to server
 			messageToServer[0] = "getQuestionsToTable";
