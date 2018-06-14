@@ -430,7 +430,6 @@ public class StudentControl extends UserControl implements Initializable {
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

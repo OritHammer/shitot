@@ -150,7 +150,7 @@ public class EchoServer extends AbstractServer {
 		}
 		case "setExam": {/* client request is to create exam in DB */
 			String examId=con.createExam(message[1], message[2]);
-			if(((Exam)message[2]).getType().equals("Manual"))
+			if(((Exam)message[2]).getType().equals("manual"))
 			{
 			ArrayList<Question> questions=con.getQuestions(message[1]);
 			((Exam)message[2]).setE_id(examId);
@@ -387,7 +387,7 @@ public class EchoServer extends AbstractServer {
 			System.out.println("Im here");
 			XWPFDocument wordExam=new XWPFDocument();
 			try {
-				FileOutputStream out=new FileOutputStream(new File("d:/shitot/" + exam.getE_id() + ".docx"));
+				FileOutputStream out=new FileOutputStream(new File("Exams/" + exam.getE_id() + ".docx"));
 				XWPFParagraph title=wordExam.createParagraph();
 				XWPFRun	run=title.createRun();
 				
