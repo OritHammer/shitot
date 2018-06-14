@@ -76,7 +76,8 @@ public class MysqlConnection {
 					"SELECT (question_id) FROM questions" + " WHERE question_id like " + "\"" + subject + "%\"" + ";");
 			if (!rs.isBeforeFirst()) {
 				first = 0;
-			} else {
+			} else 
+			{
 				while (rs.next()) {
 					first = Integer.parseInt(rs.getString(1).substring(2, 5));
 					if (rs.next()) {
@@ -466,7 +467,8 @@ public class MysqlConnection {
 					"SELECT e_id FROM exams" + " WHERE e_id like " + "\"" + examNumber + "%\"" + ";");
 			if (!rs.isBeforeFirst()) {
 				first = 0;
-			} else {
+			} 
+			else {
 				while (rs.next()) {
 					first = Integer.parseInt(rs.getString(1).substring(4, 6));
 					if (rs.next()) {
@@ -484,6 +486,8 @@ public class MysqlConnection {
 					}
 
 				}
+				rs.close();
+			}
 			examNum = first + 1;
 			fullExamNumber = examNumber;
 			fullExamNumber = fullExamNumber + "" + String.format("%02d", examNum);
@@ -495,9 +499,9 @@ public class MysqlConnection {
 			for (QuestionInExam q : questionInExam) {
 				stmt.executeUpdate("INSERT INTO shitot.questioninexam VALUES(\"" + fullExamNumber.trim() + "\",\""
 						+ q.getQuestionID() + "\",\"" + (questionCounter++) + "\",\"" + q.getPoints() + "\");");
-			}
+			
 
-			rs.close();
+			
 		} 
 		}
 			catch (SQLException e) {
