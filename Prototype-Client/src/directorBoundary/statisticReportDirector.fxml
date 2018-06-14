@@ -15,12 +15,12 @@
       <ComboBox fx:id="subjectsComboBox" layoutX="240.0" layoutY="62.0" onAction="#loadCourses" prefHeight="25.0" prefWidth="141.0" promptText="choose subject" />
       <Label layoutX="96.0" layoutY="45.0" prefHeight="17.0" prefWidth="141.0" text="Get  Statistic Report By:" />
       <NumberAxis layoutX="451.0" layoutY="146.0" prefHeight="210.0" prefWidth="28.0" side="LEFT" />
-      <BarChart fx:id="barChart" layoutX="77.0" layoutY="139.0" prefHeight="225.0" prefWidth="468.0">
+      <BarChart fx:id="barChart" layoutX="31.0" layoutY="140.0" prefHeight="242.0" prefWidth="544.0" title="Histogram">
          <xAxis>
-            <CategoryAxis prefHeight="12.0" prefWidth="369.0" side="BOTTOM" />
+            <CategoryAxis label="Grade" nodeOrientation="RIGHT_TO_LEFT" prefHeight="41.0" prefWidth="410.0" fx:id="x" />
          </xAxis>
          <yAxis>
-            <NumberAxis prefHeight="210.0" prefWidth="28.0" side="LEFT" />
+            <NumberAxis fx:id="y" label="Number Of Student" prefHeight="130.0" prefWidth="55.0" side="LEFT" />
          </yAxis>
       </BarChart>
       <ComboBox fx:id="reportByComboBox" layoutX="100.0" layoutY="62.0" onAction="#showListForChooseObject" prefHeight="25.0" prefWidth="126.0" />
