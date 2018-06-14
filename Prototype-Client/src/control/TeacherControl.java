@@ -225,7 +225,7 @@ public class TeacherControl extends UserControl implements Initializable {
 				case ("deleteExam"): /* get the subjects list from server */
 				{
 					if ((boolean) msg[1] == true) {
-						examsTableView.refresh();
+						exams.remove(exams.indexOf(examSelected));
 					} else {
 						
 						Platform.runLater(() -> openScreen("ErrorMessage", "This exam is in active exam."));
