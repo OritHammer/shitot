@@ -12,7 +12,7 @@ public class ExamCopy {
 	private Boolean isApproved;
 	private String reasonForChange ;
 /*********** Class Constructor ***********************/
-	public void ExamCopy(String sID,int eGrade , HashMap<String, String> answers ) {
+	public ExamCopy(String sID,int eGrade , HashMap<String, String> answers ) {
 		studentID = sID;
 		grade = eGrade;
 		answeredQ = answers ;
