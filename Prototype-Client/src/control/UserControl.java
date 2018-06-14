@@ -2,12 +2,9 @@ package control;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
-import com.sun.javafx.fxml.LoadListener;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.Loader;
 
 import entity.User;
 import javafx.application.Platform;
@@ -25,7 +22,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import studentControllers.S_HomeScreenController;
 
 public class UserControl implements Initializable {
 	@FXML
@@ -94,7 +90,7 @@ public class UserControl implements Initializable {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("enter server ip");
 		// this.ip = "77.138.70.98";
-		this.ip = "localhost";
+		ip = "localhost";
 		// this.ip = sc.nextLine();
 		sc.close(); 
 		errorMsg.setVisible(false);

@@ -61,6 +61,7 @@ public class ManualExamControl extends AbstractClient implements Initializable {
 			uploadManualExamButton.setDisable(true);
 		}
 	}
+	@SuppressWarnings("resource")
 	public void uploadFileToServer(ActionEvent e) {
 		  MyFile file= new MyFile(fileFromClient.get(0).getName());
 		  String LocalfilePath=fileFromClient.get(0).getAbsolutePath();

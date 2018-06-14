@@ -69,7 +69,6 @@ public class MysqlConnection {
 		int first = 0;
 		int last = 0;
 		int flagFirst = 0;
-		int flag = 0;
 		Question q = (Question) question;
 		try {
 			stmt = conn.createStatement();
@@ -539,7 +538,6 @@ public class MysqlConnection {
 	}
 	////////
 	public synchronized Exam getExam(Object examID) {
-		@SuppressWarnings("unchecked")
 		String examId=(String)examID;
 		Exam exam=new Exam();
 	
@@ -565,9 +563,10 @@ public class MysqlConnection {
 	
 	
 	///////
+	@SuppressWarnings("unused")
 	public synchronized void updateQuestionInExam(Object questionInExams, Object examId) {
-		@SuppressWarnings("unchecked")
 		int questionCounter = 1;
+		@SuppressWarnings("unchecked")
 		ArrayList<QuestionInExam> questionInExam = (ArrayList<QuestionInExam>) questionInExams;
 		try {
 			stmt = conn.createStatement();
@@ -636,6 +635,7 @@ public class MysqlConnection {
 	/************************************************************
 	 * director functions
 	 *********************************************************************************************/
+	@SuppressWarnings("unused")
 	public void getRequestsList(Object list) {// get list of executed exam code of exams that exist request to adding
 												// them time
 		list = new ArrayList<String>();
@@ -806,7 +806,6 @@ public class MysqlConnection {
 		String examID = details[0];
 		String studentId = details[1];
 		int ans;
-		int i;
 		Set<String> s = answers.keySet();
 		for (String q_id : s) {
 			ans = answers.get(q_id);
