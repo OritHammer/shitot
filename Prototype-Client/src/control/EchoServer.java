@@ -387,7 +387,7 @@ public class EchoServer extends AbstractServer {
 			System.out.println("Im here");
 			XWPFDocument wordExam=new XWPFDocument();
 			try {
-				FileOutputStream out=new FileOutputStream(new File("localhost" + exam.getE_id() + ".docx"));
+				FileOutputStream out=new FileOutputStream(new File("Exams/" + exam.getE_id() + ".docx"));
 				XWPFParagraph title=wordExam.createParagraph();
 				XWPFRun	run=title.createRun();
 				
