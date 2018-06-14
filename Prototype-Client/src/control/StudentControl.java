@@ -148,11 +148,11 @@ public class StudentControl extends UserControl implements Initializable {
 			answer2.setVisible(true);
 			answer3.setVisible(true);
 			answer4.setVisible(true);
-
-			nextQuestion(null);
+			if (copyFlag == true) nextQuestion(null);
 			prevBTN.setVisible(false);
 			if (copyFlag == false) {
 				examAnswers = new HashMap<String, Integer>();
+				nextQuestion(null);
 				// timerTextField.setText("123");
 				// s=solutionTime.toString();
 				// timerTextField.setText(s);
@@ -432,6 +432,7 @@ public class StudentControl extends UserControl implements Initializable {
 			Platform.runLater(() -> openScreen("ManualExam"));
 		} else {
 			Platform.runLater(() -> openScreen("ComputerizedExam"));
+			
 		}
 	}
 
@@ -495,7 +496,7 @@ public class StudentControl extends UserControl implements Initializable {
 		if (index + 1 == questioninexecutedexam.size()) {
 			nextBTN.setVisible(false);
 		}
-		prevBTN.setVisible(true);
+		else if (index > 0) prevBTN.setVisible(true);
 
 	}
 
@@ -637,6 +638,12 @@ public class StudentControl extends UserControl implements Initializable {
 			}
 		}
 		openScreen("NewDesignHomeScreenStudent");
+		
+		if (copyFlag == true) {
+			index = -1 ; 
+			copyFlag = false ; // when the user finish watching his exam copy flag should return be false 
+		}
+		
 	}
 
 	public void addAnswerToHashMap() {
