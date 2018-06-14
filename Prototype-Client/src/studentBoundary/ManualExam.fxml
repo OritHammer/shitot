@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="447.0" prefWidth="575.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.StudentControl">
+<AnchorPane prefHeight="447.0" prefWidth="575.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.ManualExamControl">
    <children>
       <TextField fx:id="timerTextField" editable="false" layoutX="348.0" layoutY="57.0" prefHeight="37.0" prefWidth="200.0">
          <font>
@@ -19,16 +19,17 @@
             <Image url="@../../Upload-outside-pic.jpg" />
          </image>
       </ImageView>
-      <ImageView fx:id="uploadImage" fitHeight="229.0" fitWidth="408.0" layoutX="93.0" layoutY="144.0" onDragOver="#dragOver" onMouseDragOver="#dropFile">
+      <ImageView fx:id="uploadImage" fitHeight="229.0" fitWidth="408.0" layoutX="93.0" layoutY="144.0" onDragOver="#dragOver" onDragDropped="#dropFileToImage">
          <image>
             <Image url="@../../Upload-inside-pic.jpg" />
          </image>
       </ImageView>
-      <ImageView fx:id="wordLogo" fitHeight="117.0" fitWidth="129.0" layoutX="233.0" layoutY="190.0" visible="false">
+      <ImageView fx:id="wordLogo" fitHeight="117.0" fitWidth="129.0" layoutX="233.0" layoutY="190.0" visible="false" onDragDropped="#dropFileToImage" onDragOver="#dragOver">
          <image>
             <Image url="@../../wordLogo.png" />
          </image>
       </ImageView>
       <Label fx:id="pageLabel" layoutX="252.0" layoutY="14.0" text="Manual exam" />
+      <Button fx:id="uploadManualExamButton" disable="true" layoutX="271.0" layoutY="408.0" mnemonicParsing="false" onAction="#uploadFileToServer" text="Upload" />
    </children>
 </AnchorPane>
