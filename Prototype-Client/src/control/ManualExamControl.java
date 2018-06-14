@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
@@ -37,6 +38,8 @@ public class ManualExamControl extends AbstractClient implements Initializable {
 	private ImageView uploadImage;
 	@FXML
 	private Button uploadManualExamButton;
+    @FXML
+    private Label fileName;
 
 	public ManualExamControl(String host, int port) {
 		super(host, port);
@@ -80,9 +83,12 @@ public class ManualExamControl extends AbstractClient implements Initializable {
 		if (wordFile) {
 			wordLogo.setVisible(true);
 			uploadManualExamButton.setDisable(false);
+			fileName.setText(fileFromClient.get(0).getName());
+			fileName.setVisible(true);
 		} else {
 			wordLogo.setVisible(false);
 			uploadManualExamButton.setDisable(true);
+			fileName.setVisible(false);
 		}
 	}
 
