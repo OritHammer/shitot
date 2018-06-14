@@ -354,7 +354,7 @@ public class StudentControl extends UserControl implements Initializable {
 		connect(this);
 		messageToServer[0] = "getStudentAnswers";
 		messageToServer[1] = examCodeCombo.getValue(); // sending executed exam id
-		messageToServer[2] = Globals.getUser().getUsername(); // sending the user name
+		messageToServer[2] = getMyUser().getUsername(); // sending the user name
 		chat.handleMessageFromClientUI(messageToServer);
 	}
 
@@ -620,7 +620,7 @@ public class StudentControl extends UserControl implements Initializable {
 			addAnswerToHashMap();
 			String details[] = new String[2];
 			details[0] = executedID;
-			details[1] = Globals.getUser().getUsername();
+			details[1] = getMyUser().getUsername();
 			connect(this);
 			messageToServer[0] = "finishExam";
 			messageToServer[1] = details;

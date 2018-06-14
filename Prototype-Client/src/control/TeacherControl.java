@@ -169,7 +169,9 @@ public class TeacherControl extends UserControl implements Initializable {
 	private ComboBox<String> typeComboBox;
 
 	@FXML
-	private Button passQuestion;
+	private Button passQuestionL;
+	@FXML
+	private Button passQuestionR;
 	@FXML
 	private Button backButton;
 	@FXML
@@ -310,12 +312,9 @@ public class TeacherControl extends UserControl implements Initializable {
 						final boolean flag1 = (boolean) msg[2];
 						Platform.runLater(() -> {
 							if (flag1 == false) {
-
 								blockPassQuestionButton = true;
-
 							} else {
 								blockPassQuestionButton = false;
-
 							}
 							openScreen("UpdateQuestionInExam");
 						});
@@ -387,7 +386,8 @@ public class TeacherControl extends UserControl implements Initializable {
 		case ("Update question in exam"): {
 			updateBtn.setDisable(true);
 			if (blockPassQuestionButton) {
-				passQuestion.setDisable(true);
+				passQuestionL.setDisable(true);
+				passQuestionR.setDisable(true);
 				questionsInExamTableView.setEditable(false);
 				allertText.setFill(Color.RED);
 				allertText.setText("You can't edit this exam cause its an active exam");
@@ -987,8 +987,9 @@ public class TeacherControl extends UserControl implements Initializable {
 		exam.setExam_id(examID);
 		messageToServer[0] = "setExamCode";
 		messageToServer[1] = exam;
-		chat.handleMessageFromClientUI(messageToServer);
 		connect(this);
+		chat.handleMessageFromClientUI(messageToServer);
+		
 	}
 
 	/* loading courses from database by subject*/
