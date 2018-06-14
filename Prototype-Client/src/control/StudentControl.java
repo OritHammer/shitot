@@ -381,7 +381,7 @@ public class StudentControl extends UserControl implements Initializable {
 		if (codeTextField.getText().equals("") || userIDTextField.getText().equals((""))) {
 			openScreen("ErrorMessage", "Error in executed exam id");
 			return;
-		} else if (!userIDTextField.getText().equals((Globals.getUser().getUserID()))) {
+		} else if (!userIDTextField.getText().equals((getMyUser().getUserID()))) {
 			openScreen("ErrorMessage", "Your ID is incorrect"); // if user ID isn't correct
 			return;
 		}

@@ -1,9 +1,12 @@
 package control;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 // This file contains material supporting section 3.7 of the textbook:
 // "Object Oriented Software Engineering" and is issued under the open-source
@@ -22,6 +25,7 @@ import entity.Course;
 import entity.Exam;
 import entity.ExamDetailsMessage;
 import entity.ExecutedExam;
+import entity.MyFile;
 import entity.Question;
 import entity.QuestionInExam;
 import entity.RequestForChangingTimeAllocated;
@@ -124,6 +128,39 @@ public class EchoServer extends AbstractServer {
 				this.sendToAllClients(serverMessage);
 			break;
 		}
+		case "saveExamOfStudent":
+		{
+			FileOutputStream fileOutputStream = null;
+			BufferedOutputStream bufferedOutputStream = null;
+			MyFile file = (MyFile)message[2];
+			try {
+				// receive file
+				File diagFromClient = new File("Students Exams/"+ file.getFileName());
+				System.out.println("Please wait downloading file");		//reading file from socket
+				fileOutputStream = new FileOutputStream(diagFromClient);
+				bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+				bufferedOutputStream.write(file.getMybytearray(), 0 , file.getSize());		//writing byteArray to file
+				bufferedOutputStream.flush();												//flushing buffers
+				System.out.println("File " + diagFromClient  + " downloaded ( size: " + file.getSize() + " bytes read)");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			finally {
+				if (fileOutputStream != null)
+					try {
+						fileOutputStream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				if (bufferedOutputStream != null)
+					try {
+						bufferedOutputStream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+			}
+			break;
+		}
 		case "getExams": {/* client request all all the courses under some subject */
 			ArrayList<Exam> examsList = con.getExams(message[1]);
 			serverMessage[1] = examsList;
@@ -213,7 +250,7 @@ public class EchoServer extends AbstractServer {
 		case "updateQuestionInExam": {
 			con.updateQuestionInExam(message[1],message[2]);
 			Exam exam=con.getExam(message[2]);
-			if(exam.getType().equals("Manual")) {
+			if(exam.getType().equals("manual")) {
 			ArrayList<Question> questions=con.getQuestions(message[1]);
 			createManualExam(exam,questions );//This method create word(docx)file to manual exam
 			}

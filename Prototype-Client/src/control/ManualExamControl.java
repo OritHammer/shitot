@@ -101,7 +101,7 @@ public class ManualExamControl extends AbstractClient implements Initializable {
 			messageToServer[0] = "saveExamOfStudent";
 			//messageToServer[1] = getMyUser().getuserName();
 			messageToServer[2] = file;
-			sendToServer(file);
+			sendToServer(messageToServer);
 		} catch (Exception exception) {
 			System.out.println("Error send (Files)msg) to Server");
 		}
