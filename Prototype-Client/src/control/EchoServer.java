@@ -57,7 +57,7 @@ public class EchoServer extends AbstractServer {
 	final public static int DEFAULT_PORT = 5555;
 	MysqlConnection con = new MysqlConnection();
 	// Question questionDetails = new Question();
-	Object[] serverMessage = new Object[3];
+	Object[] serverMessage = new Object[4];
 	// Constructors ****************************************************
 
 	/**
