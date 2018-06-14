@@ -31,6 +31,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import sun.nio.cs.HistoricallyNamedCharset;
 
 
 public class DirectorControl extends UserControl implements Initializable {
@@ -95,6 +96,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	private TextField medianTextField;
 
 	private static String requestId;
+	private XYChart.Series histogram =null;
 	
 	// FXML System information
 
@@ -125,7 +127,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			chooseUserComboBox.setVisible(false);
 			subjectsComboBox.setVisible(false);
 			coursesComboBox.setVisible(false);
-
+			histogram =new XYChart.Series<>();//initialize histogram
 		} else if (pageLabel.getText().contentEquals("")) {// system information
 
 		}
@@ -284,15 +286,16 @@ public class DirectorControl extends UserControl implements Initializable {
 							range95to100++;
 					}
 					averageTextField.setText(" "+sum/studentGradeList.size());
-					//set values in the bar chart
-					XYChart.Series histogram =new XYChart.Series<>(); 
+					//clear data from bar chart
+					//histogram.getData().clear();
+					//set values in the bar chart 
 					histogram.getData().add(new XYChart.Data("0-54", range0to54));
 					histogram.getData().add(new XYChart.Data("55-65", range55to64));
 					histogram.getData().add(new XYChart.Data("65-75", range65to74));
 					histogram.getData().add(new XYChart.Data("75-84", range75to84));
 					histogram.getData().add(new XYChart.Data("85-94", range85to94));
 					histogram.getData().add(new XYChart.Data("95-100", range95to100));
-					barChart.getData().addAll(histogram);
+					Platform.runLater(() -> {barChart.getData().addAll(histogram);});
 				}
 
 				}
