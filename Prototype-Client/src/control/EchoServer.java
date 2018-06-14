@@ -443,7 +443,6 @@ public class EchoServer extends AbstractServer {
 				out.close();
 				wordExam.close();
 				System.out.println("now im hehre");
-				System.exit(0);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -987,6 +987,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		exam.setExam_id(examID);
 		messageToServer[0] = "setExamCode";
 		messageToServer[1] = exam;
+		chat.handleMessageFromClientUI(messageToServer);
 		connect(this);
 	}
 
