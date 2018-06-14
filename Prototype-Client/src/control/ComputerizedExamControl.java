@@ -253,7 +253,7 @@ public class ComputerizedExamControl extends AbstractClient implements Initializ
 		openScreen("NewDesignHomeScreenStudent");
 	}
 
-	private void openScreen(String screen) {// open a window of screen
+	private void openScreen(String screen) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			if (screen.equals("LoginGui")) {
@@ -281,7 +281,6 @@ public class ComputerizedExamControl extends AbstractClient implements Initializ
 		}
 	}
 
-	// ***
 	private void openScreen(String screen, String message) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
