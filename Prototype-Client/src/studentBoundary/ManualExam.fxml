@@ -19,12 +19,12 @@
             <Image url="@../../Upload-outside-pic.jpg" />
          </image>
       </ImageView>
-      <ImageView fx:id="uploadImage" fitHeight="229.0" fitWidth="408.0" layoutX="93.0" layoutY="144.0" onDragOver="#dragOver" onMouseDragOver="#dropFile">
+<ImageView fx:id="uploadImage" fitHeight="229.0" fitWidth="408.0" layoutX="93.0" layoutY="144.0" onDragDropped="#dropFileToImage" onDragOver="#dragOver" >
          <image>
             <Image url="@../../Upload-inside-pic.jpg" />
          </image>
       </ImageView>
-      <ImageView fx:id="wordLogo" fitHeight="117.0" fitWidth="129.0" layoutX="233.0" layoutY="190.0" visible="false">
+      <ImageView fx:id="wordLogo" fitHeight="117.0" fitWidth="129.0" layoutX="233.0" layoutY="190.0" visible="false" onDragDropped="#dropFileToImage" onDragOver="#dragOver">
          <image>
             <Image url="@../../wordLogo.png" />
          </image>

@@ -681,11 +681,16 @@ private Label selectedAnswer ;
 			e.acceptTransferModes(TransferMode.ANY);
 		}
 	}
+	
 	@FXML
-	public void dropFile(DragEvent e) {
+	public void dropFileToImage(DragEvent e) {
 		List<File> file = e.getDragboard().getFiles();
-		String[] name = file.get(0).getName().split("docx");
-		if (name != null) {
+		boolean wordFile = file.get(0).getAbsolutePath().contains(".docx");
+		if (wordFile) {
+			wordLogo.setVisible(true);
+			uploadImage.setVisible(false);
+		}
+		else {
 			wordLogo.setVisible(false);
 			uploadImage.setVisible(true);
 		}
