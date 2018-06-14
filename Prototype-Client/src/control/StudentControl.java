@@ -50,15 +50,14 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 public class StudentControl extends UserControl implements Initializable {
-	private List<File> fileFromClient;
 	private static Scene homeSc = null;
-	private static Scene gradeSc = null; 
+	private static Scene gradeSc = null;
 	private static ArrayList<Question> questioninexecutedexam;
 	public static Time solutionTime;
 	public static int remainTime;
 	public static Timer timer;
 	private int index = -1;
-	private static Boolean copyFlag = false ; 
+	private static Boolean copyFlag = false;
 	public static String timeToString;
 	public static HashMap<String, Integer> examAnswers;// saves the question id and the answers
 	/********************* Variable declaration *************************/
@@ -138,19 +137,12 @@ public class StudentControl extends UserControl implements Initializable {
 	private Button prevBTN;
 	@FXML
 	private TextField timerTextField;
+
+	// ******************** Showing exam copy ************//
 	@FXML
-	private ImageView imageDraging;
+	private Label studentAnswer;
 	@FXML
-	private ImageView wordLogo;
-	@FXML
-	private ImageView uploadImage;
-	@FXML
-	private Button uploadManualExamButton;
-	// ******************** Showing exam copy  ************//
-@FXML
-private Label studentAnswer ; 	
-@FXML
-private Label selectedAnswer ; 	
+	private Label selectedAnswer;
 
 	/************************ Class Methods *************************/
 	public void initialize(URL url, ResourceBundle rb) {
@@ -169,35 +161,36 @@ private Label selectedAnswer ;
 			answer2.setVisible(true);
 			answer3.setVisible(true);
 			answer4.setVisible(true);
-			
+
 			nextQuestion(null);
 			prevBTN.setVisible(false);
-			if(copyFlag==false) {
-			examAnswers = new HashMap<String, Integer>();
-			// timerTextField.setText("123");
-			// s=solutionTime.toString();
-			// timerTextField.setText(s);
-			remainTime = solutionTime.getHours() * 3600 + solutionTime.getMinutes() * 60 + solutionTime.getSeconds();//reamain is the time in seconds
-			timer = new Timer();
-			timer.scheduleAtFixedRate(new TimerTask() {
-				public void run() {
-					int sec = setInterval();
-					if (remainTime == 1) {
-						Platform.runLater(() -> openScreen("ErrorMessage", "Time is over"));
-						questionContent.setText("time is over click Finish");
-						correctRadioButton1.setVisible(false);
-						correctRadioButton2.setVisible(false);
-						correctRadioButton3.setVisible(false);
-						correctRadioButton4.setVisible(false);
-						answer1.setVisible(false);
-						answer2.setVisible(false);
-						answer3.setVisible(false);
-						answer4.setVisible(false);
+			if (copyFlag == false) {
+				examAnswers = new HashMap<String, Integer>();
+				// timerTextField.setText("123");
+				// s=solutionTime.toString();
+				// timerTextField.setText(s);
+				remainTime = solutionTime.getHours() * 3600 + solutionTime.getMinutes() * 60
+						+ solutionTime.getSeconds();// reamain is the time in seconds
+				timer = new Timer();
+				timer.scheduleAtFixedRate(new TimerTask() {
+					public void run() {
+						int sec = setInterval();
+						if (remainTime == 1) {
+							Platform.runLater(() -> openScreen("ErrorMessage", "Time is over"));
+							questionContent.setText("time is over click Finish");
+							correctRadioButton1.setVisible(false);
+							correctRadioButton2.setVisible(false);
+							correctRadioButton3.setVisible(false);
+							correctRadioButton4.setVisible(false);
+							answer1.setVisible(false);
+							answer2.setVisible(false);
+							answer3.setVisible(false);
+							answer4.setVisible(false);
+						}
+						timeToString = intToTime(sec).toString();
+						timerTextField.setText(timeToString);
 					}
-					timeToString = intToTime(sec).toString();
-					timerTextField.setText(timeToString);
-				}
-			}, 1000, 1000);
+				}, 1000, 1000);
 			}
 			// courseName.setText(questioninexecutedexam.get(0).getId().substring(0, 2));
 			break;
@@ -349,7 +342,9 @@ private Label selectedAnswer ;
 		}
 	}
 
-	/********************* Student see his grades or get copy *************************/
+	/*********************
+	 * Student see his grades or get copy
+	 *************************/
 	public void getGradesFromServer() {
 		connect(this);
 		messageToServer[0] = "getExamsByUserName";
@@ -369,14 +364,12 @@ private Label selectedAnswer ;
 		 * examCodeCombo.getValue(); messageToServer[2] = null;
 		 * chat.handleMessageFromClientUI(messageToServer);// send the message to server
 		 */
-		connect(this);  
+		connect(this);
 		messageToServer[0] = "getStudentAnswers";
-		messageToServer[1] = examCodeCombo.getValue(); // sending executed exam id 
-		messageToServer[2] = Globals.getUser().getUsername(); // sending the user name 
+		messageToServer[1] = examCodeCombo.getValue(); // sending executed exam id
+		messageToServer[2] = Globals.getUser().getUsername(); // sending the user name
 		chat.handleMessageFromClientUI(messageToServer);
 	}
-
-	
 
 	/***************************
 	 * Student excecute exam
@@ -399,9 +392,11 @@ private Label selectedAnswer ;
 		messageToServer[1] = executedID;
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
+
 	public void downloadExamPressed() {
 
 	}
+
 	/************************* checking message ***********************************/
 	// for all windows
 	@SuppressWarnings("unchecked")
@@ -427,8 +422,8 @@ private Label selectedAnswer ;
 				addTimeToExam(msgFromServer);
 				break;
 			}
-			case "showingCopy" : 
-				showingCopy((ArrayList<Question>)msgFromServer[1],(HashMap<String, Integer>)msgFromServer[2]);
+			case "showingCopy":
+				showingCopy((ArrayList<Question>) msgFromServer[1], (HashMap<String, Integer>) msgFromServer[2]);
 				break;
 			}
 
@@ -443,30 +438,29 @@ private Label selectedAnswer ;
 	/********************** Handling message from server ***********************/
 	@SuppressWarnings("unchecked")
 	private void checkExecutedExam(Object[] message) {
-			ArrayList<Question> questioninexam = (ArrayList<Question>) message[1];
-			Exam exam=(Exam) message[2];
-			solutionTime = Time.valueOf(exam.getSolutionTime());
-			questioninexecutedexam =  questioninexam;
-			if (exam.getType().equals("manual")) {
-				Platform.runLater(()->openScreen("ManualExam"));
-			} else {
-				Platform.runLater(()->openScreen("ComputerizedExam"));
-			}
+		ArrayList<Question> questioninexam = (ArrayList<Question>) message[1];
+		Exam exam = (Exam) message[2];
+		solutionTime = Time.valueOf(exam.getSolutionTime());
+		questioninexecutedexam = questioninexam;
+		if (exam.getType().equals("manual")) {
+			Platform.runLater(() -> openScreen("ManualExam"));
+		} else {
+			Platform.runLater(() -> openScreen("ComputerizedExam"));
+		}
 	}
-	public void showingCopy(ArrayList<Question> ques ,HashMap<String, Integer>ans) {
+
+	public void showingCopy(ArrayList<Question> ques, HashMap<String, Integer> ans) {
 
 		examAnswers = ans;
-		questioninexecutedexam =  ques;
-		copyFlag = true ; 
+		questioninexecutedexam = ques;
+		copyFlag = true;
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				openScreen("ComputerizedExam");  
+				openScreen("ComputerizedExam");
 			}
 		});
 	}
-
-
 
 	@SuppressWarnings("deprecation")
 	public void addTimeToExam(Object[] message) {
@@ -508,7 +502,7 @@ private Label selectedAnswer ;
 	/************************ Student performing exam *************/
 	@FXML
 	private void nextQuestion(ActionEvent e) {
-		if (index >= 0 && copyFlag == false )
+		if (index >= 0 && copyFlag == false)
 			addAnswerToHashMap();
 		index++;
 		setQuestion();
@@ -558,74 +552,74 @@ private Label selectedAnswer ;
 		answer2.setText(questioninexecutedexam.get(index).getAnswer2());
 		answer3.setText(questioninexecutedexam.get(index).getAnswer3());
 		answer4.setText(questioninexecutedexam.get(index).getAnswer4());
-		
-		if(copyFlag==true) {
-		Boolean correctAns = false ; 
-		String stdSelected = examAnswers.get(questioninexecutedexam.get(index).getId()).toString() ;
-		String qustionAnswer = questioninexecutedexam.get(index).getCorrectAnswer() ;
-		answer1.setStyle("-fx-background-color: white;");
-		answer2.setStyle("-fx-background-color: white;");
-		answer3.setStyle("-fx-background-color: white;");
-		answer4.setStyle("-fx-background-color: white;");
-		studentAnswer.setVisible(true) ; 	
-		selectedAnswer.setVisible(true);
-		switch(qustionAnswer) {
-		case "1": 
-			if(stdSelected.equals("1")) {
-				answer1.setStyle("-fx-background-color: green;");
-				correctAns = true ; 
+
+		if (copyFlag == true) {
+			Boolean correctAns = false;
+			String stdSelected = examAnswers.get(questioninexecutedexam.get(index).getId()).toString();
+			String qustionAnswer = questioninexecutedexam.get(index).getCorrectAnswer();
+			answer1.setStyle("-fx-background-color: white;");
+			answer2.setStyle("-fx-background-color: white;");
+			answer3.setStyle("-fx-background-color: white;");
+			answer4.setStyle("-fx-background-color: white;");
+			studentAnswer.setVisible(true);
+			selectedAnswer.setVisible(true);
+			switch (qustionAnswer) {
+			case "1":
+				if (stdSelected.equals("1")) {
+					answer1.setStyle("-fx-background-color: green;");
+					correctAns = true;
+				}
+				correctRadioButton1.setSelected(true);
+				break;
+			case "2":
+				if (stdSelected.equals("2")) {
+					answer2.setStyle("-fx-background-color: green;");
+					correctAns = true;
+				}
+				correctRadioButton2.setSelected(true);
+				break;
+			case "3":
+				if (stdSelected.equals("3")) {
+					answer3.setStyle("-fx-background-color: green;");
+					correctAns = true;
+				}
+				correctRadioButton3.setSelected(true);
+				break;
+			case "4":
+				if (stdSelected.equals("4")) {
+					answer4.setStyle("-fx-background-color: green;");
+					correctAns = true;
+				}
+				correctRadioButton4.setSelected(true);
+				break;
 			}
-			correctRadioButton1.setSelected(true);
-			break;
-		case "2":
-			if(stdSelected.equals("2")) {
-				answer2.setStyle("-fx-background-color: green;");
-				correctAns = true ; 
+
+			switch (stdSelected) {
+			case "1":
+				if (correctAns == false)
+					answer1.setStyle("-fx-background-color: red;");
+				break;
+			case "2":
+				if (correctAns == false)
+					answer2.setStyle("-fx-background-color: red;");
+				break;
+			case "3":
+				if (correctAns == false)
+					answer3.setStyle("-fx-background-color: red;");
+				break;
+			case "4":
+				if (correctAns == false)
+					answer4.setStyle("-fx-background-color: red;");
+				break;
 			}
-			correctRadioButton2.setSelected(true);
-			break;
-		case "3":
-			if(stdSelected.equals("3")) {
-				answer3.setStyle("-fx-background-color: green;");
-				correctAns = true ; 
-			}
-			correctRadioButton3.setSelected(true);
-			break;
-		case "4":
-			if(stdSelected.equals("4")) {
-				answer4.setStyle("-fx-background-color: green;");
-				correctAns = true ; 
-			}
-			correctRadioButton4.setSelected(true);
-			break;
-		}
-		
-		switch(stdSelected) {
-		case "1": 
-			if(correctAns == false) 
-				answer1.setStyle("-fx-background-color: red;");
-			break;
-		case "2":
-			if(correctAns == false) 
-				answer2.setStyle("-fx-background-color: red;");
-			break;
-		case "3":
-			if(correctAns == false) 
-				answer3.setStyle("-fx-background-color: red;");
-			break;
-		case "4":
-			if(correctAns == false) 
-				answer4.setStyle("-fx-background-color: red;");
-			break;
-		}
-		selectedAnswer.setText(examAnswers.get(questioninexecutedexam.get(index).getId()).toString());
+			selectedAnswer.setText(examAnswers.get(questioninexecutedexam.get(index).getId()).toString());
 		}
 	}
 
 	@FXML
 	private void previousQuestion(ActionEvent e) {
-		if(copyFlag == false)
-		addAnswerToHashMap();
+		if (copyFlag == false)
+			addAnswerToHashMap();
 		index--;
 		setQuestion();
 		if (index == 0) {
@@ -636,25 +630,25 @@ private Label selectedAnswer ;
 
 	@FXML
 	private void finishExam(ActionEvent e) {
-		if(copyFlag == false) {
-		addAnswerToHashMap();
-		String details[] = new String[2];
-		details[0] = executedID;
-		details[1] = Globals.getUser().getUsername();
-		connect(this);
-		messageToServer[0] = "finishExam";
-		messageToServer[1] = details;
-		messageToServer[2] = examAnswers;
-		chat.handleMessageFromClientUI(messageToServer);// send the message to server
-		try {
-			closeScreen(e);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		if (copyFlag == false) {
+			addAnswerToHashMap();
+			String details[] = new String[2];
+			details[0] = executedID;
+			details[1] = Globals.getUser().getUsername();
+			connect(this);
+			messageToServer[0] = "finishExam";
+			messageToServer[1] = details;
+			messageToServer[2] = examAnswers;
+			chat.handleMessageFromClientUI(messageToServer);// send the message to server
+			try {
+				closeScreen(e);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		openScreen("NewDesignHomeScreenStudent");
 	}
@@ -681,47 +675,5 @@ private Label selectedAnswer ;
 		}
 
 	}
-	@FXML
-	public void dragOver(DragEvent e) {
-		if (e.getDragboard().hasFiles()) {
-			e.acceptTransferModes(TransferMode.ANY);
-		}
-	}
-	
-	@FXML
-	public void dropFileToImage(DragEvent e) {
-		fileFromClient = e.getDragboard().getFiles();
-		boolean wordFile = fileFromClient.get(0).getAbsolutePath().contains(".docx");
-		if (wordFile) {
-			wordLogo.setVisible(true);
-			uploadManualExamButton.setDisable(false);
-		}
-		else {
-			wordLogo.setVisible(false);
-			uploadManualExamButton.setDisable(true);
-		}
-	}
-	
-	@FXML
-	public void uploadFileToServer(ActionEvent e) {
-		  MyFile file= new MyFile(fileFromClient.get(0).getName());
-		  String LocalfilePath=fileFromClient.get(0).getAbsolutePath();
-			
-		  try{
-			      File newFile = new File (LocalfilePath);
-			      byte [] mybytearray  = new byte [(int)newFile.length()];
-			      FileInputStream fis = new FileInputStream(newFile);
-			      BufferedInputStream bis = new BufferedInputStream(fis);			  
-			      
-			      file.initArray(mybytearray.length);
-			      file.setSize(mybytearray.length);
-			      
-			      bis.read(file.getMybytearray(),0,mybytearray.length);
-			      chat.sendToServer(file);		      
-			    }
-			catch (Exception exception) {
-				System.out.println("Error send (Files)msg) to Server");
-			}
-	}
-		
+
 }
