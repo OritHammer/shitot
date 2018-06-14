@@ -1,8 +1,10 @@
 package control;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,6 +33,9 @@ import entity.QuestionInExam;
 import entity.RequestForChangingTimeAllocated;
 import entity.TeachingProfessionals;
 import entity.User;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import ocsf.server.*;
 
 /**
@@ -111,9 +116,32 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		case "checkExecutedExam": {/* check the executed exam id validity */
+			String executedExamID=(String)message[1];
 			Object[] executedexam = con.checkExecutedExam(message[1]);
 			serverMessage[1] = executedexam[0];//question in exam
 			serverMessage[2] = executedexam[1];//exam
+			Exam exam=(Exam)executedexam[1];
+			
+			if( exam.getType().equals("manual")) {
+				MyFile file = new MyFile(executedExamID);
+				String LocalfilePath = "Exam/"+executedExamID+".docx";
+
+				try {
+					File newFile = new File(LocalfilePath);
+					byte[] mybytearray = new byte[(int) newFile.length()];
+					FileInputStream fis = new FileInputStream(newFile);
+					BufferedInputStream bis = new BufferedInputStream(fis);
+
+					file.initArray(mybytearray.length);
+					file.setSize(mybytearray.length);
+
+					bis.read(file.getMybytearray(), 0, mybytearray.length);
+					serverMessage[3] = file;//צריך דחוףףףףף לסדר את זההההה
+				} catch (Exception exception) {
+					System.out.println("Error send (Files)msg) to Server");
+				}
+			}
+			
 			this.sendToAllClients(serverMessage);
 			break;
 		}

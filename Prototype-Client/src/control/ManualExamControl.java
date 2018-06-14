@@ -13,11 +13,14 @@ import entity.MyFile;
 import control.UserControl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
+import javafx.stage.Stage;
 import ocsf.client.AbstractClient;
 
 public class ManualExamControl extends AbstractClient implements Initializable {
@@ -102,6 +105,12 @@ public class ManualExamControl extends AbstractClient implements Initializable {
 			//messageToServer[1] = getMyUser().getuserName();
 			messageToServer[2] = file;
 			sendToServer(messageToServer);
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
+			Scene scene = new Scene(loader.load());
+			Stage stage = Main.getStage();
+			stage.setScene(scene);
+			stage.show();
 		} catch (Exception exception) {
 			System.out.println("Error send (Files)msg) to Server");
 		}
