@@ -65,7 +65,7 @@ public class S_myGradesScreenController extends UserControl {
 	public void getGradesFromServer () {
 		connect(this);
 		messageToServer[0] = "getExamsByUserName";
-		messageToServer[1] = Globals.getuserName();
+		messageToServer[1] = getMyUser().getUsername();
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 	}

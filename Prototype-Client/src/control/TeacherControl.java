@@ -381,7 +381,7 @@ public class TeacherControl extends UserControl implements Initializable {
 
 		switch (pageLabel.getText()) {
 		case ("Home screen"): {
-			userText.setText(Globals.getFullName());
+			userText.setText(getMyUser().getUsername());
 			break;
 		}
 		case ("Update question in exam"): {
@@ -397,7 +397,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			connect(this); // connecting to server
 			messageToServer[0] = "getQuestionsToTable";
 			messageToServer[1] = questionInExamObservable.get(0).getQuestionID().substring(0, 2);
-			messageToServer[2] = Globals.getuserName();
+			messageToServer[2] = getMyUser().getUsername();
 			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 			break;
 		}
@@ -420,18 +420,18 @@ public class TeacherControl extends UserControl implements Initializable {
 			case ("Extend exam time"):
 			case ("Lock exam"): {
 				messageToServer[0] = "getExecutedExams";
-				messageToServer[1] = Globals.getuserName();
+				messageToServer[1] = getMyUser().getUsername();
 				chat.handleMessageFromClientUI(messageToServer);// send the message to server
 				break;
 			}
 			case ("Create question"): {
-				teacherNameOnCreate.setText(Globals.getuserName());
+				teacherNameOnCreate.setText(getMyUser().getUsername());
 				break;
 			}
 
 			}
 			messageToServer[0] = "getSubjects";
-			messageToServer[1] = Globals.getuserName();
+			messageToServer[1] = getMyUser().getUsername();
 			messageToServer[2] = null;
 			chat.handleMessageFromClientUI(messageToServer);// send the message to server
 			break;
@@ -545,7 +545,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		connect(this); // connecting to server
 		messageToServer[0] = "getQuestionsToTable";
 		messageToServer[1] = subjectSubString[0].trim();
-		messageToServer[2] = Globals.getuserName();
+		messageToServer[2] = getMyUser().getUsername();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 
@@ -658,7 +658,7 @@ public class TeacherControl extends UserControl implements Initializable {
 				|| (answer4.getText().equals("")) || (correctAnswer == 0) || (questionName.getText().equals(""))) {
 			openScreen("ErrorMessage", "Not all fields are completely full");
 		} else {
-			question = new Question(null, Globals.getuserName(), questionName.getText().trim(),
+			question = new Question(null, getMyUser().getUsername(), questionName.getText().trim(),
 					answer1.getText().trim(), answer2.getText().trim(), answer3.getText().trim(),
 					answer4.getText().trim(), String.valueOf(correctAnswer));
 			String subject = subjectsComboBox.getValue();
@@ -820,7 +820,7 @@ public class TeacherControl extends UserControl implements Initializable {
 				.collect(Collectors.toList());// making the observable a lis
 		exam.setRemarksForStudent(remarksForStudent.getText());
 		exam.setRemarksForTeacher(remarksForTeacher.getText());
-		exam.setTeacherUserName(Globals.getuserName());
+		exam.setTeacherUserName(getMyUser().getUsername());
 		time = time.valueOf(timeForExamHours.getText() + ":" + timeForExamMinute.getText() + ":00");// making a Time
 																									// class format
 		exam.setSolutionTime(time.toString());
@@ -983,7 +983,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 		exam = new ExecutedExam();
 		exam.setExecutedExamID(executedExamId);
-		exam.setTeacherName(Globals.getuserName());
+		exam.setTeacherName(getMyUser().getUsername());
 		exam.setExam_id(examID);
 		messageToServer[0] = "setExamCode";
 		messageToServer[1] = exam;
@@ -1001,7 +1001,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			connect(this); // connecting to server
 			messageToServer[0] = "getCourses";
 			messageToServer[1] = subjectSubString[0].trim();
-			messageToServer[2] = Globals.getuserName();
+			messageToServer[2] = getMyUser().getUsername();
 			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 		} catch (NullPointerException exception) {
 			return;
@@ -1029,7 +1029,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		request.setIDexecutedExam(executedexam.getExecutedExamID());
 		request.setReason(reasonForChange.getText());
 		request.setMenagerApprove("waiting");
-		request.setTeacherName(Globals.getuserName());
+		request.setTeacherName(getMyUser().getUsername());
 		request.setTimeAdded(timeForExamHours.getText() + "" + timeForExamMinute.getText());
 		connect(this); // connecting to server
 		messageToServer[0] = "createChangingRequest";

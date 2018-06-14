@@ -224,7 +224,7 @@ public class StudentControl extends UserControl implements Initializable {
 
 	/********************* general Functions *************************/
 	public void setStudentAuthor_Date_name() {// *** move to userControl rename userDetails
-		userNameLabel.setText(Globals.getFullName());
+		userNameLabel.setText(getMyUser().getFullname());
 		dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
 		authorLabel.setText("Student");
 	}
@@ -232,7 +232,7 @@ public class StudentControl extends UserControl implements Initializable {
 	public void logoutPressed(ActionEvent e) throws Exception, SQLException { // *** move to userControl
 		connect(this);
 		messageToServer[0] = "logoutProcess";
-		messageToServer[1] = Globals.getuserName();
+		messageToServer[1] = getMyUser().getUsername();
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 		closeScreen(e);
@@ -348,7 +348,7 @@ public class StudentControl extends UserControl implements Initializable {
 	public void getGradesFromServer() {
 		connect(this);
 		messageToServer[0] = "getExamsByUserName";
-		messageToServer[1] = Globals.getuserName();
+		messageToServer[1] = getMyUser().getUsername();
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 	}

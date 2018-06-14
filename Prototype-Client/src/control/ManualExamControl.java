@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import entity.MyFile;
+import control.UserControl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -98,7 +99,7 @@ public class ManualExamControl extends AbstractClient implements Initializable {
 
 			bis.read(file.getMybytearray(), 0, mybytearray.length);
 			messageToServer[0] = "saveExamOfStudent";
-			messageToServer[1] = Globals.getuserName();
+			//messageToServer[1] = getMyUser().getuserName();
 			messageToServer[2] = file;
 			sendToServer(file);
 		} catch (Exception exception) {
