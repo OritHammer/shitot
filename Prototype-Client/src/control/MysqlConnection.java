@@ -68,6 +68,7 @@ public class MysqlConnection {
 		int questionNumber;
 		int first = 0;
 		int last = 0;
+		int flagFirst = 0;
 		int flag = 0;
 		Question q = (Question) question;
 		try {
@@ -83,12 +84,12 @@ public class MysqlConnection {
 						last = Integer.parseInt(rs.getString(1).substring(2, 5));
 						rs.previous();
 					}
-					if(first != 1)
+					if(first != 1 && flagFirst==0)
 					{
 						first=0;
 						break;
 					}
-						
+					flagFirst=1;
 					if (last - first > 1) {
 						break;
 					}
@@ -456,17 +457,35 @@ public class MysqlConnection {
 		String fullExamNumber = null;
 		String examNumber = exam.getE_id();
 		int examNum;
+		int first = 0;
+		int last =0;
+		int flagFirst=0;
 		int questionCounter = 1;
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
-					"SELECT MAX(e_id) FROM exams" + " WHERE e_id like " + "\"" + examNumber + "%\"" + ";");
-			rs.next();
-			if ((rs.getString(1) == null))
-				examNum = 0;
-			else
-				examNum = Integer.parseInt(rs.getString(1).substring(4, 6));
-			examNum++;
+					"SELECT e_id FROM exams" + " WHERE e_id like " + "\"" + examNumber + "%\"" + ";");
+			if (!rs.isBeforeFirst()) {
+				first = 0;
+			} else {
+				while (rs.next()) {
+					first = Integer.parseInt(rs.getString(1).substring(4, 6));
+					if (rs.next()) {
+						last = Integer.parseInt(rs.getString(1).substring(4, 6));
+						rs.previous();
+					}
+					if(first != 1 && flagFirst==0)
+					{
+						first=0;
+						break;
+					}
+						flagFirst=1;
+					if (last - first > 1) {
+						break;
+					}
+
+				}
+			examNum = first + 1;
 			fullExamNumber = examNumber;
 			fullExamNumber = fullExamNumber + "" + String.format("%02d", examNum);
 			stmt.executeUpdate(
@@ -480,11 +499,13 @@ public class MysqlConnection {
 			}
 
 			rs.close();
-		} catch (SQLException e) {
+		} 
+		}
+			catch (SQLException e) {
 			e.printStackTrace();
 		}
 		// stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
-		return fullExamNumber;
+		return fullExamNumber; 
 	}
 
 	public synchronized ArrayList<Question> getQuestions(Object questionInExams) {
