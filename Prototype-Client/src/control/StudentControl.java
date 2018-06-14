@@ -463,7 +463,8 @@ public class StudentControl extends UserControl implements Initializable {
 						e.printStackTrace();
 					}
 			}
-			Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+"Exams for student/"+ file.getFileName());
+			Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+"Exams for student\\"+ file.getFileName());
+			
 			Platform.runLater(() -> openScreen("ManualExam"));
 		} else {
 			Platform.runLater(() -> openScreen("ComputerizedExam"));
