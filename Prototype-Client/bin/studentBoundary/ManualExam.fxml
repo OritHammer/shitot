@@ -19,7 +19,7 @@
             <Image url="@../../Upload-outside-pic.jpg" />
          </image>
       </ImageView>
-<ImageView fx:id="uploadImage" fitHeight="229.0" fitWidth="408.0" layoutX="93.0" layoutY="144.0" onDragDropped="#dropFileToImage" onDragOver="#dragOver" >
+      <ImageView fx:id="uploadImage" fitHeight="229.0" fitWidth="408.0" layoutX="93.0" layoutY="144.0" onDragOver="#dragOver" onDragDropped="#dropFileToImage">
          <image>
             <Image url="@../../Upload-inside-pic.jpg" />
          </image>
@@ -30,5 +30,6 @@
          </image>
       </ImageView>
       <Label fx:id="pageLabel" layoutX="252.0" layoutY="14.0" text="Manual exam" />
+      <Button fx:id="uploadManualExamButton" disable="true" layoutX="271.0" layoutY="408.0" mnemonicParsing="false" onAction="#uploadFileToServer" text="Upload" />
    </children>
 </AnchorPane>

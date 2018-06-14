@@ -140,6 +140,8 @@ public class StudentControl extends UserControl implements Initializable {
 	private ImageView wordLogo;
 	@FXML
 	private ImageView uploadImage;
+	@FXML
+	private Button uploadManualExamButton;
 	// ******************** Showing exam copy  ************//
 @FXML
 private Label studentAnswer ; 	
@@ -688,12 +690,17 @@ private Label selectedAnswer ;
 		boolean wordFile = file.get(0).getAbsolutePath().contains(".docx");
 		if (wordFile) {
 			wordLogo.setVisible(true);
-			uploadImage.setVisible(false);
+			uploadManualExamButton.setDisable(false);
 		}
 		else {
 			wordLogo.setVisible(false);
-			uploadImage.setVisible(true);
+			uploadManualExamButton.setDisable(true);
 		}
 	}
-
+	
+	@FXML
+	public void uploadFileToServer(ActionEvent e) {
+		
+	}
+		
 }
