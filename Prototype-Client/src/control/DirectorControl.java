@@ -297,7 +297,7 @@ public class DirectorControl extends UserControl implements Initializable {
 					histogram.getData().add(new XYChart.Data("95-100", range95to100));
 					Platform.runLater(() -> {barChart.getData().addAll(histogram);});
 				}
-
+ 
 				}
 			});
 		} catch (NullPointerException e) {
