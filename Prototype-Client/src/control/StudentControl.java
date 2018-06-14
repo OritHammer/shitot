@@ -1,6 +1,8 @@
 package control;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -17,6 +19,7 @@ import java.util.TimerTask;
 
 import entity.Exam;
 import entity.ExamDetailsMessage;
+import entity.MyFile;
 import entity.Question;
 import entity.QuestionInExam;
 import javafx.animation.AnimationTimer;
@@ -47,6 +50,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 public class StudentControl extends UserControl implements Initializable {
+	private List<File> fileFromClient;
 	private static Scene homeSc = null;
 	private static Scene gradeSc = null; 
 	private static ArrayList<Question> questioninexecutedexam;
@@ -686,8 +690,8 @@ private Label selectedAnswer ;
 	
 	@FXML
 	public void dropFileToImage(DragEvent e) {
-		List<File> file = e.getDragboard().getFiles();
-		boolean wordFile = file.get(0).getAbsolutePath().contains(".docx");
+		fileFromClient = e.getDragboard().getFiles();
+		boolean wordFile = fileFromClient.get(0).getAbsolutePath().contains(".docx");
 		if (wordFile) {
 			wordLogo.setVisible(true);
 			uploadManualExamButton.setDisable(false);
@@ -700,7 +704,24 @@ private Label selectedAnswer ;
 	
 	@FXML
 	public void uploadFileToServer(ActionEvent e) {
-		
+		  MyFile file= new MyFile(fileFromClient.get(0).getName());
+		  String LocalfilePath=fileFromClient.get(0).getAbsolutePath();
+			
+		  try{
+			      File newFile = new File (LocalfilePath);
+			      byte [] mybytearray  = new byte [(int)newFile.length()];
+			      FileInputStream fis = new FileInputStream(newFile);
+			      BufferedInputStream bis = new BufferedInputStream(fis);			  
+			      
+			      file.initArray(mybytearray.length);
+			      file.setSize(mybytearray.length);
+			      
+			      bis.read(file.getMybytearray(),0,mybytearray.length);
+			      chat.sendToServer(file);		      
+			    }
+			catch (Exception exception) {
+				System.out.println("Error send (Files)msg) to Server");
+			}
 	}
 		
 }

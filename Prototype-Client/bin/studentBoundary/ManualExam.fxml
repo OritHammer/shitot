@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="447.0" prefWidth="575.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.StudentControl">
+<AnchorPane prefHeight="447.0" prefWidth="575.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.ManualExamControl">
    <children>
       <TextField fx:id="timerTextField" editable="false" layoutX="348.0" layoutY="57.0" prefHeight="37.0" prefWidth="200.0">
          <font>
