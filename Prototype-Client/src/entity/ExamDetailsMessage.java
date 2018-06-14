@@ -1,9 +1,7 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
-import javafx.beans.property.SimpleStringProperty;
 
 public class ExamDetailsMessage implements Serializable {
 

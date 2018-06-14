@@ -838,6 +838,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/* moving the question to the question in exam table view */
+	@SuppressWarnings("unchecked")
 	public void toQuestionInExam(ActionEvent e) {
 		int flag = 0;
 		if (questionTableView.getSelectionModel().getSelectedItem() == null) {
@@ -875,6 +876,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/* removing the question from the tableview */
+	@SuppressWarnings("unchecked")
 	public void removeFromTableView(ActionEvent e) {
 		ObservableList<QuestionInExam> questiontoremove;
 		int flag = 0;
@@ -930,6 +932,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 	
 	/* set new points in the table view */
+	@SuppressWarnings("unlikely-arg-type")
 	public void setPoints(CellEditEvent<QuestionInExam, Float> edittedCell) {
 		QuestionInExam questionSelected = questionsInExamTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getPoints())) {
