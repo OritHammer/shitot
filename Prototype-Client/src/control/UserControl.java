@@ -70,7 +70,7 @@ public class UserControl implements Initializable {
 	protected ComboBox<String> coursesComboBox;
 	protected ChatClient chat;
 	
-	protected Object[] messageToServer = new Object[3];
+	protected Object[] messageToServer = new Object[4];
 	/* connections variables */
 	static String ip;// server ip
 

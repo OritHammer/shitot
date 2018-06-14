@@ -1,8 +1,6 @@
 package control;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -12,23 +10,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import entity.Exam;
 import entity.ExamDetailsMessage;
-import entity.MyFile;
 import entity.Question;
-import entity.QuestionInExam;
-import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -40,9 +32,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -50,8 +39,6 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 public class StudentControl extends UserControl implements Initializable {
-	private static Scene homeSc = null;
-	private static Scene gradeSc = null;
 	private static ArrayList<Question> questioninexecutedexam;
 	public static Time solutionTime;
 	public static int remainTime;
