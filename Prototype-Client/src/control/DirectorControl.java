@@ -94,6 +94,8 @@ public class DirectorControl extends UserControl implements Initializable {
 	@FXML
 	private TextField medianTextField;
 
+	private static String requestId;
+	
 	// FXML System information
 
 	/******************************************************************
@@ -111,7 +113,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		} else if (pageLabel.getText().contentEquals("Adding time requests")) {
 			connect(this);
 			messageToServer[0] = "getTimeRequestDetails";
-			messageToServer[1] = Globals.getRequestId();
+			messageToServer[1] = requestId;
 			messageToServer[2] = null;
 			chat.handleMessageFromClientUI(messageToServer);// send the message to server
 		} else if (pageLabel.getText().contentEquals("Statistic report")) {
@@ -309,7 +311,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	 * listeners on TimeRequestTable
 	 ***********************************************************/
 	public void showDetailsButtonPressed(ActionEvent e) {
-		Globals.setRequestId(requestsTable.getSelectionModel().getSelectedItems().get(0).getRequestID());
+		requestId = (requestsTable.getSelectionModel().getSelectedItems().get(0).getRequestID());
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding homePage window
 		openScreen("addingTimeRequest");
 	}

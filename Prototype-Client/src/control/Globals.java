@@ -4,7 +4,6 @@ import entity.User;
 
 public class Globals {
 private static User myUser ; 
-// 	ARABIC STYLE !!!! 
 private static String requestId;
 
 public static void setRequestId(String id) {
