@@ -1,7 +1,7 @@
 package entity;
 
 import java.io.Serializable;
-import java.sql.Time;
+
 
 public class Exam implements Serializable{
 	/**

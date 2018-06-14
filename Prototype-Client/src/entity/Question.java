@@ -1,9 +1,6 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-
-import javafx.scene.control.Button;
 
 public class Question implements Serializable{
 	/**
