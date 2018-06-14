@@ -123,8 +123,8 @@ public class EchoServer extends AbstractServer {
 			Exam exam=(Exam)executedexam[1];
 			
 			if( exam.getType().equals("manual")) {
-				MyFile file = new MyFile(executedExamID);
-				String LocalfilePath = "Exam/"+executedExamID+".docx";
+				MyFile file = new MyFile(exam.getE_id()+".docx");
+				String LocalfilePath = "Exams/"+exam.getE_id()+".docx";
 
 				try {
 					File newFile = new File(LocalfilePath);

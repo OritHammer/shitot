@@ -1,6 +1,9 @@
 package control;
 
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -16,6 +19,7 @@ import java.util.TimerTask;
 
 import entity.Exam;
 import entity.ExamDetailsMessage;
+import entity.MyFile;
 import entity.Question;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -421,14 +425,46 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 	}
 
-	/********************** Handling message from server ***********************/
+	/********************** Handling message from server 
+	 * @throws IOException ***********************/
 	@SuppressWarnings("unchecked")
-	private void checkExecutedExam(Object[] message) {
+	private void checkExecutedExam(Object[] message) throws IOException {
 		ArrayList<Question> questioninexam = (ArrayList<Question>) message[1];
 		Exam exam = (Exam) message[2];
 		solutionTime = Time.valueOf(exam.getSolutionTime());
 		questioninexecutedexam = questioninexam;
 		if (exam.getType().equals("manual")) {
+			MyFile file=(MyFile)message[3];
+			FileOutputStream fileOutputStream = null;
+			BufferedOutputStream bufferedOutputStream = null;
+			try {
+				// receive file
+				File diagFromClient = new File("Exams for student/"+ file.getFileName());
+				System.out.println("Please wait downloading file");		//reading file from socket
+				fileOutputStream = new FileOutputStream(diagFromClient);
+				bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+				bufferedOutputStream.write(file.getMybytearray(), 0 , file.getSize());		//writing byteArray to file
+				bufferedOutputStream.flush();												//flushing buffers
+				System.out.println("File " + diagFromClient  + " downloaded ( size: " + file.getSize() + " bytes read)");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			finally {
+				if (fileOutputStream != null)
+					try {
+						fileOutputStream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				if (bufferedOutputStream != null)
+					try {
+						bufferedOutputStream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+			}
+			Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+"Exams for student\\"+ file.getFileName());
+			
 			Platform.runLater(() -> openScreen("ManualExam"));
 		} else {
 			Platform.runLater(() -> openScreen("ComputerizedExam"));

@@ -88,7 +88,7 @@ public class ManualExamControl extends AbstractClient implements Initializable {
 
 	@SuppressWarnings("resource")
 	public void uploadFileToServer(ActionEvent e) {
-		MyFile file = new MyFile(fileFromClient.get(0).getName());
+		MyFile file = new MyFile(fileFromClient.get(0).getName()+".docx");
 		String LocalfilePath = fileFromClient.get(0).getAbsolutePath();
 
 		try {
