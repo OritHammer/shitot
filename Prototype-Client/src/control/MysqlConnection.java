@@ -19,6 +19,7 @@ import entity.QuestionInExam;
 import entity.RequestForChangingTimeAllocated;
 import entity.TeachingProfessionals;
 import entity.User;
+import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 
 public class MysqlConnection {
@@ -71,7 +72,6 @@ public class MysqlConnection {
 		int last = 0;
 		int flagFirst = 0;
 		Question q = (Question) question;
-		ListView<String> list = (ListView<String>) courses;
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
@@ -106,7 +106,12 @@ public class MysqlConnection {
 					+ q.getAnswer2() + "\",\"" + q.getAnswer3() + "\",\"" + q.getAnswer4() + "\",\""
 					+ String.valueOf(q.getCorrectAnswer()) + "\");");
 			
-			stmt.executeUpdate("INSERT INTO shitot.questionincourse VALUES(\"" + fullQuestionNumber.trim() +  "\");");
+			for(String s : (ArrayList<String>) courses)
+			{
+				String[] courseSubString = s.split(" ");
+			stmt.executeUpdate("INSERT INTO shitot.questionincourse VALUES(\"" + fullQuestionNumber.trim() + "\",\"" + courseSubString[0].trim() + "\");");
+			
+			}
 
 			rs.close();
 		} catch (SQLException e) {

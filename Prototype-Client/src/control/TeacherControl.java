@@ -45,9 +45,9 @@ import javafx.util.converter.FloatStringConverter;
 public class TeacherControl extends UserControl implements Initializable {
 
 	private static ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
-	private ObservableList<Course> coursesListToCreateQuestion = FXCollections.observableArrayList();
+	private ObservableList<String> coursesListToCreateQuestion = FXCollections.observableArrayList();
 	private ObservableList<Question> questionObservableList;
-	private Object[] messageToServer = new Object[3];
+	private Object[] messageToServer = new Object[5];
 	private static boolean blockPassQuestionButton;
 
 	private ObservableList<Exam> exams;
@@ -683,11 +683,13 @@ public class TeacherControl extends UserControl implements Initializable {
 					answer4.getText().trim(), String.valueOf(correctAnswer));
 			String subject = subjectsComboBox.getValue();
 			String[] subjectSubString = subject.split("-");
+			ArrayList<String> courses = (ArrayList<String>) coursesListToCreateQuestion.stream()
+					.collect(Collectors.toList());
 			connect(this); // connecting to server
 			messageToServer[0] = "SetQuestion";
 			messageToServer[1] = subjectSubString[0].trim();
 			messageToServer[2] = question;
-			messageToServer[3] = courseInCreateQuestion;
+			messageToServer[3] = courses;
 			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 			chat.closeConnection();// close the connection
 		}
@@ -699,8 +701,9 @@ public class TeacherControl extends UserControl implements Initializable {
     	try {
     	
     	String[] courseSubString = coursesComboBox.getValue().split("-");
-			if (!courseInCreateQuestion.getItems().contains(courseSubString[0] + courseSubString[1])) {
-				courseInCreateQuestion.getItems().add(courseSubString[0] + courseSubString[1]);
+			if (!coursesListToCreateQuestion.contains(courseSubString[0] + courseSubString[1])) {
+				coursesListToCreateQuestion.add(courseSubString[0] + courseSubString[1]);
+				courseInCreateQuestion.setItems(coursesListToCreateQuestion);
 				subjectsComboBox.setDisable(true);
 			}
     	}
@@ -712,7 +715,7 @@ public class TeacherControl extends UserControl implements Initializable {
     public void removeCoursesFromList(ActionEvent event) {
     	if(courseInCreateQuestion.getSelectionModel().getSelectedItem() != null)
     	{
-	    	courseInCreateQuestion.getItems().remove(courseInCreateQuestion.getSelectionModel().getSelectedItem());
+    		coursesListToCreateQuestion.remove(courseInCreateQuestion.getSelectionModel().getSelectedItem());
 	    	coursesComboBox.getSelectionModel().clearSelection();
 	    	if(courseInCreateQuestion.getItems().isEmpty())
 	    		subjectsComboBox.setDisable(false);
