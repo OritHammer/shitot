@@ -930,6 +930,10 @@ public class TeacherControl extends UserControl implements Initializable {
 			}
 
 			questiontoremove.forEach(questionInExamObservable::remove);
+			if(questionInExamObservable.isEmpty()) {
+				subjectsComboBox.setDisable(false);
+				coursesComboBox.setDisable(false);
+			}
 		} catch (RuntimeException exception) {
 			openScreen("ErrorMessage", "Please choose question to delete");
 			return;
