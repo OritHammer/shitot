@@ -2,7 +2,7 @@ package entity;
 
 import java.io.Serializable;
 
-public class ExecutedExam implements Serializable {
+public class ExecutedExam implements Serializable,Comparable {
 	private static final long serialVersionUID = 1L;
 	private String executedExamID;
 	private int numOfStudentStarted;
@@ -137,6 +137,13 @@ public class ExecutedExam implements Serializable {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	@Override
+	public int compareTo(Object o) {// compare between 2 executedExam by they grade
+		ExecutedExam temp=(ExecutedExam)o;
+		if (this.average==temp.average) return 0;
+		if (this.average>temp.average) return 1;
+		return -1;
 	}
 	
 	
