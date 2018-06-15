@@ -96,14 +96,13 @@ public class DirectorControl extends UserControl implements Initializable {
 	private TextField medianTextField;
 
 	private static String requestId;
-<<<<<<< HEAD
 	
 	private XYChart.Series histogram =null;
 	
-=======
-	private XYChart.Series histogram = null;
+
+	
 	float[] sumGradeRanges;
->>>>>>> branch 'master' of https://github.com/avivMahulya/shitot.git
+
 	// FXML System information
 
 	/******************************************************************
