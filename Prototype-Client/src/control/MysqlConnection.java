@@ -19,6 +19,7 @@ import entity.QuestionInExam;
 import entity.RequestForChangingTimeAllocated;
 import entity.TeachingProfessionals;
 import entity.User;
+import javafx.scene.control.ListView;
 
 public class MysqlConnection {
 	static Connection conn;
@@ -63,13 +64,14 @@ public class MysqlConnection {
 		}
 	}
 
-	public synchronized void createQuestion(Object subject, Object question) {
+	public synchronized void createQuestion(Object subject, Object question, Object courses) {
 		String fullQuestionNumber;
 		int questionNumber;
 		int first = 0;
 		int last = 0;
 		int flagFirst = 0;
 		Question q = (Question) question;
+		ListView<String> list = (ListView<String>) courses;
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
@@ -103,6 +105,8 @@ public class MysqlConnection {
 					+ q.getTeacherName().trim() + "\",\"" + q.getQuestionContent() + "\",\"" + q.getAnswer1() + "\",\""
 					+ q.getAnswer2() + "\",\"" + q.getAnswer3() + "\",\"" + q.getAnswer4() + "\",\""
 					+ String.valueOf(q.getCorrectAnswer()) + "\");");
+			
+			stmt.executeUpdate("INSERT INTO shitot.questionincourse VALUES(\"" + fullQuestionNumber.trim() +  "\");");
 
 			rs.close();
 		} catch (SQLException e) {

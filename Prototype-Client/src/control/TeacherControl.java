@@ -654,6 +654,10 @@ public class TeacherControl extends UserControl implements Initializable {
 			openScreen("ErrorMessage", "Please choose subject");
 			return;
 		}
+		if (courseInCreateQuestion.getItems().isEmpty()) {
+			openScreen("ErrorMessage", "Please choose course");
+			return;
+		}
 		Question question;
 
 		int correctAnswer = 0;
@@ -683,6 +687,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			messageToServer[0] = "SetQuestion";
 			messageToServer[1] = subjectSubString[0].trim();
 			messageToServer[2] = question;
+			messageToServer[3] = courseInCreateQuestion;
 			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 			chat.closeConnection();// close the connection
 		}
@@ -692,9 +697,12 @@ public class TeacherControl extends UserControl implements Initializable {
     public void coursesToList(ActionEvent event) {
     	
     	try {
+    	
     	String[] courseSubString = coursesComboBox.getValue().split("-");
-    	if(!courseInCreateQuestion.getItems().contains(courseSubString[0] + courseSubString[1]))
-		courseInCreateQuestion.getItems().add(courseSubString[0] + courseSubString[1]);
+			if (!courseInCreateQuestion.getItems().contains(courseSubString[0] + courseSubString[1])) {
+				courseInCreateQuestion.getItems().add(courseSubString[0] + courseSubString[1]);
+				subjectsComboBox.setDisable(true);
+			}
     	}
     	catch (NullPointerException e) {
     		
@@ -702,7 +710,13 @@ public class TeacherControl extends UserControl implements Initializable {
     }
 
     public void removeCoursesFromList(ActionEvent event) {
-    	courseInCreateQuestion.getItems().remove(courseInCreateQuestion.getSelectionModel().getSelectedItem());
+    	if(courseInCreateQuestion.getSelectionModel().getSelectedItem() != null)
+    	{
+	    	courseInCreateQuestion.getItems().remove(courseInCreateQuestion.getSelectionModel().getSelectedItem());
+	    	coursesComboBox.getSelectionModel().clearSelection();
+	    	if(courseInCreateQuestion.getItems().isEmpty())
+	    		subjectsComboBox.setDisable(false);
+    	}
     }
 	/************************************** Update exam screen ***********************************************************************/
 	

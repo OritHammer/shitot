@@ -299,7 +299,7 @@ public class Server extends AbstractServer {
 			break;
 		}
 		case "SetQuestion": {
-			con.createQuestion(message[1], message[2]);
+			con.createQuestion(message[1], message[2], message[3]);
 			break;
 		}
 		case "logoutProcess": {
