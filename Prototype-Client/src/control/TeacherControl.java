@@ -107,7 +107,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	private RadioButton correctAns4;
 
 	@FXML
-	private ToggleGroup group;
+	private ToggleGroup group1;
 
 	@FXML
 	private TableView<QuestionInExam> questionsInExamTableView;
@@ -867,9 +867,9 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 		Exam exam = new Exam();// creating a new exam;
 		Time time = null;
-		String courseID = coursesComboBox.getValue();// we want the course id
+		String[] courseID = coursesComboBox.getValue().split("-");// we want the course id
 		String[] subjectSubString = subjectsComboBox.getValue().split("-");
-		exam.setE_id(subjectSubString[0].trim() + "" + courseID);// making the start of the id of the exam
+		exam.setE_id(subjectSubString[0].trim() + "" + courseID[0].trim());// making the start of the id of the exam
 		ArrayList<QuestionInExam> questioninexam = (ArrayList<QuestionInExam>) questionInExamObservable.stream()
 				.collect(Collectors.toList());// making the observable a lis
 		exam.setRemarksForStudent(remarksForStudent.getText());

@@ -23,16 +23,12 @@
       </Button>
       <RadioButton id="4" fx:id="correctAns4" layoutX="432.0" layoutY="446.0" mnemonicParsing="false">
          <toggleGroup>
-           
+            <ToggleGroup fx:id="group1" />
          </toggleGroup>
       </RadioButton>
       <RadioButton id="3" fx:id="correctAns3" layoutX="432.0" layoutY="412.0" mnemonicParsing="false" toggleGroup="$group1" />
       <RadioButton id="2" fx:id="correctAns2" layoutX="432.0" layoutY="375.0" mnemonicParsing="false" toggleGroup="$group1" />
-      <RadioButton id="1" fx:id="correctAns1" layoutX="432.0" layoutY="338.0" mnemonicParsing="false">
-         <toggleGroup>
-            <ToggleGroup />
-         </toggleGroup>
-      </RadioButton>
+      <RadioButton id="1" fx:id="correctAns1" layoutX="432.0" layoutY="338.0" mnemonicParsing="false" toggleGroup="$group1" />
       <Button layoutX="270.0" layoutY="506.0" mnemonicParsing="false" onAction="#createQuestionClick" text="Create">
          <textFill>
             <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
