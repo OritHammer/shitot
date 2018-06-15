@@ -19,6 +19,8 @@ import entity.QuestionInExam;
 import entity.RequestForChangingTimeAllocated;
 import entity.TeachingProfessionals;
 import entity.User;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
 
 public class MysqlConnection {
 	static Connection conn;
@@ -63,7 +65,7 @@ public class MysqlConnection {
 		}
 	}
 
-	public synchronized void createQuestion(Object subject, Object question) {
+	public synchronized void createQuestion(Object subject, Object question, Object courses) {
 		String fullQuestionNumber;
 		int questionNumber;
 		int first = 0;
@@ -103,6 +105,13 @@ public class MysqlConnection {
 					+ q.getTeacherName().trim() + "\",\"" + q.getQuestionContent() + "\",\"" + q.getAnswer1() + "\",\""
 					+ q.getAnswer2() + "\",\"" + q.getAnswer3() + "\",\"" + q.getAnswer4() + "\",\""
 					+ String.valueOf(q.getCorrectAnswer()) + "\");");
+			
+			for(String s : (ArrayList<String>) courses)
+			{
+				String[] courseSubString = s.split(" ");
+			stmt.executeUpdate("INSERT INTO shitot.questionincourse VALUES(\"" + fullQuestionNumber.trim() + "\",\"" + courseSubString[0].trim() + "\");");
+			
+			}
 
 			rs.close();
 		} catch (SQLException e) {
@@ -265,10 +274,10 @@ public class MysqlConnection {
 				stmt = conn.createStatement();
 				ResultSet rs = null;
 				if (teacherUserName == null) {
-					rs = stmt.executeQuery("SELECT tp.tp_ID,tp.name FROM teachingprofessionals tp;");
+					rs = stmt.executeQuery("SELECT DISTINCT tp.tp_ID,tp.name FROM teachingprofessionals tp;");
 				} else {
 					rs = stmt.executeQuery(
-							"SELECT tp.tp_ID,tp.name FROM teachingprofessionals tp,teacherincourse tc,courses c WHERE "
+							"SELECT DISTINCT tp.tp_ID,tp.name FROM teachingprofessionals tp,teacherincourse tc,courses c WHERE "
 									+ "tp.tp_ID=c.tp_ID AND c.courseID=tc.courseID AND tc.UserNameTeacher=\""
 									+ teacherUserName.toString() + "\";");
 				}
@@ -336,27 +345,6 @@ public class MysqlConnection {
 		return requestList;
 	}
 
-	public ArrayList<String> getQuestionList(Object subject, Object teacherUserName) {
-		/*
-		 * The function return the question list by the given subject code
-		 */
-		// Statement stmt;
-		ArrayList<String> questionList = new ArrayList<String>();
-		String userName = (String) teacherUserName;
-		try {
-			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT question_id,Question_Text FROM questions,teacherincourse"
-					+ " WHERE Question_id like " + "\"" + subject + "%\" AND UserNameTeacher=\"" + userName
-					+ "\"And courseID like \"" + subject + "%\";");
-			while (rs.next()) {
-				questionList.add(rs.getString(1) + "-" + rs.getString(2));
-			}
-			rs.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return questionList;
-	}
 
 	public ArrayList<Question> getQuestionListToTable(Object subject, Object teacherUserName) {
 		/*
@@ -365,12 +353,16 @@ public class MysqlConnection {
 		// Statement stmt;
 		ArrayList<Question> questionList = new ArrayList<Question>();
 		String userName = (String) teacherUserName;
+		String subjectid=((String)subject).substring(0,2);
+		String courseid=((String)subject).substring(2,4);
+
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
-					"SELECT question_id,teacher_name,question_text,answer1,answer2,answer3,answer4,Correct_answer FROM questions,teacherincourse"
-							+ " WHERE Question_id like " + "\"" + subject + "%\" AND UserNameTeacher=\"" + userName
-							+ "\"And courseID like \"" + subject + "%\";");
+					"SELECT Q.question_id,Q.teacher_name,Q.question_text,Q.answer1,Q.answer2,Q.answer3,Q.answer4,"
+					+ "Q.Correct_answer FROM questions Q,teacherincourse TIC,questionincourse QIC WHERE Q.question_id like \""+subjectid+"%\" AND "
+					+ "TIC.UserNameTeacher=\""+userName+"\" AND TIC.courseID like \""+courseid+"%\""
+					+ " AND QIC.q_id=Q.question_id And QIC.course_id=\""+courseid+"\" AND TIC.courseID=QIC.course_id;");
 			while (rs.next()) {
 				questionList.add(new Question(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8)));

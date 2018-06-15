@@ -14,7 +14,7 @@
       <TextField fx:id="remarksForStudent" layoutX="678.0" layoutY="277.0" prefHeight="25.0" prefWidth="245.0" />
       <TextField fx:id="remarksForTeacher" layoutX="678.0" layoutY="336.0" prefHeight="25.0" prefWidth="245.0" />
       <Button layoutX="373.0" layoutY="300.0" mnemonicParsing="false" onAction="#removeFromTableView" text="&lt;" />
-      <Button layoutX="373.0" layoutY="335.0" mnemonicParsing="false" onAction="#toQuestionInExam" text="&gt;" />
+      <Button layoutX="373.0" layoutY="335.0" mnemonicParsing="false" onAction="#loadQuestions" text="&gt;" />
       <Label layoutX="28.0" layoutY="28.0" text="Questions" />
       <Label fx:id="pageLabel" layoutX="390.0" layoutY="20.0" text="Create exam" />
       <TextField fx:id="timeForExamHours" layoutX="679.0" layoutY="390.0" prefHeight="25.0" prefWidth="59.0" promptText="00" text="00" AnchorPane.leftAnchor="679.0" />
@@ -37,7 +37,7 @@
             <TableColumn fx:id="questionPointsTableView" onEditCommit="#setPoints" onEditStart="#blockBackButton" prefWidth="120.0" text="Points" />
          </columns>
       </TableView>
-      <ComboBox fx:id="coursesComboBox" layoutX="27.0" layoutY="87.0" onAction="#loadQuestionInCourse" prefHeight="25.0" prefWidth="150.0" promptText="Choose course" />
+      <ComboBox fx:id="coursesComboBox" layoutX="27.0" layoutY="87.0" onAction="#loadQuestions" prefHeight="25.0" prefWidth="150.0" promptText="Choose course" />
       <ComboBox fx:id="subjectsComboBox" layoutX="27.0" layoutY="53.0" onAction="#loadCourses" prefWidth="150.0" promptText="Choose subject" />
    </children>
 </AnchorPane>

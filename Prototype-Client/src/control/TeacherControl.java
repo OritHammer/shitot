@@ -45,9 +45,9 @@ import javafx.util.converter.FloatStringConverter;
 public class TeacherControl extends UserControl implements Initializable {
 
 	private static ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
-	private ObservableList<Course> coursesListToCreateQuestion = FXCollections.observableArrayList();
+	private ObservableList<String> coursesListToCreateQuestion = FXCollections.observableArrayList();
 	private ObservableList<Question> questionObservableList;
-	private Object[] messageToServer = new Object[3];
+	private Object[] messageToServer = new Object[5];
 	private static boolean blockPassQuestionButton;
 
 	private ObservableList<Exam> exams;
@@ -180,7 +180,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	private Button updateBtn;
 
 	  @FXML
-	  private ListView<Course> courseInCreateQuestion;
+	  private ListView<String> courseInCreateQuestion;
 	  
 	  
 	/* check the content message from server */
@@ -218,7 +218,7 @@ public class TeacherControl extends UserControl implements Initializable {
 
 				case ("getQuestionsToTable"): /* get the questions list from server */
 				{
-					questionObservableList = FXCollections.observableArrayList((ArrayList<Question>) msg[1]);
+					questionObservableList = FXCollections.observableArrayList((ArrayList<Question>) msg[1]);//kaki
 					qid.setCellValueFactory(new PropertyValueFactory<>("id"));
 					tname.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
 					qtext.setCellValueFactory(new PropertyValueFactory<>("questionContent"));
@@ -548,10 +548,14 @@ public class TeacherControl extends UserControl implements Initializable {
 		String subject = subjectsComboBox.getValue(); // get the subject code
 		if (subject == null)
 			return;
+		String course = coursesComboBox.getValue();
+		if(course == null)
+			return;
 		String[] subjectSubString = subject.split("-");
+		String[] coursesSubString = course.split("-");
 		connect(this); // connecting to server
 		messageToServer[0] = "getQuestionsToTable";
-		messageToServer[1] = subjectSubString[0].trim();
+		messageToServer[1] = subjectSubString[0].trim()+""+coursesSubString[0].trim();
 		messageToServer[2] = getMyUser().getUsername();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
@@ -650,6 +654,10 @@ public class TeacherControl extends UserControl implements Initializable {
 			openScreen("ErrorMessage", "Please choose subject");
 			return;
 		}
+		if (courseInCreateQuestion.getItems().isEmpty()) {
+			openScreen("ErrorMessage", "Please choose course");
+			return;
+		}
 		Question question;
 
 		int correctAnswer = 0;
@@ -675,10 +683,13 @@ public class TeacherControl extends UserControl implements Initializable {
 					answer4.getText().trim(), String.valueOf(correctAnswer));
 			String subject = subjectsComboBox.getValue();
 			String[] subjectSubString = subject.split("-");
+			ArrayList<String> courses = (ArrayList<String>) coursesListToCreateQuestion.stream()
+					.collect(Collectors.toList());
 			connect(this); // connecting to server
 			messageToServer[0] = "SetQuestion";
 			messageToServer[1] = subjectSubString[0].trim();
 			messageToServer[2] = question;
+			messageToServer[3] = courses;
 			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 			chat.closeConnection();// close the connection
 		}
@@ -687,14 +698,28 @@ public class TeacherControl extends UserControl implements Initializable {
 
     public void coursesToList(ActionEvent event) {
     	
-    	String[] courseSubString = coursesComboBox.getValue().split("-");
+    	try {
     	
-    	coursesListToCreateQuestion.add(new Course(courseSubString[0].trim(),courseSubString[1].trim()));
-		courseInCreateQuestion.setItems(coursesListToCreateQuestion);
+    	String[] courseSubString = coursesComboBox.getValue().split("-");
+			if (!coursesListToCreateQuestion.contains(courseSubString[0] + courseSubString[1])) {
+				coursesListToCreateQuestion.add(courseSubString[0] + courseSubString[1]);
+				courseInCreateQuestion.setItems(coursesListToCreateQuestion);
+				subjectsComboBox.setDisable(true);
+			}
+    	}
+    	catch (NullPointerException e) {
+    		
+    	}
     }
 
     public void removeCoursesFromList(ActionEvent event) {
-
+    	if(courseInCreateQuestion.getSelectionModel().getSelectedItem() != null)
+    	{
+    		coursesListToCreateQuestion.remove(courseInCreateQuestion.getSelectionModel().getSelectedItem());
+	    	coursesComboBox.getSelectionModel().clearSelection();
+	    	if(courseInCreateQuestion.getItems().isEmpty())
+	    		subjectsComboBox.setDisable(false);
+    	}
     }
 	/************************************** Update exam screen ***********************************************************************/
 	
@@ -842,7 +867,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 		Exam exam = new Exam();// creating a new exam;
 		Time time = null;
-		String courseID = questionInExamObservable.get(0).getQuestionID().substring(0, 2);// we want the course id
+		String courseID = coursesComboBox.getValue();// we want the course id
 		String[] subjectSubString = subjectsComboBox.getValue().split("-");
 		exam.setE_id(subjectSubString[0].trim() + "" + courseID);// making the start of the id of the exam
 		ArrayList<QuestionInExam> questioninexam = (ArrayList<QuestionInExam>) questionInExamObservable.stream()
@@ -874,7 +899,8 @@ public class TeacherControl extends UserControl implements Initializable {
 			openScreen("ErrorMessage", "Please choose question");
 			return;
 		}
-
+		subjectsComboBox.setDisable(true);
+		coursesComboBox.setDisable(true);
 		QuestionInExam questioninexam = new QuestionInExam();// creating new questioninexam
 		Question questionDetails = questionTableView.getSelectionModel().getSelectedItem();
 		questioninexam.setQuestionID(questionDetails.getId());
@@ -925,6 +951,10 @@ public class TeacherControl extends UserControl implements Initializable {
 			}
 
 			questiontoremove.forEach(questionInExamObservable::remove);
+			if(questionInExamObservable.isEmpty()) {
+				subjectsComboBox.setDisable(false);
+				coursesComboBox.setDisable(false);
+			}
 		} catch (RuntimeException exception) {
 			openScreen("ErrorMessage", "Please choose question to delete");
 			return;
@@ -974,10 +1004,6 @@ public class TeacherControl extends UserControl implements Initializable {
 		backButton.setDisable(false);
 	}
 
-   
-    public void loadQuestionInCourse(ActionEvent event) {
-
-    }
 	/* event for locking the back button when u editing points */
 	public void blockBackButton() {
 		backButton.setDisable(true);

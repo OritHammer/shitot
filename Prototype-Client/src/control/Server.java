@@ -200,13 +200,6 @@ public class Server extends AbstractServer {
 			break;
 		}
 
-		case "getQuestions": {/* client request all all the questions under some subject */
-			ArrayList<String> questionList = con.getQuestionList(message[1], message[2]);
-			serverMessage[1] = questionList;
-			this.sendToAllClients(serverMessage);
-			break;
-		}
-
 		case "getQuestionsToTable": {/* client request all all the questions under some subject */
 			ArrayList<Question> questionList = con.getQuestionListToTable(message[1], message[2]);
 			serverMessage[1] = questionList;
@@ -299,7 +292,7 @@ public class Server extends AbstractServer {
 			break;
 		}
 		case "SetQuestion": {
-			con.createQuestion(message[1], message[2]);
+			con.createQuestion(message[1], message[2], message[3]);
 			break;
 		}
 		case "logoutProcess": {
