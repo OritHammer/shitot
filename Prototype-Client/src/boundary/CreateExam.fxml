@@ -37,7 +37,7 @@
             <TableColumn fx:id="questionPointsTableView" onEditCommit="#setPoints" onEditStart="#blockBackButton" prefWidth="120.0" text="Points" />
          </columns>
       </TableView>
-      <ComboBox fx:id="coursesComboBox" layoutX="27.0" layoutY="87.0" onAction="#loadQuestionInCourse" prefHeight="25.0" prefWidth="150.0" promptText="Choose course" />
+      <ComboBox fx:id="coursesComboBox" layoutX="27.0" layoutY="87.0" onAction="#loadQuestions" prefHeight="25.0" prefWidth="150.0" promptText="Choose course" />
       <ComboBox fx:id="subjectsComboBox" layoutX="27.0" layoutY="53.0" onAction="#loadCourses" prefWidth="150.0" promptText="Choose subject" />
    </children>
 </AnchorPane>

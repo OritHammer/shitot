@@ -265,10 +265,10 @@ public class MysqlConnection {
 				stmt = conn.createStatement();
 				ResultSet rs = null;
 				if (teacherUserName == null) {
-					rs = stmt.executeQuery("SELECT tp.tp_ID,tp.name FROM teachingprofessionals tp;");
+					rs = stmt.executeQuery("SELECT DISTINCT tp.tp_ID,tp.name FROM teachingprofessionals tp;");
 				} else {
 					rs = stmt.executeQuery(
-							"SELECT tp.tp_ID,tp.name FROM teachingprofessionals tp,teacherincourse tc,courses c WHERE "
+							"SELECT DISTINCT tp.tp_ID,tp.name FROM teachingprofessionals tp,teacherincourse tc,courses c WHERE "
 									+ "tp.tp_ID=c.tp_ID AND c.courseID=tc.courseID AND tc.UserNameTeacher=\""
 									+ teacherUserName.toString() + "\";");
 				}
@@ -365,12 +365,16 @@ public class MysqlConnection {
 		// Statement stmt;
 		ArrayList<Question> questionList = new ArrayList<Question>();
 		String userName = (String) teacherUserName;
+		String subjectid=((String)subject).substring(0,2);
+		String courseid=((String)subject).substring(2,4);
+
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
-					"SELECT question_id,teacher_name,question_text,answer1,answer2,answer3,answer4,Correct_answer FROM questions,teacherincourse"
-							+ " WHERE Question_id like " + "\"" + subject + "%\" AND UserNameTeacher=\"" + userName
-							+ "\"And courseID like \"" + subject + "%\";");
+					"SELECT Q.question_id,Q.teacher_name,Q.question_text,Q.answer1,Q.answer2,Q.answer3,Q.answer4,"
+					+ "Q.Correct_answer FROM questions Q,teacherincourse TIC,questionincourse QIC WHERE Q.question_id like \""+subjectid+"%\" AND "
+					+ "TIC.UserNameTeacher=\""+userName+"\" AND TIC.courseID like \""+courseid+"%\""
+					+ " AND QIC.q_id=Q.question_id And QIC.course_id=\""+courseid+"\" AND TIC.courseID=QIC.course_id;");
 			while (rs.next()) {
 				questionList.add(new Question(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8)));
