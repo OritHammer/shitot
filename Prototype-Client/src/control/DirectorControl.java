@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 import javafx.application.Platform;
 
 import entity.Course;
-
+import entity.ExecutedExam;
 import entity.RequestForChangingTimeAllocated;
 import entity.TeachingProfessionals;
 import javafx.collections.FXCollections;
@@ -23,6 +23,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -32,7 +33,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import sun.nio.cs.HistoricallyNamedCharset;
-
 
 public class DirectorControl extends UserControl implements Initializable {
 	ObservableList<RequestForChangingTimeAllocated> addingTimeRequestsObservable = FXCollections.observableArrayList();
@@ -96,8 +96,8 @@ public class DirectorControl extends UserControl implements Initializable {
 	private TextField medianTextField;
 
 	private static String requestId;
-	private XYChart.Series histogram =null;
-	
+	private XYChart.Series histogram = null;
+	float[] sumGradeRanges;
 	// FXML System information
 
 	/******************************************************************
@@ -127,7 +127,11 @@ public class DirectorControl extends UserControl implements Initializable {
 			chooseUserComboBox.setVisible(false);
 			subjectsComboBox.setVisible(false);
 			coursesComboBox.setVisible(false);
-			histogram =new XYChart.Series<>();//initialize histogram
+			histogram = new XYChart.Series<>();// initialize histogram
+			sumGradeRanges = new float[6];
+			for (int i = 0; i < 6; i++) {
+				sumGradeRanges[i] = 0;
+			}
 		} else if (pageLabel.getText().contentEquals("")) {// system information
 
 		}
@@ -251,54 +255,48 @@ public class DirectorControl extends UserControl implements Initializable {
 					coursesComboBox.setVisible(true);
 					coursesComboBox.setItems(observableList);
 					break;
-				}case "getReportByTeacher":{ 
-					int sumGrades=0;
-					int sumStudent=0;
-					break;
 				}
-				case "getReportByCourse":{
-					
-					break;
-				}case "getReportByStudent":{
-					ArrayList<Integer> studentGradeList=(ArrayList<Integer>)msg[1];
-					Collections.sort(studentGradeList);
-					medianTextField.setText(" "+studentGradeList.get(studentGradeList.size()/2));
-					int sum=0;
-					int range0to54=0;
-					int range55to64=0;
-					int range65to74=0;
-					int range75to84=0;
-					int range85to94=0;
-					int range95to100=0;
-					for(Integer grade: studentGradeList) {
-						sum+=grade;
-						if (grade<55)//grade between0to54 
-							range0to54++;
-						else if(grade>54&&grade<65)//grade between55to64
-							range55to64++;
-						else if (grade>64&&grade<75)//grade between 65to74
-							range65to74++;
-						else if(grade>74&&grade<85)//grade between 75to84
-							range75to84++;
-						else if(grade>84&&grade<95)//grade between 85to94
-							range85to94++;
-						else if(grade>94)//grade between 95to100
-							range95to100++;
+				case "getReportByCourse": 
+				case "getReportByTeacher": {
+					ArrayList<ExecutedExam> GradeList = (ArrayList<ExecutedExam>) msg[1];
+					float average = 0;
+					int sumStudent = 0;
+					for (ExecutedExam e : GradeList) {
+						sumGradeRanges = sumRangGrades(sumGradeRanges, e);
+						average += e.getAverage() * e.getNumOfStudentStarted();
+						sumStudent += e.getNumOfStudentStarted();
 					}
-					averageTextField.setText(" "+sum/studentGradeList.size());
-					//clear data from bar chart
-					//histogram.getData().clear();
-					//set values in the bar chart 
-					histogram.getData().add(new XYChart.Data("0-54", range0to54));
-					histogram.getData().add(new XYChart.Data("55-65", range55to64));
-					histogram.getData().add(new XYChart.Data("65-75", range65to74));
-					histogram.getData().add(new XYChart.Data("75-84", range75to84));
-					histogram.getData().add(new XYChart.Data("85-94", range85to94));
-					histogram.getData().add(new XYChart.Data("95-100", range95to100));
-					Platform.runLater(() -> {barChart.getData().addAll(histogram);});
+					averageTextField.setText(" " + (average / (float)sumStudent));
+					Collections.sort(GradeList);
+					medianTextField.setText(" " + GradeList.get((GradeList.size() / 2) - 1));
+					ShowHistogramInBarChart();
+					break;
 				}
- 
-				} 
+				case "getReportByStudent": {
+					ArrayList<Integer> studentGradeList = (ArrayList<Integer>) msg[1];
+					Collections.sort(studentGradeList);
+					medianTextField.setText(" " + studentGradeList.get((studentGradeList.size() / 2)-1));
+					float sum = 0;
+					for (Integer grade : studentGradeList) {
+						sum += grade;
+						if (grade < 55)// grade between0to54
+							sumGradeRanges[0]++;
+						else if (grade > 54 && grade < 65)// grade between55to64
+							sumGradeRanges[1]++;
+						else if (grade > 64 && grade < 75)// grade between 65to74
+							sumGradeRanges[2]++;
+						else if (grade > 74 && grade < 85)// grade between 75to84
+							sumGradeRanges[3]++;
+						else if (grade > 84 && grade < 95)// grade between 85to94
+							sumGradeRanges[4]++;
+						else if (grade > 94)// grade between 95to100
+							sumGradeRanges[5]++;
+					}
+					averageTextField.setText(" " + sum / studentGradeList.size());
+					ShowHistogramInBarChart();
+				}
+
+				}
 			});
 		} catch (NullPointerException e) {
 			openScreen("ErrorMessage", "There is no request to confirm .");
@@ -306,7 +304,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IndexOutOfBoundsException e) {
-			e.printStackTrace();
+			openScreen("ErrorMessage", "There is no exams");
 		}
 	}
 
@@ -399,7 +397,6 @@ public class DirectorControl extends UserControl implements Initializable {
 		loadCourses("All", subject);
 	}
 
-	
 	public void getReportUser(ActionEvent e) {// load Statistic details of user on window
 		connect(this);
 		String userName = chooseUserComboBox.getValue();
@@ -410,13 +407,39 @@ public class DirectorControl extends UserControl implements Initializable {
 		messageToServer[1] = userName;
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);
-	} 
+	}
+
 	public void getReportByCourseCode(ActionEvent e) {// load Statistic details of course on window
 		connect(this);
 		String courseName = coursesComboBox.getValue();
-		 messageToServer[0]="getgetReportByCourse";
-		 messageToServer[1]=courseName;
-		 messageToServer[2] = null;
-		 chat.handleMessageFromClientUI(messageToServer);
+		messageToServer[0] = "getgetReportByCourse";
+		messageToServer[1] = courseName;
+		messageToServer[2] = null;
+		chat.handleMessageFromClientUI(messageToServer);
 	}
+
+	public float[] sumRangGrades(float[] rangeArray, ExecutedExam eExam) {
+		rangeArray[0] += eExam.getRange0to54();
+		rangeArray[1] += eExam.getRange55to64();
+		rangeArray[2] += eExam.getRange65to74();
+		rangeArray[3] += eExam.getRange75to84();
+		rangeArray[4] += eExam.getRange85to94();
+		rangeArray[5] += eExam.getRange95to100();
+		return rangeArray;
+	}
+
+	public void ShowHistogramInBarChart() {
+		//clean bar chart
+	
+		// set values in the bar chart
+		histogram.getData().add(new XYChart.Data("0-54", sumGradeRanges[0]));
+		histogram.getData().add(new XYChart.Data("55-65", sumGradeRanges[1]));
+		histogram.getData().add(new XYChart.Data("65-75", sumGradeRanges[2]));
+		histogram.getData().add(new XYChart.Data("75-84", sumGradeRanges[3]));
+		histogram.getData().add(new XYChart.Data("85-94", sumGradeRanges[4]));
+		histogram.getData().add(new XYChart.Data("95-100", sumGradeRanges[5]));
+	
+		barChart.getData().add(histogram);
+	}
+
 }

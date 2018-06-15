@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -15,9 +16,12 @@
       <ComboBox fx:id="subjectsComboBox" layoutX="240.0" layoutY="62.0" onAction="#loadCourses" prefHeight="25.0" prefWidth="141.0" promptText="choose subject" />
       <Label layoutX="96.0" layoutY="45.0" prefHeight="17.0" prefWidth="141.0" text="Get  Statistic Report By:" />
       <NumberAxis layoutX="451.0" layoutY="146.0" prefHeight="210.0" prefWidth="28.0" side="LEFT" />
-      <BarChart fx:id="barChart" layoutX="31.0" layoutY="140.0" prefHeight="242.0" prefWidth="544.0" title="Histogram">
+      <BarChart fx:id="barChart" alternativeRowFillVisible="false" animated="false" blendMode="HARD_LIGHT" horizontalGridLinesVisible="false" layoutX="31.0" layoutY="140.0" mouseTransparent="true" prefHeight="242.0" prefWidth="524.0" title="Histogram" verticalGridLinesVisible="false">
          <xAxis>
-            <CategoryAxis label="Grade" nodeOrientation="RIGHT_TO_LEFT" prefHeight="41.0" prefWidth="410.0" fx:id="x" />
+            <CategoryAxis label="Grade" prefHeight="41.0" prefWidth="410.0" fx:id="x">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></CategoryAxis>
          </xAxis>
          <yAxis>
             <NumberAxis fx:id="y" label="Number Of Student" prefHeight="130.0" prefWidth="55.0" side="LEFT" />
@@ -25,7 +29,7 @@
       </BarChart>
       <ComboBox fx:id="reportByComboBox" layoutX="100.0" layoutY="62.0" onAction="#showListForChooseObject" prefHeight="25.0" prefWidth="126.0" />
       <Label fx:id="pageLabel" layoutX="247.0" layoutY="14.0" text="Statistic report" />
-      <Button fx:id="backButton" layoutX="277.0" layoutY="371.0" mnemonicParsing="false" onAction="#backButtonPressed" text="back" />
+      <Button fx:id="backButton" layoutX="266.0" layoutY="370.0" mnemonicParsing="false" onAction="#backButtonPressed" text="Back" />
       <ComboBox fx:id="chooseUserComboBox" layoutX="240.0" layoutY="62.0" onAction="#getReportUser" prefHeight="25.0" prefWidth="141.0" promptText="choose user Name" />
    </children>
 </AnchorPane>
