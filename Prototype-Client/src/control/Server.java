@@ -48,7 +48,7 @@ import ocsf.server.*;
  * @author Paul Holden 
  * @version July 2000
  */
-public class EchoServer extends AbstractServer {
+public class Server extends AbstractServer {
 	// Class variables *************************************************
 
 	/**
@@ -66,7 +66,7 @@ public class EchoServer extends AbstractServer {
 	 * @param port
 	 *            The port number to connect on.
 	 */
-	public EchoServer(int port) {
+	public Server(int port) {
 		super(port);
 	}
 
@@ -434,7 +434,7 @@ public class EchoServer extends AbstractServer {
 			port = DEFAULT_PORT; // Set port to 5555
 		}
 
-		EchoServer sv = new EchoServer(port);
+		Server sv = new Server(port);
 
 		try {
 			sv.listen(); // Start listening for connections
