@@ -180,7 +180,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	private Button updateBtn;
 
 	  @FXML
-	  private ListView<Course> courseInCreateQuestion;
+	  private ListView<String> courseInCreateQuestion;
 	  
 	  
 	/* check the content message from server */
@@ -687,14 +687,18 @@ public class TeacherControl extends UserControl implements Initializable {
 
     public void coursesToList(ActionEvent event) {
     	
+    	try {
     	String[] courseSubString = coursesComboBox.getValue().split("-");
-    	
-    	coursesListToCreateQuestion.add(new Course(courseSubString[0].trim(),courseSubString[1].trim()));
-		courseInCreateQuestion.setItems(coursesListToCreateQuestion);
+    	if(!courseInCreateQuestion.getItems().contains(courseSubString[0] + courseSubString[1]))
+		courseInCreateQuestion.getItems().add(courseSubString[0] + courseSubString[1]);
+    	}
+    	catch (NullPointerException e) {
+    		
+    	}
     }
 
     public void removeCoursesFromList(ActionEvent event) {
-
+    	courseInCreateQuestion.getItems().remove(courseInCreateQuestion.getSelectionModel().getSelectedItem());
     }
 	/************************************** Update exam screen ***********************************************************************/
 	
