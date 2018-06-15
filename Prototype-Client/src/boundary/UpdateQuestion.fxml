@@ -42,6 +42,6 @@
         </columns>
       </TableView>
       <ComboBox fx:id="subjectsComboBox" layoutX="22.0" layoutY="31.0" onAction="#loadCourses" prefWidth="150.0" promptText="Choose subject" />
-      <ComboBox fx:id="coursesComboBox" layoutX="22.0" layoutY="67.0" onAction="#coursesToList" prefHeight="25.0" prefWidth="150.0" promptText="Choose course" />
+      <ComboBox fx:id="coursesComboBox" layoutX="22.0" layoutY="67.0" onAction="#loadQuestions" prefHeight="25.0" prefWidth="150.0" promptText="Choose course" />
    </children>
 </AnchorPane>

@@ -218,7 +218,7 @@ public class TeacherControl extends UserControl implements Initializable {
 
 				case ("getQuestionsToTable"): /* get the questions list from server */
 				{
-					questionObservableList = FXCollections.observableArrayList((ArrayList<Question>) msg[1]);
+					questionObservableList = FXCollections.observableArrayList((ArrayList<Question>) msg[1]);//kaki
 					qid.setCellValueFactory(new PropertyValueFactory<>("id"));
 					tname.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
 					qtext.setCellValueFactory(new PropertyValueFactory<>("questionContent"));

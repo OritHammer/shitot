@@ -336,27 +336,6 @@ public class MysqlConnection {
 		return requestList;
 	}
 
-	public ArrayList<String> getQuestionList(Object subject, Object teacherUserName) {
-		/*
-		 * The function return the question list by the given subject code
-		 */
-		// Statement stmt;
-		ArrayList<String> questionList = new ArrayList<String>();
-		String userName = (String) teacherUserName;
-		try {
-			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT question_id,Question_Text FROM questions,teacherincourse"
-					+ " WHERE Question_id like " + "\"" + subject + "%\" AND UserNameTeacher=\"" + userName
-					+ "\"And courseID like \"" + subject + "%\";");
-			while (rs.next()) {
-				questionList.add(rs.getString(1) + "-" + rs.getString(2));
-			}
-			rs.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return questionList;
-	}
 
 	public ArrayList<Question> getQuestionListToTable(Object subject, Object teacherUserName) {
 		/*
