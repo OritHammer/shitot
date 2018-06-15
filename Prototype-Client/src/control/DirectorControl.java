@@ -96,6 +96,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	private TextField medianTextField;
 
 	private static String requestId;
+	
 	private XYChart.Series histogram =null;
 	
 	// FXML System information
