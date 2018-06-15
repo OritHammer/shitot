@@ -26,6 +26,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
@@ -44,6 +45,7 @@ import javafx.util.converter.FloatStringConverter;
 public class TeacherControl extends UserControl implements Initializable {
 
 	private static ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
+	private ObservableList<Course> coursesListToCreateQuestion = FXCollections.observableArrayList();
 	private ObservableList<Question> questionObservableList;
 	private Object[] messageToServer = new Object[3];
 	private static boolean blockPassQuestionButton;
@@ -177,6 +179,10 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private Button updateBtn;
 
+	  @FXML
+	  private ListView<Course> courseInCreateQuestion;
+	  
+	  
 	/* check the content message from server */
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
@@ -424,10 +430,6 @@ public class TeacherControl extends UserControl implements Initializable {
 				chat.handleMessageFromClientUI(messageToServer);// send the message to server
 				break;
 			}
-			case ("Create question"): {
-				teacherNameOnCreate.setText(getMyUser().getUsername());
-				break;
-			}
 
 			}
 			messageToServer[0] = "getSubjects";
@@ -472,6 +474,11 @@ public class TeacherControl extends UserControl implements Initializable {
 	/* open the screen UpdateExam */
 	public void openUpdateExamScreen(ActionEvent e) {
 		openScreen("UpdateExam");
+	}
+	
+	/* open the screen CheckExam */
+	public void openCheckExamScreen(ActionEvent e) {
+		openScreen("CheckExam");
 	}
 
 	/* open the screen as requested */
@@ -624,6 +631,11 @@ public class TeacherControl extends UserControl implements Initializable {
 	/* deleting question from the tableview and from the database */
 	public void deleteQuestion(ActionEvent e) {
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
+		if(questionSelected == null)
+		{
+			openScreen("ErrorMessage", "Please select question");
+			return;
+		}
 		messageToServer[0] = "deleteQuestion";
 		messageToServer[1] = questionSelected;
 		connect(this);
@@ -672,6 +684,18 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
+
+    public void coursesToList(ActionEvent event) {
+    	
+    	String[] courseSubString = coursesComboBox.getValue().split("-");
+    	
+    	coursesListToCreateQuestion.add(new Course(courseSubString[0].trim(),courseSubString[1].trim()));
+		courseInCreateQuestion.setItems(coursesListToCreateQuestion);
+    }
+
+    public void removeCoursesFromList(ActionEvent event) {
+
+    }
 	/************************************** Update exam screen ***********************************************************************/
 	
 	/* requesting the exams from the database */
@@ -770,11 +794,16 @@ public class TeacherControl extends UserControl implements Initializable {
 	
 	/* removing the exam from the database */
 	public void deleteExam(ActionEvent e) {
-		examSelected = examsTableView.getSelectionModel().getSelectedItem();
-		messageToServer[0] = "deleteExam";
-		messageToServer[1] = examSelected;
-		connect(this);
-		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
+			examSelected = examsTableView.getSelectionModel().getSelectedItem();
+			if(examSelected == null)
+			{
+				openScreen("ErrorMessage", "Please select exam");
+				return;
+			}
+			messageToServer[0] = "deleteExam";
+			messageToServer[1] = examSelected;
+			connect(this);
+			chat.handleMessageFromClientUI(messageToServer); // send the request to the server
 	}
 	
 	
@@ -945,6 +974,10 @@ public class TeacherControl extends UserControl implements Initializable {
 		backButton.setDisable(false);
 	}
 
+   
+    public void loadQuestionInCourse(ActionEvent event) {
+
+    }
 	/* event for locking the back button when u editing points */
 	public void blockBackButton() {
 		backButton.setDisable(true);

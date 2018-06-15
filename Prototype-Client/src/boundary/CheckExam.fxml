@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="464.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+   <children>
+      <TableView layoutX="22.0" layoutY="175.0" prefHeight="224.0" prefWidth="587.0">
+        <columns>
+          <TableColumn prefWidth="106.0" text="Student id" />
+          <TableColumn prefWidth="111.0" text="Name" />
+        </columns>
+      </TableView>
+      <ComboBox layoutX="241.0" layoutY="133.0" prefWidth="150.0" />
+      <Text layoutX="271.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="choose exam:" />
+      <Text fx:id="pageLabel" layoutX="283.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Check exam" />
+   </children>
+</AnchorPane>

@@ -17,7 +17,7 @@
       <Button layoutX="144.0" layoutY="131.0" mnemonicParsing="false" onAction="#openCreateQuestion" text="Create question" />
       <Button layoutX="148.0" layoutY="161.0" mnemonicParsing="false" text="Statistic report" />
       <Button layoutX="156.0" layoutY="230.0" mnemonicParsing="false" onAction="#openCreateExam" text="Create exam" />
-      <Button layoutX="157.0" layoutY="262.0" mnemonicParsing="false" text="Check exam" />
+      <Button layoutX="157.0" layoutY="262.0" mnemonicParsing="false" onAction="#openCheckExamScreen" text="Check exam" />
       <Button layoutX="139.0" layoutY="295.0" mnemonicParsing="false" onAction="#openExamCodeScreen" text="Create exam code" />
       <Button layoutX="139.0" layoutY="333.0" mnemonicParsing="false" onAction="#openExtendExamTimeScreen" text="Extend exam time" />
       <Button layoutX="158.0" layoutY="367.0" mnemonicParsing="false" onAction="#openLockExamScreen" text="Lock exam" />
