@@ -559,7 +559,7 @@ public class MysqlConnection {
 		ArrayList<User> studentsInExam = new ArrayList<User>();
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT userID,name FROM users,studentperformedexam" + " WHERE executedexam_id = " + "\"" + (String)executedExamId + "\" AND WHERE student_UserName = UserName");
+			ResultSet rs = stmt.executeQuery("SELECT userID,name FROM users,studentperformedexam WHERE executedexam_id = " + "\"" + (String)executedExamId + "\" AND student_UserName = UserName");
 			while(rs.next())
 			{
 				studentsInExam.add(new User(null,rs.getString(1),rs.getString(2),null,null,null));
