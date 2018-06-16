@@ -45,7 +45,7 @@ import ocsf.server.*;
  * @author Dr Timothy C. Lethbridge
  * @author Dr Robert Lagani&egrave;re
  * @author Fran&ccedil;ois B&eacute;langer
- * @author Paul Holden 
+ * @author Paul Holden
  * @version July 2000
  */
 public class Server extends AbstractServer {
@@ -85,7 +85,7 @@ public class Server extends AbstractServer {
 	public int parsingTheData(String Id) {
 		return Integer.parseInt(Id);
 	}
- 
+
 	@SuppressWarnings("unchecked")
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		con.runDB();
@@ -116,64 +116,66 @@ public class Server extends AbstractServer {
 			break;
 		}
 		case "checkExecutedExam": {/* check the executed exam id validity */
-			String executedExamID=(String)message[1];
-			Object[] executedexam = con.checkExecutedExam(message[1]);
-			serverMessage[1] = executedexam[0];//question in exam
-			serverMessage[2] = executedexam[1];//exam
-			Exam exam=(Exam)executedexam[1];
-			
-			if( exam.getType().equals("manual")) {
-				MyFile file = new MyFile(exam.getE_id()+".docx");
-				String LocalfilePath = "Exams/"+exam.getE_id()+".docx";
+			String executedExamID = (String) message[1];
+			try {
+				Object[] executedexam = con.checkExecutedExam(message[1], message[2]);
+				serverMessage[1] = executedexam[0];// question in exam
+				serverMessage[2] = executedexam[1];// exam
+				Exam exam = (Exam) executedexam[1];
 
-				try {
-					File newFile = new File(LocalfilePath);
-					byte[] mybytearray = new byte[(int) newFile.length()];
-					FileInputStream fis = new FileInputStream(newFile);
-					BufferedInputStream bis = new BufferedInputStream(fis);
+				if (exam.getType().equals("manual")) {
+					MyFile file = new MyFile(exam.getE_id() + ".docx");
+					String LocalfilePath = "Exams/" + exam.getE_id() + ".docx";
 
-					file.initArray(mybytearray.length);
-					file.setSize(mybytearray.length);
+					try {
+						File newFile = new File(LocalfilePath);
+						byte[] mybytearray = new byte[(int) newFile.length()];
+						FileInputStream fis = new FileInputStream(newFile);
+						BufferedInputStream bis = new BufferedInputStream(fis);
 
-					bis.read(file.getMybytearray(), 0, mybytearray.length);
-					serverMessage[3] = file;//צריך דחוףףףףף לסדר את זההההה
-				} catch (Exception exception) {
-					System.out.println("Error send (Files)msg) to Server");
+						file.initArray(mybytearray.length);
+						file.setSize(mybytearray.length);
+
+						bis.read(file.getMybytearray(), 0, mybytearray.length);
+						serverMessage[3] = file;// צריך דחוףףףףף לסדר את זההההה
+					} catch (Exception exception) {
+						System.out.println("Error send (Files)msg) to Server");
+					}
 				}
+			} catch (NullPointerException exception) {
+				System.out.println("This student cant perform this exam");
+				serverMessage[1]=null;
 			}
-			
+
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		case "getStudentAnswers":
-		{
-			ArrayList<Question> questioninexam = con.getQuestionFromCloseExam((String)message[1]);
-			String userName = (String)message[2];
-				serverMessage[0] = "showingCopy" ; 
- 				HashMap<String,Integer> studentAns = con.getStudentAns(userName,(String)message[1]);
-				serverMessage[2] =studentAns ;
-				serverMessage[1]=questioninexam;
-				this.sendToAllClients(serverMessage);
+		case "getStudentAnswers": {
+			ArrayList<Question> questioninexam = con.getQuestionFromCloseExam((String) message[1]);
+			String userName = (String) message[2];
+			serverMessage[0] = "showingCopy";
+			HashMap<String, Integer> studentAns = con.getStudentAns(userName, (String) message[1]);
+			serverMessage[2] = studentAns;
+			serverMessage[1] = questioninexam;
+			this.sendToAllClients(serverMessage);
 			break;
 		}
-		case "saveExamOfStudent":
-		{
+		case "saveExamOfStudent": {
 			FileOutputStream fileOutputStream = null;
 			BufferedOutputStream bufferedOutputStream = null;
-			MyFile file = (MyFile)message[2];
+			MyFile file = (MyFile) message[2];
 			try {
 				// receive file
-				File diagFromClient = new File("Students Exams/"+ file.getFileName());
-				System.out.println("Please wait downloading file");		//reading file from socket
+				File diagFromClient = new File("Students Exams/" + file.getFileName());
+				System.out.println("Please wait downloading file"); // reading file from socket
 				fileOutputStream = new FileOutputStream(diagFromClient);
 				bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-				bufferedOutputStream.write(file.getMybytearray(), 0 , file.getSize());		//writing byteArray to file
-				bufferedOutputStream.flush();												//flushing buffers
-				System.out.println("File " + diagFromClient  + " downloaded ( size: " + file.getSize() + " bytes read)");
+				bufferedOutputStream.write(file.getMybytearray(), 0, file.getSize()); // writing byteArray to file
+				bufferedOutputStream.flush(); // flushing buffers
+				System.out.println("File " + diagFromClient + " downloaded ( size: " + file.getSize() + " bytes read)");
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
-			finally {
+			} finally {
 				if (fileOutputStream != null)
 					try {
 						fileOutputStream.close();
@@ -207,12 +209,11 @@ public class Server extends AbstractServer {
 			break;
 		}
 		case "setExam": {/* client request is to create exam in DB */
-			String examId=con.createExam(message[1], message[2]);
-			if(((Exam)message[2]).getType().equals("manual"))
-			{
-			ArrayList<Question> questions=con.getQuestions(message[1]);
-			((Exam)message[2]).setE_id(examId);
-			createManualExam((Exam)message[2],questions );//This method create word(docx)file to manual exam
+			String examId = con.createExam(message[1], message[2]);
+			if (((Exam) message[2]).getType().equals("manual")) {
+				ArrayList<Question> questions = con.getQuestions(message[1]);
+				((Exam) message[2]).setE_id(examId);
+				createManualExam((Exam) message[2], questions);// This method create word(docx)file to manual exam
 			}
 			break;
 		}
@@ -245,15 +246,15 @@ public class Server extends AbstractServer {
 			break;
 		}
 		case "deleteQuestion": {
-				Boolean flag;
-				try {
-					flag = con.deleteQuestion(message[1]);
-					serverMessage[1] = flag;
-					this.sendToAllClients(serverMessage);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			Boolean flag;
+			try {
+				flag = con.deleteQuestion(message[1]);
+				serverMessage[1] = flag;
+				this.sendToAllClients(serverMessage);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			break;
 		}
 		case "checkUserDetails": {
@@ -267,24 +268,24 @@ public class Server extends AbstractServer {
 			serverMessage[1] = inserted;
 			this.sendToAllClients(serverMessage);
 			break;
-		}		
+		}
 		case "updateQuestionInExam": {
-			con.updateQuestionInExam(message[1],message[2]);
-			Exam exam=con.getExam(message[2]);
-			if(exam.getType().equals("manual")) {
-			ArrayList<Question> questions=con.getQuestions(message[1]);
-			createManualExam(exam,questions );//This method create word(docx)file to manual exam
+			con.updateQuestionInExam(message[1], message[2]);
+			Exam exam = con.getExam(message[2]);
+			if (exam.getType().equals("manual")) {
+				ArrayList<Question> questions = con.getQuestions(message[1]);
+				createManualExam(exam, questions);// This method create word(docx)file to manual exam
 			}
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		
+
 		case "deleteExam": {
 			Boolean deleted = con.deleteExam(message[1]);
 			serverMessage[1] = deleted;
 			this.sendToAllClients(serverMessage);
 			break;
-		}		
+		}
 		case "setExecutedExamLocked": {
 			Boolean isLocked = con.setExecutedExamLocked(message[1]);
 			serverMessage[1] = isLocked;
@@ -314,13 +315,13 @@ public class Server extends AbstractServer {
 		}
 		case "getQuestionInExam": {
 			Boolean examFlag;
-			ArrayList <QuestionInExam> questioninexam=con.getQuestionInExam(message[1]);
+			ArrayList<QuestionInExam> questioninexam = con.getQuestionInExam(message[1]);
 			examFlag = con.checkIfExamIsNotActive(message[1]);
 			serverMessage[1] = questioninexam;
 			serverMessage[2] = examFlag;
 			this.sendToAllClients(serverMessage);
 			break;
-		}  
+		}
 		case "getExamsByUserName": {
 			ArrayList<ExamDetailsMessage> examsPrefDetails = con.getPrefExamDetails((String) message[1]);
 			serverMessage[1] = examsPrefDetails;
@@ -340,41 +341,45 @@ public class Server extends AbstractServer {
 			con.setStatusToAddingTimeRequest(((Object[]) msg)[1], "rejected");
 			break;
 		}
-		case "getStudentsList":{//send to client list of all the student in the system
-			ArrayList<String> studentList=con.returnListForGetReport("Student");
-			serverMessage[0]="getStudentsList";
-			serverMessage[1]=studentList;
+		case "getStudentsList": {// send to client list of all the student in the system
+			ArrayList<String> studentList = con.returnListForGetReport("Student");
+			serverMessage[0] = "getStudentsList";
+			serverMessage[1] = studentList;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		case "getTeachersList":{//send to client list of all the teachers in the system
-			ArrayList<String> teacherList=con.returnListForGetReport("Teacher");
-			serverMessage[0]="getTeachersList";
-			serverMessage[1]=teacherList;
+		case "getTeachersList": {// send to client list of all the teachers in the system
+			ArrayList<String> teacherList = con.returnListForGetReport("Teacher");
+			serverMessage[0] = "getTeachersList";
+			serverMessage[1] = teacherList;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		case "getReportByTeacher":{////send to client statistic report of all the exam that teacher dose 
-			ArrayList<ExecutedExam> teacherReportDetails=con.returnReportByTeacherOrCoursesDetails(message[0],message[1]);
-			serverMessage[0]="getReportByTeacher";
-			serverMessage[1]=teacherReportDetails;
+		case "getReportByTeacher": {//// send to client statistic report of all the exam that teacher dose
+			ArrayList<ExecutedExam> teacherReportDetails = con.returnReportByTeacherOrCoursesDetails(message[0],
+					message[1]);
+			serverMessage[0] = "getReportByTeacher";
+			serverMessage[1] = teacherReportDetails;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		case "getReportByCourse":{
-			ArrayList<ExecutedExam> courseReportDetails=con.returnReportByTeacherOrCoursesDetails(message[0],message[1]);
-			serverMessage[0]="getReportByCourse";
-			serverMessage[1]=courseReportDetails;
+		case "getReportByCourse": {
+			ArrayList<ExecutedExam> courseReportDetails = con.returnReportByTeacherOrCoursesDetails(message[0],
+					message[1]);
+			serverMessage[0] = "getReportByCourse";
+			serverMessage[1] = courseReportDetails;
 			this.sendToAllClients(serverMessage);
 			break;
-		}case "getReportByStudent":{
-			ArrayList<Integer> studentReportDetails=con.returnReportByStudent(message[1]);
-			serverMessage[0]="getReportByStudent";
-			serverMessage[1]=studentReportDetails;
+		}
+		case "getReportByStudent": {
+			ArrayList<Integer> studentReportDetails = con.returnReportByStudent(message[1]);
+			serverMessage[0] = "getReportByStudent";
+			serverMessage[1] = studentReportDetails;
 			this.sendToAllClients(serverMessage);
 			break;
-		}case "finishExam": {
-			con.finishExam((String[]) message[1], (HashMap<String, Integer>) message[2]);
+		}
+		case "finishExam": {
+			con.finishExam((String[]) message[1], (HashMap<String, Integer>) message[2], (boolean) message[3]);
 			break;
 		}
 		/*
@@ -435,80 +440,79 @@ public class Server extends AbstractServer {
 			System.out.println("ERROR - Could not listen for clients!");
 		}
 	}
-	public static void createManualExam(Exam exam, ArrayList<Question>qustionsInExam){
+
+	public static void createManualExam(Exam exam, ArrayList<Question> qustionsInExam) {
 		/*
-		 * who ever touch this function,notice that:
-		*		the function recieves Exam
-		*		the function recieves arraylist of Question
-		*/
-			int i=1;
-			System.out.println("Im here");
-			XWPFDocument wordExam=new XWPFDocument();
-			try {
-				FileOutputStream out=new FileOutputStream(new File("Exams/" + exam.getE_id() + ".docx"));
-				XWPFParagraph title=wordExam.createParagraph();
-				XWPFRun	run=title.createRun();
-				
+		 * who ever touch this function,notice that: the function recieves Exam the
+		 * function recieves arraylist of Question
+		 */
+		int i = 1;
+		System.out.println("Im here");
+		XWPFDocument wordExam = new XWPFDocument();
+		try {
+			FileOutputStream out = new FileOutputStream(new File("Exams/" + exam.getE_id() + ".docx"));
+			XWPFParagraph title = wordExam.createParagraph();
+			XWPFRun run = title.createRun();
+
+			title.setAlignment(ParagraphAlignment.RIGHT);
+			run.setText(" Manual Exam:");
+			run.setBold(true);
+			XWPFRun runExamId = title.createRun();
+			runExamId.setText(exam.getE_id());
+			runExamId.addCarriageReturn();
+			XWPFRun run1 = title.createRun();
+			run1.setText(" note:");
+			run1.setBold(true);
+			XWPFRun runNote = title.createRun();
+			runNote.setText(exam.getRemarksForStudent());
+			runNote.addCarriageReturn();
+			XWPFRun run2 = title.createRun();
+			run2.setText(" Time for exam:");
+			run2.setBold(true);
+			XWPFRun runSolutionTime = title.createRun();
+			runSolutionTime.setText(exam.getSolutionTime());
+			runSolutionTime.addCarriageReturn();
+			System.out.println("Im here123");
+			for (Question q : qustionsInExam) {
+
+				title = wordExam.createParagraph();
+				run = title.createRun();
+				run.setText(i + ") " + q.getQuestionContent());
+				run.setBold(true);
+				run.addCarriageReturn();
+				run = title.createRun();
+				run.setText("1." + q.getAnswer1());
+				run.addCarriageReturn();
+				run = title.createRun();
+				run.setText("2." + q.getAnswer2());
+				run.addCarriageReturn();
+				run = title.createRun();
+				run.setText("3." + q.getAnswer3());
+				run.addCarriageReturn();
+				run = title.createRun();
+				run.setText("4." + q.getAnswer4());
+				run.addCarriageReturn();
 				title.setAlignment(ParagraphAlignment.RIGHT);
-				run.setText(" Manual Exam:" );
-				 run.setBold(true);
-				  XWPFRun	runExamId=title.createRun();
-				  runExamId.setText(exam.getE_id());
-				  runExamId.addCarriageReturn();
-				XWPFRun	run1=title.createRun();
-				run1.setText(" note:" );
-				run1.setBold(true);
-				XWPFRun	runNote=title.createRun();
-				runNote.setText( exam.getRemarksForStudent());
-				runNote.addCarriageReturn();
-				XWPFRun	run2=title.createRun();
-				run2.setText( " Time for exam:");
-				run2.setBold(true);
-				XWPFRun	runSolutionTime=title.createRun();
-				runSolutionTime.setText( exam.getSolutionTime());
-				runSolutionTime.addCarriageReturn();
-				System.out.println("Im here123");
-				for(Question q:qustionsInExam) {
-					
-						title=wordExam.createParagraph();
-						run=title.createRun();
-						run.setText(i +") "+ q.getQuestionContent());
-						run.setBold(true);
-						run.addCarriageReturn();
-						run=title.createRun();
-						run.setText( "1." + q.getAnswer1());
-						run.addCarriageReturn();
-						run=title.createRun();
-						run.setText( "2." + q.getAnswer2());
-						run.addCarriageReturn();
-						run=title.createRun();
-						run.setText( "3." + q.getAnswer3());
-						run.addCarriageReturn();
-						run=title.createRun();
-						run.setText( "4." + q.getAnswer4());
-						run.addCarriageReturn();
-					title.setAlignment(ParagraphAlignment.RIGHT);
-					i++;
-				}
-				System.out.println("Im here34");
-				 title=wordExam.createParagraph();
-					run=title.createRun();
-					run.setText("Good luck!");
-					run.setBold(true);
-					title.setAlignment(ParagraphAlignment.CENTER);
-					run.setFontSize(42);
-				wordExam.write(out);
-				out.close();
-				wordExam.close();
-				System.out.println("now im hehre");
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				i++;
 			}
-			catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			System.out.println("Im here34");
+			title = wordExam.createParagraph();
+			run = title.createRun();
+			run.setText("Good luck!");
+			run.setBold(true);
+			title.setAlignment(ParagraphAlignment.CENTER);
+			run.setFontSize(42);
+			wordExam.write(out);
+			out.close();
+			wordExam.close();
+			System.out.println("now im hehre");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+	}
 }
 // End of EchoServer class

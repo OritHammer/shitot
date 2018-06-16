@@ -6,7 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -78,20 +82,18 @@ public class MysqlConnection {
 					"SELECT (question_id) FROM questions" + " WHERE question_id like " + "\"" + subject + "%\"" + ";");
 			if (!rs.isBeforeFirst()) {
 				first = 0;
-			} else 
-			{
+			} else {
 				while (rs.next()) {
 					first = Integer.parseInt(rs.getString(1).substring(2, 5));
 					if (rs.next()) {
 						last = Integer.parseInt(rs.getString(1).substring(2, 5));
 						rs.previous();
 					}
-					if(first != 1 && flagFirst==0)
-					{
-						first=0;
+					if (first != 1 && flagFirst == 0) {
+						first = 0;
 						break;
 					}
-					flagFirst=1;
+					flagFirst = 1;
 					if (last - first > 1) {
 						break;
 					}
@@ -105,12 +107,12 @@ public class MysqlConnection {
 					+ q.getTeacherName().trim() + "\",\"" + q.getQuestionContent() + "\",\"" + q.getAnswer1() + "\",\""
 					+ q.getAnswer2() + "\",\"" + q.getAnswer3() + "\",\"" + q.getAnswer4() + "\",\""
 					+ String.valueOf(q.getCorrectAnswer()) + "\");");
-			
-			for(String s : (ArrayList<String>) courses)
-			{
+
+			for (String s : (ArrayList<String>) courses) {
 				String[] courseSubString = s.split(" ");
-			stmt.executeUpdate("INSERT INTO shitot.questionincourse VALUES(\"" + fullQuestionNumber.trim() + "\",\"" + courseSubString[0].trim() + "\");");
-			
+				stmt.executeUpdate("INSERT INTO shitot.questionincourse VALUES(\"" + fullQuestionNumber.trim() + "\",\""
+						+ courseSubString[0].trim() + "\");");
+
 			}
 
 			rs.close();
@@ -345,7 +347,6 @@ public class MysqlConnection {
 		return requestList;
 	}
 
-
 	public ArrayList<Question> getQuestionListToTable(Object subject, Object teacherUserName) {
 		/*
 		 * The function return the question list by the given subject code
@@ -353,16 +354,18 @@ public class MysqlConnection {
 		// Statement stmt;
 		ArrayList<Question> questionList = new ArrayList<Question>();
 		String userName = (String) teacherUserName;
-		String subjectid=((String)subject).substring(0,2);
-		String courseid=((String)subject).substring(2,4);
+		String subjectid = ((String) subject).substring(0, 2);
+		String courseid = ((String) subject).substring(2, 4);
 
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
 					"SELECT Q.question_id,Q.teacher_name,Q.question_text,Q.answer1,Q.answer2,Q.answer3,Q.answer4,"
-					+ "Q.Correct_answer FROM questions Q,teacherincourse TIC,questionincourse QIC WHERE Q.question_id like \""+subjectid+"%\" AND "
-					+ "TIC.UserNameTeacher=\""+userName+"\" AND TIC.courseID like \""+courseid+"%\""
-					+ " AND QIC.q_id=Q.question_id And QIC.course_id=\""+courseid+"\" AND TIC.courseID=QIC.course_id;");
+							+ "Q.Correct_answer FROM questions Q,teacherincourse TIC,questionincourse QIC WHERE Q.question_id like \""
+							+ subjectid + "%\" AND " + "TIC.UserNameTeacher=\"" + userName
+							+ "\" AND TIC.courseID like \"" + courseid + "%\""
+							+ " AND QIC.q_id=Q.question_id And QIC.course_id=\"" + courseid
+							+ "\" AND TIC.courseID=QIC.course_id;");
 			while (rs.next()) {
 				questionList.add(new Question(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8)));
@@ -450,29 +453,27 @@ public class MysqlConnection {
 		String examNumber = exam.getE_id();
 		int examNum;
 		int first = 0;
-		int last =0;
-		int flagFirst=0;
+		int last = 0;
+		int flagFirst = 0;
 		int questionCounter = 1;
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(
-					"SELECT e_id FROM exams" + " WHERE e_id like " + "\"" + examNumber + "%\"" + ";");
+			ResultSet rs = stmt
+					.executeQuery("SELECT e_id FROM exams" + " WHERE e_id like " + "\"" + examNumber + "%\"" + ";");
 			if (!rs.isBeforeFirst()) {
 				first = 0;
-			} 
-			else {
+			} else {
 				while (rs.next()) {
 					first = Integer.parseInt(rs.getString(1).substring(4, 6));
 					if (rs.next()) {
 						last = Integer.parseInt(rs.getString(1).substring(4, 6));
 						rs.previous();
 					}
-					if(first != 1 && flagFirst==0)
-					{
-						first=0;
+					if (first != 1 && flagFirst == 0) {
+						first = 0;
 						break;
 					}
-						flagFirst=1;
+					flagFirst = 1;
 					if (last - first > 1) {
 						break;
 					}
@@ -491,56 +492,52 @@ public class MysqlConnection {
 			for (QuestionInExam q : questionInExam) {
 				stmt.executeUpdate("INSERT INTO shitot.questioninexam VALUES(\"" + fullExamNumber.trim() + "\",\""
 						+ q.getQuestionID() + "\",\"" + (questionCounter++) + "\",\"" + q.getPoints() + "\");");
-			
 
-			
-		} 
-		}
-			catch (SQLException e) {
+			}
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		// stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
-		return fullExamNumber; 
+		return fullExamNumber;
 	}
 
 	public synchronized ArrayList<Question> getQuestions(Object questionInExams) {
 		@SuppressWarnings("unchecked")
 		ArrayList<QuestionInExam> questionInExam = (ArrayList<QuestionInExam>) questionInExams;
-		ArrayList<Question>questions=new	ArrayList<Question>();
+		ArrayList<Question> questions = new ArrayList<Question>();
 		Question q;
-	for(QuestionInExam qIa:questionInExam)
-	{
-		q=new Question();
-		try {
-			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(
-					"SELECT * FROM questions" + " WHERE question_id = " + "\"" + qIa.getQuestionID() + "\"" + ";");
-			rs.next();
-			q.setId(rs.getString(1));
-			q.setTeacherName(rs.getString(2));
-			q.setQuestionContent(rs.getString(3));
-			q.setAnswer1(rs.getString(4));
-			q.setAnswer2(rs.getString(5));
-			q.setAnswer3(rs.getString(6));
-			q.setAnswer4(rs.getString(7));
-			q.setCorrectAnswer(rs.getString(8));
-			questions.add(q);
-			rs.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		for (QuestionInExam qIa : questionInExam) {
+			q = new Question();
+			try {
+				stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery(
+						"SELECT * FROM questions" + " WHERE question_id = " + "\"" + qIa.getQuestionID() + "\"" + ";");
+				rs.next();
+				q.setId(rs.getString(1));
+				q.setTeacherName(rs.getString(2));
+				q.setQuestionContent(rs.getString(3));
+				q.setAnswer1(rs.getString(4));
+				q.setAnswer2(rs.getString(5));
+				q.setAnswer3(rs.getString(6));
+				q.setAnswer4(rs.getString(7));
+				q.setCorrectAnswer(rs.getString(8));
+				questions.add(q);
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-	}
 		return questions;
 	}
+
 	////////
 	public synchronized Exam getExam(Object examID) {
-		String examId=(String)examID;
-		Exam exam=new Exam();
-	
+		String examId = (String) examID;
+		Exam exam = new Exam();
+
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(
-					"SELECT * FROM exams" + " WHERE e_id = " + "\"" + examId + "\"" + ";");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM exams" + " WHERE e_id = " + "\"" + examId + "\"" + ";");
 			rs.next();
 			exam.setE_id(rs.getString(1));
 			exam.setSolutionTime(rs.getString(1));
@@ -552,12 +549,10 @@ public class MysqlConnection {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	
+
 		return exam;
 	}
-	
-	
-	
+
 	///////
 	@SuppressWarnings("unused")
 	public synchronized void updateQuestionInExam(Object questionInExams, Object examId) {
@@ -584,15 +579,15 @@ public class MysqlConnection {
 
 	public Boolean deleteExam(Object exam) {
 		Exam ex = (Exam) exam;
-		
-		if(!checkIfExamIsNotActive(ex.getE_id()))
+
+		if (!checkIfExamIsNotActive(ex.getE_id()))
 			return false;
-		
+
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate("DELETE FROM questioninexam WHERE e_id=\"" + ex.getE_id() + "\";");
 			stmt.executeUpdate("DELETE FROM exams WHERE e_id=\"" + ex.getE_id() + "\";");
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -724,11 +719,39 @@ public class MysqlConnection {
 
 	}
 
-	public Object[] checkExecutedExam(Object executedExamID) {
+	public Object[] checkExecutedExam(Object executedExamID, Object userName) {
 		Object[] details = new Object[2];
+		boolean canPerformExam = checkStudentUserNameToPerformExam((String) userName, (String) executedExamID);
+		if (canPerformExam) {
 			details[0] = getQuestionByExecutedExam(executedExamID);
 			details[1] = getExamsByExecutedExam(executedExamID);
+		} else {
+			return (null);
+		}
 		return (details);
+	}
+
+	private boolean checkStudentUserNameToPerformExam(String userName, String executedExamID) {
+		boolean flag = false;
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(
+					"SELECT SIC.studentUserName FROM shitot.studentincourse SIC,shitot.executedexam EE WHERE "
+							+ "SIC.studentUserName=\"" + userName + "\" AND EE.executedExamID=\"" + executedExamID
+							+ "\" AND EE.exam_id LIKE CONCAT('__',SIC.course_ID, '%') AND "
+							+ "SIC.studentUserName NOT IN (SELECT SPE.student_UserName "
+							+ "FROM shitot.studentperformedexam SPE WHERE SPE.student_UserName=\"" + userName
+							+ "\" AND SPE.executedexam_id=\"" + executedExamID + "\");");
+			if (rs.isBeforeFirst()) {
+				flag = true;
+			} else {
+				flag = false;
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return flag;
 	}
 
 	public Exam getExamsByExecutedExam(Object executedExamID) {
@@ -798,10 +821,11 @@ public class MysqlConnection {
 		return (solutionTime);
 	}
 
-	public void finishExam(String[] details, HashMap<String, Integer> answers) {
+	public void finishExam(String[] details, HashMap<String, Integer> answers, boolean finishedexam) {
 		String examID = details[0];
 		String studentId = details[1];
 		int ans;
+		float points = 100;
 		Set<String> s = answers.keySet();
 		for (String q_id : s) {
 			ans = answers.get(q_id);
@@ -809,10 +833,41 @@ public class MysqlConnection {
 				stmt.executeUpdate("INSERT INTO shitot.studentanswerquestions VALUES(\"" + examID + "\",\"" + studentId
 						+ "\",\"" + q_id + "\",\"" + ans + "\");");
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+
+		// Checking the answers to give a grade
+		for (String q_id : s) {
+			ans = answers.get(q_id);
+			try {
+				ResultSet rs = stmt.executeQuery(
+						"SELECT Q.question_id,Q.correct_answer,QIE.points FROM shitot.questions Q,shitot.questioninexam QIE,shitot.executedexam EE"
+								+ " WHERE Q.question_id=\"" + q_id
+								+ "\" AND QIE.question_ID=Q.question_id AND EE.executedExamID=\"" + examID
+								+ "\" AND EE.exam_id=QIE.e_id;");
+				while (rs.next()) {
+					if (!rs.getString(2).equals(String.valueOf(ans))) {
+						points -= Float.valueOf(rs.getString(3));
+					}
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		// Insert the exam to studentPerformExam table
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		Date date = new Date();
+		try {
+			stmt.executeUpdate("INSERT INTO shitot.studentperformedexam VALUES(\"" + dateFormat.format(date) + "\",\""
+					+ time.format(cal.getTime()) + "\",\"" + (finishedexam == true ? "yes" : "no") + "\",\"" + examID
+					+ "\",\"" + studentId + "\",\"" + points + "\",\"waiting\",\"none\");");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		// Student can't perform this exam any more
 
 	}
 
@@ -935,9 +990,9 @@ public class MysqlConnection {
 		HashMap<String, Integer> stdAns = new HashMap<>();
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("select saq.questionID , saq.answer" + 
-					" from shitot.studentanswerquestions saq " + 
-					"where saq.executedID = \""+executedExamID+"\" AND saq.studentUserName =\""+userName+"\" ;  ");
+			ResultSet rs = stmt.executeQuery("select saq.questionID , saq.answer"
+					+ " from shitot.studentanswerquestions saq " + "where saq.executedID = \"" + executedExamID
+					+ "\" AND saq.studentUserName =\"" + userName + "\" ;  ");
 
 			while (rs.next()) {
 				int ans = rs.getInt(2);
@@ -958,14 +1013,15 @@ public class MysqlConnection {
 	public ArrayList<Question> getQuestionFromCloseExam(String executedECode) {
 		return getQuestionByExecutedExam(executedECode);
 	}
+
 	public ArrayList<ExecutedExam> returnReportByTeacherOrCoursesDetails(Object reportBy, Object idOrUserName) {
 		ArrayList<ExecutedExam> executedExamList = new ArrayList<ExecutedExam>();
-		String id_userName = (String)idOrUserName;
+		String id_userName = (String) idOrUserName;
 		ResultSet rs = null;
 		try {
 			stmt = conn.createStatement();
 			switch ((String) reportBy) {
-			case "getReportByTeacher": 
+			case "getReportByTeacher":
 				rs = stmt.executeQuery(
 						"SELECT numOfStudentStarted,average,median,between0to54,between55to64,between65to74,between75to84,between85to94,between95to100 FROM shitot.executedexam where teacherName='"
 								+ id_userName + "'AND status='close' AND average IS NOT NULL;");
@@ -991,21 +1047,20 @@ public class MysqlConnection {
 	}
 
 	public ArrayList<Integer> returnReportByStudent(Object userName) {
-		ArrayList<Integer> studentGradesList=new ArrayList<Integer>();
-		String studentName =(String)userName;
+		ArrayList<Integer> studentGradesList = new ArrayList<Integer>();
+		String studentName = (String) userName;
 		ResultSet rs = null;
-			try {
-				stmt = conn.createStatement();
-				rs=stmt.executeQuery("SELECT grade FROM shitot.studentperformedexam WHERE student_UserName='"+studentName+"'AND finished='yes' AND grade IS NOT NULL;");
-				while (rs.next())
-					studentGradesList.add(Integer.parseInt(rs.getString(1)));
-				rs.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			return studentGradesList;
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT grade FROM shitot.studentperformedexam WHERE student_UserName='"
+					+ studentName + "'AND finished='yes' AND grade IS NOT NULL;");
+			while (rs.next())
+				studentGradesList.add(Integer.parseInt(rs.getString(1)));
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return studentGradesList;
 	}
 
-	
-	
 }

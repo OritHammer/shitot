@@ -381,6 +381,7 @@ public class StudentControl extends UserControl implements Initializable {
 		connect(this); // connecting to server
 		messageToServer[0] = "checkExecutedExam";
 		messageToServer[1] = executedID;
+		messageToServer[2] = getMyUser().getUsername();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 
@@ -390,7 +391,7 @@ public class StudentControl extends UserControl implements Initializable {
 
 	/************************* checking message ***********************************/
 	// for all windows
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	@Override
 	public void checkMessage(Object message) {
 		try {
@@ -406,6 +407,10 @@ public class StudentControl extends UserControl implements Initializable {
 				break;
 			}
 			case "checkExecutedExam": {
+				if(msgFromServer[1]==null) {
+					Platform.runLater(()->openScreen("ErrorMessage","Can't perform this exam"));//לבדוק אם צריך לרשום את הסיבה לכך
+					return;
+				}
 				checkExecutedExam((Object[]) msgFromServer);
 				break;
 			}
@@ -662,6 +667,7 @@ public class StudentControl extends UserControl implements Initializable {
 			messageToServer[0] = "finishExam";
 			messageToServer[1] = details;
 			messageToServer[2] = examAnswers;
+			messageToServer[3] = e==null?false:true;
 			chat.handleMessageFromClientUI(messageToServer);// send the message to server
 			try {
 				closeScreen(e);
