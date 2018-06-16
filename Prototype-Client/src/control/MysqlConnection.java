@@ -243,7 +243,7 @@ public class MysqlConnection {
 			ResultSet rs = stmt.executeQuery("SELECT  E.exam_id  , stdE.grade  , stdE.date , E.executedExamID "
 					+ " FROM shitot.executedexam  E , shitot.studentperformedexam  stdE "
 					+ "WHERE E.executedExamID = stdE.executedexam_id AND stdE.student_UserName =\"" + userName
-					+ "\" AND E.status = 'close'  ; ");
+					+ "\" AND E.status = 'close' AND stdE.isApproved='approve' ; ");
 			/*
 			 * if (!rs.first()) { return null; }
 			 */
