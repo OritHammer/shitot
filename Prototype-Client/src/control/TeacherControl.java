@@ -24,6 +24,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -52,6 +53,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	private Object[] messageToServer = new Object[5];
 	private static boolean blockPassQuestionButton;
 
+	private ActionEvent temp;
+	
 	private ObservableList<Exam> exams;
 	private Question questionSelected;
 	private Question oldQuestion;
@@ -353,7 +356,12 @@ public class TeacherControl extends UserControl implements Initializable {
 							} else {
 								blockPassQuestionButton = false;
 							}
-							openScreen("UpdateQuestionInExam");
+							try {
+								openScreen(temp,"UpdateQuestionInExam");
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						});
 					} catch (NullPointerException exception) {
 						Platform.runLater(() -> openScreen("ErrorMessage", "exam does not have any question"));
@@ -479,60 +487,54 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	/*********************************************************** Opening screens action-events ***************************************/
 	
+	public void openScreen(ActionEvent e, String screen) throws IOException{
+		 Parent tableViewParent = FXMLLoader.load(getClass().getResource("/boundary/" + screen + ".fxml"));
+	        Scene tableViewScene = new Scene(tableViewParent);
+	        tableViewScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+	        //This line gets the Stage information
+	        Stage window = (Stage)((Node)e.getSource()).getScene().getWindow();
+	        window.setScene(tableViewScene);
+	        window.show();
+	}
+	
 	/* open the screen ExtendExamTime */
-	public void openExtendExamTimeScreen(ActionEvent e) {
-		openScreen("ExtendExamTime");
+	public void openExtendExamTimeScreen(ActionEvent e) throws IOException{
+		openScreen(e,"ExtendExamTime");
 	}
 
 	/* open the screen UpdateQuestion */
-	public void openUpdateQuestionScreen(ActionEvent e) {
-		openScreen("UpdateQuestion");
+	public void openUpdateQuestionScreen(ActionEvent e) throws IOException{
+		openScreen(e,"UpdateQuestion");
 	}
+	
+
 
 	/* open the screen CreateExamCode */
-	public void openExamCodeScreen(ActionEvent e) {
-		openScreen("CreateExamCode");
+	public void openExamCodeScreen(ActionEvent e) throws IOException{
+		openScreen(e,"CreateExamCode");
 	}
 
 	/* open the screen CreateExam */
-	public void openCreateExam(ActionEvent e) {
-		openScreen("CreateExam");
+	public void openCreateExam(ActionEvent e) throws IOException{
+		openScreen(e,"CreateExam");
 	}
 
 	/* open the screen CreateQuestion */
-	public void openCreateQuestion(ActionEvent e) {
-		openScreen("CreateQuestion");
+	public void openCreateQuestion(ActionEvent e) throws IOException{
+		openScreen(e,"CreateQuestion");
 	}
 
 	/* open the screen UpdateExam */
-	public void openUpdateExamScreen(ActionEvent e) {
-		openScreen("UpdateExam");
+	public void openUpdateExamScreen(ActionEvent e) throws IOException{
+		openScreen(e,"UpdateExam");
 	}
 	
 	/* open the screen CheckExam */
-	public void openCheckExamScreen(ActionEvent e) {
-		openScreen("CheckExam");
+	public void openCheckExamScreen(ActionEvent e) throws IOException{
+		openScreen(e,"CheckExam");
 	}
 
-	/* open the screen as requested */
-	public void openScreen(String screen) {
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));
-			Scene scene = new Scene(loader.load());
-			Stage stage = Main.getStage();
-			if (screen.equals("ErrorMessage")) {
-				ErrorControl tController = loader.getController();
-				tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
-				tController.setErrorMessage("ERROR");// send a the error to the alert we made
-			}
-			stage.setTitle(screen);
-			stage.setScene(scene);
-			stage.show();
-		} catch (Exception exception) {
-			System.out.println("Error in opening the page");
-		}
-	}
+
 
 	/* opening the screen LockExam */
 	public void openLockExamScreen(ActionEvent e) throws IOException {
@@ -545,10 +547,28 @@ public class TeacherControl extends UserControl implements Initializable {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));
 			Scene scene = new Scene(loader.load());
+			scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 			Stage stage = Main.getStage();
 			ErrorControl tController = loader.getController();
+			
 			tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
 			tController.setErrorMessage((String) message);// send a the error to the alert we made
+			stage.setTitle("Error message");
+			stage.setScene(scene);
+			stage.show();
+		} catch (Exception exception) {
+			System.out.println("Error in opening the page");
+		}
+	}
+	
+	/* open the screen ErrorMessage and sending an object */
+	public void openScreen(String screen) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));
+			Scene scene = new Scene(loader.load());
+			scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+			Stage stage = Main.getStage();
 			stage.setTitle("Error message");
 			stage.setScene(scene);
 			stage.show();
@@ -760,7 +780,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	public void loadExams(ActionEvent e) throws IOException {
 		String examIDStart;
 		String toSend;
-		if(!pageLabel.getText().equals("Create exam code"))
+		if(!pageLabel.getText().equals("Create exam code") && !pageLabel.getText().equals("Update exam"))
 		{
 			toSend = "getExecutedExams";
 			messageToServer[2] = getMyUser().getUsername();
@@ -840,6 +860,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	/* get the question in a specific exam */
 	public void viewQuestion(ActionEvent e) throws IOException {
 		try {
+			temp = e;
 			Exam exam = examsTableView.getSelectionModel().getSelectedItem();
 			connect(this); // connecting to server
 			messageToServer[0] = "getQuestionInExam";

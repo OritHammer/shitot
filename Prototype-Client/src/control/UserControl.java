@@ -128,6 +128,7 @@ public class UserControl implements Initializable {
 								try {
 									FXMLLoader loader=new FXMLLoader();
 									loader.setLocation(getClass().getResource("/boundary/HomeScreenTeacher.fxml"));
+					
 									home_page_parent = loader.load();
 									TeacherControl tController=loader.getController();
 									String userName=user.getFullname().toLowerCase();
@@ -136,6 +137,7 @@ public class UserControl implements Initializable {
 									getMyUser().setUsername(user.getUsername());
 									
 									home_page_scene = new Scene(home_page_parent);
+									home_page_scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 									Main.getStage().setTitle("HomeScreenTeacher");
 									Main.getStage().setScene(home_page_scene);
 								} catch (IOException e) {

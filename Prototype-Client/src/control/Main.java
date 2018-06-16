@@ -18,6 +18,7 @@ public class Main extends Application {
    //Parent root = FXMLLoader.load(getClass().getResource("/boundary/HomeScreenTeacher.fxml"));
    guiStage = primaryStage;
    Scene scene = new Scene(root);
+   scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
    guiStage.setTitle("Login");
    guiStage.setScene(scene);
    guiStage.show(); 
