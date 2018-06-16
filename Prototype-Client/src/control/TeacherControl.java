@@ -402,7 +402,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			setToQuestionInExamTableView();
 			connect(this); // connecting to server
 			messageToServer[0] = "getQuestionsToTable";
-			messageToServer[1] = questionInExamObservable.get(0).getQuestionID().substring(0, 2);
+			messageToServer[1] = tempExamId.substring(0, 4);
 			messageToServer[2] = getMyUser().getUsername();
 			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 			break;
@@ -727,7 +727,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	public void loadExams(ActionEvent e) throws IOException {
 		String examIDStart;
 		/* ask for the exams name */
-		if (pageLabel.getText().equals("Create exam code")) {
+		if (pageLabel.getText().equals("Create exam code") || pageLabel.getText().equals("Update exam")) {
 			if (coursesComboBox.getValue() == null) {
 				return;
 			}
@@ -899,8 +899,11 @@ public class TeacherControl extends UserControl implements Initializable {
 			openScreen("ErrorMessage", "Please choose question");
 			return;
 		}
+		if(!pageLabel.getText().equals("Update question in exam"))
+		{
 		subjectsComboBox.setDisable(true);
 		coursesComboBox.setDisable(true);
+		}
 		QuestionInExam questioninexam = new QuestionInExam();// creating new questioninexam
 		Question questionDetails = questionTableView.getSelectionModel().getSelectedItem();
 		questioninexam.setQuestionID(questionDetails.getId());
