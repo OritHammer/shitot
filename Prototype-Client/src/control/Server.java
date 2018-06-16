@@ -31,6 +31,7 @@ import entity.MyFile;
 import entity.Question;
 import entity.QuestionInExam;
 import entity.RequestForChangingTimeAllocated;
+import entity.StudentPerformExam;
 import entity.TeachingProfessionals;
 import entity.User;
 import javafx.fxml.FXMLLoader;
@@ -110,11 +111,19 @@ public class Server extends AbstractServer {
 			break;
 		}
 		case "getExecutedExams": {/* client request all all the courses under some subject */
-			ArrayList<ExecutedExam> executedexam = con.getExecutedExam(message[1]);
+			ArrayList<ExecutedExam> executedexam = con.getExecutedExam(message[1],message[2]);
 			serverMessage[1] = executedexam;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
+		
+		case "getStudenstInExam": {/* */
+			ArrayList<User> studentsInExam = con.getStudenstInExam(message[1]);
+			serverMessage[1] = studentsInExam;
+			this.sendToAllClients(serverMessage);
+			break;
+		}
+		
 		case "checkExecutedExam": {/* check the executed exam id validity */
 			String executedExamID = (String) message[1];
 			try {
@@ -191,12 +200,13 @@ public class Server extends AbstractServer {
 			}
 			break;
 		}
-		case "getExams": {/* client request all all the courses under some subject */
+		case "getExams": {/* client request all all the exams under some courses */
 			ArrayList<Exam> examsList = con.getExams(message[1]);
 			serverMessage[1] = examsList;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
+		
 		case "createChangingRequest": {
 			con.createChangingRequest(message[1]);
 			break;

@@ -6,23 +6,25 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="441.0" prefWidth="459.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+<AnchorPane prefHeight="564.0" prefWidth="614.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
-      <Label layoutX="195.0" layoutY="384.0" text="Extend time by" />
-      <Button layoutX="404.0" layoutY="401.0" mnemonicParsing="false" onAction="#closeScreen" text="Back" />
-      <Button layoutX="337.0" layoutY="402.0" mnemonicParsing="false" onAction="#createExtendTimeRequest" text="Confirm" />
-      <TextField fx:id="timeForExamMinute" layoutX="271.0" layoutY="402.0" prefHeight="25.0" prefWidth="59.0" />
-      <TextField fx:id="timeForExamHours" layoutX="195.0" layoutY="402.0" prefHeight="25.0" prefWidth="59.0" />
-      <Label layoutX="261.0" layoutY="405.0" text=":" />
-      <Label fx:id="pageLabel" layoutX="177.0" layoutY="6.0" text="Extend exam time" />
-      <TextField fx:id="reasonForChange" layoutX="31.0" layoutY="401.0" prefHeight="25.0" prefWidth="150.0" />
-      <Label layoutX="30.0" layoutY="384.0" text="reason for change" />
-      <TableView fx:id="executedExamTableView" layoutY="23.0" prefHeight="357.0" prefWidth="465.0">
+      <Label layoutX="270.0" layoutY="507.0" text="Extend time by" />
+      <Button layoutX="479.0" layoutY="524.0" mnemonicParsing="false" onAction="#closeScreen" text="Back" />
+      <Button layoutX="412.0" layoutY="525.0" mnemonicParsing="false" onAction="#createExtendTimeRequest" text="Confirm" />
+      <TextField fx:id="timeForExamMinute" layoutX="346.0" layoutY="525.0" prefHeight="25.0" prefWidth="59.0" />
+      <TextField fx:id="timeForExamHours" layoutX="270.0" layoutY="525.0" prefHeight="25.0" prefWidth="59.0" />
+      <Label layoutX="336.0" layoutY="528.0" text=":" />
+      <Label fx:id="pageLabel" layoutX="252.0" layoutY="6.0" text="Extend exam time" />
+      <TextField fx:id="reasonForChange" layoutX="106.0" layoutY="524.0" prefHeight="25.0" prefWidth="150.0" />
+      <Label layoutX="105.0" layoutY="507.0" text="reason for change" />
+      <TableView fx:id="executedExamTableView" layoutX="75.0" layoutY="146.0" prefHeight="357.0" prefWidth="465.0">
         <columns>
           <TableColumn fx:id="executedExamIDTableView" prefWidth="155.0" text="executedExamID" />
           <TableColumn fx:id="teacherNameTableView" minWidth="0.0" prefWidth="165.0" text="teacherName" />
             <TableColumn fx:id="exam_idTableView" minWidth="0.0" prefWidth="144.0" text="exam_id" />
         </columns>
       </TableView>
+      <ComboBox fx:id="subjectsComboBox" layoutX="221.0" layoutY="58.0" onAction="#loadCourses" prefHeight="25.0" prefWidth="170.0" promptText="choose subject" />
+      <ComboBox fx:id="coursesComboBox" layoutX="221.0" layoutY="101.0" onAction="#loadExams" prefHeight="25.0" prefWidth="170.0" promptText="Choose course" />
    </children>
 </AnchorPane>

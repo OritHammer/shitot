@@ -6,16 +6,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="464.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+<AnchorPane prefHeight="633.0" prefWidth="704.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
-      <TableView layoutX="22.0" layoutY="175.0" prefHeight="224.0" prefWidth="587.0">
+      <TableView fx:id="studnetInExamTableView" layoutX="59.0" layoutY="346.0" prefHeight="224.0" prefWidth="587.0">
         <columns>
-          <TableColumn prefWidth="106.0" text="Student id" />
-          <TableColumn prefWidth="111.0" text="Name" />
+          <TableColumn fx:id="studentId" prefWidth="106.0" text="Student id" />
+          <TableColumn fx:id="studentName" prefWidth="111.0" text="Name" />
         </columns>
       </TableView>
-      <ComboBox layoutX="241.0" layoutY="133.0" prefWidth="150.0" />
-      <Text layoutX="271.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="choose exam:" />
-      <Text fx:id="pageLabel" layoutX="283.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Check exam" />
+      <ComboBox fx:id="executedExamsComboBox" layoutX="269.0" layoutY="236.0" onAction="#loadStudenstInExam" prefHeight="25.0" prefWidth="170.0" promptText="Choose executed exam" />
+      <ComboBox fx:id="subjectsComboBox" layoutX="269.0" layoutY="149.0" onAction="#loadCourses" prefHeight="25.0" prefWidth="170.0" promptText="choose subject" />
+      <ComboBox fx:id="coursesComboBox" layoutX="269.0" layoutY="192.0" onAction="#loadExams" prefHeight="25.0" prefWidth="170.0" promptText="Choose course" />
+      <Label fx:id="pageLabel" layoutX="308.0" layoutY="26.0" text="Check exam" />
+      <Button fx:id="backButton" layoutX="360.0" layoutY="588.0" mnemonicParsing="false" onAction="#closeScreen" text="Back" />
    </children>
 </AnchorPane>

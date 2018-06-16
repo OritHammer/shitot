@@ -15,8 +15,11 @@ public class StudentPerformExam implements Serializable{
 	private String userName = " ";
 	private Boolean isApproved = false ;
 	private String reasonForChangeGrade = " "; 
+	private String studentId = " "; 
+	private String studentFullName = " "; 
 
-	public StudentPerformExam(String dateDB,String timeDB, String finishedDB,String gradeDB,String excecutedExamIDDB,String userNameDB,String isApprovedDB,String reasonForChangeGradeDB) {
+	public StudentPerformExam(String dateDB,String timeDB, String finishedDB,
+			String excecutedExamIDDB,String userNameDB,String gradeDB,String isApprovedDB,String reasonForChangeGradeDB,String id,String fullName) {
 		super();
 		date = dateDB;
 		time = timeDB;
@@ -30,6 +33,8 @@ public class StudentPerformExam implements Serializable{
 			isApproved = true;
 		}
 		reasonForChangeGrade = reasonForChangeGradeDB ; 
+		this.studentId = id;
+		this.studentFullName = fullName;
 	}
 
 	public String getDate() {

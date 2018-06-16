@@ -21,6 +21,7 @@ import entity.ExecutedExam;
 import entity.Question;
 import entity.QuestionInExam;
 import entity.RequestForChangingTimeAllocated;
+import entity.StudentPerformExam;
 import entity.TeachingProfessionals;
 import entity.User;
 import javafx.collections.ObservableList;
@@ -164,7 +165,7 @@ public class MysqlConnection {
 			ResultSet rs = stmt
 					.executeQuery("select distinct questioninexam.question_ID , executedexam.executedExamID from "
 							+ "shitot.questioninexam , shitot.executedexam where questioninexam.e_id ="
-							+ " executedexam.exam_id and executedexam.status = 'open' ");
+							+ " executedexam.exam_id and executedexam.status = 'open' AND executedexam.numOfStudentStarted>0 ");
 
 			while (rs.next()) {
 				if (q.getId().equals(rs.getString(1))) {
@@ -178,7 +179,7 @@ public class MysqlConnection {
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
+			return null;
 		}
 	}
 
@@ -553,6 +554,25 @@ public class MysqlConnection {
 		return exam;
 	}
 
+
+	public ArrayList<User> getStudenstInExam(Object executedExamId) {
+		ArrayList<User> studentsInExam = new ArrayList<User>();
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT userID,name FROM users,studentperformedexam" + " WHERE executedexam_id = " + "\"" + (String)executedExamId + "\" AND WHERE student_UserName = UserName");
+			while(rs.next())
+			{
+				studentsInExam.add(new User(null,rs.getString(1),rs.getString(2),null,null,null));
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		return studentsInExam;
+	}
+	
 	///////
 	@SuppressWarnings("unused")
 	public synchronized void updateQuestionInExam(Object questionInExams, Object examId) {
@@ -644,7 +664,7 @@ public class MysqlConnection {
 
 	}
 
-	public ArrayList<ExecutedExam> getExecutedExam(Object teacherUserName) {
+	public ArrayList<ExecutedExam> getExecutedExam(Object examId,Object teacherUserName) {
 		/*
 		 * The function return the course list by the given subject code
 		 */
@@ -653,7 +673,7 @@ public class MysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM executedexam WHERE teacherName=\""
-					+ teacherUserName.toString() + "\" AND status='open';");
+					+ teacherUserName.toString() + "\" AND status='open' AND exam_id like \"" + (String)examId + "%\"" + ";");
 			while (rs.next()) {
 				executedexam.add(new ExecutedExam(rs.getString(1), Integer.parseInt(rs.getString(2)),
 						Integer.parseInt(rs.getString(3)), Integer.parseInt(rs.getString(4)),

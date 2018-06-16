@@ -13,7 +13,9 @@ import entity.ExecutedExam;
 import entity.Question;
 import entity.QuestionInExam;
 import entity.RequestForChangingTimeAllocated;
+import entity.StudentPerformExam;
 import entity.TeachingProfessionals;
+import entity.User;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -161,6 +163,14 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private TableColumn<Exam, String> remarksForStudentTable;
 
+	
+	@FXML
+	private TableView<User> studnetInExamTableView;
+	@FXML
+	private TableColumn<User, String> studentId;
+	@FXML
+	private TableColumn<User, String> studentName;
+	
 	@FXML
 	private ComboBox<String> subjectsComboBox;
 	@FXML
@@ -169,6 +179,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	private ComboBox<String> examComboBox;
 	@FXML
 	private ComboBox<String> typeComboBox;
+	@FXML
+	private ComboBox<String> executedExamsComboBox;
 
 	@FXML
 	private Button passQuestionL;
@@ -181,7 +193,6 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	  @FXML
 	  private ListView<String> courseInCreateQuestion;
-	  
 	  
 	/* check the content message from server */
 	@SuppressWarnings("unchecked")
@@ -260,12 +271,19 @@ public class TeacherControl extends UserControl implements Initializable {
 
 				case ("deleteQuestion"): /* the server return true/false if the question deleted or not */
 				{
-					if ((boolean) msg[1] == true) {
-						int index = questionObservableList.indexOf(questionSelected);
-						questionObservableList.remove(index);
-						questionTableView.refresh();
-					} else {
-						Platform.runLater(() -> openScreen("ErrorMessage", "This question is in active exam."));
+					if((boolean) msg[1])
+					{
+						if ((boolean) msg[1] == true) {
+							int index = questionObservableList.indexOf(questionSelected);
+							questionObservableList.remove(index);
+							questionTableView.refresh();
+						} else {
+							Platform.runLater(() -> openScreen("ErrorMessage", "This question is in active exam."));
+						}
+					}
+					else
+					{
+						Platform.runLater(() -> openScreen("ErrorMessage", "This question is in exam, first delete the exam"));
 					}
 					break;
 				}
@@ -302,12 +320,25 @@ public class TeacherControl extends UserControl implements Initializable {
 
 				case ("getExecutedExams"): /* get the executed exams list from server */
 				{
+					if (!pageLabel.getText().equals("Check exam")) {
 					ObservableList<ExecutedExam> observablelist = FXCollections
 							.observableArrayList((ArrayList<ExecutedExam>) msg[1]);
 					executedExamTableView.setItems(observablelist);
 					executedExamIDTableView.setCellValueFactory(new PropertyValueFactory<>("executedExamID"));
 					teacherNameTableView.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
 					exam_idTableView.setCellValueFactory(new PropertyValueFactory<>("exam_id"));
+					break;
+					}
+					else
+					{
+						ObservableList<String> observablelistToExecutedExamComboBox = FXCollections.observableArrayList();
+						ArrayList<ExecutedExam> exams = (ArrayList<ExecutedExam>) msg[1];
+						for(ExecutedExam e : exams)
+						{
+							observablelistToExecutedExamComboBox.add(e.getExecutedExamID());
+						}
+						executedExamsComboBox.setItems(observablelistToExecutedExamComboBox);
+					}
 					break;
 				}
 
@@ -367,6 +398,16 @@ public class TeacherControl extends UserControl implements Initializable {
 					}
 					break;
 				}
+				
+				case ("getStudenstInExam"): /*   */
+				{
+					ObservableList<User> observablelistOfStudentInExam = FXCollections
+							.observableArrayList((ArrayList<User>) msg[1]);
+					studnetInExamTableView.setItems(observablelistOfStudentInExam);
+					studentId.setCellValueFactory(new PropertyValueFactory<>("userID"));
+					studentName.setCellValueFactory(new PropertyValueFactory<>("fullname"));
+					break;
+				}
 
 				default: {
 					System.out.println("Error in input");
@@ -412,6 +453,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		case ("Update question"):
 		case ("Create exam code"):
 		case ("Extend exam time"):
+		case ("Check exam"):
 		case ("Lock exam"):
 		case ("Update exam"): {
 
@@ -422,15 +464,6 @@ public class TeacherControl extends UserControl implements Initializable {
 				typeComboBox.setItems(FXCollections.observableArrayList("computerized", "manual"));
 				break;
 			}
-
-			case ("Extend exam time"):
-			case ("Lock exam"): {
-				messageToServer[0] = "getExecutedExams";
-				messageToServer[1] = getMyUser().getUsername();
-				chat.handleMessageFromClientUI(messageToServer);// send the message to server
-				break;
-			}
-
 			}
 			messageToServer[0] = "getSubjects";
 			messageToServer[1] = getMyUser().getUsername();
@@ -726,23 +759,32 @@ public class TeacherControl extends UserControl implements Initializable {
 	/* requesting the exams from the database */
 	public void loadExams(ActionEvent e) throws IOException {
 		String examIDStart;
-		/* ask for the exams name */
-		if (pageLabel.getText().equals("Create exam code") || pageLabel.getText().equals("Update exam")) {
-			if (coursesComboBox.getValue() == null) {
-				return;
-			}
-			String[] subjectSubString = subjectsComboBox.getValue().split("-");
-			String[] examSubString = coursesComboBox.getValue().split("-");
-			examIDStart = subjectSubString[0].trim() + "" + examSubString[0].trim();
-			if (examIDStart.equals("") || examIDStart == null)
-				return;
-		} else {
-			String[] subjectSubString = subjectsComboBox.getValue().split("-");
-			examIDStart = subjectSubString[0].trim();
+		String toSend;
+		if(!pageLabel.getText().equals("Create exam code"))
+		{
+			toSend = "getExecutedExams";
+			messageToServer[2] = getMyUser().getUsername();
 		}
+		else
+			toSend = "getExams";
+		/* ask for the exams name */
+		if (coursesComboBox.getValue() == null)
+			return;
+		String[] subjectSubString = subjectsComboBox.getValue().split("-");
+		String[] examSubString = coursesComboBox.getValue().split("-");
+		examIDStart = subjectSubString[0].trim() + "" + examSubString[0].trim();
+		if (examIDStart.equals("") || examIDStart == null)
+			return;
 		connect(this); // connecting to server
-		messageToServer[0] = "getExams";
+		messageToServer[0] = toSend;
 		messageToServer[1] = examIDStart;
+		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
+	}
+
+	public void loadStudenstInExam (ActionEvent e) throws IOException{
+		connect(this); // connecting to server
+		messageToServer[0] = "getStudenstInExam";
+		messageToServer[1] = executedExamsComboBox.getValue();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 	
