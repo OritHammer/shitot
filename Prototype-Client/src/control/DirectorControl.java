@@ -94,13 +94,15 @@ public class DirectorControl extends UserControl implements Initializable {
 	private TextField averageTextField;
 	@FXML
 	private TextField medianTextField;
+	@FXML
+	private Label chooseCourseLabel;
+	@FXML
+	private Label chooseSubjectLabel;
+	@FXML
+	private Label chooseUserNameLabel;
 
 	private static String requestId;
-	
-	private XYChart.Series histogram =null;
-	
-
-	
+	private XYChart.Series histogram = null;
 	float[] sumGradeRanges;
 
 	// FXML System information
@@ -129,18 +131,28 @@ public class DirectorControl extends UserControl implements Initializable {
 			observableList.add("Teacher");
 			observableList.add("Course");
 			reportByComboBox.setItems(observableList);
-			chooseUserComboBox.setVisible(false);
-			subjectsComboBox.setVisible(false);
-			coursesComboBox.setVisible(false);
-			histogram = new XYChart.Series<>();// initialize histogram
-			sumGradeRanges = new float[6];
-			for (int i = 0; i < 6; i++) {
-				sumGradeRanges[i] = 0;
-			}
+			initWindow();
 		} else if (pageLabel.getText().contentEquals("")) {// system information
 
 		}
 
+	}
+
+	public void initWindow() {
+		// init the labels and comboBox
+		chooseUserComboBox.setDisable(true);
+		subjectsComboBox.setDisable(true);
+		coursesComboBox.setDisable(true);
+		chooseCourseLabel.setVisible(false);
+		chooseSubjectLabel.setVisible(false);
+		chooseUserNameLabel.setVisible(false);
+		histogram = new XYChart.Series<>();// initialize histogram
+		sumGradeRanges = new float[6];
+		for (int i = 0; i < 6; i++) {
+			sumGradeRanges[i] = 0;
+		}
+		medianTextField.setText(" ");
+		averageTextField.setText(" ");
 	}
 
 	public void openTimeRequestTable(ActionEvent e) {
@@ -217,90 +229,88 @@ public class DirectorControl extends UserControl implements Initializable {
 
 			final Object[] msg = (Object[]) message;
 			Platform.runLater(() -> {
+				try {
+					switch (msg[0].toString()) {
+					case ("getTimeRequestList"): { /* get the subjects list from server */
+						initAddingTimeRequests((ArrayList<RequestForChangingTimeAllocated>) msg[1]);
 
-				switch (msg[0].toString()) {
-				case ("getTimeRequestList"): { /* get the subjects list from server */
-					initAddingTimeRequests((ArrayList<RequestForChangingTimeAllocated>) msg[1]);
+						break;
+					}
+					case ("getTimeRequestDetails"): { /* get the subjects list from server */
+						initAddingTimeRequestDetails((RequestForChangingTimeAllocated) msg[1]);
+						break;
+					}
+					case "getStudentsList":
+					case "getTeachersList": {
+						ObservableList<String> observableList = FXCollections.observableArrayList();
+						for (String item : (ArrayList<String>) msg[1])
+							observableList.add(item);
+						if (chooseUserComboBox.getSelectionModel() != null)
+							chooseUserComboBox.getSelectionModel().clearSelection();
+						chooseUserComboBox.setItems(observableList);
+						break;
+					}
+					case "getSubjects": {
+						ObservableList<String> observableList = FXCollections.observableArrayList();
+						for (TeachingProfessionals tp : (ArrayList<TeachingProfessionals>) msg[1]) {
+							observableList.add(tp.getTp_id() + " - " + tp.getName());
+							coursesComboBox.getSelectionModel().clearSelection();
+							subjectsComboBox.setItems(observableList);
+						}
+						break;
+					}
+					case "getCourses": {
+						ObservableList<String> observableList = FXCollections.observableArrayList();
+						for (Course c : (ArrayList<Course>) msg[1]) {
+							observableList.add(c.getCourseID() + " - " + c.getName());
+						}
+						coursesComboBox.setVisible(true);
+						coursesComboBox.setItems(observableList);
+						break;
+					}
+					case "getReportByCourse":
+					case "getReportByTeacher": {
+						ArrayList<ExecutedExam> GradeList = (ArrayList<ExecutedExam>) msg[1];
+						float average = 0;
+						int sumStudent = 0;
+						for (ExecutedExam e : GradeList) {
+							sumGradeRanges = sumRangGrades(sumGradeRanges, e);
+							average += e.getAverage() * e.getNumOfStudentStarted();
+							sumStudent += e.getNumOfStudentStarted();
+						}
+						averageTextField.setText(" " + (average / (float) sumStudent));
+						Collections.sort(GradeList);
+						medianTextField.setText(" " + GradeList.get((GradeList.size() / 2) - 1));
+						ShowHistogramInBarChart();
+						break;
+					}
+					case "getReportByStudent": {
+						ArrayList<Integer> studentGradeList = (ArrayList<Integer>) msg[1];
+						Collections.sort(studentGradeList);
+						medianTextField.setText(" " + studentGradeList.get((studentGradeList.size() / 2) - 1));
+						float sum = 0;
+						for (Integer grade : studentGradeList) {
+							sum += grade;
+							if (grade < 55)// grade between0to54
+								sumGradeRanges[0]++;
+							else if (grade > 54 && grade < 65)// grade between55to64
+								sumGradeRanges[1]++;
+							else if (grade > 64 && grade < 75)// grade between 65to74
+								sumGradeRanges[2]++;
+							else if (grade > 74 && grade < 85)// grade between 75to84
+								sumGradeRanges[3]++;
+							else if (grade > 84 && grade < 95)// grade between 85to94
+								sumGradeRanges[4]++;
+							else if (grade > 94)// grade between 95to100
+								sumGradeRanges[5]++;
+						}
+						averageTextField.setText(" " + sum / studentGradeList.size());
+						ShowHistogramInBarChart();
+					}
 
-					break;
-				}
-				case ("getTimeRequestDetails"): { /* get the subjects list from server */
-					initAddingTimeRequestDetails((RequestForChangingTimeAllocated) msg[1]);
-					break;
-				}
-				case "getStudentsList":
-				case "getTeachersList": {
-					ObservableList<String> observableList = FXCollections.observableArrayList();
-					for (String item : (ArrayList<String>) msg[1])
-						observableList.add(item);
-					chooseUserComboBox.setVisible(true);
-					subjectsComboBox.setVisible(false);
-					coursesComboBox.setVisible(false);
-					if (chooseUserComboBox.getSelectionModel() != null)
-						chooseUserComboBox.getSelectionModel().clearSelection();
-					chooseUserComboBox.setItems(observableList);
-					break;
-				}
-				case "getSubjects": {
-					ObservableList<String> observableList = FXCollections.observableArrayList();
-					for (TeachingProfessionals tp : (ArrayList<TeachingProfessionals>) msg[1]) {
-						observableList.add(tp.getTp_id() + " - " + tp.getName());
-						chooseUserComboBox.setVisible(false);
-						subjectsComboBox.setVisible(true);
-						coursesComboBox.getSelectionModel().clearSelection();
-						subjectsComboBox.setItems(observableList);
 					}
-					break;
-				}
-				case "getCourses": {
-					ObservableList<String> observableList = FXCollections.observableArrayList();
-					for (Course c : (ArrayList<Course>) msg[1]) {
-						observableList.add(c.getCourseID() + " - " + c.getName());
-					}
-					coursesComboBox.setVisible(true);
-					coursesComboBox.setItems(observableList);
-					break;
-				}
-				case "getReportByCourse": 
-				case "getReportByTeacher": {
-					ArrayList<ExecutedExam> GradeList = (ArrayList<ExecutedExam>) msg[1];
-					float average = 0;
-					int sumStudent = 0;
-					for (ExecutedExam e : GradeList) {
-						sumGradeRanges = sumRangGrades(sumGradeRanges, e);
-						average += e.getAverage() * e.getNumOfStudentStarted();
-						sumStudent += e.getNumOfStudentStarted();
-					}
-					averageTextField.setText(" " + (average / (float)sumStudent));
-					Collections.sort(GradeList);
-					medianTextField.setText(" " + GradeList.get((GradeList.size() / 2) - 1));
-					ShowHistogramInBarChart();
-					break;
-				}
-				case "getReportByStudent": {
-					ArrayList<Integer> studentGradeList = (ArrayList<Integer>) msg[1];
-					Collections.sort(studentGradeList);
-					medianTextField.setText(" " + studentGradeList.get((studentGradeList.size() / 2)-1));
-					float sum = 0;
-					for (Integer grade : studentGradeList) {
-						sum += grade;
-						if (grade < 55)// grade between0to54
-							sumGradeRanges[0]++;
-						else if (grade > 54 && grade < 65)// grade between55to64
-							sumGradeRanges[1]++;
-						else if (grade > 64 && grade < 75)// grade between 65to74
-							sumGradeRanges[2]++;
-						else if (grade > 74 && grade < 85)// grade between 75to84
-							sumGradeRanges[3]++;
-						else if (grade > 84 && grade < 95)// grade between 85to94
-							sumGradeRanges[4]++;
-						else if (grade > 94)// grade between 95to100
-							sumGradeRanges[5]++;
-					}
-					averageTextField.setText(" " + sum / studentGradeList.size());
-					ShowHistogramInBarChart();
-				}
-
+				} catch (ArrayIndexOutOfBoundsException e) {
+					openScreen("ErrorMessage", "There is no exams");
 				}
 			});
 		} catch (NullPointerException e) {
@@ -308,7 +318,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IndexOutOfBoundsException e) {
+		} catch (ArrayIndexOutOfBoundsException e) {
 			openScreen("ErrorMessage", "There is no exams");
 		}
 	}
@@ -345,11 +355,16 @@ public class DirectorControl extends UserControl implements Initializable {
 
 	// initialize the field in details of request
 	public void initAddingTimeRequestDetails(RequestForChangingTimeAllocated request) {
-		txtFATRTeachName.setText(request.getTeacherName());
-		txtFATRTimeAdded.setText(request.getTimeAdded());
-		txtFATRreasonAddingTime.setText(request.getReason());
-		txtFATRrequestId.setText(request.getRequestID());
-		txtFATRexecutedExamId.setText(request.getIDexecutedExam());
+		try {
+			txtFATRTeachName.setText(request.getTeacherName());
+
+			txtFATRTimeAdded.setText(request.getTimeAdded());
+			txtFATRreasonAddingTime.setText(request.getReason());
+			txtFATRrequestId.setText(request.getRequestID());
+			txtFATRexecutedExamId.setText(request.getIDexecutedExam());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/*******************************************************
@@ -371,23 +386,31 @@ public class DirectorControl extends UserControl implements Initializable {
 	/*******************************************************
 	 * listeners on statistic Report
 	 ***********************************************************/
-	public void showListForChooseObject(ActionEvent e) {// display the list of student/courses/teachers
+	public void showListForChooseObject(ActionEvent e) throws Exception {// display the list of student/courses/teachers
 		reportByChoose = reportByComboBox.getValue();
+		reportByComboBox.setDisable(true);
 		connect(this);
 		switch (reportByChoose) {
 		case "Student": {
+			chooseUserNameLabel.setVisible(true);
+			chooseUserComboBox.setDisable(false);
 			messageToServer[0] = "getStudentsList";
 			messageToServer[1] = null;
 			messageToServer[2] = null;
 			break;
 		}
 		case "Teacher": {
+			chooseUserNameLabel.setVisible(true);
+			chooseUserComboBox.setDisable(false);
 			messageToServer[0] = "getTeachersList";
 			messageToServer[1] = null;
 			messageToServer[2] = null;
 			break;
 		}
 		case "Course": {
+			chooseUserComboBox.setVisible(false);// hide user combobox
+			chooseSubjectLabel.setVisible(true);// show subject label
+			subjectsComboBox.setDisable(false);//
 			messageToServer[0] = "getSubjects";
 			messageToServer[1] = null;
 			messageToServer[2] = null;
@@ -398,6 +421,8 @@ public class DirectorControl extends UserControl implements Initializable {
 	}
 
 	public void loadCourses(ActionEvent e) throws IOException {// load list of courses to combobox
+		chooseCourseLabel.setVisible(true);
+		coursesComboBox.setDisable(false);
 		String subject = subjectsComboBox.getValue(); // get the subject code
 		loadCourses("All", subject);
 	}
@@ -416,6 +441,7 @@ public class DirectorControl extends UserControl implements Initializable {
 
 	public void getReportByCourseCode(ActionEvent e) {// load Statistic details of course on window
 		connect(this);
+		subjectsComboBox.setDisable(true);
 		String courseName = coursesComboBox.getValue();
 		messageToServer[0] = "getgetReportByCourse";
 		messageToServer[1] = courseName;
@@ -423,7 +449,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer);
 	}
 
-	public float[] sumRangGrades(float[] rangeArray, ExecutedExam eExam) {
+	public float[] sumRangGrades(float[] rangeArray, ExecutedExam eExam) throws IndexOutOfBoundsException {
 		rangeArray[0] += eExam.getRange0to54();
 		rangeArray[1] += eExam.getRange55to64();
 		rangeArray[2] += eExam.getRange65to74();
@@ -433,9 +459,9 @@ public class DirectorControl extends UserControl implements Initializable {
 		return rangeArray;
 	}
 
-	public void ShowHistogramInBarChart() {
-		//clean bar chart
-	
+	public void ShowHistogramInBarChart() throws NullPointerException {
+		// clean bar chart
+	//	clearData();
 		// set values in the bar chart
 		histogram.getData().add(new XYChart.Data("0-54", sumGradeRanges[0]));
 		histogram.getData().add(new XYChart.Data("55-65", sumGradeRanges[1]));
@@ -443,8 +469,15 @@ public class DirectorControl extends UserControl implements Initializable {
 		histogram.getData().add(new XYChart.Data("75-84", sumGradeRanges[3]));
 		histogram.getData().add(new XYChart.Data("85-94", sumGradeRanges[4]));
 		histogram.getData().add(new XYChart.Data("95-100", sumGradeRanges[5]));
-	 
+
 		barChart.getData().add(histogram);
+	}
+
+	public void clearData() {
+		barChart.getData().clear();
+		histogram.getData().removeAll(Collections.singleton(barChart.getData().setAll()));
+		medianTextField.setText(" ");
+		averageTextField.setText(" ");
 	}
 
 }

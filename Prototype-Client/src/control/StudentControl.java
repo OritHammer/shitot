@@ -63,8 +63,7 @@ public class StudentControl extends UserControl implements Initializable {
 	private int index = -1;
 	private static String timeToString;
 	private static HashMap<String, Integer> examAnswers;// saves the question id and the answers
-	public static Boolean justFlag = false;
-	public static MouseEvent tempEvent;
+
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
 	@FXML
