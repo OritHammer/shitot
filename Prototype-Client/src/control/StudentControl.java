@@ -1,8 +1,10 @@
 package control;
 
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -36,6 +39,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -47,6 +53,7 @@ public class StudentControl extends UserControl implements Initializable {
 	public static Time solutionTime;
 	public static int remainTime;
 	public static Timer timer;
+	private List<File> fileFromClient;
 	private int index = -1;
 	private static Boolean copyFlag = false;
 	public static String timeToString;
@@ -69,6 +76,17 @@ public class StudentControl extends UserControl implements Initializable {
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
 	private static String executedID;
 	FXMLLoader loader = new FXMLLoader();
+	
+	/************************* Manual logo ***********************************/
+	
+	@FXML
+	private ImageView wordLogo;
+	@FXML
+	private ImageView uploadImage;
+	@FXML
+	private Button uploadManualExamButton;
+    @FXML
+    private Label fileName;
 
 	// *********for student see his grades AND can order exam***********//
 	@FXML
@@ -160,30 +178,13 @@ public class StudentControl extends UserControl implements Initializable {
 				// timerTextField.setText("123");
 				// s=solutionTime.toString();
 				// timerTextField.setText(s);
-				remainTime = solutionTime.getHours() * 3600 + solutionTime.getMinutes() * 60
-						+ solutionTime.getSeconds();// reamain is the time in seconds
-				timer = new Timer();
-				timer.scheduleAtFixedRate(new TimerTask() {
-					public void run() {
-						int sec = setInterval();
-						if (remainTime == 1) {
-							Platform.runLater(() -> openScreen("ErrorMessage", "Time is over"));
-							questionContent.setText("time is over click Finish");
-							correctRadioButton1.setVisible(false);
-							correctRadioButton2.setVisible(false);
-							correctRadioButton3.setVisible(false);
-							correctRadioButton4.setVisible(false);
-							answer1.setVisible(false);
-							answer2.setVisible(false);
-							answer3.setVisible(false);
-							answer4.setVisible(false);
-						}
-						timeToString = intToTime(sec).toString();
-						timerTextField.setText(timeToString);
-					}
-				}, 1000, 1000);
+				startTime();
 			}
 			// courseName.setText(questioninexecutedexam.get(0).getId().substring(0, 2));
+			break;
+		}
+		case("Manual exam"):{
+			startTime();
 			break;
 		}
 		case ("My Grades sheet "): {
@@ -193,6 +194,31 @@ public class StudentControl extends UserControl implements Initializable {
 		default:
 			return;
 		}
+	}
+
+	private void startTime() {
+		remainTime = solutionTime.getHours() * 3600 + solutionTime.getMinutes() * 60
+				+ solutionTime.getSeconds();// reamain is the time in seconds
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				int sec = setInterval();
+				if (remainTime == 1) {
+					Platform.runLater(() -> openScreen("ErrorMessage", "Time is over"));
+					questionContent.setText("time is over click Finish");
+					correctRadioButton1.setVisible(false);
+					correctRadioButton2.setVisible(false);
+					correctRadioButton3.setVisible(false);
+					correctRadioButton4.setVisible(false);
+					answer1.setVisible(false);
+					answer2.setVisible(false);
+					answer3.setVisible(false);
+					answer4.setVisible(false);
+				}
+				timeToString = intToTime(sec).toString();
+				timerTextField.setText(timeToString);
+			}
+		}, 1000, 1000);		
 	}
 
 	{
@@ -383,10 +409,6 @@ public class StudentControl extends UserControl implements Initializable {
 		messageToServer[1] = executedID;
 		messageToServer[2] = getMyUser().getUsername();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
-	}
-
-	public void downloadExamPressed() {
-
 	}
 
 	/************************* checking message ***********************************/
@@ -711,4 +733,66 @@ public class StudentControl extends UserControl implements Initializable {
 
 	}
 
+	/************************ Student perform manual exam *************/
+	public void dragOver(DragEvent e) {
+		if (e.getDragboard().hasFiles()) {
+			e.acceptTransferModes(TransferMode.ANY);
+		}
+	}
+	public void dropFileToImage(DragEvent e) {
+		fileFromClient = e.getDragboard().getFiles();
+		boolean wordFile = fileFromClient.get(0).getAbsolutePath().contains(".docx");
+		if (wordFile) {
+			wordLogo.setVisible(true);
+			uploadManualExamButton.setDisable(false);
+			fileName.setText(fileFromClient.get(0).getName());
+			fileName.setVisible(true);
+		} else {
+			wordLogo.setVisible(false);
+			uploadManualExamButton.setDisable(true);
+			fileName.setVisible(false);
+		}
+	}
+
+	@SuppressWarnings("resource")
+	public void uploadFileToServer(ActionEvent e) {
+		MyFile file = new MyFile(fileFromClient.get(0).getName()+".docx");
+		String LocalfilePath = fileFromClient.get(0).getAbsolutePath();
+
+		try {
+			File newFile = new File(LocalfilePath);
+			byte[] mybytearray = new byte[(int) newFile.length()];
+			FileInputStream fis = new FileInputStream(newFile);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+
+			file.initArray(mybytearray.length);
+			file.setSize(mybytearray.length);
+
+			bis.read(file.getMybytearray(), 0, mybytearray.length);
+			
+			
+			
+			String details[] = new String[2];
+			details[0] = executedID;//the executed exam
+			details[1] = getMyUser().getUsername();//name of the student
+			connect(this);
+			messageToServer[0] = "saveExamOfStudent";
+			messageToServer[1] = details;
+			messageToServer[2] = file;
+			messageToServer[3] =e==null?false:true;
+			chat.handleMessageFromClientUI(messageToServer);
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
+			Scene scene = new Scene(loader.load());
+			Stage stage = Main.getStage();
+			stage.setScene(scene);
+			stage.show();
+		} catch (Exception exception) {
+			System.out.println("Error send (Files)msg) to Server");
+		}
+	}
+	public void setDetails(String executedExamId) {
+		executedID=executedExamId;
+	}
+	
 }

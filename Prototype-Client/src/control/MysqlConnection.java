@@ -844,8 +844,9 @@ public class MysqlConnection {
 	public void finishExam(String[] details, HashMap<String, Integer> answers, boolean finishedexam) {
 		String examID = details[0];
 		String studentId = details[1];
-		int ans;
 		float points = 100;
+		try {
+		int ans;
 		Set<String> s = answers.keySet();
 		for (String q_id : s) {
 			ans = answers.get(q_id);
@@ -874,6 +875,12 @@ public class MysqlConnection {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}
+
+		}
+		catch(NullPointerException exception) {
+			System.out.println("Student performed manual exam");
+			points=-1;
 		}
 		// Insert the exam to studentPerformExam table
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");

@@ -26,9 +26,10 @@ import ocsf.client.AbstractClient;
 
 public class ManualExamControl extends AbstractClient implements Initializable {
 	public static Time solutionTime;
+	private String myUserName;
 	public static int remainTime;
 	private static String executedID;
-	private Object[] messageToServer = new Object[3];
+	private Object[] messageToServer = new Object[4];
 	private List<File> fileFromClient;
 	@FXML
 	private ImageView imageDraging;
@@ -107,9 +108,21 @@ public class ManualExamControl extends AbstractClient implements Initializable {
 			file.setSize(mybytearray.length);
 
 			bis.read(file.getMybytearray(), 0, mybytearray.length);
+			
+			
+			
+			String details[] = new String[2];
+			details[0] = executedID;//the executed exam
+			details[1] = myUserName;//name of the student
 			messageToServer[0] = "saveExamOfStudent";
-			//messageToServer[1] = getMyUser().getuserName();
+			messageToServer[1] = details;
 			messageToServer[2] = file;
+			messageToServer[3] =e==null?false:true;
+			
+			
+			
+			
+			//messageToServer[1] = getMyUser().getuserName();
 			sendToServer(messageToServer);
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
@@ -122,6 +135,11 @@ public class ManualExamControl extends AbstractClient implements Initializable {
 		}
 	}
 
+	public void setDetails(String myUserName,String executedExamId) {
+		this.myUserName=myUserName;
+		executedID=executedExamId;
+	}
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		

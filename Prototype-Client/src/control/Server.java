@@ -169,7 +169,7 @@ public class Server extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		case "saveExamOfStudent": {
+		case "saveExamOfStudent": {//saving the manual exam of the student
 			FileOutputStream fileOutputStream = null;
 			BufferedOutputStream bufferedOutputStream = null;
 			MyFile file = (MyFile) message[2];
@@ -198,6 +198,7 @@ public class Server extends AbstractServer {
 						e.printStackTrace();
 					}
 			}
+			con.finishExam((String[])message[1], null,(boolean)message[3]);
 			break;
 		}
 		case "getExams": {/* client request all all the exams under some courses */
