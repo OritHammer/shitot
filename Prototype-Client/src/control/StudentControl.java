@@ -31,6 +31,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -40,13 +41,16 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
+
 
 public class StudentControl extends UserControl implements Initializable {
 	private static ArrayList<Question> questioninexecutedexam;
@@ -59,6 +63,8 @@ public class StudentControl extends UserControl implements Initializable {
 	private int index = -1;
 	private static String timeToString;
 	private static HashMap<String, Integer> examAnswers;// saves the question id and the answers
+	public static Boolean justFlag = false;
+	public static MouseEvent tempEvent;
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
 	@FXML
@@ -515,7 +521,26 @@ public class StudentControl extends UserControl implements Initializable {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
+				if(justFlag==true)
+				{
+					  ((Stage)((Node)tempEvent.getSource()).getScene().getWindow()).hide(); 
+						Stage primaryStage = new Stage();
+						FXMLLoader loader = new FXMLLoader();
+						Pane root;
+						try {
+							root = loader.load(getClass().getResource("/studentBoundary/ComputerizedExam.fxml").openStream());
+							Scene scene = new Scene(root);	
+							primaryStage.setScene(scene);		
+							primaryStage.show();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				}
+				else
+				{
 				openScreen("ComputerizedExam");
+				}
 			}
 		});
 	}
@@ -687,7 +712,13 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 
 	@FXML
-	private void finishExam(ActionEvent e) {
+	private void finishExam(ActionEvent e) throws IOException {
+		if(justFlag)
+		{
+			  ((Stage)((Node)e.getSource()).getScene().getWindow()).close(); 
+			((Stage)((Node)tempEvent.getSource()).getScene().getWindow()).show(); 
+			return;
+		}
 		if (copyFlag == false) {
 			addAnswerToHashMap();
 			String details[] = new String[2];

@@ -5,6 +5,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import entity.Course;
@@ -208,7 +209,13 @@ public class TeacherControl extends UserControl implements Initializable {
 	    public void loadExamCopy(MouseEvent event) {
 	    	if(event.getClickCount() == 2)
 	    	{
-
+	    		connect(this);
+	    		messageToServer[0] = "getStudentAnswers";
+	    		messageToServer[1] = executedExamsComboBox.getValue(); // sending executed exam id
+	    		messageToServer[2] = studnetInExamTableView.getSelectionModel().getSelectedItem().getUserName(); // sending the user name
+	    		chat.handleMessageFromClientUI(messageToServer);
+	    		StudentControl studentControl = new StudentControl();
+	    		studentControl.tempEvent = event;
 	    	}
 	    }
 	  
@@ -223,6 +230,15 @@ public class TeacherControl extends UserControl implements Initializable {
 				switch (msg[0].toString()) {
 
 				/*************************************** General "get" items from serer to client ************************************/
+				
+				case "showingCopy":
+				{
+					StudentControl scontrol = new StudentControl();
+					scontrol.justFlag = true;
+					scontrol.showingCopy((ArrayList<Question>) msg[1], (HashMap<String, Integer>) msg[2]);
+					break;
+				}
+				
 				case ("getSubjects"): /* get the subjects list from server */
 				{
 					ObservableList<String> observableList = FXCollections.observableArrayList();
