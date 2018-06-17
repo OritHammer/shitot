@@ -555,14 +555,17 @@ public class MysqlConnection {
 	}
 
 
-	public ArrayList<User> getStudenstInExam(Object executedExamId) {
-		ArrayList<User> studentsInExam = new ArrayList<User>();
+	public ArrayList<StudentPerformExam> getStudenstInExam(Object executedExamId) {
+		ArrayList<StudentPerformExam> studentsInExam = new ArrayList<StudentPerformExam>();
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT userID,name FROM users,studentperformedexam WHERE executedexam_id = " + "\"" + (String)executedExamId + "\" AND student_UserName = UserName");
+			ResultSet rs = stmt.executeQuery("SELECT date,time,finished,executedexam_id,student_UserName,grade,isApproved,reasonForChangeGrade,"
+					+ "userID,name FROM users,studentperformedexam WHERE executedexam_id "
+					+ "= " + "\"" + (String)executedExamId + "\" AND student_UserName = UserName");
 			while(rs.next())
 			{
-				studentsInExam.add(new User(null,rs.getString(1),rs.getString(2),null,null,null));
+				studentsInExam.add(new StudentPerformExam(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),
+						rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10)));
 			}
 			rs.close();
 		} catch (SQLException e) {

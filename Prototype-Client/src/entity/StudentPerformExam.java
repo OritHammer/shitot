@@ -14,27 +14,27 @@ public class StudentPerformExam implements Serializable{
 	private String excecutedExamID = " ";
 	private String userName = " ";
 	private Boolean isApproved = false ;
-	private String reasonForChangeGrade = " "; 
-	private String studentId = " "; 
-	private String studentFullName = " "; 
-
+	private String reasonForChangeGrade = " ";
+	private String userId;
+	private String userFullname; 
+	
 	public StudentPerformExam(String dateDB,String timeDB, String finishedDB,
-			String excecutedExamIDDB,String userNameDB,String gradeDB,String isApprovedDB,String reasonForChangeGradeDB,String id,String fullName) {
+			String excecutedExamIDDB,String userNameDB,String gradeDB,String isApprovedDB,String reasonForChangeGradeDB, String id, String name) {
 		super();
 		date = dateDB;
 		time = timeDB;
-		if (finishedDB == "1") {
+		if (finishedDB == "yes") {
 			finished = true;
 		}
 		grade = Float.parseFloat(gradeDB);
 		excecutedExamID = excecutedExamIDDB ; 
 		userName = userNameDB ; 
-		if (isApprovedDB == "1") {
+		if (isApprovedDB == "approved") {
 			isApproved = true;
 		}
 		reasonForChangeGrade = reasonForChangeGradeDB ; 
-		this.studentId = id;
-		this.studentFullName = fullName;
+		setUserId(id);
+		setUserFullname(name);
 	}
 
 	public String getDate() {
@@ -99,6 +99,22 @@ public class StudentPerformExam implements Serializable{
 
 	public void setReasonForChangeGrade(String reasonForChangeGrade) {
 		this.reasonForChangeGrade = reasonForChangeGrade;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getUserFullname() {
+		return userFullname;
+	}
+
+	public void setUserFullname(String userFullname) {
+		this.userFullname = userFullname;
 	}
 
 	
