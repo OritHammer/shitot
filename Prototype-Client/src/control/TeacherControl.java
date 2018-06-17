@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import entity.Course;
+import control.StudentControl;
 import entity.Exam;
 import entity.ExecutedExam;
 import entity.Question;
@@ -39,6 +40,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -169,11 +171,13 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	
 	@FXML
-	private TableView<User> studnetInExamTableView;
+	private TableView<StudentPerformExam> studnetInExamTableView;
 	@FXML
-	private TableColumn<User, String> studentId;
+	private TableColumn<StudentPerformExam, String> studentId;
 	@FXML
-	private TableColumn<User, String> studentName;
+	private TableColumn<StudentPerformExam, String> studentName;
+	@FXML
+	private TableColumn<StudentPerformExam, String> grade;
 	
 	@FXML
 	private ComboBox<String> subjectsComboBox;
@@ -199,7 +203,14 @@ public class TeacherControl extends UserControl implements Initializable {
 	  private ListView<String> courseInCreateQuestion;
 	  
 	  @FXML
-	  AnchorPane mainPane;
+	  private AnchorPane mainPane;
+	    
+	    public void loadExamCopy(MouseEvent event) {
+	    	if(event.getClickCount() == 2)
+	    	{
+
+	    	}
+	    }
 	  
 	/* check the content message from server */
 	@SuppressWarnings("unchecked")
@@ -413,11 +424,12 @@ public class TeacherControl extends UserControl implements Initializable {
 				
 				case ("getStudenstInExam"): /*   */
 				{
-					ObservableList<User> observablelistOfStudentInExam = FXCollections
-							.observableArrayList((ArrayList<User>) msg[1]);
+					ObservableList<StudentPerformExam> observablelistOfStudentInExam = FXCollections
+							.observableArrayList((ArrayList<StudentPerformExam>) msg[1]);
+					studentId.setCellValueFactory(new PropertyValueFactory<>("userId"));
+					studentName.setCellValueFactory(new PropertyValueFactory<>("userFullname"));
+					grade.setCellValueFactory(new PropertyValueFactory<>("grade"));
 					studnetInExamTableView.setItems(observablelistOfStudentInExam);
-					studentId.setCellValueFactory(new PropertyValueFactory<>("userID"));
-					studentName.setCellValueFactory(new PropertyValueFactory<>("fullname"));
 					break;
 				}
 
@@ -505,7 +517,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 	
 	public void openScreen(ActionEvent e, String screen) throws IOException{
-		 Parent tableViewParent = FXMLLoader.load(getClass().getResource("/boundary/NewTest.fxml"));
+		 Parent tableViewParent = FXMLLoader.load(getClass().getResource("/boundary/" + screen + ".fxml"));
 	        Scene tableViewScene = new Scene(tableViewParent);
 	        tableViewScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 	        //This line gets the Stage information

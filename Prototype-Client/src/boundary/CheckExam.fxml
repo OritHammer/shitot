@@ -8,10 +8,11 @@
 
 <AnchorPane prefHeight="633.0" prefWidth="704.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
-      <TableView fx:id="studnetInExamTableView" layoutX="59.0" layoutY="346.0" prefHeight="224.0" prefWidth="587.0">
+      <TableView fx:id="studnetInExamTableView" layoutX="59.0" layoutY="346.0" onMousePressed="#loadExamCopy" prefHeight="224.0" prefWidth="587.0">
         <columns>
           <TableColumn fx:id="studentId" prefWidth="106.0" text="Student id" />
           <TableColumn fx:id="studentName" prefWidth="111.0" text="Name" />
+            <TableColumn fx:id="grade" prefWidth="111.0" text="Grade" />
         </columns>
       </TableView>
       <ComboBox fx:id="executedExamsComboBox" layoutX="269.0" layoutY="236.0" onAction="#loadStudenstInExam" prefHeight="25.0" prefWidth="170.0" promptText="Choose executed exam" />
