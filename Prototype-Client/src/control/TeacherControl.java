@@ -517,11 +517,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 	
 	public void openScreen(ActionEvent e, String screen) throws IOException{
-<<<<<<< HEAD
-		 Parent tableViewParent = FXMLLoader.load(getClass().getResource("/boundary/"+screen+".fxml"));
-=======
+
 		 Parent tableViewParent = FXMLLoader.load(getClass().getResource("/boundary/" + screen + ".fxml"));
->>>>>>> branch 'master' of https://github.com/avivMahulya/shitot.git
 	        Scene tableViewScene = new Scene(tableViewParent);
 	        tableViewScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 	        //This line gets the Stage information
