@@ -1,6 +1,5 @@
 package control;
 
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -42,6 +41,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.text.Text;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -50,14 +50,15 @@ import javafx.stage.Stage;
 
 public class StudentControl extends UserControl implements Initializable {
 	private static ArrayList<Question> questioninexecutedexam;
-	public static Time solutionTime;
-	public static int remainTime;
-	public static Timer timer;
+	private static Time solutionTime;
+	private static int remainTime;
+	private static String executedID;
+	private static Timer timer;
+	private static Boolean copyFlag = false;
 	private List<File> fileFromClient;
 	private int index = -1;
-	private static Boolean copyFlag = false;
-	public static String timeToString;
-	public static HashMap<String, Integer> examAnswers;// saves the question id and the answers
+	private static String timeToString;
+	private static HashMap<String, Integer> examAnswers;// saves the question id and the answers
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
 	@FXML
@@ -74,20 +75,17 @@ public class StudentControl extends UserControl implements Initializable {
 	private Calendar currentCalendar = Calendar.getInstance();
 	private Date currentTime = currentCalendar.getTime();
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
-	private static String executedID;
-	FXMLLoader loader = new FXMLLoader();
-	
 	/************************* Manual logo ***********************************/
-	
 	@FXML
 	private ImageView wordLogo;
 	@FXML
 	private ImageView uploadImage;
 	@FXML
 	private Button uploadManualExamButton;
-    @FXML
-    private Label fileName;
-
+	@FXML
+	private Label fileName;
+	@FXML
+	private Text remarksForStudentText;
 	// *********for student see his grades AND can order exam***********//
 	@FXML
 	private TableView<ExamDetailsMessage> examGradesTable;
@@ -170,7 +168,8 @@ public class StudentControl extends UserControl implements Initializable {
 			answer2.setVisible(true);
 			answer3.setVisible(true);
 			answer4.setVisible(true);
-			if (copyFlag == true) nextQuestion(null);
+			if (copyFlag == true)
+				nextQuestion(null);
 			prevBTN.setVisible(false);
 			if (copyFlag == false) {
 				examAnswers = new HashMap<String, Integer>();
@@ -183,7 +182,7 @@ public class StudentControl extends UserControl implements Initializable {
 			// courseName.setText(questioninexecutedexam.get(0).getId().substring(0, 2));
 			break;
 		}
-		case("Manual exam"):{
+		case ("Manual exam"): {
 			startTime();
 			break;
 		}
@@ -197,8 +196,12 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 
 	private void startTime() {
-		remainTime = solutionTime.getHours() * 3600 + solutionTime.getMinutes() * 60
-				+ solutionTime.getSeconds();// reamain is the time in seconds
+		remainTime = solutionTime.getHours() * 3600 + solutionTime.getMinutes() * 60 + solutionTime.getSeconds();// reamain
+																													// is
+																													// the
+																													// time
+																													// in
+																													// seconds
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
@@ -218,7 +221,7 @@ public class StudentControl extends UserControl implements Initializable {
 				timeToString = intToTime(sec).toString();
 				timerTextField.setText(timeToString);
 			}
-		}, 1000, 1000);		
+		}, 1000, 1000);
 	}
 
 	{
@@ -429,8 +432,10 @@ public class StudentControl extends UserControl implements Initializable {
 				break;
 			}
 			case "checkExecutedExam": {
-				if(msgFromServer[1]==null) {
-					Platform.runLater(()->openScreen("ErrorMessage","Can't perform this exam"));//לבדוק אם צריך לרשום את הסיבה לכך
+				if (msgFromServer[1] == null) {
+					Platform.runLater(() -> openScreen("ErrorMessage", "Can't perform this exam"));// לבדוק אם צריך
+																									// לרשום את הסיבה
+																									// לכך
 					return;
 				}
 				checkExecutedExam((Object[]) msgFromServer);
@@ -452,8 +457,11 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 	}
 
-	/********************** Handling message from server 
-	 * @throws IOException ***********************/
+	/**********************
+	 * Handling message from server
+	 * 
+	 * @throws IOException
+	 ***********************/
 	@SuppressWarnings("unchecked")
 	private void checkExecutedExam(Object[] message) throws IOException {
 		ArrayList<Question> questioninexam = (ArrayList<Question>) message[1];
@@ -461,22 +469,21 @@ public class StudentControl extends UserControl implements Initializable {
 		solutionTime = Time.valueOf(exam.getSolutionTime());
 		questioninexecutedexam = questioninexam;
 		if (exam.getType().equals("manual")) {
-			MyFile file=(MyFile)message[3];
+			MyFile file = (MyFile) message[3];
 			FileOutputStream fileOutputStream = null;
 			BufferedOutputStream bufferedOutputStream = null;
 			try {
 				// receive file
-				File diagFromClient = new File("Exams for student/"+ file.getFileName());
-				System.out.println("Please wait downloading file");		//reading file from socket
+				File diagFromClient = new File("Exams for student/" + file.getFileName());
+				System.out.println("Please wait downloading file"); // reading file from socket
 				fileOutputStream = new FileOutputStream(diagFromClient);
 				bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-				bufferedOutputStream.write(file.getMybytearray(), 0 , file.getSize());		//writing byteArray to file
-				bufferedOutputStream.flush();												//flushing buffers
-				System.out.println("File " + diagFromClient  + " downloaded ( size: " + file.getSize() + " bytes read)");
+				bufferedOutputStream.write(file.getMybytearray(), 0, file.getSize()); // writing byteArray to file
+				bufferedOutputStream.flush(); // flushing buffers
+				System.out.println("File " + diagFromClient + " downloaded ( size: " + file.getSize() + " bytes read)");
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
-			finally {
+			} finally {
 				if (fileOutputStream != null)
 					try {
 						fileOutputStream.close();
@@ -490,12 +497,13 @@ public class StudentControl extends UserControl implements Initializable {
 						e.printStackTrace();
 					}
 			}
-			Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+"Exams for student\\"+ file.getFileName());
-			
+			Runtime.getRuntime()
+					.exec("rundll32 url.dll,FileProtocolHandler " + "Exams for student\\" + file.getFileName());
+
 			Platform.runLater(() -> openScreen("ManualExam"));
 		} else {
 			Platform.runLater(() -> openScreen("ComputerizedExam"));
-			
+
 		}
 	}
 
@@ -558,8 +566,8 @@ public class StudentControl extends UserControl implements Initializable {
 		setQuestion();
 		if (index + 1 == questioninexecutedexam.size()) {
 			nextBTN.setVisible(false);
-		}
-		else if (index > 0) prevBTN.setVisible(true);
+		} else if (index > 0)
+			prevBTN.setVisible(true);
 
 	}
 
@@ -689,7 +697,7 @@ public class StudentControl extends UserControl implements Initializable {
 			messageToServer[0] = "finishExam";
 			messageToServer[1] = details;
 			messageToServer[2] = examAnswers;
-			messageToServer[3] = e==null?false:true;
+			messageToServer[3] = e == null ? false : true;
 			chat.handleMessageFromClientUI(messageToServer);// send the message to server
 			try {
 				closeScreen(e);
@@ -702,12 +710,12 @@ public class StudentControl extends UserControl implements Initializable {
 			}
 		}
 		openScreen("NewDesignHomeScreenStudent");
-		
+
 		if (copyFlag == true) {
-			index = -1 ; 
-			copyFlag = false ; // when the user finish watching his exam copy flag should return be false 
+			index = -1;
+			copyFlag = false; // when the user finish watching his exam copy flag should return be false
 		}
-		
+
 	}
 
 	public void addAnswerToHashMap() {
@@ -739,6 +747,7 @@ public class StudentControl extends UserControl implements Initializable {
 			e.acceptTransferModes(TransferMode.ANY);
 		}
 	}
+
 	public void dropFileToImage(DragEvent e) {
 		fileFromClient = e.getDragboard().getFiles();
 		boolean wordFile = fileFromClient.get(0).getAbsolutePath().contains(".docx");
@@ -756,7 +765,7 @@ public class StudentControl extends UserControl implements Initializable {
 
 	@SuppressWarnings("resource")
 	public void uploadFileToServer(ActionEvent e) {
-		MyFile file = new MyFile(fileFromClient.get(0).getName()+".docx");
+		MyFile file = new MyFile(fileFromClient.get(0).getName() + ".docx");
 		String LocalfilePath = fileFromClient.get(0).getAbsolutePath();
 
 		try {
@@ -769,17 +778,15 @@ public class StudentControl extends UserControl implements Initializable {
 			file.setSize(mybytearray.length);
 
 			bis.read(file.getMybytearray(), 0, mybytearray.length);
-			
-			
-			
+
 			String details[] = new String[2];
-			details[0] = executedID;//the executed exam
-			details[1] = getMyUser().getUsername();//name of the student
+			details[0] = executedID;// the executed exam
+			details[1] = getMyUser().getUsername();// name of the student
 			connect(this);
 			messageToServer[0] = "saveExamOfStudent";
 			messageToServer[1] = details;
 			messageToServer[2] = file;
-			messageToServer[3] =e==null?false:true;
+			messageToServer[3] = e == null ? false : true;
 			chat.handleMessageFromClientUI(messageToServer);
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
@@ -791,8 +798,9 @@ public class StudentControl extends UserControl implements Initializable {
 			System.out.println("Error send (Files)msg) to Server");
 		}
 	}
+
 	public void setDetails(String executedExamId) {
-		executedID=executedExamId;
+		executedID = executedExamId;
 	}
-	
+
 }
