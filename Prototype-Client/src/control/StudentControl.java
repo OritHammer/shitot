@@ -63,6 +63,10 @@ public class StudentControl extends UserControl implements Initializable {
 	private int index = -1;
 	private static String timeToString;
 	private static HashMap<String, Integer> examAnswers;// saves the question id and the answers
+	public  Boolean justFlag = false;
+	public  Boolean isBoolean = false;
+	public  MouseEvent tempEvent;
+	
 
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
