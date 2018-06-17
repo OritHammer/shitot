@@ -1,9 +1,8 @@
 .root {
 -fx-base: rgb(50, 50, 50);
--fx-background: rgb(50, 50, 50);
+-fx-background-color: rgb(227,227,227);
 -fx-control-inner-background:  rgb(50, 50, 50);
 }
- 
  
 .tab {
 -fx-background-color: linear-gradient(to top, -fx-base, derive(-fx-base,30%));
@@ -13,6 +12,12 @@
 -fx-background-color: linear-gradient(to bottom, -fx-base, derive(-fx-base,30%));
 }
  
+ .text-field
+ {
+ 	-fx-background-color: transparent;
+ 	-fx-border-width: 0px 0px 1px 0px;
+ 	-fx-border-color:rgb(255,0,0);
+ }
 .tool-bar:horizontal {
 -fx-background-color:
 linear-gradient(to bottom, derive(-fx-base,+50%), derive(-fx-base,-40%), derive(-fx-base,-20%));

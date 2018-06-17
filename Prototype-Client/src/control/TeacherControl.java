@@ -39,6 +39,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -196,6 +197,9 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	  @FXML
 	  private ListView<String> courseInCreateQuestion;
+	  
+	  @FXML
+	  AnchorPane mainPane;
 	  
 	/* check the content message from server */
 	@SuppressWarnings("unchecked")
@@ -487,8 +491,21 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	/*********************************************************** Opening screens action-events ***************************************/
 	
+	
+	public void justTest(ActionEvent e) throws IOException
+	{
+		AnchorPane myPane = FXMLLoader.load(getClass().getResource("/boundary/CreateExamCode.fxml"));
+		mainPane.getChildren().setAll(myPane);
+	}
+	
+	public void justTest2(ActionEvent e) throws IOException
+	{
+		AnchorPane myPane = FXMLLoader.load(getClass().getResource("/boundary/CreateQuestion.fxml"));
+		mainPane.getChildren().setAll(myPane);
+	}
+	
 	public void openScreen(ActionEvent e, String screen) throws IOException{
-		 Parent tableViewParent = FXMLLoader.load(getClass().getResource("/boundary/" + screen + ".fxml"));
+		 Parent tableViewParent = FXMLLoader.load(getClass().getResource("/boundary/NewTest.fxml"));
 	        Scene tableViewScene = new Scene(tableViewParent);
 	        tableViewScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 	        //This line gets the Stage information
