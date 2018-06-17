@@ -59,6 +59,7 @@ public class StudentControl extends UserControl implements Initializable {
 	private int index = -1;
 	private static String timeToString;
 	private static HashMap<String, Integer> examAnswers;// saves the question id and the answers
+	private static Boolean isFinish=false;
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
 	@FXML
@@ -156,6 +157,7 @@ public class StudentControl extends UserControl implements Initializable {
 		// connect(this);
 		switch (pageLabel.getText()) {
 		case ("Perform exam"): {
+			isFinish=true;
 			correctRadioButton1.setVisible(true);
 			correctRadioButton2.setVisible(true);
 			correctRadioButton3.setVisible(true);
@@ -690,6 +692,14 @@ public class StudentControl extends UserControl implements Initializable {
 	private void finishExam(ActionEvent e) {
 		if (copyFlag == false) {
 			addAnswerToHashMap();
+			   
+			if(questioninexecutedexam.size()!=examAnswers.size()) {
+				isFinish=false;
+			}
+			else
+			{
+				isFinish=true;
+			}
 			String details[] = new String[2];
 			details[0] = executedID;
 			details[1] = getMyUser().getUsername();
@@ -697,7 +707,7 @@ public class StudentControl extends UserControl implements Initializable {
 			messageToServer[0] = "finishExam";
 			messageToServer[1] = details;
 			messageToServer[2] = examAnswers;
-			messageToServer[3] = e == null ? false : true;
+			messageToServer[3] = isFinish;
 			chat.handleMessageFromClientUI(messageToServer);// send the message to server
 			try {
 				closeScreen(e);
@@ -738,7 +748,7 @@ public class StudentControl extends UserControl implements Initializable {
 		} else {
 			examAnswers.put(q_id, selectedAnswer);
 		}
-
+		
 	}
 
 	/************************ Student perform manual exam *************/
