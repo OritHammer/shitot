@@ -8,12 +8,15 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.DirectorControl">
    <children>
+      <Label fx:id="chooseUserNameLabel" layoutX="241.0" layoutY="45.0" text="Choose User Name:" />
       <Label layoutX="309.0" layoutY="113.0" text="Median" />
       <Label layoutX="183.0" layoutY="113.0" text="Average" />
       <TextField fx:id="medianTextField" editable="false" layoutX="360.0" layoutY="109.0" prefHeight="25.0" prefWidth="48.0" />
       <TextField fx:id="averageTextField" editable="false" layoutX="237.0" layoutY="109.0" prefHeight="25.0" prefWidth="49.0" />
-      <ComboBox fx:id="coursesComboBox" layoutX="392.0" layoutY="62.0" onAction="#getReportByCourseCode" prefHeight="25.0" prefWidth="126.0" promptText="choose Course" />
-      <ComboBox fx:id="subjectsComboBox" layoutX="240.0" layoutY="62.0" onAction="#loadCourses" prefHeight="25.0" prefWidth="141.0" promptText="choose subject" />
+      <Label fx:id="chooseCourseLabel" layoutX="401.0" layoutY="45.0" text="Choose Course" />
+      <ComboBox fx:id="coursesComboBox" layoutX="392.0" layoutY="62.0" onAction="#getReportByCourseCode" prefHeight="25.0" prefWidth="126.0" />
+      <Label fx:id="chooseSubjectLabel" layoutX="240.0" layoutY="45.0" text="Choose Subject" />
+      <ComboBox fx:id="subjectsComboBox" layoutX="240.0" layoutY="62.0" onAction="#loadCourses" prefHeight="25.0" prefWidth="141.0" />
       <Label layoutX="96.0" layoutY="45.0" prefHeight="17.0" prefWidth="141.0" text="Get  Statistic Report By:" />
       <NumberAxis layoutX="451.0" layoutY="146.0" prefHeight="210.0" prefWidth="28.0" side="LEFT" />
       <BarChart fx:id="barChart" alternativeRowFillVisible="false" animated="false" blendMode="HARD_LIGHT" horizontalGridLinesVisible="false" layoutX="31.0" layoutY="140.0" mouseTransparent="true" prefHeight="242.0" prefWidth="524.0" title="Histogram" verticalGridLinesVisible="false">
@@ -27,9 +30,9 @@
             <NumberAxis fx:id="y" label="Number Of Student" prefHeight="130.0" prefWidth="55.0" side="LEFT" />
          </yAxis>
       </BarChart>
-      <ComboBox fx:id="reportByComboBox" layoutX="100.0" layoutY="62.0" onAction="#showListForChooseObject" prefHeight="25.0" prefWidth="126.0" />
+      <ComboBox fx:id="reportByComboBox" layoutX="94.0" layoutY="62.0" onAction="#showListForChooseObject" prefHeight="25.0" prefWidth="132.0" />
       <Label fx:id="pageLabel" layoutX="247.0" layoutY="14.0" text="Statistic report" />
       <Button fx:id="backButton" layoutX="266.0" layoutY="370.0" mnemonicParsing="false" onAction="#backButtonPressed" text="Back" />
-      <ComboBox fx:id="chooseUserComboBox" layoutX="240.0" layoutY="62.0" onAction="#getReportUser" prefHeight="25.0" prefWidth="141.0" promptText="choose user Name" />
+      <ComboBox fx:id="chooseUserComboBox" layoutX="240.0" layoutY="62.0" onAction="#getReportUser" prefHeight="25.0" prefWidth="141.0" />
    </children>
 </AnchorPane>
