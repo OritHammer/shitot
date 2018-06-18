@@ -111,19 +111,19 @@ public class Server extends AbstractServer {
 			break;
 		}
 		case "getExecutedExams": {/* client request all all the courses under some subject */
-			ArrayList<ExecutedExam> executedexam = con.getExecutedExam(message[1],message[2]);
+			ArrayList<ExecutedExam> executedexam = con.getExecutedExam(message[1], message[2]);
 			serverMessage[1] = executedexam;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		
+
 		case "getStudenstInExam": {/* */
 			ArrayList<StudentPerformExam> studentsInExam = con.getStudenstInExam(message[1]);
 			serverMessage[1] = studentsInExam;
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		
+
 		case "checkExecutedExam": {/* check the executed exam id validity */
 			String executedExamID = (String) message[1];
 			try {
@@ -153,7 +153,7 @@ public class Server extends AbstractServer {
 				}
 			} catch (NullPointerException exception) {
 				System.out.println("This student cant perform this exam");
-				serverMessage[1]=null;
+				serverMessage[1] = null;
 			}
 
 			this.sendToAllClients(serverMessage);
@@ -169,36 +169,39 @@ public class Server extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		case "saveExamOfStudent": {//saving the manual exam of the student
+		case "saveExamOfStudent": {// saving the manual exam of the student
 			FileOutputStream fileOutputStream = null;
 			BufferedOutputStream bufferedOutputStream = null;
-			MyFile file = (MyFile) message[2];
-			try {
-				// receive file
-				File diagFromClient = new File("Students Exams/" + file.getFileName());
-				System.out.println("Please wait downloading file"); // reading file from socket
-				fileOutputStream = new FileOutputStream(diagFromClient);
-				bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-				bufferedOutputStream.write(file.getMybytearray(), 0, file.getSize()); // writing byteArray to file
-				bufferedOutputStream.flush(); // flushing buffers
-				System.out.println("File " + diagFromClient + " downloaded ( size: " + file.getSize() + " bytes read)");
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				if (fileOutputStream != null)
-					try {
-						fileOutputStream.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				if (bufferedOutputStream != null)
-					try {
-						bufferedOutputStream.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+			if (message[2] != null) {
+				MyFile file = (MyFile) message[2];
+				try {
+					File diagFromClient = new File("Students Exams/" + file.getFileName());
+					System.out.println("Please wait downloading file"); // reading file from socket
+					fileOutputStream = new FileOutputStream(diagFromClient);
+					bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+					bufferedOutputStream.write(file.getMybytearray(), 0, file.getSize()); // writing byteArray to file
+					bufferedOutputStream.flush(); // flushing buffers
+					System.out.println(
+							"File " + diagFromClient + " downloaded ( size: " + file.getSize() + " bytes read)");
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally {
+					if (fileOutputStream != null)
+						try {
+							fileOutputStream.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					if (bufferedOutputStream != null)
+						try {
+							bufferedOutputStream.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+				}
+
 			}
-			con.finishExam((String[])message[1], null,(boolean)message[3]);
+			con.finishExam((String[]) message[1], null, (boolean) message[3]);
 			break;
 		}
 		case "getExams": {/* client request all all the exams under some courses */
@@ -207,7 +210,7 @@ public class Server extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			break;
 		}
-		
+
 		case "createChangingRequest": {
 			con.createChangingRequest(message[1]);
 			break;

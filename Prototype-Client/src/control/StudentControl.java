@@ -51,7 +51,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
-
 public class StudentControl extends UserControl implements Initializable {
 	private static ArrayList<Question> questioninexecutedexam;
 	private static Time solutionTime;
@@ -64,10 +63,9 @@ public class StudentControl extends UserControl implements Initializable {
 	private static String timeToString;
 	private static HashMap<String, Integer> examAnswers;// saves the question id and the answers
 	protected Boolean justFlag = false;
-	private  Boolean isBoolean = false;
+	private Boolean isBoolean = false;
 	protected MouseEvent tempEvent;
-	private static Boolean isFinish=false;
-
+	private static Boolean isFinish = false;
 
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
@@ -166,7 +164,7 @@ public class StudentControl extends UserControl implements Initializable {
 		// connect(this);
 		switch (pageLabel.getText()) {
 		case ("Perform exam"): {
-			isFinish=true;
+			isFinish = true;
 			correctRadioButton1.setVisible(true);
 			correctRadioButton2.setVisible(true);
 			correctRadioButton3.setVisible(true);
@@ -219,15 +217,24 @@ public class StudentControl extends UserControl implements Initializable {
 				int sec = setInterval();
 				if (remainTime == 1) {
 					Platform.runLater(() -> openScreen("ErrorMessage", "Time is over"));
-					questionContent.setText("time is over click Finish");
-					correctRadioButton1.setVisible(false);
-					correctRadioButton2.setVisible(false);
-					correctRadioButton3.setVisible(false);
-					correctRadioButton4.setVisible(false);
-					answer1.setVisible(false);
-					answer2.setVisible(false);
-					answer3.setVisible(false);
-					answer4.setVisible(false);
+					try {
+						questionContent.setText("time is over click Finish");
+						correctRadioButton1.setVisible(false);
+						correctRadioButton2.setVisible(false);
+						correctRadioButton3.setVisible(false);
+						correctRadioButton4.setVisible(false);
+						answer1.setVisible(false);
+						answer2.setVisible(false);
+						answer3.setVisible(false);
+						answer4.setVisible(false);
+					} catch (NullPointerException exception) {
+						uploadManualExamButton.setVisible(false);
+						try {
+							uploadFileToServer(null);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 				timeToString = intToTime(sec).toString();
 				timerTextField.setText(timeToString);
@@ -431,48 +438,48 @@ public class StudentControl extends UserControl implements Initializable {
 	@Override
 	public void checkMessage(Object message) {
 
-			try {
-				chat.closeConnection();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			final Object[] msgFromServer = (Object[]) message;
-			Platform.runLater(()->{
-				try {
-			switch (msgFromServer[0].toString()) {
-			case "logoutProcess": {
-				openScreen("LoginGui");
-				break;
-			}
-			case "getExamsByUserName": {
-				showGradesOnTable((ArrayList<ExamDetailsMessage>) msgFromServer[1]);
-				break;
-			}
-			case "checkExecutedExam": {
-				if (msgFromServer[1] == null) {
-					Platform.runLater(() -> openScreen("ErrorMessage", "Can't perform this exam"));// לבדוק אם צריך
-																									// לרשום את הסיבה
-																									// לכך
-					return;
-				}
-				checkExecutedExam((Object[]) msgFromServer);
-				break;
-			}
-			case "addTime": {
-				addTimeToExam(msgFromServer);
-				break;
-			}
-			case "showingCopy":
-				showingCopy((ArrayList<Question>) msgFromServer[1], (HashMap<String, Integer>) msgFromServer[2]);
-				break;
-			}
-			
-
-		} catch (IndexOutOfBoundsException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		try {
+			chat.closeConnection();
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
+		final Object[] msgFromServer = (Object[]) message;
+		Platform.runLater(() -> {
+			try {
+				switch (msgFromServer[0].toString()) {
+				case "logoutProcess": {
+					openScreen("LoginGui");
+					break;
+				}
+				case "getExamsByUserName": {
+					showGradesOnTable((ArrayList<ExamDetailsMessage>) msgFromServer[1]);
+					break;
+				}
+				case "checkExecutedExam": {
+					if (msgFromServer[1] == null) {
+						Platform.runLater(() -> openScreen("ErrorMessage", "Can't perform this exam"));// לבדוק אם צריך
+																										// לרשום את
+																										// הסיבה
+																										// לכך
+						return;
+					}
+					checkExecutedExam((Object[]) msgFromServer);
+					break;
+				}
+				case "addTime": {
+					addTimeToExam(msgFromServer);
+					break;
+				}
+				case "showingCopy":
+					showingCopy((ArrayList<Question>) msgFromServer[1], (HashMap<String, Integer>) msgFromServer[2]);
+					break;
+				}
+
+			} catch (IndexOutOfBoundsException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		});
 	}
 
@@ -534,25 +541,23 @@ public class StudentControl extends UserControl implements Initializable {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				if(justFlag==true)
-				{
-					  ((Stage)((Node)tempEvent.getSource()).getScene().getWindow()).hide(); 
-						Stage primaryStage = new Stage();
-						FXMLLoader loader = new FXMLLoader();
-						Pane root;
-						try {
-							root = loader.load(getClass().getResource("/studentBoundary/ComputerizedExam.fxml").openStream());
-							Scene scene = new Scene(root);	
-							primaryStage.setScene(scene);		
-							primaryStage.show();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-				}
-				else
-				{
-				openScreen("ComputerizedExam");
+				if (justFlag == true) {
+					((Stage) ((Node) tempEvent.getSource()).getScene().getWindow()).hide();
+					Stage primaryStage = new Stage();
+					FXMLLoader loader = new FXMLLoader();
+					Pane root;
+					try {
+						root = loader
+								.load(getClass().getResource("/studentBoundary/ComputerizedExam.fxml").openStream());
+						Scene scene = new Scene(root);
+						primaryStage.setScene(scene);
+						primaryStage.show();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else {
+					openScreen("ComputerizedExam");
 				}
 			}
 		});
@@ -726,20 +731,17 @@ public class StudentControl extends UserControl implements Initializable {
 
 	@FXML
 	private void finishExam(ActionEvent e) throws IOException {
-		if(justFlag)
-		{
-			  ((Stage)((Node)e.getSource()).getScene().getWindow()).close(); 
-			((Stage)((Node)tempEvent.getSource()).getScene().getWindow()).show(); 
+		if (justFlag) {
+			((Stage) ((Node) e.getSource()).getScene().getWindow()).close();
+			((Stage) ((Node) tempEvent.getSource()).getScene().getWindow()).show();
 			return;
 		}
 		if (copyFlag == false) {
 			addAnswerToHashMap();
-			if(questioninexecutedexam.size()!=examAnswers.size()) {
-				isFinish=false;
-			}
-			else
-			{
-				isFinish=true;
+			if (questioninexecutedexam.size() != examAnswers.size()) {
+				isFinish = false;
+			} else {
+				isFinish = true;
 			}
 			String details[] = new String[2];
 			details[0] = executedID;
@@ -815,39 +817,44 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 
 	@SuppressWarnings("resource")
-	public void uploadFileToServer(ActionEvent e) {
-		MyFile file = new MyFile(fileFromClient.get(0).getName() + ".docx");
-		String LocalfilePath = fileFromClient.get(0).getAbsolutePath();
-
+	public void uploadFileToServer(ActionEvent e) throws IOException {
+		MyFile file = null;
+		String LocalfilePath = null;
 		try {
-			File newFile = new File(LocalfilePath);
-			byte[] mybytearray = new byte[(int) newFile.length()];
-			FileInputStream fis = new FileInputStream(newFile);
-			BufferedInputStream bis = new BufferedInputStream(fis);
+			file = new MyFile(fileFromClient.get(0).getName() + ".docx");
+			LocalfilePath = fileFromClient.get(0).getAbsolutePath();
+			try {
+				File newFile = new File(LocalfilePath);
+				byte[] mybytearray = new byte[(int) newFile.length()];
+				FileInputStream fis = new FileInputStream(newFile);
+				BufferedInputStream bis = new BufferedInputStream(fis);
 
-			file.initArray(mybytearray.length);
-			file.setSize(mybytearray.length);
+				file.initArray(mybytearray.length);
+				file.setSize(mybytearray.length);
 
-			bis.read(file.getMybytearray(), 0, mybytearray.length);
-
-			String details[] = new String[2];
-			details[0] = executedID;// the executed exam
-			details[1] = getMyUser().getUsername();// name of the student
-			connect(this);
-			messageToServer[0] = "saveExamOfStudent";
-			messageToServer[1] = details;
-			messageToServer[2] = file;
-			messageToServer[3] = e == null ? false : true;
-			chat.handleMessageFromClientUI(messageToServer);
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
-			Scene scene = new Scene(loader.load());
-			Stage stage = Main.getStage();
-			stage.setScene(scene);
-			stage.show();
-		} catch (Exception exception) {
-			System.out.println("Error send (Files)msg) to Server");
+				bis.read(file.getMybytearray(), 0, mybytearray.length);
+			} catch (Exception exception) {
+				System.out.println("Error send (Files)msg) to Server");
+			}
+		} catch (NullPointerException exception) {
+			System.out.println("Student Didnt finish the manual exam");
 		}
+		String details[] = new String[2];
+		details[0] = executedID;// the executed exam
+		details[1] = getMyUser().getUsername();// name of the student
+		connect(this);
+		messageToServer[0] = "saveExamOfStudent";
+		messageToServer[1] = details;
+		messageToServer[2] = file;
+		messageToServer[3] = e == null ? false : true;
+		chat.handleMessageFromClientUI(messageToServer);
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
+		Scene scene = new Scene(loader.load());
+		Stage stage = Main.getStage();
+		stage.setScene(scene);
+		stage.show();
+
 	}
 
 	public void setDetails(String executedExamId) {
