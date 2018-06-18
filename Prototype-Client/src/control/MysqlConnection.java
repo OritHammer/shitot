@@ -849,7 +849,7 @@ public class MysqlConnection {
 		String studentId = details[1];
 		String status = "waiting";
 		int mistakes = 0;
-		float points = 100;
+		float points = 0;
 		try {
 			int ans;
 			Set<String> s = answers.keySet();
@@ -873,10 +873,11 @@ public class MysqlConnection {
 									+ "\" AND QIE.question_ID=Q.question_id AND EE.executedExamID=\"" + executedID
 									+ "\" AND EE.exam_id=QIE.e_id;");
 					while (rs.next()) {
-						if (!rs.getString(2).equals(String.valueOf(ans))) {
-							points -= Float.valueOf(rs.getString(3));
-							mistakes++;
+						if (rs.getString(2).equals(String.valueOf(ans))) {
+							points += Float.valueOf(rs.getString(3));
 						}
+						else
+							mistakes++;
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();

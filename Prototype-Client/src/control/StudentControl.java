@@ -428,9 +428,15 @@ public class StudentControl extends UserControl implements Initializable {
 	@SuppressWarnings({ "unchecked", "unused" })
 	@Override
 	public void checkMessage(Object message) {
-		try {
-			chat.closeConnection();
+
+			try {
+				chat.closeConnection();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			final Object[] msgFromServer = (Object[]) message;
+			Platform.runLater(()->{
+				try {
 			switch (msgFromServer[0].toString()) {
 			case "logoutProcess": {
 				openScreen("LoginGui");
@@ -458,12 +464,14 @@ public class StudentControl extends UserControl implements Initializable {
 				showingCopy((ArrayList<Question>) msgFromServer[1], (HashMap<String, Integer>) msgFromServer[2]);
 				break;
 			}
+			
 
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		});
 	}
 
 	/**********************
