@@ -1100,7 +1100,7 @@ public class MysqlConnection {
 						"SELECT numOfStudentStarted,average,median,between0to54,between55to64,between65to74,between75to84,between85to94,between95to100 FROM shitot.executedexam where teacherName='"
 								+ id_userName + "'AND status='checked';");
 				break;
-			case "getReportByCourses":
+			case "getReportByCourse":
 				rs = stmt.executeQuery(
 						"SELECT numOfStudentStarted,average,median,between0to54,between55to64,between65to74,between75to84,between85to94,between95to100 FROM shitot.executedexam where exam_id like \"__"
 								+ id_userName + "%\" AND status='checked';");
