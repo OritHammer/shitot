@@ -137,6 +137,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			observableList.add("Teacher");
 			observableList.add("Course");
 			reportByComboBox.setItems(observableList);
+			initWindow();
 			refreshPress();
 		} else if (pageLabel.getText().contentEquals("")) {// system information
 
@@ -146,7 +147,6 @@ public class DirectorControl extends UserControl implements Initializable {
 
 	public void initWindow() {
 		// init the labels and comboBox
-
 		if(histogram==null)
 			histogram = new XYChart.Series<>();// initialize histogram
 		else histogram.getData().clear();
@@ -192,7 +192,8 @@ public class DirectorControl extends UserControl implements Initializable {
 			stage.setTitle(screen);
 			stage.setScene(scene);
 			stage.show();
-		} catch (Exception exception) {
+		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Error in opening the page");
 		}
 
@@ -410,16 +411,16 @@ public class DirectorControl extends UserControl implements Initializable {
 			}
 			case "Teacher": {
 				chooseUserNameLabel.setVisible(true);
-				chooseUserComboBox.setDisable(false);
+				chooseUserComboBox.setDisable(false);// hide user comboBox
 				messageToServer[0] = "getTeachersList";
 				messageToServer[1] = null;
 				messageToServer[2] = null;
 				break;
 			}
 			case "Course": {
-				chooseUserComboBox.setVisible(false);// hide user combobox
+				chooseUserComboBox.setVisible(false);// hide user comboBox
 				chooseSubjectLabel.setVisible(true);// show subject label
-				subjectsComboBox.setDisable(false);//
+				subjectsComboBox.setDisable(false);// disable user comboBox
 				messageToServer[0] = "getSubjects";
 				messageToServer[1] = null;
 				messageToServer[2] = null;
@@ -484,13 +485,13 @@ public class DirectorControl extends UserControl implements Initializable {
 
 	public void clearData() {
 		barChart.getData().clear();
-		histogram.getData().removeAll(Collections.singleton(barChart.getData().setAll()));
+		histogram.getData().clear();
 		medianTextField.clear();
 		averageTextField.clear();
 	}
  
 	public void refreshPress() {
-		refreshPressed=true;
+		
 		if(barChart.getData()!=null)
 			clearData();
 		reportByComboBox.setDisable(false);
@@ -498,11 +499,19 @@ public class DirectorControl extends UserControl implements Initializable {
 		reportByComboBox.getSelectionModel().clearSelection();
 		subjectsComboBox.getSelectionModel().clearSelection();
 		coursesComboBox.getSelectionModel().clearSelection();
+		chooseCourseLabel.setVisible(false);
+		chooseSubjectLabel.setVisible(false);
+		chooseUserNameLabel.setVisible(false);
+		chooseUserComboBox.setVisible(true);
+		chooseUserComboBox.setDisable(true);
+		subjectsComboBox.setDisable(true);
+		coursesComboBox.setDisable(true);
 		medianTextField.clear();
 		averageTextField.clear();
 		initWindow();
 	}
 	public void refreshPressListener(ActionEvent e) {
+		refreshPressed=true;
 		refreshPress();
 	}
 }

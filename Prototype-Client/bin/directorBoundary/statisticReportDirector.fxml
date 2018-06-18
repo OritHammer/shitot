@@ -19,15 +19,15 @@
       <ComboBox fx:id="subjectsComboBox" layoutX="240.0" layoutY="62.0" onAction="#loadCourses" prefHeight="25.0" prefWidth="141.0" />
       <Label layoutX="96.0" layoutY="45.0" prefHeight="17.0" prefWidth="141.0" text="Get  Statistic Report By:" />
       <NumberAxis layoutX="451.0" layoutY="146.0" prefHeight="210.0" prefWidth="28.0" side="LEFT" />
-      <BarChart fx:id="barChart" alternativeRowFillVisible="false" animated="false" blendMode="HARD_LIGHT" horizontalGridLinesVisible="false" layoutX="31.0" layoutY="140.0" mouseTransparent="true" prefHeight="242.0" prefWidth="524.0" title="Histogram" verticalGridLinesVisible="false">
+      <BarChart fx:id="barChart" alternativeRowFillVisible="false" animated="false" blendMode="HARD_LIGHT" horizontalGridLinesVisible="false" horizontalZeroLineVisible="false" layoutX="39.0" layoutY="139.0" mouseTransparent="true" prefHeight="242.0" prefWidth="524.0" title="Histogram" verticalGridLinesVisible="false">
          <xAxis>
-            <CategoryAxis label="Grade" prefHeight="41.0" prefWidth="410.0" fx:id="x">
+            <CategoryAxis label="Grade" prefHeight="41.0" prefWidth="410.0">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets></CategoryAxis>
          </xAxis>
          <yAxis>
-            <NumberAxis fx:id="y" label="Number Of Student" prefHeight="130.0" prefWidth="55.0" side="LEFT" />
+            <NumberAxis label="Number Of Student" prefHeight="130.0" prefWidth="55.0" side="LEFT" />
          </yAxis>
       </BarChart>
       <ComboBox fx:id="reportByComboBox" layoutX="94.0" layoutY="62.0" onAction="#showListForChooseObject" prefHeight="25.0" prefWidth="132.0" />
