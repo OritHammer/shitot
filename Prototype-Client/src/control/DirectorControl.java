@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
+import javax.print.attribute.standard.ReferenceUriSchemesSupported;
+
 import javafx.application.Platform;
 
 import entity.Course;
@@ -100,11 +102,15 @@ public class DirectorControl extends UserControl implements Initializable {
 	private Label chooseSubjectLabel;
 	@FXML
 	private Label chooseUserNameLabel;
+	@FXML
+	private Button btnRefresh;
 
 	private static String requestId;
 	private XYChart.Series histogram = null;
 	float[] sumGradeRanges;
-
+	private ArrayList<ExecutedExam> GradeList;
+	private ArrayList<Integer> studentGradeList;
+	private Boolean refreshPressed=false;
 	// FXML System information
 
 	/******************************************************************
@@ -131,7 +137,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			observableList.add("Teacher");
 			observableList.add("Course");
 			reportByComboBox.setItems(observableList);
-			initWindow();
+			refreshPress();
 		} else if (pageLabel.getText().contentEquals("")) {// system information
 
 		}
@@ -140,19 +146,15 @@ public class DirectorControl extends UserControl implements Initializable {
 
 	public void initWindow() {
 		// init the labels and comboBox
-		chooseUserComboBox.setDisable(true);
-		subjectsComboBox.setDisable(true);
-		coursesComboBox.setDisable(true);
-		chooseCourseLabel.setVisible(false);
-		chooseSubjectLabel.setVisible(false);
-		chooseUserNameLabel.setVisible(false);
-		histogram = new XYChart.Series<>();// initialize histogram
-		sumGradeRanges = new float[6];
+
+		if(histogram==null)
+			histogram = new XYChart.Series<>();// initialize histogram
+		else histogram.getData().clear();
+		if (sumGradeRanges==null)
+			sumGradeRanges = new float[6];
 		for (int i = 0; i < 6; i++) {
 			sumGradeRanges[i] = 0;
 		}
-		medianTextField.setText(" ");
-		averageTextField.setText(" ");
 	}
 
 	public void openTimeRequestTable(ActionEvent e) {
@@ -226,8 +228,9 @@ public class DirectorControl extends UserControl implements Initializable {
 	public void checkMessage(Object message) {
 		try {
 			chat.closeConnection();// close the connection
-
-			final Object[] msg = (Object[]) message;
+			if	(refreshPressed) refreshPressed=false; 
+			else{
+			final Object[] msg = (Object[])message;
 			Platform.runLater(() -> {
 				try {
 					switch (msg[0].toString()) {
@@ -270,7 +273,9 @@ public class DirectorControl extends UserControl implements Initializable {
 					}
 					case "getReportByCourse":
 					case "getReportByTeacher": {
-						ArrayList<ExecutedExam> GradeList = (ArrayList<ExecutedExam>) msg[1];
+						if(GradeList!=null) 
+							GradeList.clear();
+						GradeList = (ArrayList<ExecutedExam>) msg[1];
 						float average = 0;
 						int sumStudent = 0;
 						for (ExecutedExam e : GradeList) {
@@ -285,7 +290,9 @@ public class DirectorControl extends UserControl implements Initializable {
 						break;
 					}
 					case "getReportByStudent": {
-						ArrayList<Integer> studentGradeList = (ArrayList<Integer>) msg[1];
+						if(studentGradeList!=null) 
+							studentGradeList.clear();
+						studentGradeList = (ArrayList<Integer>) msg[1];
 						Collections.sort(studentGradeList);
 						medianTextField.setText(" " + studentGradeList.get((studentGradeList.size() / 2) - 1));
 						float sum = 0;
@@ -313,6 +320,7 @@ public class DirectorControl extends UserControl implements Initializable {
 					openScreen("ErrorMessage", "There is no exams");
 				}
 			});
+			}
 		} catch (NullPointerException e) {
 			openScreen("ErrorMessage", "There is no request to confirm .");
 		} catch (IOException e) {
@@ -388,34 +396,36 @@ public class DirectorControl extends UserControl implements Initializable {
 	 ***********************************************************/
 	public void showListForChooseObject(ActionEvent e) throws Exception {// display the list of student/courses/teachers
 		reportByChoose = reportByComboBox.getValue();
-		reportByComboBox.setDisable(true);
-		connect(this);
-		switch (reportByChoose) {
-		case "Student": {
-			chooseUserNameLabel.setVisible(true);
-			chooseUserComboBox.setDisable(false);
-			messageToServer[0] = "getStudentsList";
-			messageToServer[1] = null;
-			messageToServer[2] = null;
-			break;
-		}
-		case "Teacher": {
-			chooseUserNameLabel.setVisible(true);
-			chooseUserComboBox.setDisable(false);
-			messageToServer[0] = "getTeachersList";
-			messageToServer[1] = null;
-			messageToServer[2] = null;
-			break;
-		}
-		case "Course": {
-			chooseUserComboBox.setVisible(false);// hide user combobox
-			chooseSubjectLabel.setVisible(true);// show subject label
-			subjectsComboBox.setDisable(false);//
-			messageToServer[0] = "getSubjects";
-			messageToServer[1] = null;
-			messageToServer[2] = null;
-			break;
-		}
+		if (reportByChoose != null) {
+			reportByComboBox.setDisable(true);
+			connect(this);
+			switch (reportByChoose) {
+			case "Student": {
+				chooseUserNameLabel.setVisible(true);
+				chooseUserComboBox.setDisable(false);
+				messageToServer[0] = "getStudentsList";
+				messageToServer[1] = null;
+				messageToServer[2] = null;
+				break;
+			}
+			case "Teacher": {
+				chooseUserNameLabel.setVisible(true);
+				chooseUserComboBox.setDisable(false);
+				messageToServer[0] = "getTeachersList";
+				messageToServer[1] = null;
+				messageToServer[2] = null;
+				break;
+			}
+			case "Course": {
+				chooseUserComboBox.setVisible(false);// hide user combobox
+				chooseSubjectLabel.setVisible(true);// show subject label
+				subjectsComboBox.setDisable(false);//
+				messageToServer[0] = "getSubjects";
+				messageToServer[1] = null;
+				messageToServer[2] = null;
+				break;
+			}
+			}
 		}
 		chat.handleMessageFromClientUI(messageToServer);
 	}
@@ -430,6 +440,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	public void getReportUser(ActionEvent e) {// load Statistic details of user on window
 		connect(this);
 		String userName = chooseUserComboBox.getValue();
+		chooseUserComboBox.setDisable(true);
 		if (reportByChoose == "Teacher")
 			messageToServer[0] = "getReportByTeacher";
 		else
@@ -460,8 +471,6 @@ public class DirectorControl extends UserControl implements Initializable {
 	}
 
 	public void ShowHistogramInBarChart() throws NullPointerException {
-		// clean bar chart
-	//	clearData();
 		// set values in the bar chart
 		histogram.getData().add(new XYChart.Data("0-54", sumGradeRanges[0]));
 		histogram.getData().add(new XYChart.Data("55-65", sumGradeRanges[1]));
@@ -476,8 +485,24 @@ public class DirectorControl extends UserControl implements Initializable {
 	public void clearData() {
 		barChart.getData().clear();
 		histogram.getData().removeAll(Collections.singleton(barChart.getData().setAll()));
-		medianTextField.setText(" ");
-		averageTextField.setText(" ");
+		medianTextField.clear();
+		averageTextField.clear();
 	}
 
+	public void refreshPress() {
+		refreshPressed=true;
+		if(barChart.getData()!=null)
+			clearData();
+		reportByComboBox.setDisable(false);
+		chooseUserComboBox.getSelectionModel().clearSelection();
+		reportByComboBox.getSelectionModel().clearSelection();
+		subjectsComboBox.getSelectionModel().clearSelection();
+		coursesComboBox.getSelectionModel().clearSelection();
+		medianTextField.clear();
+		averageTextField.clear();
+		initWindow();
+	}
+	public void refreshPressListener(ActionEvent e) {
+		refreshPress();
+	}
 }

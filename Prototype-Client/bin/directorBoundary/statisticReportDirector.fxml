@@ -33,6 +33,7 @@
       <ComboBox fx:id="reportByComboBox" layoutX="94.0" layoutY="62.0" onAction="#showListForChooseObject" prefHeight="25.0" prefWidth="132.0" />
       <Label fx:id="pageLabel" layoutX="247.0" layoutY="14.0" text="Statistic report" />
       <Button fx:id="backButton" layoutX="266.0" layoutY="370.0" mnemonicParsing="false" onAction="#backButtonPressed" text="Back" />
+      <Button fx:id="btnRefresh" layoutX="189.0" layoutY="370.0" mnemonicParsing="false" onAction="#refreshPressListener" text="Refresh" />
       <ComboBox fx:id="chooseUserComboBox" layoutX="240.0" layoutY="62.0" onAction="#getReportUser" prefHeight="25.0" prefWidth="141.0" />
    </children>
 </AnchorPane>
