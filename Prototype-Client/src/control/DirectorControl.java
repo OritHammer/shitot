@@ -454,7 +454,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			chooseUserComboBox.setDisable(true);
 			if (reportByChoose.equals("Teacher"))
 				messageToServer[0] = "getReportByTeacher";
-			else
+			else 
 				messageToServer[0] = "getReportByStudent";
 			messageToServer[1] = userName;
 			messageToServer[2] = null;
