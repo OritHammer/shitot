@@ -911,12 +911,8 @@ public class MysqlConnection {
 								studentAnswers = new HashMap<String, Integer>();
 							} else 
 								studentAnswers.put(rs.getString(3), Integer.valueOf(rs.getString(4)));
-						} while (rs.next());
-						for (String q_id : s) 
-							if (!answers.get(q_id).equals(studentAnswers.get(q_id))) 
-								sameErrors = false;
-						if (sameErrors)
-							status = "copy";
+						} while (rs.next());//למצוא פתרון לבעיה הזו , זה זה מדלג על אחד
+						
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
