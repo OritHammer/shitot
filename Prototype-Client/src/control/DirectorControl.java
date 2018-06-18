@@ -284,7 +284,9 @@ public class DirectorControl extends UserControl implements Initializable {
 						}
 						averageTextField.setText(" " + (average / (float) sumStudent));
 						Collections.sort(GradeList);
-						medianTextField.setText(" " + GradeList.get((GradeList.size() / 2) - 1));
+						if(GradeList.size()>1)
+							medianTextField.setText(" " + GradeList.get((GradeList.size() / 2)-1));
+						else medianTextField.setText(" " + GradeList.get(GradeList.size() / 2) );
 						ShowHistogramInBarChart();
 						break;
 					}
@@ -293,7 +295,9 @@ public class DirectorControl extends UserControl implements Initializable {
 							studentGradeList.clear();
 						studentGradeList = (ArrayList<Integer>) msg[1];
 						Collections.sort(studentGradeList);
-						medianTextField.setText(" " + studentGradeList.get((studentGradeList.size() / 2) - 1));
+						if(studentGradeList.size()>1)
+							medianTextField.setText(" " + studentGradeList.get((studentGradeList.size() / 2) - 1));
+						else medianTextField.setText(" " + studentGradeList.get(studentGradeList.size() / 2) );
 						float sum = 0;
 						for (Integer grade : studentGradeList) {
 							sum += grade;
@@ -315,7 +319,7 @@ public class DirectorControl extends UserControl implements Initializable {
 					}
 
 					}
-				} catch (ArrayIndexOutOfBoundsException e) {
+				} catch (IndexOutOfBoundsException e) {
 					openScreen("ErrorMessage", "There is no exams");
 				}
 			});
@@ -440,7 +444,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		connect(this);
 		String userName = chooseUserComboBox.getValue();
 		chooseUserComboBox.setDisable(true);
-		if (reportByChoose == "Teacher")
+		if (reportByChoose.equals("Teacher") )
 			messageToServer[0] = "getReportByTeacher";
 		else
 			messageToServer[0] = "getReportByStudent";

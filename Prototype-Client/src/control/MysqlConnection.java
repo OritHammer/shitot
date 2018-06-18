@@ -309,7 +309,7 @@ public class MysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			if (teacherUserName == null) {
-				rs = stmt.executeQuery("SELECT c.courseID,c.name FROM courses c,teacherincourse tc" + " WHERE tp_ID=\""
+				rs = stmt.executeQuery("SELECT DISTINCT c.courseID,c.name FROM courses c,teacherincourse tc" + " WHERE tp_ID=\""
 						+ subject + "\" AND tc.courseID=c.courseID");
 			} else {
 				rs = stmt.executeQuery("SELECT c.courseID,c.name FROM courses c,teacherincourse tc" + " WHERE tp_ID=\""
@@ -1098,12 +1098,12 @@ public class MysqlConnection {
 			case "getReportByTeacher":
 				rs = stmt.executeQuery(
 						"SELECT numOfStudentStarted,average,median,between0to54,between55to64,between65to74,between75to84,between85to94,between95to100 FROM shitot.executedexam where teacherName='"
-								+ id_userName + "'AND status='close' AND average IS NOT NULL;");
+								+ id_userName + "'AND status='checked';");
 				break;
 			case "getReportByCourses":
 				rs = stmt.executeQuery(
 						"SELECT numOfStudentStarted,average,median,between0to54,between55to64,between65to74,between75to84,between85to94,between95to100 FROM shitot.executedexam where exam_id like \"__"
-								+ id_userName + "%\" AND status='close' AND average IS NOT NULL;");
+								+ id_userName + "%\" AND status='checked';");
 				break;
 			}
 			while (rs.next()) {
