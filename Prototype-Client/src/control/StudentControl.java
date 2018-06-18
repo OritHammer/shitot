@@ -848,12 +848,19 @@ public class StudentControl extends UserControl implements Initializable {
 		messageToServer[2] = file;
 		messageToServer[3] = e == null ? false : true;
 		chat.handleMessageFromClientUI(messageToServer);
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
-		Scene scene = new Scene(loader.load());
-		Stage stage = Main.getStage();
-		stage.setScene(scene);
-		stage.show();
+		Platform.runLater(() -> {
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
+				Scene scene;
+				scene = new Scene(loader.load());
+				Stage stage = Main.getStage();
+				stage.setScene(scene);
+				stage.show();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		});
 
 	}
 
