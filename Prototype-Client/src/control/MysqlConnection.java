@@ -848,6 +848,7 @@ public class MysqlConnection {
 		String executedID = details[0];
 		String studentId = details[1];
 		String status = "waiting";
+		int mistakes = 0;
 		float points = 100;
 		try {
 			int ans;
@@ -874,6 +875,7 @@ public class MysqlConnection {
 					while (rs.next()) {
 						if (!rs.getString(2).equals(String.valueOf(ans))) {
 							points -= Float.valueOf(rs.getString(3));
+							mistakes++;
 						}
 					}
 				} catch (SQLException e) {
@@ -884,32 +886,31 @@ public class MysqlConnection {
 			s = answers.keySet();
 			HashMap<String, Integer> studentAnswers = new HashMap<String, Integer>();// saves the question id and the
 																						// answers
-			int sameErrors = 0;
+			boolean sameErrors = false;
 			String currentStudent;
-			if (s.size() >= 3) {
+			if (mistakes >= 3) {
 				try {
 					ResultSet rs = stmt.executeQuery("SELECT * FROM shitot.studentanswerquestions WHERE "
-							+ "executedID=\"" + executedID + "\" GROUP BY studentUserName;");
-					rs.next();
-					currentStudent = rs.getString(2);
-					while (rs.next()) {
-						if (currentStudent != rs.getString(2)) {
-							sameErrors = 0;
-							currentStudent = rs.getString(2);
-							for (String q_id : s) {
-								if(!answers.get(q_id).equals(studentAnswers.get(q_id))) {
-									sameErrors++;
-								}
+							+ "executedID=\"" + executedID + "\" AND studentUserName!=\"" + studentId + "\";");
+					if (rs.isBeforeFirst()) {
+						rs.next();
+						currentStudent = rs.getString(2);
+						do {
+							if (!currentStudent.equals(rs.getString(2))) {
+								sameErrors = true;
+								currentStudent = rs.getString(2);
+								for (String q_id : s) 
+									if (!answers.get(q_id).equals(studentAnswers.get(q_id))) 
+										sameErrors = false;
+								
+								studentAnswers = new HashMap<String, Integer>();
+							} else 
+								studentAnswers.put(rs.getString(3), Integer.valueOf(rs.getString(4)));
+							if (sameErrors) {
+								status = "copy";
+								break;
 							}
-							studentAnswers=new HashMap<String,Integer>();
-						}
-						else {
-							studentAnswers.put(rs.getString(3), Integer.valueOf(rs.getString(4)));
-						}
-						if (sameErrors == 3) {
-							status = "copy";
-							break;
-						}
+						} while (rs.next());
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -927,8 +928,8 @@ public class MysqlConnection {
 		Date date = new Date();
 		try {
 			stmt.executeUpdate("INSERT INTO shitot.studentperformedexam VALUES(\"" + dateFormat.format(date) + "\",\""
-					+ time.format(cal.getTime()) + "\",\"" + (finishedexam == true ? "yes" : "no") + "\",\"" + executedID
-					+ "\",\"" + studentId + "\",\"" + points + "\",\"" + status + "\",\"none\");");
+					+ time.format(cal.getTime()) + "\",\"" + (finishedexam == true ? "yes" : "no") + "\",\""
+					+ executedID + "\",\"" + studentId + "\",\"" + points + "\",\"" + status + "\",\"none\");");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
