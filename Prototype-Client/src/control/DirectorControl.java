@@ -488,7 +488,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		medianTextField.clear();
 		averageTextField.clear();
 	}
-
+ 
 	public void refreshPress() {
 		refreshPressed=true;
 		if(barChart.getData()!=null)
