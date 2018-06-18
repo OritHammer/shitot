@@ -53,6 +53,7 @@ import javafx.stage.Stage;
 
 public class StudentControl extends UserControl implements Initializable {
 	private static ArrayList<Question> questioninexecutedexam;
+	private static HashMap<String, Integer> examAnswers;// saves the question id and the answers
 	private static Time solutionTime;
 	private static int remainTime;
 	private static String executedID;
@@ -61,7 +62,6 @@ public class StudentControl extends UserControl implements Initializable {
 	private List<File> fileFromClient;
 	private int index = -1;
 	private static String timeToString;
-	private static HashMap<String, Integer> examAnswers;// saves the question id and the answers
 	protected Boolean justFlag = false;
 	private Boolean isBoolean = false;
 	protected MouseEvent tempEvent;
@@ -755,10 +755,8 @@ public class StudentControl extends UserControl implements Initializable {
 			try {
 				closeScreen(e);
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
@@ -786,10 +784,12 @@ public class StudentControl extends UserControl implements Initializable {
 		} else if (correctRadioButton4.isSelected()) {
 			selectedAnswer = 4;
 		}
-		if (examAnswers.containsKey(q_id)) {
-			examAnswers.replace(q_id, selectedAnswer);
-		} else {
-			examAnswers.put(q_id, selectedAnswer);
+		if (selectedAnswer != 0) {
+			if (examAnswers.containsKey(q_id)) {
+				examAnswers.replace(q_id, selectedAnswer);
+			} else {
+				examAnswers.put(q_id, selectedAnswer);
+			}
 		}
 
 	}
