@@ -53,12 +53,12 @@
       <PasswordField fx:id="password" layoutX="100.0" layoutY="195.0" prefHeight="25.0" prefWidth="149.0" promptText="please enter your password" />
       <Button fx:id="LoginBtn" layoutX="152.0" layoutY="226.0" mnemonicParsing="false" onAction="#loginPressed" text="login" />
       <Label fx:id="errorMsg" layoutX="125.0" layoutY="255.0" text="wrong password" />
-      <ImageView fx:id="errorImg" blendMode="MULTIPLY" fitHeight="69.0" fitWidth="68.0" layoutX="134.0" layoutY="272.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+      <ImageView fx:id="errorImg" blendMode="MULTIPLY" fitHeight="90.0" fitWidth="104.0" layoutX="125.0" layoutY="262.0" pickOnBounds="true" preserveRatio="true" smooth="false">
          <effect>
             <Blend />
          </effect>
          <image>
-            <Image url="@../images.jpg" />
+            <Image url="@../../Error.jpg" />
          </image>
       </ImageView>
    </children>
