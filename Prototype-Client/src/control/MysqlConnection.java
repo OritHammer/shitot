@@ -875,8 +875,7 @@ public class MysqlConnection {
 					while (rs.next()) {
 						if (rs.getString(2).equals(String.valueOf(ans))) {
 							points += Float.valueOf(rs.getString(3));
-						}
-						else
+						} else
 							mistakes++;
 					}
 				} catch (SQLException e) {
@@ -900,24 +899,26 @@ public class MysqlConnection {
 							if (!currentStudent.equals(rs.getString(2))) {
 								sameErrors = true;
 								currentStudent = rs.getString(2);
-								for (String q_id : s) 
-									if (!answers.get(q_id).equals(studentAnswers.get(q_id))) 
-										sameErrors = false;								
+								for (String q_id : s)
+									if (!answers.get(q_id).equals(studentAnswers.get(q_id)))
+										sameErrors = false;
 								if (sameErrors) {
 									status = "copy";
 									break;
 								}
 								studentAnswers = new HashMap<String, Integer>();
-							} else 
+							} else
 								studentAnswers.put(rs.getString(3), Integer.valueOf(rs.getString(4)));
 						} while (rs.next());
-						sameErrors =true;
-						for (String q_id : s) 
-							if (!answers.get(q_id).equals(studentAnswers.get(q_id))) 
-								sameErrors = false;
-						if (sameErrors) 
-							status = "copy";
-						
+						if (!sameErrors) {
+							sameErrors = true;
+							for (String q_id : s)
+								if (!answers.get(q_id).equals(studentAnswers.get(q_id)))
+									sameErrors = false;
+							if (sameErrors)
+								status = "copy";
+						}
+
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
