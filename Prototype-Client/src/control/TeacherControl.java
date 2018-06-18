@@ -19,6 +19,7 @@ import entity.StudentPerformExam;
 import entity.TeachingProfessionals;
 import entity.User;
 import javafx.application.Platform;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -58,7 +59,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	private static boolean blockPassQuestionButton;
 
 	private ActionEvent temp;
-	
+	@FXML
+	private Button buttonEdit;
 	private ObservableList<Exam> exams;
 	private Question questionSelected;
 	private Question oldQuestion;
@@ -152,6 +154,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	private TableColumn<Question, String> a4;
 	@FXML
 	private TableColumn<Question, String> correctAns;
+	@FXML
+	private TableColumn<Question, Button> c1;
 
 	@FXML
 	private TableView<Exam> examsTableView;
@@ -263,6 +267,16 @@ public class TeacherControl extends UserControl implements Initializable {
 
 				case ("getQuestionsToTable"): /* get the questions list from server */
 				{
+					
+					for (Question q : (ArrayList<Question>) msg[1])
+					{
+		                buttonEdit = new Button("");
+		                buttonEdit.setStyle("-fx-background-image: url('/edit.png')");
+		                buttonEdit.setMaxHeight(17);
+		                buttonEdit.setMinHeight(17);
+		            
+						q.setButton(buttonEdit);
+					}
 					questionObservableList = FXCollections.observableArrayList((ArrayList<Question>) msg[1]);//kaki
 					qid.setCellValueFactory(new PropertyValueFactory<>("id"));
 					tname.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
@@ -273,6 +287,8 @@ public class TeacherControl extends UserControl implements Initializable {
 						a3.setCellValueFactory(new PropertyValueFactory<>("answer3"));
 						a4.setCellValueFactory(new PropertyValueFactory<>("answer4"));
 						correctAns.setCellValueFactory(new PropertyValueFactory<>("correctAnswer"));
+						c1.setCellValueFactory(new PropertyValueFactory<Question,Button>("button"));
+						c1.setStyle( "-fx-alignment: CENTER");
 						questionTableView.setEditable(true);
 						ObservableList<String> numbers = FXCollections.observableArrayList("1", "2", "3", "4");
 						qtext.setCellFactory(TextFieldTableCell.forTableColumn());

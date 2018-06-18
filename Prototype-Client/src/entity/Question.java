@@ -2,6 +2,8 @@ package entity;
 
 import java.io.Serializable;
 
+import javafx.scene.control.Button;
+
 public class Question implements Serializable{
 	/**
 	 * 
@@ -15,6 +17,7 @@ public class Question implements Serializable{
 	private String answer3;
 	private String answer4;
 	private String correctAnswer;
+	private Button button;
 	
 	public Question(String id,String teacherName, String questionContent, String answer1, String answer2, String answer3, String answer4,
 			String correctAnswer) {
@@ -82,6 +85,14 @@ public class Question implements Serializable{
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public Button getButton() {
+		return button;
+	}
+
+	public void setButton(Button button) {
+		this.button = button;
 	}
 	
 	}
