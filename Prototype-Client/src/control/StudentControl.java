@@ -65,7 +65,6 @@ public class StudentControl extends UserControl implements Initializable {
 	protected Boolean justFlag = false;
 	private Boolean isBoolean = false;
 	protected MouseEvent tempEvent;
-	private static Boolean isFinish = false;
 
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
@@ -164,7 +163,6 @@ public class StudentControl extends UserControl implements Initializable {
 		// connect(this);
 		switch (pageLabel.getText()) {
 		case ("Perform exam"): {
-			isFinish = true;
 			correctRadioButton1.setVisible(true);
 			correctRadioButton2.setVisible(true);
 			correctRadioButton3.setVisible(true);
@@ -736,6 +734,7 @@ public class StudentControl extends UserControl implements Initializable {
 			((Stage) ((Node) tempEvent.getSource()).getScene().getWindow()).show();
 			return;
 		}
+		boolean isFinish;
 		if (copyFlag == false) {
 			addAnswerToHashMap();
 			if (questioninexecutedexam.size() != examAnswers.size()) {
