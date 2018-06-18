@@ -1127,7 +1127,7 @@ public class MysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("SELECT grade FROM shitot.studentperformedexam WHERE student_UserName='"
-					+ studentName + "'AND finished='yes' AND grade IS NOT NULL;");
+					+ studentName + "'AND isApproved='approved';");
 			while (rs.next())
 				studentGradesList.add(Integer.parseInt(rs.getString(1)));
 			rs.close();
