@@ -178,7 +178,6 @@ public class DirectorControl extends UserControl implements Initializable {
 	}
 
 	private void openScreen(String screen) {// open the windows after login
-
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/directorBoundary/" + screen + ".fxml"));
@@ -196,7 +195,6 @@ public class DirectorControl extends UserControl implements Initializable {
 			e.printStackTrace();
 			System.out.println("Error in opening the page");
 		}
-
 	}
 
 	private void openScreen(String screen, String message) {// for error message
@@ -216,7 +214,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		}
 	}
 
-	/* cancel button was pressed */
+	/*cancel button was pressed*/
 	public void backButtonPressed(ActionEvent e) throws IOException, SQLException {
 		final Node source = (Node) e.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
@@ -224,7 +222,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		openScreen("HomeScreenDirector");
 	}
 
-	// ***********check the message that arrived from server**************//
+	//***********check the message that arrived from server**************//
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
 		try {
