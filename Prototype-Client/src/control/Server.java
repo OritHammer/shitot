@@ -346,7 +346,7 @@ public class Server extends AbstractServer {
 		case "SetStatusToApproved": {
 			con.setStatusToAddingTimeRequest(((Object[]) msg)[1], "approved");
 			Object tmp[] = con.getadditionalTime((String) ((Object[]) message)[1]);
-			//con.setRealTimeOfExecutedExam(executedExamID);
+			con.setRealTimeOfExecutedExam((String) ((Object[]) message)[1]);
 			serverMessage[0] = "addTime";
 			serverMessage[1] = tmp[0];// serverMessage[0]=requestId(String)
 			serverMessage[2] = tmp[1];// serverMessage[0]=time to add (Time)
@@ -396,7 +396,9 @@ public class Server extends AbstractServer {
 			break;
 		}
 		case "finishExam": {
-			con.finishExam((String[]) message[1], (HashMap<String, Integer>) message[2], (boolean) message[3]);
+			String[] details=((String[]) message[1]);
+			con.finishExam(details, (HashMap<String, Integer>) message[2], (boolean) message[3]);
+			con.checkIfAllStudentFinishedExam(details[0]);
 			break;
 		}
 		case "isChanged":{
