@@ -68,6 +68,7 @@ public class StudentControl extends UserControl implements Initializable {
 	private Boolean isBoolean = false;
 	protected static MouseEvent tempEvent;
 	private Boolean isLocked = false;
+	private Boolean isPerformExam;
 	/**********************AddTime Variables***************************/
 	private static ArrayList<String> requestId;
 	
@@ -168,10 +169,11 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 	public void initialize(URL url, ResourceBundle rb) {
 		// connect(this);
-		
+		isPerformExam=false;
+		messageToServer[4]=getMyUser().getUsername();
 		switch (pageLabel.getText()) {
 		case ("Perform exam"): {
-			
+			isPerformExam=true;
 			correctRadioButton1.setVisible(true);
 			correctRadioButton2.setVisible(true);
 			correctRadioButton3.setVisible(true);
@@ -396,13 +398,15 @@ public void endExam(String message) {
 	@SuppressWarnings({ "unchecked", "unused" })
 	@Override
 	public void checkMessage(Object message) {
-
+		final Object[] msgFromServer = (Object[]) message;
+		if((isPerformExam==true && msgFromServer[4].equals("all")) || msgFromServer[4].equals(getMyUser().getUsername())) {
+		
 		try {
 			chat.closeConnection();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		final Object[] msgFromServer = (Object[]) message;
+		
 		System.out.println(msgFromServer[0].toString());
 		Platform.runLater(() -> {
 			try {
@@ -452,6 +456,7 @@ public void endExam(String message) {
 				e.printStackTrace();
 			}
 		});
+	}
 	}
 
 	/**********************
@@ -711,6 +716,7 @@ public void endExam(String message) {
 
 	@FXML
 	private void finishExam(ActionEvent e) throws IOException {
+		isPerformExam=false;
 		if (justFlag) {
 			((Stage) ((Node) e.getSource()).getScene().getWindow()).close();
 			((Stage) ((Node) tempEvent.getSource()).getScene().getWindow()).show();
