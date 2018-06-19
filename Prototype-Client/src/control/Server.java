@@ -346,7 +346,7 @@ public class Server extends AbstractServer {
 		case "SetStatusToApproved": {
 			con.setStatusToAddingTimeRequest(((Object[]) msg)[1], "approved");
 			Object tmp[] = con.getadditionalTime((String) ((Object[]) message)[1]);
-			//con.setRealTimeOfExecutedExam(executedExamID);
+			con.setRealTimeOfExecutedExam((String) ((Object[]) message)[1]);
 			serverMessage[0] = "addTime";
 			serverMessage[1] = tmp[0];// serverMessage[0]=requestId(String)
 			serverMessage[2] = tmp[1];// serverMessage[0]=time to add (Time)

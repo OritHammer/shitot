@@ -1172,10 +1172,24 @@ public class MysqlConnection {
 
 	}
 
-	public void setRealTimeOfExecutedExam(Object executedExamID) {
-		String executedID=(String) executedExamID;
+	public void setRealTimeOfExecutedExam(String requestID) {
+		// getting executed exam id 
+		ResultSet rs = null;
+		String executedID="";
 		try {
-			stmt = conn.createStatement();//ליאור המר
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT request.IDexecutedExam" + 
+					"FROM requestforchangingtimeallocated as request" + 
+					"WHERE request.requestID = \""+requestID+"\" ;");
+			if(rs.isBeforeFirst()) {
+				executedID = rs.getString(1);
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		// adding solution time to the actual solution time by executed exam id 
+		try {
+			stmt = conn.createStatement();
 			stmt.executeUpdate("UPDATE shitot.executedexam SET actuallySolutionTime = actuallySolutionTime + "+
 					"(SELECT request.timeAdded FROM requestforchangingtimeallocated as request WHERE"
 					+ " request.IDexecutedExam = \""+executedID+"\") "
