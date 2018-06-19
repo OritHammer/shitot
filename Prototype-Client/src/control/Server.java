@@ -151,6 +151,7 @@ public class Server extends AbstractServer {
 						System.out.println("Error send (Files)msg) to Server");
 					}
 				}
+				con.updateStudentToExecutedExam(executedExamID);
 			} catch (NullPointerException exception) {
 				System.out.println("This student cant perform this exam");
 				serverMessage[1] = null;
