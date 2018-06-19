@@ -224,25 +224,13 @@ public class UserControl implements Initializable {
 /*check if the details of user is in the system */
 	public void loginPressed(ActionEvent e) throws IOException {
 		  connect(this);
-		  if (userName.getText().equals("") && password.getText().equals(""))
+		  if (userName.getText().equals("") || password.getText().equals(""))
 		  {
-			  errorMsg.setVisible(true);
+			errorMsg.setVisible(true);
 		  	errorImg.setVisible(true);
 			errorImg1.setVisible(true);
 		  }
-		  else if(userName.getText().equals(""))
-		  {
-			  errorMsg.setVisible(true);
-			errorImg.setVisible(true);
-			errorImg1.setVisible(true);
-		  }
-			else if(password.getText().equals(""))
-			{
-				errorMsg.setVisible(true);
-				errorImg.setVisible(true);
-	 			errorImg1.setVisible(true);
-			}
-				else {
+		  else {
 		   messageToServer[0] = "checkUserDetails";
 		   messageToServer[1] = userName.getText();
 		   messageToServer[2] = password.getText();
