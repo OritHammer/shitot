@@ -1146,7 +1146,7 @@ public class MysqlConnection {
 	public void confirmExecutedExam(Object studentInExam) {
 		try {
 			stmt = conn.createStatement();
-			stmt.executeUpdate("UPDATE studentperformedexam " + "SET isApproved=\"approved\" WHERE student_UserName=\"" + ((StudentPerformExam) studentInExam).getUserName() + "\";");
+			stmt.executeUpdate("UPDATE studentperformedexam " + "SET isApproved=\"approved\" , grade=\""+((StudentPerformExam) studentInExam).getGrade() + "\" WHERE student_UserName=\"" + ((StudentPerformExam) studentInExam).getUserName() + "\";");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		

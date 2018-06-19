@@ -62,7 +62,9 @@ public class TeacherControl extends UserControl implements Initializable {
 	private ObservableList<String> coursesListToCreateQuestion = FXCollections.observableArrayList();
 	private ObservableList<Question> questionObservableList;
 	private static boolean blockPassQuestionButton;
-
+	
+	private TeacherControl tController;
+	
 	private ActionEvent temp;
 	private ObservableList<Exam> exams;
 	private Question questionSelected;
@@ -239,6 +241,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	    	if(studnetInExamTableView.getSelectionModel().getSelectedItem() == null)
 	    		return;
 	    	StudentPerformExam studentinexm = studnetInExamTableView.getSelectionModel().getSelectedItem();
+	    	studnetInExamTableView.getItems().remove(studentinexm);
 	    	messageToServer[0] = "confirmExecutedExam";
 	    	messageToServer[1] = studentinexm;
 	    	connect(this);
@@ -257,30 +260,55 @@ public class TeacherControl extends UserControl implements Initializable {
 	    	else if(newGrade.getText().equals("") || !(Integer.parseInt(newGrade.getText())>= 0 && Integer.parseInt(newGrade.getText()) <= 100))
 	    		new Alert(Alert.AlertType.ERROR, "The grade must be between 0-100").showAndWait();
 	    	else if(reason.getText().equals(""))
-	    		new Alert(Alert.AlertType.ERROR, "If you want to change the grade u must enter a reason").showAndWait();
+	    		new Alert(Alert.AlertType.ERROR, "If you want to change the grade you must enter a reason").showAndWait();
 	    	else
 	    	{
-	    		studentInExamRow.setGrade(Float.parseFloat(newGrade.getText()));
-	    		studentInExamRow.setReasonForChangeGrade(reason.getText());
+	    		StudentPerformExam student=tController.getSelectedStudentPerformExam();
+	    		student.setGrade(Float.valueOf(newGrade.getText()));
+	    		student.setReasonForChangeGrade(reason.getText());
+	    		tController.setOnTableView(student);
+				final Node source = (Node) event.getSource();
+				Stage stage = (Stage) source.getScene().getWindow();
+				stage.close();
 	    	}
 	    	
 	    }
 	    
-	    public void changeGrade(ActionEvent event) throws IOException {
+	    private void setOnTableView(StudentPerformExam student) {
+	    	studnetInExamTableView.getItems().remove(studnetInExamTableView.getSelectionModel().getSelectedIndex());
+	    	studnetInExamTableView.getItems().add(student);
+		}
+
+		private StudentPerformExam getSelectedStudentPerformExam() {
+	    	return(studnetInExamTableView.getSelectionModel().getSelectedItem());
+	    }
+
+
+
+		public void changeGrade(ActionEvent event) throws IOException {
+	    	
 	    	studentInExamRow = studnetInExamTableView.getSelectionModel().getSelectedItem();
 	    	if(studentInExamRow == null)
 	    		return;
             final Stage dialog = new Stage();
+            
             final Node source = (Node) event.getSource();
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.initOwner((Stage) source.getScene().getWindow());
-            
-    		AnchorPane myPane = FXMLLoader.load(getClass().getResource("/boundary/ChangeGrade.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            AnchorPane myPane = fxmlLoader.load(getClass().getResource("/boundary/ChangeGrade.fxml").openStream());
+             tController = (TeacherControl) fxmlLoader.getController();
+             tController.setTeacherController(this);
             Scene dialogScene = new Scene(myPane);
             dialog.setScene(dialogScene);
             dialog.show();
 	    }
 	  
+	private void setTeacherController(TeacherControl teacherControl) {
+		tController=teacherControl;
+			
+		}
+
 	/* check the content message from server */
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
@@ -565,6 +593,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		case ("Extend exam time"):
 		case ("Check exam"):
 		case ("Lock exam"):
+		
 		case ("Update exam"): {
 
 			connect(this);
@@ -582,7 +611,6 @@ public class TeacherControl extends UserControl implements Initializable {
 			break;
 
 		}
-
 		}
 
 	}
