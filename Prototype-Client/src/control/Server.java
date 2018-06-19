@@ -396,7 +396,9 @@ public class Server extends AbstractServer {
 			break;
 		}
 		case "finishExam": {
-			con.finishExam((String[]) message[1], (HashMap<String, Integer>) message[2], (boolean) message[3]);
+			String[] details=((String[]) message[1]);
+			con.finishExam(details, (HashMap<String, Integer>) message[2], (boolean) message[3]);
+			con.checkIfAllStudentFinishedExam(details[0]);
 			break;
 		}
 		case "isChanged":{
