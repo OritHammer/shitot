@@ -62,9 +62,9 @@ public class StudentControl extends UserControl implements Initializable {
 	private List<File> fileFromClient;
 	private int index = -1;
 	private static String timeToString;
-	protected Boolean justFlag = false;
+	protected static Boolean justFlag = false;
 	private Boolean isBoolean = false;
-	protected MouseEvent tempEvent;
+	protected static MouseEvent tempEvent;
 
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
@@ -274,6 +274,7 @@ public class StudentControl extends UserControl implements Initializable {
 		closeScreen(e);
 	}
 
+	
 	// the problem is with the fact that we create a new scene each time and we need
 	// to prevent it in that way
 	// ***

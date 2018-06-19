@@ -561,7 +561,7 @@ public class MysqlConnection {
 			ResultSet rs = stmt.executeQuery(
 					"SELECT date,time,finished,executedexam_id,student_UserName,grade,isApproved,reasonForChangeGrade,"
 							+ "userID,name FROM users,studentperformedexam WHERE executedexam_id " + "= " + "\""
-							+ (String) executedExamId + "\" AND student_UserName = UserName");
+							+ (String) executedExamId + "\" AND student_UserName = UserName AND isApproved='waiting'");
 			while (rs.next()) {
 				studentsInExam.add(new StudentPerformExam(rs.getString(1), rs.getString(2), rs.getString(3),
 						rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8),
@@ -638,7 +638,7 @@ public class MysqlConnection {
 				Date date = new Date();
 				stmt.executeUpdate("INSERT INTO shitot.executedexam VALUES(\"" + exam.getExecutedExamID().trim()
 						+ "\",0,0,0,0,0,\"" + exam.getTeacherName() + "\",\"" + exam.getExam_id()
-						+ "\",0,0,0,0,0,0,\"open\",\"" + dateFormat.format(date) + "\",\"" + exam.getSolutionTime() + "\");");
+						+ "\",0,0,0,0,0,0,\"open\",\"" + dateFormat.format(date) + "\", '00:00:15');");
 				return true;
 			}
 

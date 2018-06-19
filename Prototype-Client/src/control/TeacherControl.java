@@ -208,7 +208,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	  private AnchorPane mainPane;
 	    
 	    public void loadExamCopy(MouseEvent event) {
-	    	if(event.getClickCount() == 2)
+	    	if(event.getClickCount() == 1)
 	    	{
 	    		connect(this);
 	    		messageToServer[0] = "getStudentAnswers";
@@ -1145,17 +1145,6 @@ public class TeacherControl extends UserControl implements Initializable {
 			openScreen("ErrorMessage", "You must enter exactly 4 letters & number");
 			return;
 		}
-		if (timeForExamHours.getText().equals("") || timeForExamMinute.getText().equals("")
-				|| Integer.valueOf(timeForExamHours.getText()) < 0) {
-			openScreen("ErrorMessage", "Please fill time for exam");
-			return;
-		}
-		if ((Integer.parseInt(timeForExamHours.getText()) <= 0 && Integer.parseInt(timeForExamMinute.getText()) <= 0)
-				|| (Integer.parseInt(timeForExamHours.getText()) > 99
-						|| Integer.parseInt(timeForExamMinute.getText()) > 99)) {
-			openScreen("ErrorMessage", "invalid time");
-			return;
-		}
 		for (int i = 0; i < executedExamId.length(); i++) {
 			char ch = executedExamId.charAt(i);
 
@@ -1164,13 +1153,10 @@ public class TeacherControl extends UserControl implements Initializable {
 				return;
 			}
 		}
-		Time time = null;
-		time = time.valueOf(timeForExamHours.getText() + ":" + timeForExamMinute.getText() + ":00");
 		exam = new ExecutedExam();
 		exam.setExecutedExamID(executedExamId);
 		exam.setTeacherName(getMyUser().getUsername());
 		exam.setExam_id(examID);
-		exam.setSolutionTime(time.toString());
 		messageToServer[0] = "setExamCode";
 		messageToServer[1] = exam;
 		connect(this);
