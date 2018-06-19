@@ -361,7 +361,7 @@ public class TeacherControl extends UserControl implements Initializable {
 					} else {
 						questionObservableList.remove(questionObservableList.indexOf(questionSelected));
 						questionObservableList.add(oldQuestion);
-						Platform.runLater(() -> openScreen("ErrorMessage", "This question is in active exam."));
+						errorMsg("This question is in active exam.");
 						questionTableView.getSortOrder().setAll(qid);
 					}
 					break;
@@ -376,12 +376,12 @@ public class TeacherControl extends UserControl implements Initializable {
 							questionObservableList.remove(index);
 							questionTableView.refresh();
 						} else {
-							Platform.runLater(() -> openScreen("ErrorMessage", "This question is in active exam."));
+							errorMsg( "This question is in active exam.");
 						}
 					}
 					else
 					{
-						Platform.runLater(() -> openScreen("ErrorMessage", "This question is in exam, first delete the exam"));
+						errorMsg( "This question is in exam, first delete the exam");
 					}
 					break;
 				}
@@ -459,7 +459,7 @@ public class TeacherControl extends UserControl implements Initializable {
 							}
 						});
 					} catch (NullPointerException exception) {
-						Platform.runLater(() -> openScreen("ErrorMessage", "exam does not have any question"));
+						errorMsg( "exam does not have any question");
 						blockPassQuestionButton = false;
 
 					}
@@ -490,7 +490,7 @@ public class TeacherControl extends UserControl implements Initializable {
 					} else {
 						exams.remove(exams.indexOf(examSelected));
 						exams.add(oldExam);
-						Platform.runLater(() -> openScreen("ErrorMessage", "This exam is in active exam."));
+						errorMsg("This exam is in active exam.");
 						examsTableView.getSortOrder().setAll(questionIDTable);
 					}
 					break;
@@ -502,7 +502,7 @@ public class TeacherControl extends UserControl implements Initializable {
 						exams.remove(exams.indexOf(examSelected));
 					} else {
 
-						Platform.runLater(() -> openScreen("ErrorMessage", "This exam is in active exam."));
+						errorMsg("This exam is in active exam.");
 					}
 					break;
 				}
@@ -806,7 +806,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		if(questionSelected == null)
 		{
-			openScreen("ErrorMessage", "Please select question");
+			errorMsg("Please select question");
 			return;
 		}
 		messageToServer[0] = "deleteQuestion";
@@ -820,11 +820,11 @@ public class TeacherControl extends UserControl implements Initializable {
 	/* create a new question */
 	public void createQuestionClick(ActionEvent e) throws IOException {
 		if (subjectsComboBox.getValue() == null) {
-			openScreen("ErrorMessage", "Please choose subject");
+			errorMsg("Please choose subject");
 			return;
 		}
 		if (courseInCreateQuestion.getItems().isEmpty()) {
-			openScreen("ErrorMessage", "Please choose course");
+			errorMsg("Please choose course");
 			return;
 		}
 		Question question;
@@ -845,7 +845,7 @@ public class TeacherControl extends UserControl implements Initializable {
 
 		if ((answer1.getText().equals("")) || ((answer2.getText().equals(""))) || (answer3.getText().equals(""))
 				|| (answer4.getText().equals("")) || (correctAnswer == 0) || (questionName.getText().equals(""))) {
-			openScreen("ErrorMessage", "Not all fields are completely full");
+			errorMsg("Not all fields are completely full");
 		} else {
 			question = new Question(null, getMyUser().getUsername(), questionName.getText().trim(),
 					answer1.getText().trim(), answer2.getText().trim(), answer3.getText().trim(),
@@ -984,7 +984,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			tempExamId = exam.getE_id();
 			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 		} catch (NullPointerException exception) {
-			openScreen("ErrorMessage", "Please select exam");
+			errorMsg("Please select exam");
 		}
 	}
 	
@@ -1001,7 +1001,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			examSelected = examsTableView.getSelectionModel().getSelectedItem();
 			if(examSelected == null)
 			{
-				openScreen("ErrorMessage", "Please select exam");
+				errorMsg("Please select exam");
 				return;
 			}
 			messageToServer[0] = "deleteExam";
@@ -1019,29 +1019,29 @@ public class TeacherControl extends UserControl implements Initializable {
 		int sumOfPoints = 0;
 		if (timeForExamHours.getText().equals("") || timeForExamMinute.getText().equals("")
 				|| Integer.valueOf(timeForExamHours.getText()) < 0) {
-			openScreen("ErrorMessage", "Please fill time for exam");
+			errorMsg("Please fill time for exam");
 			return;
 		}
 		if (typeComboBox.getValue() == null) {
-			openScreen("ErrorMessage", "Please select the type of exam");
+			errorMsg("Please select the type of exam");
 			return;
 		}
 		if ((Integer.parseInt(timeForExamHours.getText()) <= 0 && Integer.parseInt(timeForExamMinute.getText()) <= 0)
 				|| (Integer.parseInt(timeForExamHours.getText()) > 99
 						|| Integer.parseInt(timeForExamMinute.getText()) > 99)) {
-			openScreen("ErrorMessage", "invalid time");
+			errorMsg("invalid time");
 			return;
 		}
 
 		for (QuestionInExam q : questionInExamObservable) {
 			sumOfPoints += q.getPoints();
 			if (q.getPoints() == 0) {
-				openScreen("ErrorMessage", "You cant set a question with 0 points.");
+				errorMsg("You cant set a question with 0 points.");
 				return;
 			}
 		}
 		if (sumOfPoints != 100) {
-			openScreen("ErrorMessage", "Points are not match to 100");
+			errorMsg("Points are not match to 100");
 			return;
 		}
 		Exam exam = new Exam();// creating a new exam;
@@ -1075,7 +1075,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	public void toQuestionInExam(ActionEvent e) {
 		int flag = 0;
 		if (questionTableView.getSelectionModel().getSelectedItem() == null) {
-			openScreen("ErrorMessage", "Please choose question");
+			errorMsg("Please choose question");
 			return;
 		}
 		if(!pageLabel.getText().equals("Update question in exam"))
@@ -1138,7 +1138,7 @@ public class TeacherControl extends UserControl implements Initializable {
 				coursesComboBox.setDisable(false);
 			}
 		} catch (RuntimeException exception) {
-			openScreen("ErrorMessage", "Please choose question to delete");
+			errorMsg("Please choose question to delete");
 			return;
 		}
 		// add the question back to the tableview
@@ -1150,12 +1150,12 @@ public class TeacherControl extends UserControl implements Initializable {
 		for (QuestionInExam q : questionInExamObservable) {
 			sumOfPoints += q.getPoints();
 			if (q.getPoints() == 0) {
-				openScreen("ErrorMessage", "You cant set a question with 0 points.");
+				errorMsg("You cant set a question with 0 points.");
 				return;
 			}
 		}
 		if (sumOfPoints != 100) {
-			openScreen("ErrorMessage", "Points are not match to 100");
+			errorMsg("Points are not match to 100");
 			return;
 		}
 		ArrayList<QuestionInExam> questioninexam = (ArrayList<QuestionInExam>) questionInExamObservable.stream()
@@ -1199,26 +1199,26 @@ public class TeacherControl extends UserControl implements Initializable {
 		String examID = examComboBox.getValue();
 		String executedExamId = examCode.getText();
 		if (subjectsComboBox.getValue() == null) {
-			openScreen("ErrorMessage", "Please choose subject");
+			errorMsg("Please choose subject");
 			return;
 		}
 		if (coursesComboBox.getValue() == null) {
-			openScreen("ErrorMessage", "Please choose course");
+			errorMsg("Please choose course");
 			return;
 		}
 		if (examComboBox.getValue() == null) {
-			openScreen("ErrorMessage", "Please choose exam");
+			errorMsg("Please choose exam");
 			return;
 		}
 		if (executedExamId.length() != 4) {
-			openScreen("ErrorMessage", "You must enter exactly 4 letters & number");
+			errorMsg("You must enter exactly 4 letters & number");
 			return;
 		}
 		for (int i = 0; i < executedExamId.length(); i++) {
 			char ch = executedExamId.charAt(i);
 
 			if (!((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9'))) {
-				openScreen("ErrorMessage", "You must enter only letters and numbers.");
+				errorMsg("You must enter only letters and numbers.");
 				return;
 			}
 		}
@@ -1255,16 +1255,16 @@ public class TeacherControl extends UserControl implements Initializable {
 	/* creating an extend time request */
 	public void createExtendTimeRequest(ActionEvent e) throws IOException {
 		if (timeForExamHours.getText().equals("") || timeForExamMinute.getText().equals("")) {
-			openScreen("ErrorMessage", "Please fill the time you want to extend by");
+			errorMsg("Please fill the time you want to extend by");
 			return;
 		}
 		if (reasonForChange.getText().trim().equals("")) {
-			openScreen("ErrorMessage", "Please fill the reason for changing the time");
+			errorMsg("Please fill the reason for changing the time");
 			return;
 		}
 		ExecutedExam executedexam = executedExamTableView.getSelectionModel().getSelectedItem();
 		if (executedexam == null) {
-			openScreen("ErrorMessage", "Please choose an exam");
+			errorMsg("Please choose an exam");
 			return;
 		}
 		RequestForChangingTimeAllocated request = new RequestForChangingTimeAllocated();
@@ -1291,7 +1291,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	public void lockExam(ActionEvent e) throws IOException {
 		ExecutedExam executedexam = executedExamTableView.getSelectionModel().getSelectedItem();
 		if (executedexam == null) {
-			openScreen("ErrorMessage", "Please choose an exam");
+			errorMsg("Please choose an exam");
 			return;
 		}
 		connect(this); // connecting to server
