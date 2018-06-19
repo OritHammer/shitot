@@ -31,20 +31,16 @@ import javafx.stage.Stage;
 public class UserControl implements Initializable {
 	@FXML
 	private TextField userName;
+	//*******homeScreenLabel***********//
 	@FXML
 	private Label userNameLabel;
 	@FXML
 	private Label authorLabel;
 	@FXML
 	private Label dateLabel;
+	//******login screen**********//
 	@FXML
 	private PasswordField password;
-	@FXML
-	private Label userNameError;
-	@FXML
-	private Label passwordError;
-	@FXML
-	private Label loginError;
 	@FXML
 	private Label errorMsg;
 	@FXML
@@ -339,7 +335,7 @@ public class UserControl implements Initializable {
 	public void setStudentAuthor_Date_name() {// *** move to userControl rename userDetails
 		userNameLabel.setText(getMyUser().getFullname());
 		dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
-		authorLabel.setText(""+user.getRole());
+		authorLabel.setText(""+myUser.getRole());
 	}
 
 	
