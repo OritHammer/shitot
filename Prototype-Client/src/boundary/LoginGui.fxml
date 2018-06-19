@@ -56,7 +56,7 @@
          <font>
             <Font name="System Bold Italic" size="14.0" />
          </font></Label>
-      <ImageView fx:id="errorImg" blendMode="MULTIPLY" fitHeight="59.0" fitWidth="103.0" layoutX="22.0" layoutY="271.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+      <ImageView fx:id="errorImg1" blendMode="MULTIPLY" fitHeight="59.0" fitWidth="103.0" layoutX="22.0" layoutY="271.0" pickOnBounds="true" preserveRatio="true" smooth="false">
          <effect>
             <Blend />
          </effect>

@@ -74,20 +74,13 @@ public class StudentControl extends UserControl implements Initializable {
 	private static ChatClient chat;
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
-	@FXML
-	private Label userNameLabel;
-	@FXML
-	private Label authorLabel;
-	@FXML
-	private Label dateLabel;
+	
 	@FXML
 	private TextField newMsgTextField;
 	@FXML
 	private ToggleGroup answers;
 	// move to user
-	private Calendar currentCalendar = Calendar.getInstance();
-	private Date currentTime = currentCalendar.getTime();
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
+	
 	/************************* Manual logo ***********************************/
 	@FXML
 	private ImageView wordLogo;
@@ -252,7 +245,7 @@ public class StudentControl extends UserControl implements Initializable {
 
 	}
 public void endExam(String message) {
-	Platform.runLater(() -> openScreen("ErrorMessage", message));
+	Platform.runLater(() -> errorMsg( message));
 	try {
 		questionContent.setText(message + "  click Finish");
 		correctRadioButton1.setVisible(false);
@@ -287,90 +280,29 @@ public void endExam(String message) {
 	}
 
 	/********************* general Functions *************************/
-	public void setStudentAuthor_Date_name() {// *** move to userControl rename userDetails
-		userNameLabel.setText(getMyUser().getFullname());
-		dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
-		authorLabel.setText("Student");
-	}
 
-	public void logoutPressed(ActionEvent e) throws Exception, SQLException { // *** move to userControl
-		connect(this);
-		messageToServer[0] = "logoutProcess";
-		messageToServer[1] = getMyUser().getUsername();
-		messageToServer[2] = null;
-		chat.handleMessageFromClientUI(messageToServer);// send the message to server
-		closeScreen(e);
-	}
+
+
 
 	
 	// the problem is with the fact that we create a new scene each time and we need
 	// to prevent it in that way
 	// ***
-	public void closeScreen(ActionEvent e) throws IOException, SQLException {
+/*	public void closeScreen(ActionEvent e) throws IOException, SQLException {
 		final Node source = (Node) e.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
 	}
-
-	// ***
-	private void openScreen(String screen) {// open a window of screen
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			if (screen.equals("LoginGui")) {
-				loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));
-			} else
-				loader.setLocation(getClass().getResource("/studentBoundary/" + screen + ".fxml"));
-			Scene scene = new Scene(loader.load());
-			Stage stage = Main.getStage();
-			if (screen.equals("NewDesignHomeScreenStudent")) {
-				StudentControl sControl = loader.getController();
-				sControl.setStudentAuthor_Date_name();
-			}
-			if (screen.equals("ErrorMessage")) {
-				ErrorControl tController = loader.getController();
-				tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
-				tController.setErrorMessage("ERROR");// send a the error to the alert we made
-			}
-			// stage.setTitle(screen);
-			stage.setScene(scene);
-			stage.show();
-
-		} catch (Exception exception) {
-			System.out.println("Error in opening the page");
-			exception.printStackTrace();
-		}
-	}
-
-	// ***
-	private void openScreen(String screen, String message) {
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));
-			Scene scene = new Scene(loader.load());
-			Stage stage = Main.getStage();
-			ErrorControl tController = loader.getController();
-			tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
-			tController.setErrorMessage(message);// send a the error to the alert we made
-			stage.setTitle("Error message");
-			stage.setScene(scene);
-			stage.show();
-		} catch (Exception exception) {
-			System.out.println("Error in opening the page");
-		}
-	}
-
-	// ***
+*/
 	@FXML
 	public void goToHomePressed(ActionEvent e) throws Exception {
 		closeScreen(e);
-		openScreen("NewDesignHomeScreenStudent");
-	}
-
+		openScreen("studentBoundary","NewDesignHomeScreenStudent");	}
 	/********************* Student Home Screen listeners *************************/
 	public void myGradesPressed(ActionEvent e) {
 		try {
 			closeScreen(e);
-			openScreen("MyGradesScreen");
+			openScreen("studentBoundary","MyGradesScreen");
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -383,7 +315,7 @@ public void endExam(String message) {
 	public void orderExamCopyPressed(ActionEvent e) {
 		try {
 			closeScreen(e);
-			openScreen("OrderExamCopyScreen");
+			openScreen("studentBoundary","OrderExamCopyScreen");
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -397,7 +329,7 @@ public void endExam(String message) {
 	public void excecuteMorCExamPressed(ActionEvent e) {
 		try {
 			closeScreen(e);
-			openScreen("ManualAndComputerizeExamScreen");
+			openScreen("studentBoundary","ManualAndComputerizeExamScreen");
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -444,10 +376,10 @@ public void endExam(String message) {
 	 ****************************/
 	public void excecuteExam(ActionEvent e) throws IOException, SQLException {// click on the button "execute exam"
 		if (codeTextField.getText().equals("") || userIDTextField.getText().equals((""))) {
-			openScreen("ErrorMessage", "Error in executed exam id");
+			errorMsg("Error in executed exam id");
 			return;
 		} else if (!userIDTextField.getText().equals((getMyUser().getUserID()))) {
-			openScreen("ErrorMessage", "Your ID is incorrect"); // if user ID isn't correct
+			errorMsg("Your ID is incorrect"); // if user ID isn't correct
 			return;
 		}
 		// everything fine
@@ -476,7 +408,7 @@ public void endExam(String message) {
 			try {
 				switch (msgFromServer[0].toString()) {
 				case "logoutProcess": {
-					openScreen("LoginGui");
+					openScreen("boundary","LoginGui");
 					break;
 				}
 				case "getExamsByUserName": {
@@ -485,10 +417,10 @@ public void endExam(String message) {
 				}
 				case "checkExecutedExam": {
 					if (msgFromServer[1] == null) {
-						Platform.runLater(() -> openScreen("ErrorMessage", "Can't perform this exam"));// לבדוק אם צריך
-																										// לרשום את
-																										// הסיבה
-																										// לכך
+						Platform.runLater(() -> errorMsg("Can't perform this exam"));
+																										
+																										
+																										
 						return;
 					}
 					checkExecutedExam((Object[]) msgFromServer);
@@ -566,9 +498,9 @@ public void endExam(String message) {
 			Runtime.getRuntime()
 					.exec("rundll32 url.dll,FileProtocolHandler " + "Exams for student\\" + file.getFileName());
 
-			Platform.runLater(() -> openScreen("ManualExam"));
+			Platform.runLater(() -> openScreen("studentBoundary","ManualExam"));
 		} else {
-			Platform.runLater(() -> openScreen("ComputerizedExam"));
+			Platform.runLater(() -> openScreen("studentBoundary","ComputerizedExam"));
 
 		}
 	}
@@ -597,7 +529,7 @@ public void endExam(String message) {
 						e.printStackTrace();
 					}
 				} else {
-					openScreen("ComputerizedExam");
+					openScreen("studentBoundary","ComputerizedExam");
 				}
 			}
 		});
@@ -809,7 +741,7 @@ public void endExam(String message) {
 				e1.printStackTrace();
 			}
 		}
-		openScreen("NewDesignHomeScreenStudent");
+		openScreen("studentBoundary","NewDesignHomeScreenStudent");
 
 		if (copyFlag == true) {
 			index = -1;

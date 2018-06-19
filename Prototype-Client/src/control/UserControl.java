@@ -2,6 +2,10 @@ package control;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -12,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,32 +27,28 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
+  
 public class UserControl implements Initializable {
 	@FXML
 	private TextField userName;
-	
+	//*******homeScreenLabel***********//
+	@FXML
+	private Label userNameLabel;
+	@FXML
+	private Label authorLabel;
+	@FXML
+	private Label dateLabel;
+	//******login screen**********//
 	@FXML
 	private PasswordField password;
-	@FXML
-	private Label userNameError;
-	@FXML
-	private Label passwordError;
-	@FXML
-	private Label loginError;
 	@FXML
 	private Label errorMsg;
 	@FXML
 	private ImageView errorImg;
 	@FXML
-	private Label errorMsg1;
-	@FXML
-	private Label errorMsg2;
-	@FXML
-	private Label errorMsg3;
+	private ImageView errorImg1;
 	@FXML
 	private Button LoginBtn;
-
 	@FXML
 	private ImageView LoginButton;
 	@FXML
@@ -56,7 +57,12 @@ public class UserControl implements Initializable {
 	private Label userText1;
 	@FXML
 	private javafx.scene.control.Button closeButton;
-
+//class variables 
+	//date and author variables
+	private Calendar currentCalendar = Calendar.getInstance();
+	private Date currentTime = currentCalendar.getTime();
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
+	//FMXL variables
 	private Parent home_page_parent;
 	private Scene home_page_scene;
 	static Thread th;
@@ -97,6 +103,7 @@ public class UserControl implements Initializable {
 		sc.close(); 
 		errorMsg.setVisible(false);
 		errorImg.setVisible(false);
+		errorImg1.setVisible(false);
 		LoginBtn.setDefaultButton(true);
 	}
  
@@ -109,6 +116,7 @@ public class UserControl implements Initializable {
 				Platform.runLater(()->	{
 					errorMsg.setVisible(true);
 					errorImg.setVisible(true);
+					errorImg1.setVisible(true);
 				});
 			
 				return;
@@ -213,27 +221,26 @@ public class UserControl implements Initializable {
 			e.printStackTrace();
 		}
 	}
-
+/*check if the details of user is in the system */
 	public void loginPressed(ActionEvent e) throws IOException {
-		/*errorMsg.setVisible(false);
-		errorMsg1.setVisible(false);
-		errorMsg2.setVisible(false);
-		errorMsg3.setVisible(false);*/
 		  connect(this);
 		  if (userName.getText().equals("") && password.getText().equals(""))
 		  {
 			  errorMsg.setVisible(true);
 		  	errorImg.setVisible(true);
+			errorImg1.setVisible(true);
 		  }
 		  else if(userName.getText().equals(""))
 		  {
 			  errorMsg.setVisible(true);
 			errorImg.setVisible(true);
+			errorImg1.setVisible(true);
 		  }
 			else if(password.getText().equals(""))
 			{
 				errorMsg.setVisible(true);
 				errorImg.setVisible(true);
+	 			errorImg1.setVisible(true);
 			}
 				else {
 		   messageToServer[0] = "checkUserDetails";
@@ -267,14 +274,69 @@ public class UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 
-	
 	public static User getMyUser() {
 		return myUser;
 	}
 
-	
 	public static void setMyUser(User myUser) {
 		UserControl.myUser = myUser;
 	}
 
+	/****************functions To Use Of all users*******************************/
+	public void openScreen(String boundary,String screen) {// open windows
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/"+boundary+"/" + screen + ".fxml"));
+			Scene scene = new Scene(loader.load());
+			Stage stage = Main.getStage();
+	/*		if (screen.equals("ErrorMessage")) {
+				ErrorControl dController = loader.getController();
+				dController.setBackwardScreen(stage.getScene());// send the name to the controller 
+				dController.setErrorMessage("ERROR");// send a the error to the alert we made
+			} */
+			stage.setTitle(screen);
+			stage.setScene(scene);
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error in opening the page");
+		}
+	}
+
+	public void errorMsg(String message) {// for error message
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/boundary/" + "ErrorMessage" + ".fxml"));
+			Scene scene = new Scene(loader.load());
+			Stage stage = Main.getStage();
+			ErrorControl tController = loader.getController();
+			tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
+			tController.setErrorMessage(message);// send a the error to the alert we made
+			stage.setTitle("ErrorMessage");
+			stage.setScene(scene);
+			stage.show();
+		} catch (Exception exception) {
+			System.out.println("Error in opening the page");
+		}
+	}
+	public void closeScreen(ActionEvent e) throws IOException, SQLException {
+		final Node source = (Node) e.getSource();
+		Stage stage = (Stage) source.getScene().getWindow();
+		stage.close();
+	}
+	public void logoutPressed(ActionEvent e) throws Exception, SQLException { // *** move to userControl
+		connect(this);
+		messageToServer[0] = "logoutProcess";
+		messageToServer[1] = getMyUser().getUsername();
+		messageToServer[2] = null;
+		chat.handleMessageFromClientUI(messageToServer);// send the message to server
+		closeScreen(e);
+	}
+	public void setStudentAuthor_Date_name() {// *** move to userControl rename userDetails
+		userNameLabel.setText(getMyUser().getFullname());
+		dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
+		authorLabel.setText(""+myUser.getRole());
+	}
+
+	
 }
