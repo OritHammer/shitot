@@ -52,6 +52,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 public class StudentControl extends UserControl implements Initializable {
+	
+	
 	private static ArrayList<Question> questioninexecutedexam;
 	private static HashMap<String, Integer> examAnswers;// saves the question id and the answers
 	private static Time solutionTime;
@@ -66,6 +68,10 @@ public class StudentControl extends UserControl implements Initializable {
 	private Boolean isBoolean = false;
 	protected static MouseEvent tempEvent;
 
+	/**********************AddTime Variables***************************/
+	private static ArrayList<String> requestId;
+	
+	private static ChatClient chat;
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
 	@FXML
@@ -159,10 +165,20 @@ public class StudentControl extends UserControl implements Initializable {
 	private Label selectedAnswer;
 
 	/************************ Class Methods *************************/
+	public void connect(UserControl user) {
+		try {
+			chat = new ChatClient(ip, DEFAULT_PORT, user);
+		} catch (IOException exception) {
+			System.out.println("Error: Can't setup connection!" + " Terminating client.");
+			System.exit(1);
+		}
+	}
 	public void initialize(URL url, ResourceBundle rb) {
 		// connect(this);
+		
 		switch (pageLabel.getText()) {
 		case ("Perform exam"): {
+			
 			correctRadioButton1.setVisible(true);
 			correctRadioButton2.setVisible(true);
 			correctRadioButton3.setVisible(true);
@@ -179,6 +195,7 @@ public class StudentControl extends UserControl implements Initializable {
 				nextQuestion(null);
 			prevBTN.setVisible(false);
 			if (copyFlag == false) {
+				requestId=new ArrayList<String>();
 				examAnswers = new HashMap<String, Integer>();
 				nextQuestion(null);
 				// timerTextField.setText("123");
@@ -203,16 +220,25 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 
 	private void startTime() {
-		remainTime = solutionTime.getHours() * 3600 + solutionTime.getMinutes() * 60 + solutionTime.getSeconds();// reamain
-																													// is
-																													// the
-																													// time
-																													// in
-																													// seconds
+		final StudentControl sControl=this;
+		try {
+			chat=new ChatClient(ip, DEFAULT_PORT, sControl);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		remainTime = solutionTime.getHours() * 3600 + solutionTime.getMinutes() * 60 + solutionTime.getSeconds();// remain is the time is seconds
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				int sec = setInterval();
+				
+					connect(sControl);
+//					messageToServer[0] = "isChanged";
+//					messageToServer[1] = getMyUser().getUsername();
+//					messageToServer[2] = executedID;
+//					chat.handleMessageFromClientUI(messageToServer);// send the message to server
+				
 				if (remainTime == 1) {
 					Platform.runLater(() -> openScreen("ErrorMessage", "Time is over"));
 					try {
@@ -443,6 +469,7 @@ public class StudentControl extends UserControl implements Initializable {
 			e1.printStackTrace();
 		}
 		final Object[] msgFromServer = (Object[]) message;
+		System.out.println(msgFromServer[0].toString());
 		Platform.runLater(() -> {
 			try {
 				switch (msgFromServer[0].toString()) {
@@ -466,7 +493,9 @@ public class StudentControl extends UserControl implements Initializable {
 					break;
 				}
 				case "addTime": {
+	//				if(requestId.contains(arg0))
 					addTimeToExam(msgFromServer);
+					
 					break;
 				}
 				case "showingCopy":
@@ -564,12 +593,15 @@ public class StudentControl extends UserControl implements Initializable {
 
 	@SuppressWarnings("deprecation")
 	public void addTimeToExam(Object[] message) {
+		if(!requestId.contains((String)message[3])) {
+		requestId.add((String)message[3]);
 		int timeToAdd;
 		Time timeFromMessage = (Time) message[2];
 		if (executedID.equals((String) message[1])) {// if the student perform the relevant exam
 			timeToAdd = timeFromMessage.getHours() * 3600 + timeFromMessage.getMinutes() * 60
 					+ timeFromMessage.getSeconds();// reamin time is he time in secods
 			remainTime += timeToAdd;
+		}
 		}
 	}
 
