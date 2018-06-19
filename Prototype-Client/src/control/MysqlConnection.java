@@ -243,7 +243,7 @@ public class MysqlConnection {
 			ResultSet rs = stmt.executeQuery("SELECT  E.exam_id  , stdE.grade  , stdE.date , E.executedExamID "
 					+ " FROM shitot.executedexam  E , shitot.studentperformedexam  stdE "
 					+ "WHERE E.executedExamID = stdE.executedexam_id AND stdE.student_UserName =\"" + userName
-					+ "\" AND E.status = 'close' AND stdE.isApproved='approved' ; ");
+					+ "\" AND E.status = 'checked' AND stdE.isApproved='approved' ; ");
 			/*
 			 * if (!rs.first()) { return null; }
 			 */
@@ -1141,4 +1141,20 @@ public class MysqlConnection {
 		return studentGradesList;
 	}
 
+	/* lock the exam if there isn't exam to check */
+	public boolean checkIfAllExecutedExamChecked(Object executedExamID) {
+		boolean moreStudentsInThisExecutedExam=false;
+		String executedID=(String)executedExamID;
+		ResultSet rs = null;
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT count(*) FROM shitot.studentincourse SIC,shitot.executedexam "
+					+ "E WHERE E.exam_id LIKE CONCAT('__',SIC.course_ID, '%') AND E.executedExamID=\""+executedID+"\";");
+			rs.next();
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return moreStudentsInThisExecutedExam;
+	}
 }

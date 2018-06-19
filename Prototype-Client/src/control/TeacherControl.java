@@ -1231,5 +1231,5 @@ public class TeacherControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 	
-	
+	/*********************************************************** Check exam ************************************************************/
 }
