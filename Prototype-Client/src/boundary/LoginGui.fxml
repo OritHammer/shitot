@@ -15,7 +15,7 @@
             <Image url="@../../Copywriting-Master-Class-Owl-200x175.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="440.0" fitWidth="347.0" layoutY="-1.0" opacity="0.48">
+      <ImageView fitHeight="440.0" fitWidth="350.0" layoutY="-1.0" opacity="0.48">
          <image>
             <Image url="@../../colorful-bricks-1200309.jpg" />
          </image>
@@ -34,26 +34,37 @@
             </Label>
          </children>
       </Group>
-      <Label layoutX="106.0" layoutY="-1.0" text="login">
+      <Label layoutX="101.0" layoutY="9.0" text="login">
          <font>
             <Font name="Agency FB" size="96.0" />
          </font>
       </Label>
-      <Label layoutX="100.0" layoutY="118.0" text="User Name">
+      <Label layoutX="77.0" layoutY="134.0" text="User Name">
          <font>
             <Font name="Agency FB Bold" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="userName" layoutX="101.0" layoutY="142.0" prefHeight="25.0" prefWidth="149.0" promptText="please enter your ID" />
-      <Label layoutX="103.0" layoutY="173.0" text="Password">
+      <TextField fx:id="userName" layoutX="80.0" layoutY="158.0" prefHeight="25.0" prefWidth="183.0" promptText="please enter your ID" />
+      <Label layoutX="80.0" layoutY="189.0" text="Password">
          <font>
             <Font name="Agency FB Bold" size="18.0" />
          </font>
       </Label>
-      <PasswordField fx:id="password" layoutX="100.0" layoutY="195.0" prefHeight="25.0" prefWidth="149.0" promptText="please enter your password" />
-      <Button fx:id="LoginBtn" layoutX="152.0" layoutY="226.0" mnemonicParsing="false" onAction="#loginPressed" text="login" />
-      <Label fx:id="errorMsg" layoutX="125.0" layoutY="255.0" text="wrong password" />
-      <ImageView fx:id="errorImg" blendMode="MULTIPLY" fitHeight="90.0" fitWidth="104.0" layoutX="125.0" layoutY="262.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+      <PasswordField fx:id="password" layoutX="79.0" layoutY="211.0" prefHeight="25.0" prefWidth="183.0" promptText="please enter your password" />
+      <Button fx:id="LoginBtn" layoutX="152.0" layoutY="243.0" mnemonicParsing="false" onAction="#loginPressed" text="login" />
+      <Label fx:id="errorMsg" layoutX="77.0" layoutY="294.0" text="wrong password or user name">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font></Label>
+      <ImageView fx:id="errorImg" blendMode="MULTIPLY" fitHeight="59.0" fitWidth="103.0" layoutX="22.0" layoutY="271.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+         <effect>
+            <Blend />
+         </effect>
+         <image>
+            <Image url="@../../Error.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="errorImg" blendMode="MULTIPLY" fitHeight="59.0" fitWidth="103.0" layoutX="273.0" layoutY="271.0" pickOnBounds="true" preserveRatio="true" smooth="false">
          <effect>
             <Blend />
          </effect>
