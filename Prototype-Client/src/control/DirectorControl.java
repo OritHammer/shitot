@@ -228,9 +228,9 @@ public class DirectorControl extends UserControl implements Initializable {
 	public void checkMessage(Object message) {
 		try {
 			chat.closeConnection();// close the connection
-			if (refreshPressed)
-				refreshPressed = false;
-			else {
+	/*		if (refreshPressed)
+				refreshPressed = false;            
+			else { */
 				final Object[] msg = (Object[]) message;
 				Platform.runLater(() -> {
 					try {
@@ -284,7 +284,8 @@ public class DirectorControl extends UserControl implements Initializable {
 								average += e.getAverage() * e.getNumOfStudentStarted();
 								sumStudent += e.getNumOfStudentStarted();
 							}
-							averageTextField.setText(" " + (average / (float) sumStudent));
+							if (sumStudent > 0)
+								averageTextField.setText(" " + (average / (float) sumStudent));
 							Collections.sort(GradeList);
 							if (GradeList.size() > 1)
 								medianTextField.setText(" " + GradeList.get((GradeList.size() / 2) - 1));
@@ -318,7 +319,8 @@ public class DirectorControl extends UserControl implements Initializable {
 								else if (grade > 94)// grade between 95to100
 									sumGradeRanges[5]++;
 							}
-							averageTextField.setText(" " + sum / studentGradeList.size());
+							if (studentGradeList.size() > 0)
+								averageTextField.setText(" " + sum / studentGradeList.size());
 							ShowHistogramInBarChart();
 						}
 
@@ -327,7 +329,7 @@ public class DirectorControl extends UserControl implements Initializable {
 						openScreen("ErrorMessage", "There is no exams");
 					}
 				});
-			}
+		//	}
 		} catch (NullPointerException e) {
 			openScreen("ErrorMessage", "There is no request to confirm .");
 		} catch (IOException e) {
@@ -454,7 +456,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			chooseUserComboBox.setDisable(true);
 			if (reportByChoose.equals("Teacher"))
 				messageToServer[0] = "getReportByTeacher";
-			else 
+			else
 				messageToServer[0] = "getReportByStudent";
 			messageToServer[1] = userName;
 			messageToServer[2] = null;
@@ -505,14 +507,14 @@ public class DirectorControl extends UserControl implements Initializable {
 	}
 
 	public void refreshPress() {
-
-		if (barChart.getData() != null)
-			clearData();
-		reportByComboBox.setDisable(false);
+		
 		chooseUserComboBox.getSelectionModel().clearSelection();
 		reportByComboBox.getSelectionModel().clearSelection();
 		subjectsComboBox.getSelectionModel().clearSelection();
 		coursesComboBox.getSelectionModel().clearSelection();
+		if (barChart.getData() != null)
+			clearData();
+		reportByComboBox.setDisable(false);
 		chooseCourseLabel.setVisible(false);
 		chooseSubjectLabel.setVisible(false);
 		chooseUserNameLabel.setVisible(false);
@@ -523,10 +525,15 @@ public class DirectorControl extends UserControl implements Initializable {
 		medianTextField.clear();
 		averageTextField.clear();
 		initWindow();
+		refreshPressed = false;
 	}
 
 	public void refreshPressListener(ActionEvent e) {
-		refreshPressed = true;
-		refreshPress();
+		
+		 refreshPressed = true; 
+		 refreshPress();
+		 
+	/*	((Stage) ((Node) e.getSource()).getScene().getWindow()).close();
+		openScreen("statisticReportDirector"); */
 	}
 }
