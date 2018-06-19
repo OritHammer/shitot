@@ -638,14 +638,14 @@ public class MysqlConnection {
 				Date date = new Date();
 				stmt.executeUpdate("INSERT INTO shitot.executedexam VALUES(\"" + exam.getExecutedExamID().trim()
 						+ "\",0,0,0,0,0,\"" + exam.getTeacherName() + "\",\"" + exam.getExam_id()
-						+ "\",0,0,0,0,0,0,\"open\",\"" + dateFormat.format(date) + "\", '00:00:15');");
-				return true;
+						+ "\",0,0,0,0,0,0,\"open\",\"" + dateFormat.format(date) + "\", (select e.solutionTime\r\n" + 
+								" from exams as e where e.e_id = \""+exam.getExam_id()+"\"));");
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
+		return(true);
 		// stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
 
 	}
@@ -753,6 +753,7 @@ public class MysqlConnection {
 		if (canPerformExam) {
 			details[0] = getQuestionByExecutedExam(executedExamID);
 			details[1] = getExamsByExecutedExam(executedExamID);
+			updateStudentToExecutedExam(executedExamID);
 		} else {
 			return (null);
 		}
@@ -1147,8 +1148,8 @@ public class MysqlConnection {
 		String executedID=(String)executedExamID;
 		ResultSet rs = null;
 		try {
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT count(*) FROM shitot.studentincourse SIC,shitot.executedexam "
+			stmt = conn.createStatement();//לסיים את השאילתא
+			rs = stmt.executeQuery("SELECT count(SIC.studentUserName) FROM shitot.studentincourse SIC,shitot.executedexam "
 					+ "E WHERE E.exam_id LIKE CONCAT('__',SIC.course_ID, '%') AND E.executedExamID=\""+executedID+"\";");
 			rs.next();
 			rs.close();
@@ -1156,5 +1157,33 @@ public class MysqlConnection {
 			e.printStackTrace();
 		}
 		return moreStudentsInThisExecutedExam;
+	}
+	
+	public void updateStudentToExecutedExam(Object executedExamID) {
+		
+		String executedID=(String)executedExamID;
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("update shitot.executedexam set numOfStudentStarted = numOfStudentStarted+1 "
+					+ "where executedexam.executedExamID = \""+executedExamID+"\" ; ");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void setRealTimeOfExecutedExam(Object executedExamID) {
+		String executedID=(String) executedExamID;
+		try {
+			stmt = conn.createStatement();//ליאור המר
+			stmt.executeUpdate("UPDATE shitot.executedexam SET actuallySolutionTime = actuallySolutionTime + "+
+					"(SELECT request.timeAdded FROM requestforchangingtimeallocated as request WHERE"
+					+ " request.IDexecutedExam = \""+executedID+"\") "
+					+ "WHERE executedexam.executedExamID = \""+executedID+"\";");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+
 	}
 }
