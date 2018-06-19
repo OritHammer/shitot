@@ -164,63 +164,27 @@ public class DirectorControl extends UserControl implements Initializable {
 			Stage stage = (Stage) source.getScene().getWindow();
 			// stage.close();
 			stage.close();
-			openScreen("TimeRequestTable");
+			openScreen("directorBoundary","TimeRequestTable");
 		});
 	}
 
 	public void openStatisticReport(ActionEvent e) {
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding homePage window
-		openScreen("statisticReportDirector");
+		openScreen("directorBoundary","statisticReportDirector");
 	}
 
 	public void openSystemInformation(ActionEvent e) {
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding homePage window
-		openScreen("systemInformationDirector");
+		openScreen("directorBoundary","systemInformationDirector");
 	}
 
-	private void openScreen(String screen) {// open the windows after login
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/directorBoundary/" + screen + ".fxml"));
-			Scene scene = new Scene(loader.load());
-			Stage stage = Main.getStage();
-			if (screen.equals("ErrorMessage")) {
-				ErrorControl dController = loader.getController();
-				dController.setBackwardScreen(stage.getScene());/* send the name to the controller */
-				dController.setErrorMessage("ERROR");// send a the error to the alert we made
-			}
-			stage.setTitle(screen);
-			stage.setScene(scene);
-			stage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Error in opening the page");
-		}
-	}
-
-	private void openScreen(String screen, String message) {// for error message
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));
-			Scene scene = new Scene(loader.load());
-			Stage stage = Main.getStage();
-			ErrorControl tController = loader.getController();
-			tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
-			tController.setErrorMessage(message);// send a the error to the alert we made
-			stage.setTitle("ErrorMessage");
-			stage.setScene(scene);
-			stage.show();
-		} catch (Exception exception) {
-			System.out.println("Error in opening the page");
-		}
-	}
-
+	
 	/* cancel button was pressed */
 	public void backButtonPressed(ActionEvent e) throws IOException, SQLException {
 		final Node source = (Node) e.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
-		openScreen("HomeScreenDirector");
+		openScreen("directorBoundary","HomeScreenDirector");
 	}
 
 	// ***********check the message that arrived from server**************//
@@ -326,18 +290,18 @@ public class DirectorControl extends UserControl implements Initializable {
 
 						}
 					} catch (IndexOutOfBoundsException e) {
-						openScreen("ErrorMessage", "There is no exams");
+						errorMsg("There is no exams");
 					}
 				});
 		//	}
 		} catch (NullPointerException e) {
-			openScreen("ErrorMessage", "There is no request to confirm .");
+			errorMsg("There is no request to confirm .");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ArrayIndexOutOfBoundsException e) {
-			openScreen("ErrorMessage", "There is no exams");
-		}
+		} /*catch (ArrayIndexOutOfBoundsException e) {
+			errorMsg("There is no exams");
+		}*/
 	}
 
 	/*******************************************************
@@ -346,7 +310,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	public void showDetailsButtonPressed(ActionEvent e) {
 		requestId = (requestsTable.getSelectionModel().getSelectedItems().get(0).getRequestID());
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding homePage window
-		openScreen("addingTimeRequest");
+		openScreen("directorBoundary","addingTimeRequest");
 	}
 
 	@SuppressWarnings("unchecked") // showing list of request that waiting to answer
@@ -532,8 +496,5 @@ public class DirectorControl extends UserControl implements Initializable {
 		
 		 refreshPressed = true; 
 		 refreshPress();
-		 
-	/*	((Stage) ((Node) e.getSource()).getScene().getWindow()).close();
-		openScreen("statisticReportDirector"); */
 	}
 }

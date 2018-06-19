@@ -263,14 +263,51 @@ public class UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 
-	
 	public static User getMyUser() {
 		return myUser;
 	}
 
-	
 	public static void setMyUser(User myUser) {
 		UserControl.myUser = myUser;
 	}
 
+	/****************functions To Use Of all users*******************************/
+	public void openScreen(String boundary,String screen) {// open windows
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/"+boundary+"/" + screen + ".fxml"));
+			Scene scene = new Scene(loader.load());
+			Stage stage = Main.getStage();
+	/*		if (screen.equals("ErrorMessage")) {
+				ErrorControl dController = loader.getController();
+				dController.setBackwardScreen(stage.getScene());// send the name to the controller 
+				dController.setErrorMessage("ERROR");// send a the error to the alert we made
+			} */
+			stage.setTitle(screen);
+			stage.setScene(scene);
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error in opening the page");
+		}
+	}
+
+	public void errorMsg(String message) {// for error message
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/boundary/" + "ErrorMessage" + ".fxml"));
+			Scene scene = new Scene(loader.load());
+			Stage stage = Main.getStage();
+			ErrorControl tController = loader.getController();
+			tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
+			tController.setErrorMessage(message);// send a the error to the alert we made
+			stage.setTitle("ErrorMessage");
+			stage.setScene(scene);
+			stage.show();
+		} catch (Exception exception) {
+			System.out.println("Error in opening the page");
+		}
+	}
+
+	
 }
