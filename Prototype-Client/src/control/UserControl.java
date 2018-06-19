@@ -19,6 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -293,20 +294,7 @@ public class UserControl implements Initializable {
 	}
 
 	public void errorMsg(String message) {// for error message
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/boundary/" + "ErrorMessage" + ".fxml"));
-			Scene scene = new Scene(loader.load());
-			Stage stage = Main.getStage();
-			ErrorControl tController = loader.getController();
-			tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
-			tController.setErrorMessage(message);// send a the error to the alert we made
-			stage.setTitle("ErrorMessage");
-			stage.setScene(scene);
-			stage.show();
-		} catch (Exception exception) {
-			System.out.println("Error in opening the page");
-		}
+		new Alert(Alert.AlertType.ERROR, message).showAndWait();
 	}
 	public void closeScreen(ActionEvent e) throws IOException, SQLException {
 		final Node source = (Node) e.getSource();

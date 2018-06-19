@@ -656,26 +656,6 @@ public class TeacherControl extends UserControl implements Initializable {
 	public void openLockExamScreen(ActionEvent e) throws IOException {
 		openScreen("LockExam");
 	}
-
-	/* open the screen ErrorMessage and sending an object */
-	public void openScreen(String screen, Object message) {
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/boundary/" + screen + ".fxml"));
-			Scene scene = new Scene(loader.load());
-			scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
-			Stage stage = Main.getStage();
-			ErrorControl tController = loader.getController();
-			
-			tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
-			tController.setErrorMessage((String) message);// send a the error to the alert we made
-			stage.setTitle("Error message");
-			stage.setScene(scene);
-			stage.show();
-		} catch (Exception exception) {
-			System.out.println("Error in opening the page");
-		}
-	}
 	
 	/* open the screen ErrorMessage and sending an object */
 	public void openScreen(String screen) {
