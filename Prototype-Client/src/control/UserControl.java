@@ -229,7 +229,7 @@ public class UserControl implements Initializable {
 			{
 				errorMsg.setVisible(true);
 				errorImg.setVisible(true);
-				errorImg1.setVisible(true);
+	 			errorImg1.setVisible(true);
 			}
 				else {
 		   messageToServer[0] = "checkUserDetails";
