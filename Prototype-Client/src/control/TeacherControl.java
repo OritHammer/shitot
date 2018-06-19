@@ -1,5 +1,6 @@
 package control;
-
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -30,6 +31,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -37,6 +39,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.ComboBoxTableCell;
@@ -44,6 +47,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -64,6 +68,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	private ObservableList<Exam> exams;
 	private Question questionSelected;
 	private Question oldQuestion;
+	private StudentPerformExam studentInExamRow;
 	private static String tempExamId;
 	private Exam examSelected;
 	private Exam oldExam;
@@ -79,6 +84,15 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private Label pageLabel;
 
+	
+	@FXML
+    private TextArea reason;
+
+    @FXML
+    private TextField newGrade;
+
+
+	
 	@FXML
 	private TextField answer1;
 	@FXML
@@ -239,16 +253,29 @@ public class TeacherControl extends UserControl implements Initializable {
 	    }
 	    
 	    public void finalChange(ActionEvent event)  {
+	    	if(newGrade.getText().equals("") && reason.getText().equals(""))
+	    		new Alert(Alert.AlertType.ERROR, "You must enter values.").showAndWait();
+	    	else if(newGrade.getText().equals("") || !(Integer.parseInt(newGrade.getText())>= 0 && Integer.parseInt(newGrade.getText()) <= 100))
+	    		new Alert(Alert.AlertType.ERROR, "The grade must be between 0-100").showAndWait();
+	    	else if(reason.getText().equals(""))
+	    		new Alert(Alert.AlertType.ERROR, "If you want to change the grade u must enter a reason").showAndWait();
+	    	else
+	    	{
+	    		studentInExamRow.setGrade(Float.parseFloat(newGrade.getText()));
+	    		studentInExamRow.setReasonForChangeGrade(reason.getText());
+	    	}
 	    	
 	    }
 	    
 	    public void changeGrade(ActionEvent event) throws IOException {
-	    	//if(studnetInExamTableView.getSelectionModel().getSelectedItem() == null)
-	    		//return;
+	    	studentInExamRow = studnetInExamTableView.getSelectionModel().getSelectedItem();
+	    	if(studentInExamRow == null)
+	    		return;
             final Stage dialog = new Stage();
             final Node source = (Node) event.getSource();
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.initOwner((Stage) source.getScene().getWindow());
+            
     		AnchorPane myPane = FXMLLoader.load(getClass().getResource("/boundary/ChangeGrade.fxml"));
             Scene dialogScene = new Scene(myPane);
             dialog.setScene(dialogScene);
