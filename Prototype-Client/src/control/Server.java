@@ -303,6 +303,7 @@ public class Server extends AbstractServer {
 		case "setExecutedExamLocked": {
 			Boolean isLocked = con.setExecutedExamLocked(message[1]);
 			serverMessage[1] = isLocked;
+			serverMessage[2]=message[1];
 			this.sendToAllClients(serverMessage);
 			break;
 		}
