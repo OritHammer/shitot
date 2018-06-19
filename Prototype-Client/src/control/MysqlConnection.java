@@ -632,9 +632,13 @@ public class MysqlConnection {
 				rs.close();
 				return false;
 			} else {
+				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+				SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
+				Calendar cal = Calendar.getInstance();
+				Date date = new Date();
 				stmt.executeUpdate("INSERT INTO shitot.executedexam VALUES(\"" + exam.getExecutedExamID().trim()
 						+ "\",0,0,0,0,0,\"" + exam.getTeacherName() + "\",\"" + exam.getExam_id()
-						+ "\",0,0,0,0,0,0,\"open\");");
+						+ "\",0,0,0,0,0,0,\"open\",\"" + dateFormat.format(date) + "\",\"" + exam.getSolutionTime() + "\");");
 				return true;
 			}
 

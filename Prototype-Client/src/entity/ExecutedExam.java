@@ -19,6 +19,8 @@ public class ExecutedExam implements Serializable,Comparable {
 	private int range85to94;
 	private int range95to100;
 	private String status;
+	private String date;
+	private String SolutionTime;
 	
 	
 	public ExecutedExam(String executedExamID, int numOfStudentStarted, int numOfStudentFinished,
@@ -144,6 +146,18 @@ public class ExecutedExam implements Serializable,Comparable {
 		if (this.average==temp.average) return 0;
 		if (this.average>temp.average) return 1;
 		return -1;
+	}
+	public String getSolutionTime() {
+		return SolutionTime;
+	}
+	public void setSolutionTime(String solutionTime) {
+		SolutionTime = solutionTime;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
 	}
 	
 	

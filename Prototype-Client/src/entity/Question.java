@@ -87,12 +87,4 @@ public class Question implements Serializable{
 		return serialVersionUID;
 	}
 
-	public Button getButton() {
-		return button;
-	}
-
-	public void setButton(Button button) {
-		this.button = button;
-	}
-	
 	}

@@ -59,8 +59,6 @@ public class TeacherControl extends UserControl implements Initializable {
 	private static boolean blockPassQuestionButton;
 
 	private ActionEvent temp;
-	@FXML
-	private Button buttonEdit;
 	private ObservableList<Exam> exams;
 	private Question questionSelected;
 	private Question oldQuestion;
@@ -154,8 +152,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	private TableColumn<Question, String> a4;
 	@FXML
 	private TableColumn<Question, String> correctAns;
-	@FXML
-	private TableColumn<Question, Button> c1;
+
 
 	@FXML
 	private TableView<Exam> examsTableView;
@@ -267,16 +264,6 @@ public class TeacherControl extends UserControl implements Initializable {
 
 				case ("getQuestionsToTable"): /* get the questions list from server */
 				{
-					
-					for (Question q : (ArrayList<Question>) msg[1])
-					{
-		                buttonEdit = new Button("");
-		                buttonEdit.setStyle("-fx-background-image: url('/edit.png')");
-		                buttonEdit.setMaxHeight(17);
-		                buttonEdit.setMinHeight(17);
-		            
-						q.setButton(buttonEdit);
-					}
 					questionObservableList = FXCollections.observableArrayList((ArrayList<Question>) msg[1]);//kaki
 					qid.setCellValueFactory(new PropertyValueFactory<>("id"));
 					tname.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
@@ -287,8 +274,6 @@ public class TeacherControl extends UserControl implements Initializable {
 						a3.setCellValueFactory(new PropertyValueFactory<>("answer3"));
 						a4.setCellValueFactory(new PropertyValueFactory<>("answer4"));
 						correctAns.setCellValueFactory(new PropertyValueFactory<>("correctAnswer"));
-						c1.setCellValueFactory(new PropertyValueFactory<Question,Button>("button"));
-						c1.setStyle( "-fx-alignment: CENTER");
 						questionTableView.setEditable(true);
 						ObservableList<String> numbers = FXCollections.observableArrayList("1", "2", "3", "4");
 						qtext.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -301,8 +286,8 @@ public class TeacherControl extends UserControl implements Initializable {
 								ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), numbers));
 						questionObservableList = FXCollections.observableArrayList((ArrayList<Question>) msg[1]);
 					}
-
 					questionTableView.setItems(questionObservableList);
+					questionTableView.getSortOrder().setAll(qid);
 					break;
 				}
 
@@ -1160,6 +1145,17 @@ public class TeacherControl extends UserControl implements Initializable {
 			openScreen("ErrorMessage", "You must enter exactly 4 letters & number");
 			return;
 		}
+		if (timeForExamHours.getText().equals("") || timeForExamMinute.getText().equals("")
+				|| Integer.valueOf(timeForExamHours.getText()) < 0) {
+			openScreen("ErrorMessage", "Please fill time for exam");
+			return;
+		}
+		if ((Integer.parseInt(timeForExamHours.getText()) <= 0 && Integer.parseInt(timeForExamMinute.getText()) <= 0)
+				|| (Integer.parseInt(timeForExamHours.getText()) > 99
+						|| Integer.parseInt(timeForExamMinute.getText()) > 99)) {
+			openScreen("ErrorMessage", "invalid time");
+			return;
+		}
 		for (int i = 0; i < executedExamId.length(); i++) {
 			char ch = executedExamId.charAt(i);
 
@@ -1168,10 +1164,13 @@ public class TeacherControl extends UserControl implements Initializable {
 				return;
 			}
 		}
+		Time time = null;
+		time = time.valueOf(timeForExamHours.getText() + ":" + timeForExamMinute.getText() + ":00");
 		exam = new ExecutedExam();
 		exam.setExecutedExamID(executedExamId);
 		exam.setTeacherName(getMyUser().getUsername());
 		exam.setExam_id(examID);
+		exam.setSolutionTime(time.toString());
 		messageToServer[0] = "setExamCode";
 		messageToServer[1] = exam;
 		connect(this);
