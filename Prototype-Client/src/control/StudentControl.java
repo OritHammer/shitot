@@ -67,7 +67,7 @@ public class StudentControl extends UserControl implements Initializable {
 	protected static Boolean justFlag = false;
 	private Boolean isBoolean = false;
 	protected static MouseEvent tempEvent;
-
+	private Boolean isLocked = false;
 	/**********************AddTime Variables***************************/
 	private static ArrayList<String> requestId;
 	
@@ -240,25 +240,7 @@ public class StudentControl extends UserControl implements Initializable {
 //					chat.handleMessageFromClientUI(messageToServer);// send the message to server
 				
 				if (remainTime == 1) {
-					Platform.runLater(() -> openScreen("ErrorMessage", "Time is over"));
-					try {
-						questionContent.setText("time is over click Finish");
-						correctRadioButton1.setVisible(false);
-						correctRadioButton2.setVisible(false);
-						correctRadioButton3.setVisible(false);
-						correctRadioButton4.setVisible(false);
-						answer1.setVisible(false);
-						answer2.setVisible(false);
-						answer3.setVisible(false);
-						answer4.setVisible(false);
-					} catch (NullPointerException exception) {
-						uploadManualExamButton.setVisible(false);
-						try {
-							uploadFileToServer(null);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
+					endExam("time is over");
 				}
 				timeToString = intToTime(sec).toString();
 				timerTextField.setText(timeToString);
@@ -269,7 +251,27 @@ public class StudentControl extends UserControl implements Initializable {
 	{
 
 	}
-
+public void endExam(String message) {
+	Platform.runLater(() -> openScreen("ErrorMessage", message));
+	try {
+		questionContent.setText(message + "  click Finish");
+		correctRadioButton1.setVisible(false);
+		correctRadioButton2.setVisible(false);
+		correctRadioButton3.setVisible(false);
+		correctRadioButton4.setVisible(false);
+		answer1.setVisible(false);
+		answer2.setVisible(false);
+		answer3.setVisible(false);
+		answer4.setVisible(false);
+	} catch (NullPointerException exception) {
+		uploadManualExamButton.setVisible(false);
+		try {
+			uploadFileToServer(null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
 	private static final int setInterval() {
 		if (remainTime == 1)
 			timer.cancel();
@@ -498,11 +500,20 @@ public class StudentControl extends UserControl implements Initializable {
 					
 					break;
 				}
-				case "showingCopy":
+				case "showingCopy":{
 					showingCopy((ArrayList<Question>) msgFromServer[1], (HashMap<String, Integer>) msgFromServer[2]);
 					break;
 				}
-
+				case "setExecutedExamLocked":{
+					if(((Boolean)msgFromServer[1]==true && (((String)msgFromServer[2]).equals(executedID))) ) {
+						if(isLocked==false)
+						{
+							isLocked=true;
+						endExam("Exam locked");
+						}
+					}
+				}
+				}
 			} catch (IndexOutOfBoundsException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -519,6 +530,7 @@ public class StudentControl extends UserControl implements Initializable {
 	@SuppressWarnings("unchecked")
 	private void checkExecutedExam(Object[] message) throws IOException {
 		ArrayList<Question> questioninexam = (ArrayList<Question>) message[1];
+		isLocked=false;
 		Exam exam = (Exam) message[2];
 		solutionTime = Time.valueOf(exam.getSolutionTime());
 		questioninexecutedexam = questioninexam;
