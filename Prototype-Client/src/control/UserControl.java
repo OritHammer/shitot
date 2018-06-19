@@ -2,6 +2,10 @@ package control;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -12,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,7 +31,12 @@ import javafx.stage.Stage;
 public class UserControl implements Initializable {
 	@FXML
 	private TextField userName;
-	
+	@FXML
+	private Label userNameLabel;
+	@FXML
+	private Label authorLabel;
+	@FXML
+	private Label dateLabel;
 	@FXML
 	private PasswordField password;
 	@FXML
@@ -51,7 +61,12 @@ public class UserControl implements Initializable {
 	private Label userText1;
 	@FXML
 	private javafx.scene.control.Button closeButton;
-
+//class variables 
+	//date and author variables
+	private Calendar currentCalendar = Calendar.getInstance();
+	private Date currentTime = currentCalendar.getTime();
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
+	//FMXL variables
 	private Parent home_page_parent;
 	private Scene home_page_scene;
 	static Thread th;
@@ -307,6 +322,24 @@ public class UserControl implements Initializable {
 		} catch (Exception exception) {
 			System.out.println("Error in opening the page");
 		}
+	}
+	public void closeScreen(ActionEvent e) throws IOException, SQLException {
+		final Node source = (Node) e.getSource();
+		Stage stage = (Stage) source.getScene().getWindow();
+		stage.close();
+	}
+	public void logoutPressed(ActionEvent e) throws Exception, SQLException { // *** move to userControl
+		connect(this);
+		messageToServer[0] = "logoutProcess";
+		messageToServer[1] = getMyUser().getUsername();
+		messageToServer[2] = null;
+		chat.handleMessageFromClientUI(messageToServer);// send the message to server
+		closeScreen(e);
+	}
+	public void setStudentAuthor_Date_name() {// *** move to userControl rename userDetails
+		userNameLabel.setText(getMyUser().getFullname());
+		dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
+		authorLabel.setText(""+user.getRole());
 	}
 
 	
