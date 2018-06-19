@@ -61,7 +61,6 @@ public class TeacherControl extends UserControl implements Initializable {
 	private static ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
 	private ObservableList<String> coursesListToCreateQuestion = FXCollections.observableArrayList();
 	private ObservableList<Question> questionObservableList;
-	private Object[] messageToServer = new Object[5];
 	private static boolean blockPassQuestionButton;
 
 	private ActionEvent temp;
@@ -286,9 +285,11 @@ public class TeacherControl extends UserControl implements Initializable {
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
 		try {
+			final Object[] msg = (Object[]) message;
+			if(msg[4].equals(getMyUser().getUsername())) {
 			chat.closeConnection();// close the connection
 
-			final Object[] msg = (Object[]) message;
+			
 			Platform.runLater(() -> {
 				switch (msg[0].toString()) {
 
@@ -522,6 +523,7 @@ public class TeacherControl extends UserControl implements Initializable {
 				}
 				}
 			});
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -532,7 +534,7 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	/* intialize function go first after loading fxml */
 	public void initialize(URL url, ResourceBundle rb) {
-
+		messageToServer[4]=getMyUser().getUsername();
 		switch (pageLabel.getText()) {
 		case ("Home screen"): {
 			userText.setText(getMyUser().getUsername());

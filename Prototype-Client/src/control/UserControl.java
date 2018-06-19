@@ -76,7 +76,7 @@ public class UserControl implements Initializable {
 	protected ComboBox<String> coursesComboBox;
 	protected ChatClient chat;
 	
-	protected Object[] messageToServer = new Object[4];
+	protected Object[] messageToServer = new Object[5];
 	/* connections variables */
 	static String ip;// server ip
 
@@ -246,6 +246,7 @@ public class UserControl implements Initializable {
 		   messageToServer[0] = "checkUserDetails";
 		   messageToServer[1] = userName.getText();
 		   messageToServer[2] = password.getText();
+		   messageToServer[4]=userName.getText();
 		   chat.handleMessageFromClientUI(messageToServer);
 		  }
 		 }

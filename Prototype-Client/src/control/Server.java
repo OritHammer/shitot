@@ -58,7 +58,7 @@ public class Server extends AbstractServer {
 	final public static int DEFAULT_PORT = 5555;
 	MysqlConnection con = new MysqlConnection();
 	// Question questionDetails = new Question();
-	Object[] serverMessage = new Object[4];
+	Object[] serverMessage = new Object[5];
 	// Constructors ****************************************************
 
 	/**
@@ -96,6 +96,7 @@ public class Server extends AbstractServer {
 		// split the msg to 2 strings (message[0]=the name of the method the server need
 		// to call,message[1]=search key to work with in SQL
 		serverMessage[0] = message[0];
+		serverMessage[4] = message[4];
 		switch ((String) message[0]) {
 		case "getSubjects": { /* if the client request all the subject */
 			ArrayList<TeachingProfessionals> tp = con.getSubjectList(message[1]);
@@ -151,6 +152,7 @@ public class Server extends AbstractServer {
 						System.out.println("Error send (Files)msg) to Server");
 					}
 				}
+				con.updateStudentToExecutedExam(executedExamID);
 			} catch (NullPointerException exception) {
 				System.out.println("This student cant perform this exam");
 				serverMessage[1] = null;
@@ -304,6 +306,7 @@ public class Server extends AbstractServer {
 			Boolean isLocked = con.setExecutedExamLocked(message[1]);
 			serverMessage[1] = isLocked;
 			serverMessage[2]=message[1];
+			serverMessage[4]="all";
 			this.sendToAllClients(serverMessage);
 			break;
 		}
@@ -351,6 +354,7 @@ public class Server extends AbstractServer {
 			serverMessage[1] = tmp[0];// serverMessage[0]=requestId(String)
 			serverMessage[2] = tmp[1];// serverMessage[0]=time to add (Time)
 			serverMessage[3]=((Object[]) msg)[1];
+			serverMessage[4]="all";
 			this.sendToAllClients(serverMessage);
 			break;
 		}

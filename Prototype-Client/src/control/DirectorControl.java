@@ -117,6 +117,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	 * homePageButtons
 	 **********************************************************/
 	public void initialize(URL url, ResourceBundle rb) {
+		messageToServer[4]=getMyUser().getUsername();
 		if (pageLabel.getText().equals("Home screen"))
 			userText1.setText(getMyUser().getFullname());
 		else if (pageLabel.getText().contentEquals("requests")) {
@@ -191,11 +192,13 @@ public class DirectorControl extends UserControl implements Initializable {
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
 		try {
+			final Object[] msg = (Object[]) message;
+			if(msg[4].equals(getMyUser().getUsername())) {
 			chat.closeConnection();// close the connection
 	/*		if (refreshPressed)
 				refreshPressed = false;            
 			else { */
-				final Object[] msg = (Object[]) message;
+				
 				Platform.runLater(() -> {
 					try {
 						switch (msg[0].toString()) {
@@ -293,7 +296,7 @@ public class DirectorControl extends UserControl implements Initializable {
 						errorMsg("There is no exams");
 					}
 				});
-		//	}
+		}
 		} catch (NullPointerException e) {
 			errorMsg("There is no request to confirm .");
 		} catch (IOException e) {

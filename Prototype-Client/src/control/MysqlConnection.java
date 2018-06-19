@@ -754,7 +754,6 @@ public class MysqlConnection {
 		if (canPerformExam) {
 			details[0] = getQuestionByExecutedExam(executedExamID);
 			details[1] = getExamsByExecutedExam(executedExamID);
-			updateStudentToExecutedExam(executedExamID);
 		} else {
 			return (null);
 		}
@@ -1185,7 +1184,7 @@ public class MysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate("update shitot.executedexam set numOfStudentStarted = numOfStudentStarted+1 "
-					+ "where executedexam.executedExamID = \""+executedExamID+"\" ; ");
+					+ "where executedexam.executedExamID = \""+ executedID +"\" ; ");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
