@@ -27,7 +27,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
+  
 public class UserControl implements Initializable {
 	@FXML
 	private TextField userName;
