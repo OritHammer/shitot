@@ -71,7 +71,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	private static String tempExamId;
 	private Exam examSelected;
 	private Exam oldExam;
-	private String text=null;
+	private String text="";
 	/* fxml variables */
 	@FXML
 	private Text userText;
