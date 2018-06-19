@@ -40,14 +40,9 @@ public class UserControl implements Initializable {
 	@FXML
 	private ImageView errorImg;
 	@FXML
-	private Label errorMsg1;
-	@FXML
-	private Label errorMsg2;
-	@FXML
-	private Label errorMsg3;
+	private ImageView errorImg1;
 	@FXML
 	private Button LoginBtn;
-
 	@FXML
 	private ImageView LoginButton;
 	@FXML
@@ -97,6 +92,7 @@ public class UserControl implements Initializable {
 		sc.close(); 
 		errorMsg.setVisible(false);
 		errorImg.setVisible(false);
+		errorImg1.setVisible(false);
 		LoginBtn.setDefaultButton(true);
 	}
  
@@ -109,6 +105,7 @@ public class UserControl implements Initializable {
 				Platform.runLater(()->	{
 					errorMsg.setVisible(true);
 					errorImg.setVisible(true);
+					errorImg1.setVisible(true);
 				});
 			
 				return;
@@ -213,27 +210,26 @@ public class UserControl implements Initializable {
 			e.printStackTrace();
 		}
 	}
-
+/*check if the details of user is in the system */
 	public void loginPressed(ActionEvent e) throws IOException {
-		/*errorMsg.setVisible(false);
-		errorMsg1.setVisible(false);
-		errorMsg2.setVisible(false);
-		errorMsg3.setVisible(false);*/
 		  connect(this);
 		  if (userName.getText().equals("") && password.getText().equals(""))
 		  {
 			  errorMsg.setVisible(true);
 		  	errorImg.setVisible(true);
+			errorImg1.setVisible(true);
 		  }
 		  else if(userName.getText().equals(""))
 		  {
 			  errorMsg.setVisible(true);
 			errorImg.setVisible(true);
+			errorImg1.setVisible(true);
 		  }
 			else if(password.getText().equals(""))
 			{
 				errorMsg.setVisible(true);
 				errorImg.setVisible(true);
+				errorImg1.setVisible(true);
 			}
 				else {
 		   messageToServer[0] = "checkUserDetails";

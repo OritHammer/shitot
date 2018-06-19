@@ -288,9 +288,9 @@ public class DirectorControl extends UserControl implements Initializable {
 								averageTextField.setText(" " + (average / (float) sumStudent));
 							Collections.sort(GradeList);
 							if (GradeList.size() > 1)
-								medianTextField.setText(" " + GradeList.get((GradeList.size() / 2) - 1));
+								medianTextField.setText(" " + GradeList.get((GradeList.size() / 2) - 1).getMedian());
 							else
-								medianTextField.setText(" " + GradeList.get(GradeList.size() / 2));
+								medianTextField.setText(" " + GradeList.get(GradeList.size() / 2).getMedian());
 							ShowHistogramInBarChart();
 							break;
 						}
