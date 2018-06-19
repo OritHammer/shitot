@@ -40,14 +40,9 @@ public class UserControl implements Initializable {
 	@FXML
 	private ImageView errorImg;
 	@FXML
-	private Label errorMsg1;
-	@FXML
-	private Label errorMsg2;
-	@FXML
-	private Label errorMsg3;
+	private ImageView errorImg1;
 	@FXML
 	private Button LoginBtn;
-
 	@FXML
 	private ImageView LoginButton;
 	@FXML
@@ -97,6 +92,7 @@ public class UserControl implements Initializable {
 		sc.close(); 
 		errorMsg.setVisible(false);
 		errorImg.setVisible(false);
+		errorImg1.setVisible(false);
 		LoginBtn.setDefaultButton(true);
 	}
  
@@ -109,6 +105,7 @@ public class UserControl implements Initializable {
 				Platform.runLater(()->	{
 					errorMsg.setVisible(true);
 					errorImg.setVisible(true);
+					errorImg1.setVisible(true);
 				});
 			
 				return;
@@ -213,27 +210,26 @@ public class UserControl implements Initializable {
 			e.printStackTrace();
 		}
 	}
-
+/*check if the details of user is in the system */
 	public void loginPressed(ActionEvent e) throws IOException {
-		/*errorMsg.setVisible(false);
-		errorMsg1.setVisible(false);
-		errorMsg2.setVisible(false);
-		errorMsg3.setVisible(false);*/
 		  connect(this);
 		  if (userName.getText().equals("") && password.getText().equals(""))
 		  {
 			  errorMsg.setVisible(true);
 		  	errorImg.setVisible(true);
+			errorImg1.setVisible(true);
 		  }
 		  else if(userName.getText().equals(""))
 		  {
 			  errorMsg.setVisible(true);
 			errorImg.setVisible(true);
+			errorImg1.setVisible(true);
 		  }
 			else if(password.getText().equals(""))
 			{
 				errorMsg.setVisible(true);
 				errorImg.setVisible(true);
+	 			errorImg1.setVisible(true);
 			}
 				else {
 		   messageToServer[0] = "checkUserDetails";
@@ -267,14 +263,51 @@ public class UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 
-	
 	public static User getMyUser() {
 		return myUser;
 	}
 
-	
 	public static void setMyUser(User myUser) {
 		UserControl.myUser = myUser;
 	}
 
+	/****************functions To Use Of all users*******************************/
+	public void openScreen(String boundary,String screen) {// open windows
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/"+boundary+"/" + screen + ".fxml"));
+			Scene scene = new Scene(loader.load());
+			Stage stage = Main.getStage();
+	/*		if (screen.equals("ErrorMessage")) {
+				ErrorControl dController = loader.getController();
+				dController.setBackwardScreen(stage.getScene());// send the name to the controller 
+				dController.setErrorMessage("ERROR");// send a the error to the alert we made
+			} */
+			stage.setTitle(screen);
+			stage.setScene(scene);
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error in opening the page");
+		}
+	}
+
+	public void errorMsg(String message) {// for error message
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/boundary/" + "ErrorMessage" + ".fxml"));
+			Scene scene = new Scene(loader.load());
+			Stage stage = Main.getStage();
+			ErrorControl tController = loader.getController();
+			tController.setBackwardScreen(stage.getScene());/* send the name to the controller */
+			tController.setErrorMessage(message);// send a the error to the alert we made
+			stage.setTitle("ErrorMessage");
+			stage.setScene(scene);
+			stage.show();
+		} catch (Exception exception) {
+			System.out.println("Error in opening the page");
+		}
+	}
+
+	
 }
