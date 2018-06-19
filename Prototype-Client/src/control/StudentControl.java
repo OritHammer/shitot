@@ -417,10 +417,7 @@ public void endExam(String message) {
 				}
 				case "checkExecutedExam": {
 					if (msgFromServer[1] == null) {
-						Platform.runLater(() -> errorMsg("Can't perform this exam"));
-																										
-																										
-																										
+						errorMsg("Can't perform this exam");																			
 						return;
 					}
 					checkExecutedExam((Object[]) msgFromServer);
