@@ -348,6 +348,7 @@ public class Server extends AbstractServer {
 			serverMessage[0] = "addTime";
 			serverMessage[1] = tmp[0];// serverMessage[0]=requestId(String)
 			serverMessage[2] = tmp[1];// serverMessage[0]=time to add (Time)
+			serverMessage[3]=((Object[]) msg)[1];
 			this.sendToAllClients(serverMessage);
 			break;
 		}
@@ -394,6 +395,9 @@ public class Server extends AbstractServer {
 		}
 		case "finishExam": {
 			con.finishExam((String[]) message[1], (HashMap<String, Integer>) message[2], (boolean) message[3]);
+			break;
+		}
+		case "isChanged":{
 			break;
 		}
 		/*
