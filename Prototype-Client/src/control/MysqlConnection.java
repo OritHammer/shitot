@@ -210,6 +210,7 @@ public class MysqlConnection {
 			User newUser = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
 					rs.getString(6)); // in section 5 need to insert "connected"
 
+		
 			// updating user status
 			/*
 			 * stmt.executeUpdate( "UPDATE users " +
@@ -1140,5 +1141,15 @@ public class MysqlConnection {
 		}
 		return studentGradesList;
 	}
-
+	
+	public void confirmExecutedExam(Object studentInExam) {
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("UPDATE studentperformedexam " + "SET isApproved=\"approved\" WHERE student_UserName=\"" + ((StudentPerformExam) studentInExam).getUserName() + "\";");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		
+		}
+		
+	}
 }

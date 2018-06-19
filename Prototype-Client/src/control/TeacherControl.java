@@ -44,8 +44,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.converter.DefaultStringConverter;
 import javafx.util.converter.FloatStringConverter;
@@ -208,7 +210,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	  private AnchorPane mainPane;
 	    
 	    public void loadExamCopy(MouseEvent event) {
-	    	if(event.getClickCount() == 1)
+	    	if(event.getClickCount() == 2)
 	    	{
 	    		connect(this);
 	    		messageToServer[0] = "getStudentAnswers";
@@ -218,6 +220,39 @@ public class TeacherControl extends UserControl implements Initializable {
 	    		StudentControl studentControl = new StudentControl();
 	    		studentControl.tempEvent = event;
 	    	}
+	    }
+	    
+	    public void confirmExecutedExam(ActionEvent event) {
+	    	if(studnetInExamTableView.getSelectionModel().getSelectedItem() == null)
+	    		return;
+	    	StudentPerformExam studentinexm = studnetInExamTableView.getSelectionModel().getSelectedItem();
+	    	messageToServer[0] = "confirmExecutedExam";
+	    	messageToServer[1] = studentinexm;
+	    	connect(this);
+	    	chat.handleMessageFromClientUI(messageToServer);
+	    }
+	    
+	    public void closeChange(ActionEvent event)  {
+			final Node source = (Node) event.getSource();
+			Stage stage = (Stage) source.getScene().getWindow();
+			stage.close();
+	    }
+	    
+	    public void finalChange(ActionEvent event)  {
+	    	
+	    }
+	    
+	    public void changeGrade(ActionEvent event) throws IOException {
+	    	//if(studnetInExamTableView.getSelectionModel().getSelectedItem() == null)
+	    		//return;
+            final Stage dialog = new Stage();
+            final Node source = (Node) event.getSource();
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.initOwner((Stage) source.getScene().getWindow());
+    		AnchorPane myPane = FXMLLoader.load(getClass().getResource("/boundary/ChangeGrade.fxml"));
+            Scene dialogScene = new Scene(myPane);
+            dialog.setScene(dialogScene);
+            dialog.show();
 	    }
 	  
 	/* check the content message from server */

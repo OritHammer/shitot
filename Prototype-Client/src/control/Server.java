@@ -401,6 +401,12 @@ public class Server extends AbstractServer {
 		case "isChanged":{
 			break;
 		}
+		
+		case "confirmExecutedExam": {
+			con.confirmExecutedExam(message[1]);
+			break;
+		}
+		
 		/*
 		 * case "getExecutedExamCodeList" :{// for using on confirm request of adding
 		 * time to exam con.getRequestsList(message[1]); break; }

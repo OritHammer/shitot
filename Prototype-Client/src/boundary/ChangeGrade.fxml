@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="282.0" prefWidth="372.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+   <children>
+      <Button layoutX="131.0" layoutY="243.0" mnemonicParsing="false" onAction="#finalChange" text="Change" />
+      <TextField layoutX="121.0" layoutY="78.0" prefHeight="25.0" prefWidth="177.0" />
+      <Label fx:id="pageLabel" layoutX="131.0" layoutY="27.0" text="Change grade" />
+      <Text layoutX="52.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Grade" />
+      <Text layoutX="72.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reason" />
+      <TextArea layoutX="121.0" layoutY="130.0" prefHeight="99.0" prefWidth="177.0" />
+      <Button layoutX="206.0" layoutY="243.0" mnemonicParsing="false" onAction="#closeChange" text="Close" />
+   </children>
+</AnchorPane>
