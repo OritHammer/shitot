@@ -707,6 +707,7 @@ public void endExam(String message) {
 			answer4.setStyle("-fx-background-color: white;");
 			studentAnswer.setVisible(true);
 			selectedAnswer.setVisible(true);
+			try {
 			switch (qustionAnswer) {
 			case "1":
 				if (stdSelected.equals("1")) {
@@ -756,7 +757,11 @@ public void endExam(String message) {
 					answer4.setStyle("-fx-background-color: red;");
 				break;
 			}
-			selectedAnswer.setText(examAnswers.get(questioninexecutedexam.get(index).getId()).toString());
+			}catch(NullPointerException e) {
+				System.out.println("no answer for this question");
+			}
+			
+			//selectedAnswer.setText(examAnswers.get(questioninexecutedexam.get(index).getId()).toString());
 		}
 	}
 
