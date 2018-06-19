@@ -65,7 +65,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	private static String tempExamId;
 	private Exam examSelected;
 	private Exam oldExam;
-
+	private String text=null;
 	/* fxml variables */
 	@FXML
 	private Text userText;
@@ -404,11 +404,16 @@ public class TeacherControl extends UserControl implements Initializable {
 				}
 
 				case ("setExecutedExamLocked"): /* set executed exam lock */
+					text="Exam locked successfully ✔";
 				case ("setExamCode"): /* the server return true/false if the executed exam created or not */
 				{
+					if(!text.equals("Exam locked successfully ✔"))
+					{
+						text="Exam code created successfully ✔";
+					}
 					if ((boolean) msg[1] == true) {
 						allertText.setFill(Color.GREEN);
-						allertText.setText("Exam code created successfully ✔");
+						allertText.setText(text);
 					} else {
 						allertText.setFill(Color.RED);
 						allertText.setText("There is already a code like that, please choose another code ❌");
@@ -1232,4 +1237,5 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 	
 	/*********************************************************** Check exam ************************************************************/
+
 }
