@@ -1150,7 +1150,7 @@ public class MysqlConnection {
 		int numOfStudentInCourse,numOfStudentPerformedExam;
 		try {
 			stmt = conn.createStatement();//לסיים את השאילתא
-			rs = stmt.executeQuery("SELECT count(SIC.studentUserName) FROM shitot.studentincourse SIC,shitot.executedexam "
+			rs = stmt.executeQuery("SELECT count(SIC.studentUserName) as numOfStudentInCourse FROM shitot.studentincourse SIC,shitot.executedexam "
 					+ "E WHERE E.exam_id LIKE CONCAT('__',SIC.course_ID, '%') AND E.executedExamID=\""+executedID+"\";");
 			rs.next();
 			numOfStudentInCourse=Integer.parseInt(rs.getString(1));
