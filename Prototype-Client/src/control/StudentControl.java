@@ -33,7 +33,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -365,6 +368,10 @@ public void endExam(String message) {
 		 * examCodeCombo.getValue(); messageToServer[2] = null;
 		 * chat.handleMessageFromClientUI(messageToServer);// send the message to server
 		 */
+		if(examCodeCombo.getValue()==null) {
+			errorMsg("Please select exam first");
+			return ; 
+		}
 		connect(this);
 		messageToServer[0] = "getStudentAnswers";
 		messageToServer[1] = examCodeCombo.getValue(); // sending executed exam id
@@ -615,7 +622,7 @@ public void endExam(String message) {
 		correctRadioButton2.setSelected(false);
 		correctRadioButton3.setSelected(false);
 		correctRadioButton4.setSelected(false);
-
+		
 		if (examAnswers.containsKey(questioninexecutedexam.get(index).getId())) {
 			switch (examAnswers.get(questioninexecutedexam.get(index).getId())) {
 			case 1:
@@ -640,13 +647,15 @@ public void endExam(String message) {
 
 		if (copyFlag == true) {
 			Boolean correctAns = false;
-			String stdSelected = examAnswers.get(questioninexecutedexam.get(index).getId()).toString();
 			String qustionAnswer = questioninexecutedexam.get(index).getCorrectAnswer();
 			answer1.setStyle("-fx-background-color: white;");
 			answer2.setStyle("-fx-background-color: white;");
 			answer3.setStyle("-fx-background-color: white;");
 			answer4.setStyle("-fx-background-color: white;");
-		
+			String stdSelected ;
+			if (!examAnswers.isEmpty()) 
+			stdSelected	= examAnswers.get(questioninexecutedexam.get(index).getId()).toString();
+			else stdSelected = "0" ;
 			try {
 			switch (qustionAnswer) {
 			case "1":
@@ -696,6 +705,9 @@ public void endExam(String message) {
 				if (correctAns == false)
 					answer4.setStyle("-fx-background-color: red;");
 				break;
+			case "0" : 
+				Alert alert = new Alert(AlertType.INFORMATION, "there is no answer for  this question " , ButtonType.OK);
+				alert.showAndWait();
 			}
 			}catch(NullPointerException e) {
 				System.out.println("no answer for this question");
@@ -703,6 +715,7 @@ public void endExam(String message) {
 			
 		
 		}
+		
 	}
 
 	@FXML
