@@ -20,6 +20,7 @@ public class ExecutedExam implements Serializable,Comparable {
 	private String SolutionTime;
 	private Time actuallySolutionTime;
 	private Date startDate;
+	private Exam exam;
 	
 	
 	public ExecutedExam(String executedExamID, int numOfStudentStarted, int numOfStudentFinished,
@@ -59,7 +60,7 @@ public class ExecutedExam implements Serializable,Comparable {
 	}
 
 	public ExecutedExam() {
-		// TODO Auto-generated constructor stub
+		exam=new Exam();
 	}
 	public String getExecutedExamID() {
 		return executedExamID;
@@ -153,6 +154,14 @@ public class ExecutedExam implements Serializable,Comparable {
 
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
+	}
+
+	public Exam getExam() {
+		return exam;
+	}
+
+	public void setExam(Exam exam) {
+		this.exam = exam;
 	}
 	
 	

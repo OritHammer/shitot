@@ -1,9 +1,11 @@
 /MaterialFxTester.fxml
 /boundary/
+/control/
 /curvesapi-1.04.jar
 /delete.png
 /directorBoundary/
 /edit.png
+/entity/
 /jfoenix-8.0.4.jar
 /material-fx-v0_3.css
 /mysql-connector-java-5.1.19-bin.jar
@@ -15,5 +17,3 @@
 /studentBoundary/
 /style.css
 /xmlbeans-2.6.0.jar
-/control/
-/entity/

@@ -60,9 +60,10 @@ public class UserControl implements Initializable {
 	@FXML
 	private Label userText1;
 	@FXML
-	private javafx.scene.control.Button closeButton;
+	private Button closeButton;
 	@FXML
 	public Button logoutBtn;
+
 	
 	// class variables
 	// date and author variables

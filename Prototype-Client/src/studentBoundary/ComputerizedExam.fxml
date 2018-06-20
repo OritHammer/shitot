@@ -7,21 +7,22 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" styleClass="card" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.StudentControl">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="card" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.StudentControl">
    <children>
       <TextField fx:id="questionContent" editable="false" layoutX="56.0" layoutY="77.0" prefHeight="74.0" prefWidth="486.0" />
-      <TextField fx:id="answer1" editable="false" layoutX="82.0" layoutY="186.0" prefHeight="25.0" prefWidth="382.0" />
-      <TextField fx:id="answer2" editable="false" layoutX="82.0" layoutY="226.0" prefHeight="25.0" prefWidth="382.0" />
-      <TextField fx:id="answer3" editable="false" layoutX="82.0" layoutY="264.0" prefHeight="25.0" prefWidth="382.0" />
-      <TextField fx:id="answer4" editable="false" layoutX="81.0" layoutY="302.0" prefHeight="25.0" prefWidth="382.0" />
-      <RadioButton fx:id="correctRadioButton1" layoutX="56.0" layoutY="190.0" mnemonicParsing="false">
+      <TextField fx:id="answer1" editable="false" layoutX="82.0" layoutY="206.0" prefHeight="25.0" prefWidth="382.0" />
+      <TextField fx:id="answer2" editable="false" layoutX="82.0" layoutY="246.0" prefHeight="25.0" prefWidth="382.0" />
+      <TextField fx:id="answer3" editable="false" layoutX="82.0" layoutY="284.0" prefHeight="25.0" prefWidth="382.0" />
+      <TextField fx:id="answer4" editable="false" layoutX="81.0" layoutY="322.0" prefHeight="25.0" prefWidth="382.0" />
+      <RadioButton fx:id="correctRadioButton1" layoutX="56.0" layoutY="210.0" mnemonicParsing="false">
          <toggleGroup>
             <ToggleGroup fx:id="answers" />
          </toggleGroup></RadioButton>
-      <RadioButton fx:id="correctRadioButton2" layoutX="56.0" layoutY="230.0" mnemonicParsing="false" toggleGroup="$answers" />
-      <RadioButton fx:id="correctRadioButton3" layoutX="56.0" layoutY="268.0" mnemonicParsing="false" toggleGroup="$answers" />
-      <RadioButton fx:id="correctRadioButton4" layoutX="56.0" layoutY="305.0" mnemonicParsing="false" toggleGroup="$answers" />
+      <RadioButton fx:id="correctRadioButton2" layoutX="56.0" layoutY="250.0" mnemonicParsing="false" toggleGroup="$answers" />
+      <RadioButton fx:id="correctRadioButton3" layoutX="56.0" layoutY="288.0" mnemonicParsing="false" toggleGroup="$answers" />
+      <RadioButton fx:id="correctRadioButton4" layoutX="56.0" layoutY="325.0" mnemonicParsing="false" toggleGroup="$answers" />
       <Label fx:id="courseName" layoutX="82.0" layoutY="39.0" text="Course Name +Code" />
       <TextField fx:id="timerTextField" editable="false" layoutX="374.0" layoutY="29.0" prefHeight="37.0" prefWidth="200.0">
          <font>
@@ -29,8 +30,10 @@
          </font>
       </TextField>
       <Button fx:id="prevBTN" layoutX="212.0" layoutY="347.0" mnemonicParsing="false" onAction="#previousQuestion" text="previous" visible="false" />
-      <Button fx:id="nextBTN" layoutX="285.0" layoutY="347.0" mnemonicParsing="false" onAction="#nextQuestion" prefHeight="25.0" prefWidth="62.0" text="Next" />
-      <Button fx:id="finishButton" layoutX="478.0" layoutY="347.0" mnemonicParsing="false" onAction="#finishExam" prefHeight="25.0" prefWidth="71.0" text="Finish" />
+      <Button fx:id="nextBTN" layoutX="285.0" layoutY="374.0" mnemonicParsing="false" onAction="#nextQuestion" prefHeight="25.0" prefWidth="62.0" text="Next" />
+      <Button fx:id="finishButton" layoutX="478.0" layoutY="374.0" mnemonicParsing="false" onAction="#finishExam" prefHeight="25.0" prefWidth="71.0" text="Finish" />
       <Label fx:id="pageLabel" layoutX="248.0" layoutY="6.0" text="Perform exam" />
+      <Text fx:id="remarksForStudentText" layoutX="82.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+      <Label layoutX="56.0" layoutY="157.0" text="Remarks for student" />
    </children>
 </AnchorPane>

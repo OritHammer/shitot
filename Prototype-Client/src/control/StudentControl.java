@@ -21,6 +21,7 @@ import java.util.TimerTask;
 
 import entity.Exam;
 import entity.ExamDetailsMessage;
+import entity.ExecutedExam;
 import entity.MyFile;
 import entity.Question;
 import javafx.application.Platform;
@@ -58,9 +59,8 @@ public class StudentControl extends UserControl implements Initializable {
 
 	private static ArrayList<Question> questioninexecutedexam;
 	private static HashMap<String, Integer> examAnswers;// saves the question id and the answers
-	private static Time solutionTime;
 	private static int remainTime;
-	private static String executedID;
+	private static ExecutedExam exam;
 	private static Timer timer;
 	private static Boolean copyFlag = false;
 	private List<File> fileFromClient;
@@ -111,7 +111,7 @@ public class StudentControl extends UserControl implements Initializable {
 
 	ObservableList<ExamDetailsMessage> detailsList = FXCollections.observableArrayList();
 	ObservableList<String> executeExamList = FXCollections.observableArrayList();
-
+	
 	// *******for student execute or download exam*********//
 	@FXML
 	private TextField codeTextField;
@@ -122,6 +122,7 @@ public class StudentControl extends UserControl implements Initializable {
 	@FXML
 	private Button finishButton;
 	// ******************** student perform exam ************//
+	
 	@FXML
 	private RadioButton correctRadioButton2;
 	@FXML
@@ -193,6 +194,9 @@ public class StudentControl extends UserControl implements Initializable {
 				// s=solutionTime.toString();
 				// timerTextField.setText(s);
 				startTime();
+				Platform.runLater(()->{
+					remarksForStudentText.setText(exam.getExam().getRemarksForStudent());
+				});
 			}
 			// courseName.setText(questioninexecutedexam.get(0).getId().substring(0, 2));
 			break;
@@ -201,6 +205,9 @@ public class StudentControl extends UserControl implements Initializable {
 			requestId = new ArrayList<String>();
 			examAnswers = new HashMap<String, Integer>();
 			isPerformExam = true;
+			Platform.runLater(()->{
+				remarksForStudentText.setText(exam.getExam().getRemarksForStudent());
+			});
 			startTime();
 			break;
 		}
@@ -221,7 +228,8 @@ public class StudentControl extends UserControl implements Initializable {
 
 			e1.printStackTrace();
 		}
-		remainTime = solutionTime.getHours() * 3600 + solutionTime.getMinutes() * 60 + solutionTime.getSeconds();// remain
+		remainTime = Time.valueOf(exam.getSolutionTime()).getHours() * 3600 + Time.valueOf(exam.getSolutionTime()).getMinutes() * 60 
+				+ Time.valueOf(exam.getSolutionTime()).getSeconds();// remain
 																													// is
 																													// the
 																													// time
@@ -398,10 +406,11 @@ public class StudentControl extends UserControl implements Initializable {
 			return;
 		}
 		// everything fine
-		executedID = codeTextField.getText();
+		exam=new ExecutedExam();
+		exam.setExecutedExamID(codeTextField.getText());
 		connect(this); // connecting to server
 		messageToServer[0] = "checkExecutedExam";
-		messageToServer[1] = executedID;
+		messageToServer[1] = exam.getExecutedExamID();
 		messageToServer[2] = getMyUser().getUsername();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
@@ -462,7 +471,7 @@ public class StudentControl extends UserControl implements Initializable {
 						break;
 					}
 					case "setExecutedExamLocked": {
-						if (((Boolean) msgFromServer[1] == true && (((String) msgFromServer[2]).equals(executedID)))) {
+						if (((Boolean) msgFromServer[1] == true && (((String) msgFromServer[2]).equals(exam.getExecutedExamID())))) {
 							if (isLocked == false) {
 								isLocked = true;
 								endExam("Exam locked");
@@ -488,10 +497,11 @@ public class StudentControl extends UserControl implements Initializable {
 	private void checkExecutedExam(Object[] message) throws IOException {
 		ArrayList<Question> questioninexam = (ArrayList<Question>) message[1];
 		isLocked = false;
-		Exam exam = (Exam) message[2];
-		solutionTime = Time.valueOf(exam.getSolutionTime());
+		Exam examToInsert = (Exam) message[2];
+		exam.setSolutionTime(examToInsert.getSolutionTime());
+		exam.getExam().setRemarksForStudent(examToInsert.getRemarksForStudent());
 		questioninexecutedexam = questioninexam;
-		if (exam.getType().equals("manual")) {
+		if (examToInsert.getType().equals("manual")) {
 			MyFile file = (MyFile) message[3];
 			FileOutputStream fileOutputStream = null;
 			BufferedOutputStream bufferedOutputStream = null;
@@ -571,7 +581,7 @@ public class StudentControl extends UserControl implements Initializable {
 			requestId.add((String) message[3]);
 			int timeToAdd;
 			Time timeFromMessage = (Time) message[2];
-			if (executedID.equals((String) message[1])) {// if the student perform the relevant exam
+			if (exam.getExecutedExamID().equals((String) message[1])) {// if the student perform the relevant exam
 				timeToAdd = timeFromMessage.getHours() * 3600 + timeFromMessage.getMinutes() * 60
 						+ timeFromMessage.getSeconds();// reamin time is he time in secods
 				remainTime += timeToAdd;
@@ -764,7 +774,7 @@ public class StudentControl extends UserControl implements Initializable {
 				isFinish = true;
 			}
 			String details[] = new String[2];
-			details[0] = executedID;
+			details[0] = exam.getExecutedExamID();
 			details[1] = getMyUser().getUsername();
 			connect(this);
 			messageToServer[0] = "finishExam";
@@ -860,7 +870,7 @@ public class StudentControl extends UserControl implements Initializable {
 			System.out.println("Student Didnt finish the manual exam");
 		}
 		String details[] = new String[2];
-		details[0] = executedID;// the executed exam
+		details[0] = exam.getExecutedExamID();// the executed exam
 		details[1] = getMyUser().getUsername();// name of the student
 		connect(this);
 		messageToServer[0] = "saveExamOfStudent";
@@ -885,7 +895,7 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 
 	public void setDetails(String executedExamId) {
-		executedID = executedExamId;
+		exam.setExecutedExamID(executedExamId);
 	}
 
 }
