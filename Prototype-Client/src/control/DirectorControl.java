@@ -9,6 +9,8 @@ import java.util.ResourceBundle;
 
 import javax.print.attribute.standard.ReferenceUriSchemesSupported;
 
+import com.jfoenix.controls.JFXButton;
+
 import javafx.application.Platform;
 
 import entity.Course;
@@ -112,7 +114,10 @@ public class DirectorControl extends UserControl implements Initializable {
 	private ArrayList<Integer> studentGradeList;
 	private Boolean refreshPressed = false;
 	// FXML System information
-
+	@FXML
+    private JFXButton btnQuestionStock;
+    @FXML
+    private JFXButton btnExamStock;
 	/******************************************************************
 	 * homePageButtons
 	 **********************************************************/
@@ -158,7 +163,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			sumGradeRanges[i] = 0;
 		}
 	}
-
+	//open window of buttons in home page
 	public void openTimeRequestTable(ActionEvent e) {
 		Platform.runLater(() -> {
 			final Node source = (Node) e.getSource();
@@ -362,6 +367,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	/*******************************************************
 	 * listeners on addingTimeRequest
 	 ***********************************************************/
+	@FXML
 	public void answerRequest(ActionEvent e) {
 		String requestID = txtFATRrequestId.getText();
 		connect(this);
@@ -376,8 +382,9 @@ public class DirectorControl extends UserControl implements Initializable {
 	}
 
 	/*******************************************************
-	 * listeners on statistic Report
-	 ***********************************************************/
+	 *********** listeners on statistic Report**************
+	 *******************************************************/
+	@FXML
 	public void showListForChooseObject(ActionEvent e) throws Exception {// display the list of student/courses/teachers
 		reportByChoose = reportByComboBox.getValue();
 		if (reportByChoose != null) {
@@ -413,7 +420,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			chat.handleMessageFromClientUI(messageToServer);
 		}
 	}
-
+	@FXML
 	public void loadCourses(ActionEvent e) throws IOException {// load list of courses to combobox
 		String subject = subjectsComboBox.getValue(); // get the subject code
 		if (subject != null) {
@@ -423,7 +430,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			loadCourses("All", subject);
 		}
 	}
-
+	@FXML
 	public void getReportUser(ActionEvent e) {// load Statistic details of user on window
 		String userName = chooseUserComboBox.getValue();
 		if (userName != null) {
@@ -438,7 +445,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			chat.handleMessageFromClientUI(messageToServer);
 		}
 	}
-
+	@FXML
 	public void getReportByCourseCode(ActionEvent e) {// load Statistic details of course on window
 		String courseName = coursesComboBox.getValue();
 		if (courseName != null) {
@@ -502,10 +509,28 @@ public class DirectorControl extends UserControl implements Initializable {
 		initWindow();
 		refreshPressed = false;
 	}
-
+	@FXML
 	public void refreshPressListener(ActionEvent e) {
 
 		refreshPressed = true;
 		refreshPress();
 	}
+	/*******************************************************
+	 *********** system information functions **************
+	 *******************************************************/
+	@FXML
+	public void openQuestionStock(ActionEvent e) {
+		Platform.runLater(() -> {
+			final Node source = (Node) e.getSource();
+			Stage stage = (Stage) source.getScene().getWindow();
+			// stage.close();
+			stage.close();
+			openScreen("directorBoundary", "QuestionStock");
+		});
+	}
+	@FXML
+	public void GetQuestionStock(ActionEvent e) {
+		System.out.println("fkjhvkodn");
+	}
+	
 }
