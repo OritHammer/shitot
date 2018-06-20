@@ -749,6 +749,7 @@ public class StudentControl extends UserControl implements Initializable {
 	@FXML
 	private void finishExam(ActionEvent e) throws IOException {
 		isPerformExam = false;
+		timer.cancel();
 		if (justFlag) {
 			((Stage) ((Node) e.getSource()).getScene().getWindow()).close();
 			((Stage) ((Node) tempEvent.getSource()).getScene().getWindow()).show();

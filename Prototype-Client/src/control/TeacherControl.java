@@ -736,7 +736,9 @@ public class TeacherControl extends UserControl implements Initializable {
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
 		questionInExamObservable.clear();
+		if(getMyUser().getRole().equals("teacher"))
 		openScreen("HomeScreenTeacher");
+		else openScreen("directorBoundary","HomeScreenDirector");
 	}
 
 	/**************************************************
@@ -1367,7 +1369,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			switch (pageLabel.getText()) {
 			case "Update exam":
 				btnDelete.setDisable(true);
-				examsTableView.setEditable(true);
+				examsTableView.setEditable(false);
 				break;
 			case "Update question":
 				examsTableView.setEditable(true);
