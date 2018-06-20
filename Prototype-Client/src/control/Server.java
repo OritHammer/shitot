@@ -112,7 +112,7 @@ public class Server extends AbstractServer {
 			break;
 		}
 		case "getExecutedExams": {/* client request all all the courses under some subject */
-			ArrayList<ExecutedExam> executedexam = con.getExecutedExam(message[1], message[2]);
+			ArrayList<ExecutedExam> executedexam = con.getExecutedExam(message[1], message[2],message[3]);
 			serverMessage[1] = executedexam;
 			this.sendToAllClients(serverMessage);
 			break;

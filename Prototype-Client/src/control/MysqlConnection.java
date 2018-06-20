@@ -670,7 +670,7 @@ public class MysqlConnection {
 
 	}
 
-	public ArrayList<ExecutedExam> getExecutedExam(Object examId, Object teacherUserName) {
+	public ArrayList<ExecutedExam> getExecutedExam(Object examId, Object teacherUserName,Object type) {
 		/*
 		 * The function return the course list by the given subject code
 		 */
@@ -678,9 +678,19 @@ public class MysqlConnection {
 		ArrayList<ExecutedExam> executedexamARR = new ArrayList<ExecutedExam>();
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt
+			ResultSet rs;
+			if((String)type == "LockType")
+			{
+			 rs = stmt
 					.executeQuery("SELECT * FROM executedexam WHERE teacherName=\"" + teacherUserName.toString()
 							+ "\" AND status='open' AND exam_id like \"" + (String) examId + "%\"" + ";");
+			}
+			else
+			{
+				 rs = stmt
+							.executeQuery("SELECT * FROM executedexam WHERE teacherName=\"" + teacherUserName.toString()
+									+ "\" AND status='close' AND AND exam_id like \"" + (String) examId + "%\"" + ";");
+			}
 			while (rs.next()) {
 				ExecutedExam executedExem=new ExecutedExam();
 				executedExem.setExecutedExamID(rs.getString(1));

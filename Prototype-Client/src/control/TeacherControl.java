@@ -908,6 +908,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		{
 			toSend = "getExecutedExams";
 			messageToServer[2] = getMyUser().getUsername();
+			if(pageLabel.getText().equals("Lock exam"))
+				messageToServer[3] = "LockType";
+			else
+				messageToServer[3] = "CheckType";
+			
 		}
 		else
 			toSend = "getExams";
