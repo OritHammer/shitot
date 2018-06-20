@@ -308,7 +308,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		} catch (NullPointerException e) {
 			errorMsg("There is no request to confirm .");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} /*
 			 * catch (ArrayIndexOutOfBoundsException e) { errorMsg("There is no exams"); }
