@@ -685,6 +685,7 @@ public class MysqlConnection {
 					.executeQuery("SELECT * FROM executedexam WHERE teacherName=\"" + teacherUserName.toString()
 							+ "\" AND status='open' AND exam_id like \"" + (String) examId + "%\"" + ";");
 			}
+			
 			else
 			{
 				 rs = stmt
