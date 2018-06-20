@@ -221,9 +221,10 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 		remainTime = solutionTime.getHours() * 3600 + solutionTime.getMinutes() * 60 + solutionTime.getSeconds();// remain is the time is seconds
 		timer = new Timer();
-		connect(sControl);
+		
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
+				connect(sControl);
 				int sec = setInterval();
 				
 //					messageToServer[0] = "isChanged";
@@ -396,6 +397,12 @@ public void endExam(String message) {
 	@SuppressWarnings({ "unchecked", "unused" })
 	@Override
 	public void checkMessage(Object message) {
+		try {
+			chat.closeConnection();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		final Object[] msgFromServer = (Object[]) message;
 		if((isPerformExam==true && msgFromServer[4].equals("all")) || msgFromServer[4].equals(getMyUser().getUsername())) {
 		
