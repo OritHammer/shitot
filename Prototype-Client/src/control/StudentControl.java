@@ -650,15 +650,15 @@ public void endExam(String message) {
 			answer3.setStyle("-fx-background-color: white;");
 			answer4.setStyle("-fx-background-color: white;");
 			String stdSelected ;
-			if (!examAnswers.isEmpty()) {
+			if (!examAnswers.isEmpty()) 
 			stdSelected	= examAnswers.get(questioninexecutedexam.get(index).getId()).toString();
+			else stdSelected = "0" ;
 			try {
 			switch (qustionAnswer) {
 			case "1":
 				if (stdSelected.equals("1")) {
 					answer1.setStyle("-fx-background-color: green;");
 					correctAns = true;
-					
 				}
 				correctRadioButton1.setSelected(true);
 				break;
@@ -709,7 +709,7 @@ public void endExam(String message) {
 			
 		
 		}
-		}
+		
 	}
 
 	@FXML
