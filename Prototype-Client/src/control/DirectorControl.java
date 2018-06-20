@@ -463,7 +463,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			histogram.getData().add(new XYChart.Data(i + "-" +j, sumGradeRanges[i/10]));
 		}
 		histogram.getData().add(new XYChart.Data("90-100", sumGradeRanges[9]));
-		/*
+		/* 
 		 * histogram.getData().add(new XYChart.Data("0-54", sumGradeRanges[0]));
 		 * histogram.getData().add(new XYChart.Data("55-65", sumGradeRanges[1]));
 		 * histogram.getData().add(new XYChart.Data("65-75", sumGradeRanges[2]));
