@@ -688,6 +688,7 @@ public class MysqlConnection {
 			
 			else
 			{
+				
 				 rs = stmt
 							.executeQuery("SELECT * FROM executedexam WHERE teacherName=\"" + teacherUserName.toString()
 									+ "\" AND status='close' AND numOfStudentStarted > 0 AND exam_id like \"" + (String) examId + "%\"" + ";");
