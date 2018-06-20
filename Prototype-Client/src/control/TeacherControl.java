@@ -235,14 +235,28 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	public void confirmExecutedExam(ActionEvent event) {
+	public void confirmExecutedExam(ActionEvent event) throws IOException {
 		if (studnetInExamTableView.getSelectionModel().getSelectedItem() == null)
 			return;
+
 		StudentPerformExam studentinexm = studnetInExamTableView.getSelectionModel().getSelectedItem();
 		studnetInExamTableView.getItems().remove(studentinexm);
-
+		if(studnetInExamTableView.getItems().isEmpty())
+		{
+			Parent tableViewParent = FXMLLoader.load(getClass().getResource("/boundary/CheckExam.fxml"));
+			Scene tableViewScene = new Scene(tableViewParent);
+			tableViewScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+			// This line gets the Stage information
+			Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+			window.setScene(tableViewScene);
+			window.show();
+			messageToServer[2] = true;
+		}
+		else
+			messageToServer[2] = false;
 		messageToServer[0] = "confirmExecutedExam";
 		messageToServer[1] = studentinexm;
+		
 		connect(this);
 		chat.handleMessageFromClientUI(messageToServer);
 	}

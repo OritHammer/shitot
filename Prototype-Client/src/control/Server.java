@@ -410,7 +410,7 @@ public class Server extends AbstractServer {
 		}
 		
 		case "confirmExecutedExam": {
-			con.confirmExecutedExam(message[1]);
+			con.confirmExecutedExam(message[1],message[2]);
 			break;
 		}
 		

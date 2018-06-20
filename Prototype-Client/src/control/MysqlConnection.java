@@ -1158,9 +1158,13 @@ public class MysqlConnection {
 		return studentGradesList;
 	}
 	
-	public void confirmExecutedExam(Object studentInExam) {
+	public void confirmExecutedExam(Object studentInExam, Object flag) {
+		Boolean flagExamChecked = (Boolean)flag;
 		try {
 			stmt = conn.createStatement();
+			if(flagExamChecked == true)
+				stmt.executeUpdate("UPDATE executedexam " + "SET status=\"checked\" WHERE executedExamID=\"" + ((StudentPerformExam) studentInExam).getExcecutedExamID() + "\";");
+			
 			stmt.executeUpdate("UPDATE studentperformedexam " + "SET isApproved=\"approved\" , grade=\""+((StudentPerformExam) studentInExam).getGrade() + "\" WHERE student_UserName=\"" + ((StudentPerformExam) studentInExam).getUserName() + "\";");
 		} catch (SQLException e) {
 			e.printStackTrace();
