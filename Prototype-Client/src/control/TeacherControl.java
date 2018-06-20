@@ -564,7 +564,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[4] = getMyUser().getUsername();
 		switch (pageLabel.getText()) {
 		case ("Home screen"): {
-			userText.setText(getMyUser().getUsername());
+			userText.setText(getMyUser().getFullname());
 			break;
 		}
 		case ("Update question in exam"): {
