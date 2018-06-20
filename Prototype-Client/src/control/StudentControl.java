@@ -199,6 +199,9 @@ public class StudentControl extends UserControl implements Initializable {
 			break;
 		}
 		case ("Manual exam"): {
+			requestId=new ArrayList<String>();
+			examAnswers = new HashMap<String, Integer>();
+			isPerformExam=true;
 			startTime();
 			break;
 		}
