@@ -1350,7 +1350,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * function to show to director information
 	 ****************/
 	void setUnVisible() {
-		if (getMyUser()!=null&& getMyUser().getRole().equals("director")) {
+		try {
+		if ( getMyUser().getRole().equals("director")) {
 			switch (pageLabel.getText()) {
 			case "Update exam":
 				btnDelete.setDisable(true);
@@ -1366,6 +1367,8 @@ public class TeacherControl extends UserControl implements Initializable {
 				passQuestionL.setDisable(true);
 				break;
 			}
+		}}catch(NullPointerException e) {
+			
 		}
 	}
 }
