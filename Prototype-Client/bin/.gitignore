@@ -1,8 +1,10 @@
 /boundary/
+/control/
 /curvesapi-1.04.jar
 /delete.png
 /directorBoundary/
 /edit.png
+/entity/
 /jfoenix-8.0.4.jar
 /mysql-connector-java-5.1.19-bin.jar
 /poi-3.17.jar
@@ -12,8 +14,11 @@
 /studentBoundary/
 /style.css
 /xmlbeans-2.6.0.jar
+<<<<<<< HEAD
 /control/
 /entity/
 /poi-scratchpad-3.17.jar
 /material-fx-v0_3.css
 /MaterialFxTester.fxml
+=======
+>>>>>>> branch 'master' of https://github.com/avivMahulya/shitot.git

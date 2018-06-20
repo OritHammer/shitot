@@ -231,8 +231,6 @@ public class StudentControl extends UserControl implements Initializable {
 			public void run() {
 				connect(sControl);
 				int sec = setInterval();
-				connect(sControl);
-
 //					messageToServer[0] = "isChanged";
 //					messageToServer[1] = getMyUser().getUsername();
 //					messageToServer[2] = executedID;
