@@ -688,10 +688,10 @@ public class MysqlConnection {
 			
 			else
 			{
-				
 				 rs = stmt
-							.executeQuery("SELECT * FROM executedexam WHERE teacherName=\"" + teacherUserName.toString()
-									+ "\" AND status='close' AND numOfStudentStarted > 0 AND exam_id like \"" + (String) examId + "%\"" + ";");
+							.executeQuery("SELECT distinct * FROM executedexam EE,studentperformedexam SPE WHERE EE.teacherName=\"" + teacherUserName.toString()
+									+ "\" AND EE.status='close' AND EE.numOfStudentStarted > 0 AND EE.exam_id like \"" + (String) examId + "%\"" + " "
+											+ "AND SPE.executedexam_id=EE.executedExamID AND SPE.isApproved='waiting' GROUP BY EE.executedExamID;");
 			}
 			while (rs.next()) {
 				ExecutedExam executedExem=new ExecutedExam();

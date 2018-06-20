@@ -240,6 +240,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			return;
 		StudentPerformExam studentinexm = studnetInExamTableView.getSelectionModel().getSelectedItem();
 		studnetInExamTableView.getItems().remove(studentinexm);
+
 		messageToServer[0] = "confirmExecutedExam";
 		messageToServer[1] = studentinexm;
 		connect(this);
