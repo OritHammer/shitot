@@ -213,9 +213,11 @@ public class TeacherControl extends UserControl implements Initializable {
 	private Button backButton;
 	@FXML
 	private Button updateBtn;
+	
+	@FXML
+	private Button btnDelete;
 
-
-	public void loadExamCopy(MouseEvent event) {
+ 	public void loadExamCopy(MouseEvent event) {
 		if (event.getClickCount() == 2) {
 			connect(this);
 			messageToServer[0] = "getStudentAnswers";
@@ -616,7 +618,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		case ("Update exam"): {
 
 			connect(this);
-
+			
 			switch (pageLabel.getText()) {
 			case ("Create exam"): {
 				typeComboBox.setItems(FXCollections.observableArrayList("computerized", "manual"));
@@ -1276,7 +1278,9 @@ public class TeacherControl extends UserControl implements Initializable {
 			connect(this); // connecting to server
 			messageToServer[0] = "getCourses";
 			messageToServer[1] = subjectSubString[0].trim();
-			messageToServer[2] = getMyUser().getUsername();
+			if(getMyUser().getRole().equals("director"))
+				messageToServer[2]=null;
+			else messageToServer[2] = getMyUser().getUsername();
 			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 		} catch (NullPointerException exception) {
 			return;
@@ -1341,4 +1345,23 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * Check exam
 	 ************************************************************/
 
+	
+	/**************************function to show to director information****************/
+	void setUnVisible() {
+		switch (pageLabel.getText()) {
+		case "Update exam":
+			btnDelete.setDisable(true);
+			examsTableView.setDisable(true);
+			break;
+		case "":
+			examsTableView.setDisable(true);
+			btnDelete.setDisable(true);
+			break;
+		case "x":
+			questionTableView.setDisable(true);
+			passQuestionR.setDisable(true);
+			passQuestionL.setDisable(true);
+			break;
+		}	
+	}
 }
