@@ -1,6 +1,8 @@
 package entity;
 
 import java.io.Serializable;
+import java.sql.Date;
+import java.sql.Time;
 
 public class ExecutedExam implements Serializable,Comparable {
 	private static final long serialVersionUID = 1L;
@@ -16,11 +18,14 @@ public class ExecutedExam implements Serializable,Comparable {
 	private String status;
 	private String date;
 	private String SolutionTime;
+	private Time actuallySolutionTime;
+	private Date startDate;
 	
 	
 	public ExecutedExam(String executedExamID, int numOfStudentStarted, int numOfStudentFinished,
 			int numOfStudentDidntFinished, float average, float median, String teacherName, String exam_id,
-			int range0to9, int range10to19, int range20to29, int range30to39, int range40to49, int range50to59,String status, int range60to69, int range70to79, int range80to89, int range90to100) {
+			int range0to9, int range10to19, int range20to29, int range30to39, int range40to49, int range50to59,String status,
+			int range60to69, int range70to79, int range80to89, int range90to100,Time actuallySolutionTime,Date startDate) {
 		super();
 		this.executedExamID = executedExamID;
 		this.numOfStudentStarted = numOfStudentStarted;
@@ -41,6 +46,8 @@ public class ExecutedExam implements Serializable,Comparable {
 		this.gradeRang[8] =range80to89;
 		this.gradeRang[9] =range90to100;
 		this.status=status;
+		this.actuallySolutionTime=actuallySolutionTime;
+		this.startDate=startDate;
 	}
 
 	public int[] getGradeRang() {

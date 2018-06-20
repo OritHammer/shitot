@@ -640,7 +640,7 @@ public class MysqlConnection {
 				stmt.executeUpdate("INSERT INTO shitot.executedexam VALUES(\"" + exam.getExecutedExamID().trim()
 						+ "\",0,0,0,0,0,\"" + exam.getTeacherName() + "\",\"" + exam.getExam_id()
 						+ "\",0,0,0,0,0,0,\"open\",\"" + dateFormat.format(date) + "\", (select e.solutionTime\r\n" + 
-								" from exams as e where e.e_id = \""+exam.getExam_id()+"\",0,0,0,0));");
+								" from exams as e where e.e_id = \""+exam.getExam_id()+"\"),0,0,0,0);");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -689,7 +689,9 @@ public class MysqlConnection {
 						Float.parseFloat(rs.getString(5)), Float.parseFloat(rs.getString(6)), rs.getString(7),
 						rs.getString(8), Integer.parseInt(rs.getString(9)), Integer.parseInt(rs.getString(10)),
 						Integer.parseInt(rs.getString(11)), Integer.parseInt(rs.getString(12)),
-						Integer.parseInt(rs.getString(13)), Integer.parseInt(rs.getString(14)), rs.getString(15),Integer.parseInt(rs.getString(16)),Integer.parseInt(rs.getString(17)),Integer.parseInt(rs.getString(18)),Integer.parseInt(rs.getString(19))));
+						Integer.parseInt(rs.getString(13)), Integer.parseInt(rs.getString(14)), rs.getString(15),
+						Integer.parseInt(rs.getString(16)),Integer.parseInt(rs.getString(17)),Integer.parseInt(rs.getString(18)),
+						Integer.parseInt(rs.getString(19)),rs.getTime(20),rs.getDate(21)));
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -1113,11 +1115,14 @@ public class MysqlConnection {
 				break;
 			}
 			while (rs.next()) {
-				executedExamList.add(new ExecutedExam(null, Integer.parseInt(rs.getString(1)), 0, 0,
-						Float.parseFloat(rs.getString(2)), Float.parseFloat(rs.getString(3)), null, null,
-						Integer.parseInt(rs.getString(4)), Integer.parseInt(rs.getString(5)),
-						Integer.parseInt(rs.getString(6)), Integer.parseInt(rs.getString(7)),
-						Integer.parseInt(rs.getString(8)), Integer.parseInt(rs.getString(9)), null,Integer.parseInt(rs.getString(10)),Integer.parseInt(rs.getString(11)),Integer.parseInt(rs.getString(12)),Integer.parseInt(rs.getString(13))));
+				executedExamList.add(new ExecutedExam(rs.getString(1), Integer.parseInt(rs.getString(2)),
+						Integer.parseInt(rs.getString(3)), Integer.parseInt(rs.getString(4)),
+						Float.parseFloat(rs.getString(5)), Float.parseFloat(rs.getString(6)), rs.getString(7),
+						rs.getString(8), Integer.parseInt(rs.getString(9)), Integer.parseInt(rs.getString(10)),
+						Integer.parseInt(rs.getString(11)), Integer.parseInt(rs.getString(12)),
+						Integer.parseInt(rs.getString(13)), Integer.parseInt(rs.getString(14)), rs.getString(15),
+						Integer.parseInt(rs.getString(16)),Integer.parseInt(rs.getString(17)),Integer.parseInt(rs.getString(18)),
+						Integer.parseInt(rs.getString(19)),rs.getTime(20),rs.getDate(21)));
 			}
 			rs.close();
 		} catch (SQLException e) {
