@@ -55,10 +55,11 @@ public class Server extends AbstractServer {
 	/**
 	 * The default port to listen on.
 	 */
+	private static int  msgCounter;
 	final public static int DEFAULT_PORT = 5555;
 	MysqlConnection con = new MysqlConnection();
 	// Question questionDetails = new Question();
-	Object[] serverMessage = new Object[5];
+	Object[] serverMessage = new Object[6];
 	// Constructors ****************************************************
 
 	/**
@@ -69,6 +70,7 @@ public class Server extends AbstractServer {
 	 */
 	public Server(int port) {
 		super(port);
+		msgCounter=0;
 	}
 
 	// Instance methods ************************************************
@@ -101,27 +103,35 @@ public class Server extends AbstractServer {
 		case "getSubjects": { /* if the client request all the subject */
 			ArrayList<TeachingProfessionals> tp = con.getSubjectList(message[1]);
 			serverMessage[1] = tp;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			System.out.println("arraylist to deliver");
 			break;
 		}
 		case "getCourses": {/* client request all all the courses under some subject */
 			ArrayList<Course> courseList = con.getCourseList(message[1], message[2]);
 			serverMessage[1] = courseList;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "getExecutedExams": {/* client request all all the courses under some subject */
 			ArrayList<ExecutedExam> executedexam = con.getExecutedExam(message[1], message[2],message[3]);
 			serverMessage[1] = executedexam;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 
 		case "getStudenstInExam": {/* */
 			ArrayList<StudentPerformExam> studentsInExam = con.getStudenstInExam(message[1]);
 			serverMessage[1] = studentsInExam;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 
@@ -157,8 +167,9 @@ public class Server extends AbstractServer {
 				System.out.println("This student cant perform this exam");
 				serverMessage[1] = null;
 			}
-
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "getStudentAnswers": {
@@ -168,7 +179,9 @@ public class Server extends AbstractServer {
 			HashMap<String, Integer> studentAns = con.getStudentAns(userName, (String) message[1]);
 			serverMessage[2] = studentAns;
 			serverMessage[1] = questioninexam;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "saveExamOfStudent": {// saving the manual exam of the student
@@ -209,7 +222,9 @@ public class Server extends AbstractServer {
 		case "getExams": {/* client request all all the exams under some courses */
 			ArrayList<Exam> examsList = con.getExams(message[1]);
 			serverMessage[1] = examsList;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 
@@ -221,7 +236,9 @@ public class Server extends AbstractServer {
 		case "getQuestionsToTable": {/* client request all all the questions under some subject */
 			ArrayList<Question> questionList = con.getQuestionListToTable(message[1], message[2]);
 			serverMessage[1] = questionList;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "setExam": {/* client request is to create exam in DB */
@@ -237,13 +254,17 @@ public class Server extends AbstractServer {
 			Boolean createExamCodeStatus;
 			createExamCodeStatus = con.createExamCode(message[1]);
 			serverMessage[1] = createExamCodeStatus;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "getQuestionDetails": {
 			Question q = con.getQuestionDetails(message[1]);
 			serverMessage[1] = q;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "updateCorrectAnswer": {
@@ -258,7 +279,9 @@ public class Server extends AbstractServer {
 			boolean flag;
 			flag = con.updateQuestion(message[1]);
 			serverMessage[1] = flag;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "deleteQuestion": {
@@ -266,7 +289,9 @@ public class Server extends AbstractServer {
 			try {
 				flag = con.deleteQuestion(message[1]);
 				serverMessage[1] = flag;
+				serverMessage[5]=msgCounter;
 				this.sendToAllClients(serverMessage);
+				msgCounter++;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -276,13 +301,21 @@ public class Server extends AbstractServer {
 		case "checkUserDetails": {
 			User user = con.checkUserDetails(message[1], message[2]);
 			serverMessage[1] = user;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
+			break;
+		}
+		case "performLogout": {
+			 con.performLogout(message[1]);
 			break;
 		}
 		case "updateExam": {
 			Boolean inserted = con.updateExam(message[1]);
 			serverMessage[1] = inserted;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "updateQuestionInExam": {
@@ -292,14 +325,18 @@ public class Server extends AbstractServer {
 				ArrayList<Question> questions = con.getQuestions(message[1]);
 				createManualExam(exam, questions);// This method create word(docx)file to manual exam
 			}
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 
 		case "deleteExam": {
 			Boolean deleted = con.deleteExam(message[1]);
 			serverMessage[1] = deleted;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "setExecutedExamLocked": {
@@ -307,7 +344,9 @@ public class Server extends AbstractServer {
 			serverMessage[1] = isLocked;
 			serverMessage[2]=message[1];
 			serverMessage[4]="all";
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "SetQuestion": {
@@ -316,19 +355,25 @@ public class Server extends AbstractServer {
 		}
 		case "logoutProcess": {
 			con.performLogout(message[1]);
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "getTimeRequestList": {
 			ArrayList<RequestForChangingTimeAllocated> requestsList = con.getAddingTimeRequests();
 			serverMessage[1] = requestsList;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "getTimeRequestDetails": {
 			RequestForChangingTimeAllocated request = con.getAddingTimeRequestsDetails((String) message[1]);
 			serverMessage[1] = request;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "getQuestionInExam": {
@@ -337,13 +382,17 @@ public class Server extends AbstractServer {
 			examFlag = con.checkIfExamIsNotActive(message[1]);
 			serverMessage[1] = questioninexam;
 			serverMessage[2] = examFlag;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "getExamsByUserName": {
 			ArrayList<ExamDetailsMessage> examsPrefDetails = con.getPrefExamDetails((String) message[1]);
 			serverMessage[1] = examsPrefDetails;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "SetStatusToApproved": {
@@ -355,7 +404,9 @@ public class Server extends AbstractServer {
 			serverMessage[2] = tmp[1];// serverMessage[0]=time to add (Time)
 			serverMessage[3]=((Object[]) msg)[1];
 			serverMessage[4]="all";
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "SetStatusToReject": {
@@ -366,14 +417,18 @@ public class Server extends AbstractServer {
 			ArrayList<String> studentList = con.returnListForGetReport("Student");
 			serverMessage[0] = "getStudentsList";
 			serverMessage[1] = studentList;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "getTeachersList": {// send to client list of all the teachers in the system
 			ArrayList<String> teacherList = con.returnListForGetReport("Teacher");
 			serverMessage[0] = "getTeachersList";
 			serverMessage[1] = teacherList;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "getReportByTeacher": {//// send to client statistic report of all the exam that teacher dose
@@ -381,7 +436,9 @@ public class Server extends AbstractServer {
 					message[1]);
 			serverMessage[0] = "getReportByTeacher";
 			serverMessage[1] = teacherReportDetails;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "getReportByCourse": {
@@ -389,14 +446,18 @@ public class Server extends AbstractServer {
 					message[1]);
 			serverMessage[0] = "getReportByCourse";
 			serverMessage[1] = courseReportDetails;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "getReportByStudent": {
 			ArrayList<Integer> studentReportDetails = con.returnReportByStudent(message[1]);
 			serverMessage[0] = "getReportByStudent";
 			serverMessage[1] = studentReportDetails;
+			serverMessage[5]=msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "finishExam": {

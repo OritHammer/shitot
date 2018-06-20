@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -12,6 +13,7 @@ import java.util.Scanner;
 import entity.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -28,6 +30,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class UserControl implements Initializable {
 	@FXML
@@ -58,6 +61,9 @@ public class UserControl implements Initializable {
 	private Label userText1;
 	@FXML
 	private javafx.scene.control.Button closeButton;
+	@FXML
+	private Button logoutBtn;
+	
 	// class variables
 	// date and author variables
 	private Calendar currentCalendar = Calendar.getInstance();
@@ -68,7 +74,7 @@ public class UserControl implements Initializable {
 	private Scene home_page_scene;
 	static Thread th;
 	protected String userNameFromDB;
-
+	protected ArrayList <Integer> messagesRead=new ArrayList<Integer>();
 	public void closeButtonAction(ActionEvent e) throws IOException {
 		Stage stage = (Stage) closeButton.getScene().getWindow();
 		stage.close();
@@ -81,7 +87,7 @@ public class UserControl implements Initializable {
 	protected Object[] messageToServer = new Object[5];
 	/* connections variables */
 	static String ip;// server ip
-
+	 final UserControl uc=this;
 	final public static int DEFAULT_PORT = 5555;
 
 	private static User myUser = new User();
@@ -113,6 +119,10 @@ public class UserControl implements Initializable {
 		try {
 			chat.closeConnection();// close the connection
 			Object[] msg = (Object[]) message;
+			if(messagesRead.contains((int)msg[5])){
+				return;
+			}
+			messagesRead.add((int)msg[5]);
 			User user = (User) msg[1];
 			if (user == null) {
 				Platform.runLater(() -> {
@@ -238,7 +248,17 @@ public class UserControl implements Initializable {
 			chat.handleMessageFromClientUI(messageToServer);
 		}
 	}
-
+	public void logoutPressed(ActionEvent e) throws IOException {
+		
+			connect(this);
+			messageToServer[0] = "perfornLogout";
+			messageToServer[1] = this.getMyUser().getUsername();
+			messageToServer[2] =null;
+			messageToServer[4] = this.getMyUser().getUsername();
+			this.chat.handleMessageFromClientUI(messageToServer);
+			//openScreen("boundary", "LoginGui");
+		}
+	
 	public void setUserText(String userNameFromDB) {/* set the user name text in the "hello user" text */
 		this.userNameFromDB = userNameFromDB;
 		getMyUser().setFullname(userNameFromDB);
@@ -306,14 +326,7 @@ public class UserControl implements Initializable {
 		stage.close();
 	}
 
-	public void logoutPressed(ActionEvent e) throws Exception, SQLException { // *** move to userControl
-		connect(this);
-		messageToServer[0] = "logoutProcess";
-		messageToServer[1] = getMyUser().getUsername();
-		messageToServer[2] = null;
-		chat.handleMessageFromClientUI(messageToServer);// send the message to server
-		closeScreen(e);
-	}
+	
 
 	public void setStudentAuthor_Date_name() {// *** move to userControl rename userDetails
 		userNameLabel.setText(getMyUser().getFullname());

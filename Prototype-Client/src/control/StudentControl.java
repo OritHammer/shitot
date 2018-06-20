@@ -67,7 +67,6 @@ public class StudentControl extends UserControl implements Initializable {
 	private int index = -1;
 	private static String timeToString;
 	protected static Boolean justFlag = false;
-	private Boolean isBoolean = false;
 	protected static MouseEvent tempEvent;
 	private Boolean isLocked = false;
 	private Boolean isPerformExam;
@@ -231,6 +230,12 @@ public class StudentControl extends UserControl implements Initializable {
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
+				try {
+					chat.closeConnection();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				connect(sControl);
 				int sec = setInterval();
 				// messageToServer[0] = "isChanged";
@@ -413,6 +418,10 @@ public class StudentControl extends UserControl implements Initializable {
 			e1.printStackTrace();
 		}
 		final Object[] msgFromServer = (Object[]) message;
+		if(messagesRead.contains((int)msgFromServer[5])){
+			return;
+		}
+		messagesRead.add((int)msgFromServer[5]);
 		if ((isPerformExam == true && msgFromServer[4].equals("all"))
 				|| msgFromServer[4].equals(getMyUser().getUsername())) {
 

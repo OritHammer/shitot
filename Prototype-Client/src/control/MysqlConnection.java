@@ -210,14 +210,13 @@ public class MysqlConnection {
 			User newUser = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
 					rs.getString(6)); // in section 5 need to insert "connected"
 
-		
+			performLogin(userID);
 			// updating user status
-			/*
-			 * stmt.executeUpdate( "UPDATE users " +
-			 * "SET status=\"connected\" WHERE username=\""+userID+"\" AND password=\""
-			 * +userPass+"\";");// setting a new status
-			 * System.out.println("user set as connected");
-			 */
+			
+//			stmt.executeUpdate( "UPDATE users " +
+//			"SET status=\"connected\" WHERE username=\""+userID+"\" AND password=\"" +userPass+"\";");// setting a new status
+//			 System.out.println("user set as connected");
+			 
 
 			return newUser;
 			// in the end userDetails will have the UserID,userName,role
@@ -236,7 +235,15 @@ public class MysqlConnection {
 			e.printStackTrace();
 		}
 	}
-
+	public void performLogin(Object userName) {
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("UPDATE users " + "SET status=\"connected\" WHERE username=\"" + userName + "\";");
+			System.out.println("user set as connected");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	public ArrayList<ExamDetailsMessage> getPrefExamDetails(String userName) {
 		ArrayList<ExamDetailsMessage> detailsList = new ArrayList<ExamDetailsMessage>();
 		try {

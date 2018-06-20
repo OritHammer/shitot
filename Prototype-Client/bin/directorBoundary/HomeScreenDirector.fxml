@@ -47,5 +47,6 @@
             <Font size="38.0" />
          </font>
       </Label>
+      <Button fx:id="logoutBtn" layoutX="505.0" layoutY="353.0" mnemonicParsing="false" onAction="#logoutPressed" text="Logout" />
    </children>
 </AnchorPane>

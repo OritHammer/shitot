@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 
 public class Main extends Application {
 	private static Stage guiStage;
@@ -23,6 +24,7 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 			guiStage.setTitle("Login");
 			guiStage.setScene(scene);
+			guiStage.getIcons().add(new Image("edit.png"));
 			guiStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();

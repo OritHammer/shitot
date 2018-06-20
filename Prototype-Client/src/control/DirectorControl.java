@@ -197,6 +197,10 @@ public class DirectorControl extends UserControl implements Initializable {
 	public void checkMessage(Object message) {
 		try {
 			final Object[] msg = (Object[]) message;
+			if(messagesRead.contains((int)msg[5])){
+				return;
+			}
+			messagesRead.add((int)msg[5]);
 			if (msg[4].equals(getMyUser().getUsername())) {
 				chat.closeConnection();// close the connection
 				/*
