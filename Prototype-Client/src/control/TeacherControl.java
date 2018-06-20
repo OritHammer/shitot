@@ -1,4 +1,5 @@
 package control;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import java.io.IOException;
@@ -62,9 +63,9 @@ public class TeacherControl extends UserControl implements Initializable {
 	private ObservableList<String> coursesListToCreateQuestion = FXCollections.observableArrayList();
 	private ObservableList<Question> questionObservableList;
 	private static boolean blockPassQuestionButton;
-	
+
 	private TeacherControl tController;
-	
+
 	private ActionEvent temp;
 	private ObservableList<Exam> exams;
 	private Question questionSelected;
@@ -73,7 +74,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	private static String tempExamId;
 	private Exam examSelected;
 	private Exam oldExam;
-	private String text="";
+	private String text = "";
 	/* fxml variables */
 	@FXML
 	private Text userText;
@@ -85,15 +86,12 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private Label pageLabel;
 
-	
 	@FXML
-    private TextArea reason;
+	private TextArea reason;
 
-    @FXML
-    private TextField newGrade;
+	@FXML
+	private TextField newGrade;
 
-
-	
 	@FXML
 	private TextField answer1;
 	@FXML
@@ -170,7 +168,6 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private TableColumn<Question, String> correctAns;
 
-
 	@FXML
 	private TableView<Exam> examsTableView;
 	@FXML
@@ -188,7 +185,6 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private TableColumn<Exam, String> remarksForStudentTable;
 
-	
 	@FXML
 	private TableView<StudentPerformExam> studnetInExamTableView;
 	@FXML
@@ -197,7 +193,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	private TableColumn<StudentPerformExam, String> studentName;
 	@FXML
 	private TableColumn<StudentPerformExam, String> grade;
-	
+
 	@FXML
 	private ComboBox<String> subjectsComboBox;
 	@FXML
@@ -218,358 +214,359 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private Button updateBtn;
 
+	@FXML
+	private ListView<String> courseInCreateQuestion;
 
-	  @FXML
-	  private ListView<String> courseInCreateQuestion;
-	  
-	  @FXML
-	  private AnchorPane mainPane;
-	    
-	    public void loadExamCopy(MouseEvent event) {
-	    	if(event.getClickCount() == 2)
-	    	{
-	    		connect(this);
-	    		messageToServer[0] = "getStudentAnswers";
-	    		messageToServer[1] = executedExamsComboBox.getValue(); // sending executed exam id
-	    		messageToServer[2] = studnetInExamTableView.getSelectionModel().getSelectedItem().getUserName(); // sending the user name
-	    		chat.handleMessageFromClientUI(messageToServer);
-	    		StudentControl studentControl = new StudentControl();
-	    		studentControl.tempEvent = event;
-	    	}
-	    }
-	    
-		public void confirmExecutedExam(ActionEvent event) throws IOException {
-			if (studnetInExamTableView.getSelectionModel().getSelectedItem() == null)
-				return;
+	@FXML
+	private AnchorPane mainPane;
 
-			StudentPerformExam studentinexm = studnetInExamTableView.getSelectionModel().getSelectedItem();
-			studnetInExamTableView.getItems().remove(studentinexm);
-			if(studnetInExamTableView.getItems().isEmpty())
-			{
-				Parent tableViewParent = FXMLLoader.load(getClass().getResource("/boundary/CheckExam.fxml"));
-				Scene tableViewScene = new Scene(tableViewParent);
-				tableViewScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
-				// This line gets the Stage information
-				Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-				window.setScene(tableViewScene);
-				window.show();
-				messageToServer[2] = true;
-			}
-			else
-				messageToServer[2] = false;
-			messageToServer[0] = "confirmExecutedExam";
-			messageToServer[1] = studentinexm;
-			
+	public void loadExamCopy(MouseEvent event) {
+		if (event.getClickCount() == 2) {
 			connect(this);
+			messageToServer[0] = "getStudentAnswers";
+			messageToServer[1] = executedExamsComboBox.getValue(); // sending executed exam id
+			messageToServer[2] = studnetInExamTableView.getSelectionModel().getSelectedItem().getUserName(); // sending
+																												// the
+																												// user
+																												// name
 			chat.handleMessageFromClientUI(messageToServer);
+			StudentControl studentControl = new StudentControl();
+			studentControl.tempEvent = event;
 		}
+	}
 
-		public void closeChange(ActionEvent event) {
+	public void confirmExecutedExam(ActionEvent event) throws IOException {
+		if (studnetInExamTableView.getSelectionModel().getSelectedItem() == null)
+			return;
+
+		StudentPerformExam studentinexm = studnetInExamTableView.getSelectionModel().getSelectedItem();
+		studnetInExamTableView.getItems().remove(studentinexm);
+		if(studnetInExamTableView.getItems().isEmpty())
+		{
+			Parent tableViewParent = FXMLLoader.load(getClass().getResource("/boundary/CheckExam.fxml"));
+			Scene tableViewScene = new Scene(tableViewParent);
+			tableViewScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+			// This line gets the Stage information
+			Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+			window.setScene(tableViewScene);
+			window.show();
+			messageToServer[2] = true;
+		}
+		else
+			messageToServer[2] = false;
+		messageToServer[0] = "confirmExecutedExam";
+		messageToServer[1] = studentinexm;
+		
+		connect(this);
+		chat.handleMessageFromClientUI(messageToServer);
+	}
+
+	public void closeChange(ActionEvent event) {
+		final Node source = (Node) event.getSource();
+		Stage stage = (Stage) source.getScene().getWindow();
+		stage.close();
+	}
+
+	public void finalChange(ActionEvent event) {
+		if (newGrade.getText().equals("") && reason.getText().equals(""))
+			new Alert(Alert.AlertType.ERROR, "You must enter values.").showAndWait();
+		else if (newGrade.getText().equals("")
+				|| !(Integer.parseInt(newGrade.getText()) >= 0 && Integer.parseInt(newGrade.getText()) <= 100))
+			new Alert(Alert.AlertType.ERROR, "The grade must be between 0-100").showAndWait();
+		else if (reason.getText().equals(""))
+			new Alert(Alert.AlertType.ERROR, "If you want to change the grade you must enter a reason").showAndWait();
+		else {
+			StudentPerformExam student = tController.getSelectedStudentPerformExam();
+			student.setGrade(Float.valueOf(newGrade.getText()));
+			student.setReasonForChangeGrade(reason.getText());
+			tController.setOnTableView(student);
 			final Node source = (Node) event.getSource();
 			Stage stage = (Stage) source.getScene().getWindow();
 			stage.close();
 		}
 
-		public void finalChange(ActionEvent event) {
-			if (newGrade.getText().equals("") && reason.getText().equals(""))
-				new Alert(Alert.AlertType.ERROR, "You must enter values.").showAndWait();
-			else if (newGrade.getText().equals("")
-					|| !(Integer.parseInt(newGrade.getText()) >= 0 && Integer.parseInt(newGrade.getText()) <= 100))
-				new Alert(Alert.AlertType.ERROR, "The grade must be between 0-100").showAndWait();
-			else if (reason.getText().equals(""))
-				new Alert(Alert.AlertType.ERROR, "If you want to change the grade you must enter a reason").showAndWait();
-			else {
-				StudentPerformExam student = tController.getSelectedStudentPerformExam();
-				student.setGrade(Float.valueOf(newGrade.getText()));
-				student.setReasonForChangeGrade(reason.getText());
-				tController.setOnTableView(student);
-				final Node source = (Node) event.getSource();
-				Stage stage = (Stage) source.getScene().getWindow();
-				stage.close();
-			}
+	}
 
-		}
-	    
-	    private void setOnTableView(StudentPerformExam student) {
-	    	studnetInExamTableView.getItems().remove(studnetInExamTableView.getSelectionModel().getSelectedIndex());
-	    	studnetInExamTableView.getItems().add(student);
-		}
+	private void setOnTableView(StudentPerformExam student) {
+		studnetInExamTableView.getItems().remove(studnetInExamTableView.getSelectionModel().getSelectedIndex());
+		studnetInExamTableView.getItems().add(student);
+	}
 
-		private StudentPerformExam getSelectedStudentPerformExam() {
-	    	return(studnetInExamTableView.getSelectionModel().getSelectedItem());
-	    }
+	private StudentPerformExam getSelectedStudentPerformExam() {
+		return (studnetInExamTableView.getSelectionModel().getSelectedItem());
+	}
 
+	public void changeGrade(ActionEvent event) throws IOException {
 
+		studentInExamRow = studnetInExamTableView.getSelectionModel().getSelectedItem();
+		if (studentInExamRow == null)
+			return;
+		final Stage dialog = new Stage();
 
-		public void changeGrade(ActionEvent event) throws IOException {
-	    	
-	    	studentInExamRow = studnetInExamTableView.getSelectionModel().getSelectedItem();
-	    	if(studentInExamRow == null)
-	    		return;
-            final Stage dialog = new Stage();
-            
-            final Node source = (Node) event.getSource();
-            dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.initOwner((Stage) source.getScene().getWindow());
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            AnchorPane myPane = fxmlLoader.load(getClass().getResource("/boundary/ChangeGrade.fxml").openStream());
-             tController = (TeacherControl) fxmlLoader.getController();
-             tController.setTeacherController(this);
-            Scene dialogScene = new Scene(myPane);
-            dialog.setScene(dialogScene);
-            dialog.show();
-	    }
-	  
+		final Node source = (Node) event.getSource();
+		dialog.initModality(Modality.APPLICATION_MODAL);
+		dialog.initOwner((Stage) source.getScene().getWindow());
+		FXMLLoader fxmlLoader = new FXMLLoader();
+		AnchorPane myPane = fxmlLoader.load(getClass().getResource("/boundary/ChangeGrade.fxml").openStream());
+		tController = (TeacherControl) fxmlLoader.getController();
+		tController.setTeacherController(this);
+		Scene dialogScene = new Scene(myPane);
+		dialog.setScene(dialogScene);
+		dialog.show();
+	}
+
 	private void setTeacherController(TeacherControl teacherControl) {
-		tController=teacherControl;
-			
-		}
+		tController = teacherControl;
+
+	}
 
 	/* check the content message from server */
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
 		try {
 			final Object[] msg = (Object[]) message;
-			if(msg[4].equals(getMyUser().getUsername())) {
-			chat.closeConnection();// close the connection
+			if (msg[4].equals(getMyUser().getUsername())) {
+				chat.closeConnection();// close the connection
 
-			
-			Platform.runLater(() -> {
-				switch (msg[0].toString()) {
+				Platform.runLater(() -> {
+					switch (msg[0].toString()) {
 
-				/*************************************** General "get" items from serer to client ************************************/
-				
-				case "showingCopy":
-				{
-					StudentControl scontrol = new StudentControl();
-					scontrol.justFlag = true;
-					scontrol.showingCopy((ArrayList<Question>) msg[1], (HashMap<String, Integer>) msg[2]);
-					break;
-				}
-				
-				case ("getSubjects"): /* get the subjects list from server */
-				{
-					ObservableList<String> observableList = FXCollections.observableArrayList();
-					for (TeachingProfessionals tp : (ArrayList<TeachingProfessionals>) msg[1]) {
-						observableList.add(tp.getTp_id() + " - " + tp.getName());
+					/***************************************
+					 * General "get" items from serer to client
+					 ************************************/
+
+					case "showingCopy": {
+						StudentControl scontrol = new StudentControl();
+						scontrol.justFlag = true;
+						scontrol.showingCopy((ArrayList<Question>) msg[1], (HashMap<String, Integer>) msg[2]);
+						break;
 					}
-					subjectsComboBox.setItems(observableList);
-					break;
-				}
 
-				case ("getCourses"): /* get the courses list from server */
-				{
-					ObservableList<String> observableList = FXCollections.observableArrayList();
-					for (Course c : (ArrayList<Course>) msg[1]) {
-						observableList.add(c.getCourseID() + " - " + c.getName());
+					case ("getSubjects"): /* get the subjects list from server */
+					{
+						ObservableList<String> observableList = FXCollections.observableArrayList();
+						for (TeachingProfessionals tp : (ArrayList<TeachingProfessionals>) msg[1]) {
+							observableList.add(tp.getTp_id() + " - " + tp.getName());
+						}
+						subjectsComboBox.setItems(observableList);
+						break;
 					}
-					coursesComboBox.setItems(observableList);
-					break;
-				}
 
-				/************************************************************ All Question cases ************************************/
-
-				case ("getQuestionsToTable"): /* get the questions list from server */
-				{
-					questionObservableList = FXCollections.observableArrayList((ArrayList<Question>) msg[1]);//kaki
-					qid.setCellValueFactory(new PropertyValueFactory<>("id"));
-					tname.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
-					qtext.setCellValueFactory(new PropertyValueFactory<>("questionContent"));
-					if (pageLabel.getText().equals("Update question")) {
-						a1.setCellValueFactory(new PropertyValueFactory<>("answer1"));
-						a2.setCellValueFactory(new PropertyValueFactory<>("answer2"));
-						a3.setCellValueFactory(new PropertyValueFactory<>("answer3"));
-						a4.setCellValueFactory(new PropertyValueFactory<>("answer4"));
-						correctAns.setCellValueFactory(new PropertyValueFactory<>("correctAnswer"));
-						questionTableView.setEditable(true);
-						ObservableList<String> numbers = FXCollections.observableArrayList("1", "2", "3", "4");
-						qtext.setCellFactory(TextFieldTableCell.forTableColumn());
-						a1.setCellFactory(TextFieldTableCell.forTableColumn());
-						a2.setCellFactory(TextFieldTableCell.forTableColumn());
-						a3.setCellFactory(TextFieldTableCell.forTableColumn());
-						a4.setCellFactory(TextFieldTableCell.forTableColumn());
-						correctAns.setCellFactory(TextFieldTableCell.forTableColumn());
-						correctAns.setCellFactory(
-								ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), numbers));
-						questionObservableList = FXCollections.observableArrayList((ArrayList<Question>) msg[1]);
+					case ("getCourses"): /* get the courses list from server */
+					{
+						ObservableList<String> observableList = FXCollections.observableArrayList();
+						for (Course c : (ArrayList<Course>) msg[1]) {
+							observableList.add(c.getCourseID() + " - " + c.getName());
+						}
+						coursesComboBox.setItems(observableList);
+						break;
 					}
-					questionTableView.setItems(questionObservableList);
-					questionTableView.getSortOrder().setAll(qid);
-					break;
-				}
 
-				case ("updateQuestion"): /* the server return true/false if the question updated or not */
-				{
-					if ((boolean) msg[1] == true) {
-						questionTableView.refresh();
-					} else {
-						questionObservableList.remove(questionObservableList.indexOf(questionSelected));
-						questionObservableList.add(oldQuestion);
-						errorMsg("This question is in active exam.");
+					/************************************************************
+					 * All Question cases
+					 ************************************/
+
+					case ("getQuestionsToTable"): /* get the questions list from server */
+					{
+						questionObservableList = FXCollections.observableArrayList((ArrayList<Question>) msg[1]);// kaki
+						qid.setCellValueFactory(new PropertyValueFactory<>("id"));
+						tname.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
+						qtext.setCellValueFactory(new PropertyValueFactory<>("questionContent"));
+						if (pageLabel.getText().equals("Update question")) {
+							a1.setCellValueFactory(new PropertyValueFactory<>("answer1"));
+							a2.setCellValueFactory(new PropertyValueFactory<>("answer2"));
+							a3.setCellValueFactory(new PropertyValueFactory<>("answer3"));
+							a4.setCellValueFactory(new PropertyValueFactory<>("answer4"));
+							correctAns.setCellValueFactory(new PropertyValueFactory<>("correctAnswer"));
+							questionTableView.setEditable(true);
+							ObservableList<String> numbers = FXCollections.observableArrayList("1", "2", "3", "4");
+							qtext.setCellFactory(TextFieldTableCell.forTableColumn());
+							a1.setCellFactory(TextFieldTableCell.forTableColumn());
+							a2.setCellFactory(TextFieldTableCell.forTableColumn());
+							a3.setCellFactory(TextFieldTableCell.forTableColumn());
+							a4.setCellFactory(TextFieldTableCell.forTableColumn());
+							correctAns.setCellFactory(TextFieldTableCell.forTableColumn());
+							correctAns.setCellFactory(
+									ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), numbers));
+							questionObservableList = FXCollections.observableArrayList((ArrayList<Question>) msg[1]);
+						}
+						questionTableView.setItems(questionObservableList);
 						questionTableView.getSortOrder().setAll(qid);
+						break;
 					}
-					break;
-				}
 
-				case ("deleteQuestion"): /* the server return true/false if the question deleted or not */
-				{
-					if((boolean) msg[1])
+					case ("updateQuestion"): /* the server return true/false if the question updated or not */
 					{
 						if ((boolean) msg[1] == true) {
-							int index = questionObservableList.indexOf(questionSelected);
-							questionObservableList.remove(index);
 							questionTableView.refresh();
 						} else {
-							errorMsg( "This question is in active exam.");
+							questionObservableList.remove(questionObservableList.indexOf(questionSelected));
+							questionObservableList.add(oldQuestion);
+							errorMsg("This question is in active exam.");
+							questionTableView.getSortOrder().setAll(qid);
 						}
+						break;
 					}
-					else
+
+					case ("deleteQuestion"): /* the server return true/false if the question deleted or not */
 					{
-						errorMsg( "This question is in exam, first delete the exam");
-					}
-					break;
-				}
-
-				/***************************************************** All Exam cases *********************************************/
-
-				case ("getExams"): /* get the exams list from server */
-				{
-					if (pageLabel.getText().equals("Update exam")) {
-						exams = FXCollections.observableArrayList((ArrayList<Exam>) msg[1]);
-						questionIDTable.setCellValueFactory(new PropertyValueFactory<>("e_id"));
-						teacherNameTable.setCellValueFactory(new PropertyValueFactory<>("teacherUserName"));
-						solutionTimeTable.setCellValueFactory(new PropertyValueFactory<>("solutionTime"));
-						remarksForTeacherTable.setCellValueFactory(new PropertyValueFactory<>("remarksForTeacher"));
-						remarksForStudentTable.setCellValueFactory(new PropertyValueFactory<>("remarksForStudent"));
-						typeTable.setCellValueFactory(new PropertyValueFactory<>("type"));
-						ObservableList<String> type = FXCollections.observableArrayList("computerized", "manual");
-						solutionTimeTable.setCellFactory(TextFieldTableCell.forTableColumn());
-						remarksForTeacherTable.setCellFactory(TextFieldTableCell.forTableColumn());
-						remarksForStudentTable.setCellFactory(TextFieldTableCell.forTableColumn());
-						typeTable.setCellFactory(ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), type));
-						examsTableView.setItems(exams);
-					} else {
-						ObservableList<String> observableList = FXCollections.observableArrayList();
-						ArrayList<Exam> exams = (ArrayList<Exam>) msg[1];
-						for (Exam e : exams) {
-							observableList.add(e.getE_id());
-						}
-						examComboBox.setItems(observableList);
-
-					}
-					break;
-				}
-
-				case ("getExecutedExams"): /* get the executed exams list from server */
-				{
-					if (!pageLabel.getText().equals("Check exam")) {
-					ObservableList<ExecutedExam> observablelist = FXCollections
-							.observableArrayList((ArrayList<ExecutedExam>) msg[1]);
-					executedExamTableView.setItems(observablelist);
-					executedExamIDTableView.setCellValueFactory(new PropertyValueFactory<>("executedExamID"));
-					teacherNameTableView.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
-					exam_idTableView.setCellValueFactory(new PropertyValueFactory<>("exam_id"));
-					break;
-					}
-					else
-					{
-						ObservableList<String> observablelistToExecutedExamComboBox = FXCollections.observableArrayList();
-						ArrayList<ExecutedExam> exams = (ArrayList<ExecutedExam>) msg[1];
-						for(ExecutedExam e : exams)
-						{
-							observablelistToExecutedExamComboBox.add(e.getExecutedExamID());
-						}
-						executedExamsComboBox.setItems(observablelistToExecutedExamComboBox);
-					}
-					break;
-				}
-
-				case ("getQuestionInExam"): /* get the question list of specific exam from server and check if the exam active or not*/
-				{
-					try {
-						((ArrayList<QuestionInExam>) msg[1]).forEach(questionInExamObservable::add);
-						final boolean flag1 = (boolean) msg[2];
-						Platform.runLater(() -> {
-							if (flag1 == false) {
-								blockPassQuestionButton = true;
+						if ((boolean) msg[1]) {
+							if ((boolean) msg[1] == true) {
+								int index = questionObservableList.indexOf(questionSelected);
+								questionObservableList.remove(index);
+								questionTableView.refresh();
 							} else {
-								blockPassQuestionButton = false;
+								errorMsg("This question is in active exam.");
 							}
-							try {
-								openScreen(temp,"UpdateQuestionInExam");
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						});
-					} catch (NullPointerException exception) {
-						errorMsg( "exam does not have any question");
-						blockPassQuestionButton = false;
-
+						} else {
+							errorMsg("This question is in exam, first delete the exam");
+						}
+						break;
 					}
-					break;
-				}
 
-				case ("setExecutedExamLocked"): /* set executed exam lock */
-					text="Exam locked successfully ✔";
-				case ("setExamCode"): /* the server return true/false if the executed exam created or not */
-				{
-					if(!text.equals("Exam locked successfully ✔"))
+					/*****************************************************
+					 * All Exam cases
+					 *********************************************/
+
+					case ("getExams"): /* get the exams list from server */
 					{
-						text="Exam code created successfully ✔";
-					}
-					if ((boolean) msg[1] == true) {
-						allertText.setFill(Color.GREEN);
-						allertText.setText(text);
-					} else {
-						allertText.setFill(Color.RED);
-						allertText.setText("There is already a code like that, please choose another code ❌");
-					}
-					break;
-				}
-				case ("updateExam"): /* the server return true/false if the exam updated or not */
-				{
-					if ((boolean) msg[1] == true) {
-						examsTableView.refresh();
-					} else {
-						exams.remove(exams.indexOf(examSelected));
-						exams.add(oldExam);
-						errorMsg("This exam is in active exam.");
-						examsTableView.getSortOrder().setAll(questionIDTable);
-					}
-					break;
-				}
+						if (pageLabel.getText().equals("Update exam")) {
+							exams = FXCollections.observableArrayList((ArrayList<Exam>) msg[1]);
+							questionIDTable.setCellValueFactory(new PropertyValueFactory<>("e_id"));
+							teacherNameTable.setCellValueFactory(new PropertyValueFactory<>("teacherUserName"));
+							solutionTimeTable.setCellValueFactory(new PropertyValueFactory<>("solutionTime"));
+							remarksForTeacherTable.setCellValueFactory(new PropertyValueFactory<>("remarksForTeacher"));
+							remarksForStudentTable.setCellValueFactory(new PropertyValueFactory<>("remarksForStudent"));
+							typeTable.setCellValueFactory(new PropertyValueFactory<>("type"));
+							ObservableList<String> type = FXCollections.observableArrayList("computerized", "manual");
+							solutionTimeTable.setCellFactory(TextFieldTableCell.forTableColumn());
+							remarksForTeacherTable.setCellFactory(TextFieldTableCell.forTableColumn());
+							remarksForStudentTable.setCellFactory(TextFieldTableCell.forTableColumn());
+							typeTable.setCellFactory(
+									ComboBoxTableCell.forTableColumn(new DefaultStringConverter(), type));
+							examsTableView.setItems(exams);
+						} else {
+							ObservableList<String> observableList = FXCollections.observableArrayList();
+							ArrayList<Exam> exams = (ArrayList<Exam>) msg[1];
+							for (Exam e : exams) {
+								observableList.add(e.getE_id());
+							}
+							examComboBox.setItems(observableList);
 
-				case ("deleteExam"): /*  the server return true/false if the exam deleted or not */
-				{
-					if ((boolean) msg[1] == true) {
-						exams.remove(exams.indexOf(examSelected));
-					} else {
-
-						errorMsg("This exam is in active exam.");
+						}
+						break;
 					}
-					break;
-				}
-				
-				case ("getStudenstInExam"): /*   */
-				{
-					ObservableList<StudentPerformExam> observablelistOfStudentInExam = FXCollections
-							.observableArrayList((ArrayList<StudentPerformExam>) msg[1]);
-					studentId.setCellValueFactory(new PropertyValueFactory<>("userId"));
-					studentName.setCellValueFactory(new PropertyValueFactory<>("userFullname"));
-					grade.setCellValueFactory(new PropertyValueFactory<>("grade"));
-					studnetInExamTableView.setItems(observablelistOfStudentInExam);
-					break;
-				}
 
-				default: {
-					System.out.println("Error in input");
-				}
-				}
-			});
+					case ("getExecutedExams"): /* get the executed exams list from server */
+					{
+						if (!pageLabel.getText().equals("Check exam")) {
+							ObservableList<ExecutedExam> observablelist = FXCollections
+									.observableArrayList((ArrayList<ExecutedExam>) msg[1]);
+							executedExamTableView.setItems(observablelist);
+							executedExamIDTableView.setCellValueFactory(new PropertyValueFactory<>("executedExamID"));
+							teacherNameTableView.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
+							exam_idTableView.setCellValueFactory(new PropertyValueFactory<>("exam_id"));
+							break;
+						} else {
+							ObservableList<String> observablelistToExecutedExamComboBox = FXCollections
+									.observableArrayList();
+							ArrayList<ExecutedExam> exams = (ArrayList<ExecutedExam>) msg[1];
+							for (ExecutedExam e : exams) {
+								observablelistToExecutedExamComboBox.add(e.getExecutedExamID());
+							}
+							executedExamsComboBox.setItems(observablelistToExecutedExamComboBox);
+						}
+						break;
+					}
+
+					case ("getQuestionInExam"): /*
+												 * get the question list of specific exam from server and check if the
+												 * exam active or not
+												 */
+					{
+						try {
+							((ArrayList<QuestionInExam>) msg[1]).forEach(questionInExamObservable::add);
+							final boolean flag1 = (boolean) msg[2];
+							Platform.runLater(() -> {
+								if (flag1 == false) {
+									blockPassQuestionButton = true;
+								} else {
+									blockPassQuestionButton = false;
+								}
+								try {
+									openScreen(temp, "UpdateQuestionInExam");
+								} catch (IOException e) {
+
+									e.printStackTrace();
+								}
+							});
+						} catch (NullPointerException exception) {
+							errorMsg("exam does not have any question");
+							blockPassQuestionButton = false;
+
+						}
+						break;
+					}
+
+					case ("setExecutedExamLocked"): /* set executed exam lock */
+						text = "Exam locked successfully ✔";
+					case ("setExamCode"): /* the server return true/false if the executed exam created or not */
+					{
+						if (!text.equals("Exam locked successfully ✔")) {
+							text = "Exam code created successfully ✔";
+						}
+						if ((boolean) msg[1] == true) {
+							allertText.setFill(Color.GREEN);
+							allertText.setText(text);
+						} else {
+							allertText.setFill(Color.RED);
+							allertText.setText("There is already a code like that, please choose another code ❌");
+						}
+						break;
+					}
+					case ("updateExam"): /* the server return true/false if the exam updated or not */
+					{
+						if ((boolean) msg[1] == true) {
+							examsTableView.refresh();
+						} else {
+							exams.remove(exams.indexOf(examSelected));
+							exams.add(oldExam);
+							errorMsg("This exam is in active exam.");
+							examsTableView.getSortOrder().setAll(questionIDTable);
+						}
+						break;
+					}
+
+					case ("deleteExam"): /* the server return true/false if the exam deleted or not */
+					{
+						if ((boolean) msg[1] == true) {
+							exams.remove(exams.indexOf(examSelected));
+						} else {
+
+							errorMsg("This exam is in active exam.");
+						}
+						break;
+					}
+
+					case ("getStudenstInExam"): /*   */
+					{
+						ObservableList<StudentPerformExam> observablelistOfStudentInExam = FXCollections
+								.observableArrayList((ArrayList<StudentPerformExam>) msg[1]);
+						studentId.setCellValueFactory(new PropertyValueFactory<>("userId"));
+						studentName.setCellValueFactory(new PropertyValueFactory<>("userFullname"));
+						grade.setCellValueFactory(new PropertyValueFactory<>("grade"));
+						studnetInExamTableView.setItems(observablelistOfStudentInExam);
+						break;
+					}
+
+					default: {
+						System.out.println("Error in input");
+					}
+					}
+				});
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
@@ -578,10 +575,10 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	/* intialize function go first after loading fxml */
 	public void initialize(URL url, ResourceBundle rb) {
-		messageToServer[4]=getMyUser().getUsername();
+		messageToServer[4] = getMyUser().getUsername();
 		switch (pageLabel.getText()) {
 		case ("Home screen"): {
-			userText.setText(getMyUser().getUsername());
+			userText.setText(getMyUser().getFullname());
 			break;
 		}
 		case ("Update question in exam"): {
@@ -609,7 +606,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		case ("Extend exam time"):
 		case ("Check exam"):
 		case ("Lock exam"):
-		
+
 		case ("Update exam"): {
 
 			connect(this);
@@ -621,9 +618,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			}
 			}
 			messageToServer[0] = "getSubjects";
-			if(getMyUser().getRole().equals("director"))
-				messageToServer[1] =null;
-			else messageToServer[1] = getMyUser().getUsername();
+			messageToServer[1] = getMyUser().getUsername();
 			messageToServer[2] = null;
 			chat.handleMessageFromClientUI(messageToServer);// send the message to server
 			break;
@@ -633,76 +628,71 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	}
 
-	/*********************************************************** Opening screens action-events ***************************************/
-	
-	
-	public void justTest(ActionEvent e) throws IOException
-	{
+	/***********************************************************
+	 * Opening screens action-events
+	 ***************************************/
+
+	public void justTest(ActionEvent e) throws IOException {
 		AnchorPane myPane = FXMLLoader.load(getClass().getResource("/boundary/CreateExamCode.fxml"));
 		mainPane.getChildren().setAll(myPane);
 	}
-	
-	public void justTest2(ActionEvent e) throws IOException
-	{
+
+	public void justTest2(ActionEvent e) throws IOException {
 		AnchorPane myPane = FXMLLoader.load(getClass().getResource("/boundary/CreateQuestion.fxml"));
 		mainPane.getChildren().setAll(myPane);
 	}
-	
-	public void openScreen(ActionEvent e, String screen) throws IOException{
 
-		 Parent tableViewParent = FXMLLoader.load(getClass().getResource("/boundary/" + screen + ".fxml"));
-	        Scene tableViewScene = new Scene(tableViewParent);
-	        tableViewScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
-	        //This line gets the Stage information
-	        Stage window = (Stage)((Node)e.getSource()).getScene().getWindow();
-	        window.setScene(tableViewScene);
-	        window.show();
+	public void openScreen(ActionEvent e, String screen) throws IOException {
+
+		Parent tableViewParent = FXMLLoader.load(getClass().getResource("/boundary/" + screen + ".fxml"));
+		Scene tableViewScene = new Scene(tableViewParent);
+		tableViewScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+		// This line gets the Stage information
+		Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
+		window.setScene(tableViewScene);
+		window.show();
 	}
-	
+
 	/* open the screen ExtendExamTime */
-	public void openExtendExamTimeScreen(ActionEvent e) throws IOException{
-		openScreen(e,"ExtendExamTime");
+	public void openExtendExamTimeScreen(ActionEvent e) throws IOException {
+		openScreen(e, "ExtendExamTime");
 	}
 
 	/* open the screen UpdateQuestion */
-	public void openUpdateQuestionScreen(ActionEvent e) throws IOException{
-		openScreen(e,"UpdateQuestion");
+	public void openUpdateQuestionScreen(ActionEvent e) throws IOException {
+		openScreen(e, "UpdateQuestion");
 	}
-	
-
 
 	/* open the screen CreateExamCode */
-	public void openExamCodeScreen(ActionEvent e) throws IOException{
-		openScreen(e,"CreateExamCode");
+	public void openExamCodeScreen(ActionEvent e) throws IOException {
+		openScreen(e, "CreateExamCode");
 	}
 
 	/* open the screen CreateExam */
-	public void openCreateExam(ActionEvent e) throws IOException{
-		openScreen(e,"CreateExam");
+	public void openCreateExam(ActionEvent e) throws IOException {
+		openScreen(e, "CreateExam");
 	}
 
 	/* open the screen CreateQuestion */
-	public void openCreateQuestion(ActionEvent e) throws IOException{
-		openScreen(e,"CreateQuestion");
+	public void openCreateQuestion(ActionEvent e) throws IOException {
+		openScreen(e, "CreateQuestion");
 	}
 
 	/* open the screen UpdateExam */
-	public void openUpdateExamScreen(ActionEvent e) throws IOException{
-		openScreen(e,"UpdateExam");
+	public void openUpdateExamScreen(ActionEvent e) throws IOException {
+		openScreen(e, "UpdateExam");
 	}
-	
+
 	/* open the screen CheckExam */
-	public void openCheckExamScreen(ActionEvent e) throws IOException{
-		openScreen(e,"CheckExam");
+	public void openCheckExamScreen(ActionEvent e) throws IOException {
+		openScreen(e, "CheckExam");
 	}
-
-
 
 	/* opening the screen LockExam */
 	public void openLockExamScreen(ActionEvent e) throws IOException {
 		openScreen("LockExam");
 	}
-	
+
 	/* open the screen ErrorMessage and sending an object */
 	public void openScreen(String screen) {
 		try {
@@ -728,8 +718,10 @@ public class TeacherControl extends UserControl implements Initializable {
 		openScreen("HomeScreenTeacher");
 	}
 
-	/************************************************** update question screen *******************************************************/
-	
+	/**************************************************
+	 * update question screen
+	 *******************************************************/
+
 	/* make a new question to save the oldest question before changing it */
 	public Question createBackUpQuestion(Question questionSelected) {
 		return new Question(questionSelected.getId(), questionSelected.getTeacherName(),
@@ -744,13 +736,13 @@ public class TeacherControl extends UserControl implements Initializable {
 		if (subject == null)
 			return;
 		String course = coursesComboBox.getValue();
-		if(course == null)
+		if (course == null)
 			return;
 		String[] subjectSubString = subject.split("-");
 		String[] coursesSubString = course.split("-");
 		connect(this); // connecting to server
 		messageToServer[0] = "getQuestionsToTable";
-		messageToServer[1] = subjectSubString[0].trim()+""+coursesSubString[0].trim();
+		messageToServer[1] = subjectSubString[0].trim() + "" + coursesSubString[0].trim();
 		messageToServer[2] = getMyUser().getUsername();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
@@ -830,8 +822,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	/* deleting question from the tableview and from the database */
 	public void deleteQuestion(ActionEvent e) {
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
-		if(questionSelected == null)
-		{
+		if (questionSelected == null) {
 			errorMsg("Please select question");
 			return;
 		}
@@ -841,8 +832,10 @@ public class TeacherControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
 	}
 
-	/********************************************************** create question screen ***********************************************/
-	
+	/**********************************************************
+	 * create question screen
+	 ***********************************************/
+
 	/* create a new question */
 	public void createQuestionClick(ActionEvent e) throws IOException {
 		if (subjectsComboBox.getValue() == null) {
@@ -890,44 +883,47 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
+	public void coursesToList(ActionEvent event) {
 
-    public void coursesToList(ActionEvent event) {
-    	
-    	try {
-    	
-    	String[] courseSubString = coursesComboBox.getValue().split("-");
+		try {
+
+			String[] courseSubString = coursesComboBox.getValue().split("-");
 			if (!coursesListToCreateQuestion.contains(courseSubString[0] + courseSubString[1])) {
 				coursesListToCreateQuestion.add(courseSubString[0] + courseSubString[1]);
 				courseInCreateQuestion.setItems(coursesListToCreateQuestion);
 				subjectsComboBox.setDisable(true);
 			}
-    	}
-    	catch (NullPointerException e) {
-    		
-    	}
-    }
+		} catch (NullPointerException e) {
 
-    public void removeCoursesFromList(ActionEvent event) {
-    	if(courseInCreateQuestion.getSelectionModel().getSelectedItem() != null)
-    	{
-    		coursesListToCreateQuestion.remove(courseInCreateQuestion.getSelectionModel().getSelectedItem());
-	    	coursesComboBox.getSelectionModel().clearSelection();
-	    	if(courseInCreateQuestion.getItems().isEmpty())
-	    		subjectsComboBox.setDisable(false);
-    	}
-    }
-	/************************************** Update exam screen ***********************************************************************/
-	
+		}
+	}
+
+	public void removeCoursesFromList(ActionEvent event) {
+		if (courseInCreateQuestion.getSelectionModel().getSelectedItem() != null) {
+			coursesListToCreateQuestion.remove(courseInCreateQuestion.getSelectionModel().getSelectedItem());
+			coursesComboBox.getSelectionModel().clearSelection();
+			if (courseInCreateQuestion.getItems().isEmpty())
+				subjectsComboBox.setDisable(false);
+		}
+	}
+
+	/**************************************
+	 * Update exam screen
+	 ***********************************************************************/
+
 	/* requesting the exams from the database */
 	public void loadExams(ActionEvent e) throws IOException {
 		String examIDStart;
 		String toSend;
-		if(!pageLabel.getText().equals("Create exam code") && !pageLabel.getText().equals("Update exam"))
-		{
+		if (!pageLabel.getText().equals("Create exam code") && !pageLabel.getText().equals("Update exam")) {
 			toSend = "getExecutedExams";
 			messageToServer[2] = getMyUser().getUsername();
-		}
-		else
+			if (pageLabel.getText().equals("Lock exam"))
+				messageToServer[3] = "LockType";
+			else
+				messageToServer[3] = "CheckType";
+
+		} else
 			toSend = "getExams";
 		/* ask for the exams name */
 		if (coursesComboBox.getValue() == null)
@@ -943,13 +939,13 @@ public class TeacherControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 
-	public void loadStudenstInExam (ActionEvent e) throws IOException{
+	public void loadStudenstInExam(ActionEvent e) throws IOException {
 		connect(this); // connecting to server
 		messageToServer[0] = "getStudenstInExam";
 		messageToServer[1] = executedExamsComboBox.getValue();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
-	
+
 	/* changing the remarks for teacher */
 	public void changeRemarksForTeacherOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
 		examSelected = examsTableView.getSelectionModel().getSelectedItem();
@@ -998,7 +994,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			updateExam(examSelected);
 		}
 	}
-	
+
 	/* get the question in a specific exam */
 	public void viewQuestion(ActionEvent e) throws IOException {
 		try {
@@ -1013,7 +1009,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			errorMsg("Please select exam");
 		}
 	}
-	
+
 	/* updating the exam in the database */
 	public void updateExam(Exam examSelected) {
 		messageToServer[0] = "updateExam";
@@ -1021,24 +1017,24 @@ public class TeacherControl extends UserControl implements Initializable {
 		connect(this);
 		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
 	}
-	
+
 	/* removing the exam from the database */
 	public void deleteExam(ActionEvent e) {
-			examSelected = examsTableView.getSelectionModel().getSelectedItem();
-			if(examSelected == null)
-			{
-				errorMsg("Please select exam");
-				return;
-			}
-			messageToServer[0] = "deleteExam";
-			messageToServer[1] = examSelected;
-			connect(this);
-			chat.handleMessageFromClientUI(messageToServer); // send the request to the server
+		examSelected = examsTableView.getSelectionModel().getSelectedItem();
+		if (examSelected == null) {
+			errorMsg("Please select exam");
+			return;
+		}
+		messageToServer[0] = "deleteExam";
+		messageToServer[1] = examSelected;
+		connect(this);
+		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
 	}
-	
-	
-	/************************************** (Create + Update) questions in exam screens ***********************************************/
-	
+
+	/**************************************
+	 * (Create + Update) questions in exam screens
+	 ***********************************************/
+
 	/* creating exam */
 	@SuppressWarnings("static-access")
 	public void createExam(ActionEvent e) {
@@ -1104,10 +1100,9 @@ public class TeacherControl extends UserControl implements Initializable {
 			errorMsg("Please choose question");
 			return;
 		}
-		if(!pageLabel.getText().equals("Update question in exam"))
-		{
-		subjectsComboBox.setDisable(true);
-		coursesComboBox.setDisable(true);
+		if (!pageLabel.getText().equals("Update question in exam")) {
+			subjectsComboBox.setDisable(true);
+			coursesComboBox.setDisable(true);
 		}
 		QuestionInExam questioninexam = new QuestionInExam();// creating new questioninexam
 		Question questionDetails = questionTableView.getSelectionModel().getSelectedItem();
@@ -1159,7 +1154,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			}
 
 			questiontoremove.forEach(questionInExamObservable::remove);
-			if(questionInExamObservable.isEmpty()) {
+			if (questionInExamObservable.isEmpty()) {
 				subjectsComboBox.setDisable(false);
 				coursesComboBox.setDisable(false);
 			}
@@ -1197,7 +1192,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			e1.printStackTrace();
 		}
 	}
-	
+
 	/* set new points in the table view */
 	@SuppressWarnings("unlikely-arg-type")
 	public void setPoints(CellEditEvent<QuestionInExam, Float> edittedCell) {
@@ -1216,8 +1211,10 @@ public class TeacherControl extends UserControl implements Initializable {
 	public void blockBackButton() {
 		backButton.setDisable(true);
 	}
-	
-	/********************************************* Create exam code screen ***********************************************************/
+
+	/*********************************************
+	 * Create exam code screen
+	 ***********************************************************/
 
 	/* creating exam code */
 	public void createExamCode(ActionEvent e) {
@@ -1256,10 +1253,10 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[1] = exam;
 		connect(this);
 		chat.handleMessageFromClientUI(messageToServer);
-		
+
 	}
 
-	/* loading courses from database by subject*/
+	/* loading courses from database by subject */
 	public void loadCourses(ActionEvent e) throws IOException {
 		/* ask for the courses name */
 		try {
@@ -1276,7 +1273,9 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	/********************************************* Extend exam time screen ***********************************************************/
+	/*********************************************
+	 * Extend exam time screen
+	 ***********************************************************/
 
 	/* creating an extend time request */
 	public void createExtendTimeRequest(ActionEvent e) throws IOException {
@@ -1305,8 +1304,10 @@ public class TeacherControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 		chat.closeConnection();
 	}
-	
-	/*********************************************************** TOM ???? ************************************************************/
+
+	/***********************************************************
+	 * TOM ????
+	 ************************************************************/
 
 	/* locking the subject function (subject combobox) */
 	public void lockSubject(ActionEvent e) {
@@ -1325,7 +1326,9 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[1] = executedexam.getExecutedExamID();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
-	
-	/*********************************************************** Check exam ************************************************************/
+
+	/***********************************************************
+	 * Check exam
+	 ************************************************************/
 
 }
