@@ -117,7 +117,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	 * homePageButtons
 	 **********************************************************/
 	public void initialize(URL url, ResourceBundle rb) {
-		messageToServer[4]=getMyUser().getUsername();
+		messageToServer[4] = getMyUser().getUsername();
 		if (pageLabel.getText().equals("Home screen"))
 			userText1.setText(getMyUser().getFullname());
 		else if (pageLabel.getText().contentEquals("requests")) {
@@ -153,8 +153,8 @@ public class DirectorControl extends UserControl implements Initializable {
 		else
 			histogram.getData().clear();
 		if (sumGradeRanges == null)
-			sumGradeRanges = new float[6];
-		for (int i = 0; i < 6; i++) {
+			sumGradeRanges = new float[10];
+		for (int i = 0; i < 10; i++) {
 			sumGradeRanges[i] = 0;
 		}
 	}
@@ -165,27 +165,26 @@ public class DirectorControl extends UserControl implements Initializable {
 			Stage stage = (Stage) source.getScene().getWindow();
 			// stage.close();
 			stage.close();
-			openScreen("directorBoundary","TimeRequestTable");
+			openScreen("directorBoundary", "TimeRequestTable");
 		});
 	}
 
 	public void openStatisticReport(ActionEvent e) {
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding homePage window
-		openScreen("directorBoundary","statisticReportDirector");
+		openScreen("directorBoundary", "statisticReportDirector");
 	}
 
 	public void openSystemInformation(ActionEvent e) {
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding homePage window
-		openScreen("directorBoundary","systemInformationDirector");
+		openScreen("directorBoundary", "systemInformationDirector");
 	}
 
-	
 	/* cancel button was pressed */
 	public void backButtonPressed(ActionEvent e) throws IOException, SQLException {
 		final Node source = (Node) e.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
-		openScreen("directorBoundary","HomeScreenDirector");
+		openScreen("directorBoundary", "HomeScreenDirector");
 	}
 
 	// ***********check the message that arrived from server**************//
@@ -193,12 +192,12 @@ public class DirectorControl extends UserControl implements Initializable {
 	public void checkMessage(Object message) {
 		try {
 			final Object[] msg = (Object[]) message;
-			if(msg[4].equals(getMyUser().getUsername())) {
-			chat.closeConnection();// close the connection
-	/*		if (refreshPressed)
-				refreshPressed = false;            
-			else { */
-				
+			if (msg[4].equals(getMyUser().getUsername())) {
+				chat.closeConnection();// close the connection
+				/*
+				 * if (refreshPressed) refreshPressed = false; else {
+				 */
+
 				Platform.runLater(() -> {
 					try {
 						switch (msg[0].toString()) {
@@ -247,14 +246,14 @@ public class DirectorControl extends UserControl implements Initializable {
 							float average = 0;
 							int sumStudent = 0;
 							for (ExecutedExam e : GradeList) {
-								sumGradeRanges = sumRangGrades(sumGradeRanges, e);
+								sumRangGrades(e);
 								average += e.getAverage() * e.getNumOfStudentStarted();
 								sumStudent += e.getNumOfStudentStarted();
 							}
 							if (sumStudent > 0)
 								averageTextField.setText(" " + (average / (float) sumStudent));
 							Collections.sort(GradeList);
-							if (GradeList.size() > 1)
+							if (GradeList.size() % 2 == 0)
 								medianTextField.setText(" " + GradeList.get((GradeList.size() / 2) - 1).getMedian());
 							else
 								medianTextField.setText(" " + GradeList.get(GradeList.size() / 2).getMedian());
@@ -266,26 +265,35 @@ public class DirectorControl extends UserControl implements Initializable {
 								studentGradeList.clear();
 							studentGradeList = (ArrayList<Integer>) msg[1];
 							Collections.sort(studentGradeList);
-							if (studentGradeList.size() > 1)
-								medianTextField.setText(" " + studentGradeList.get((studentGradeList.size() / 2) - 1));
-							else
-								medianTextField.setText(" " + studentGradeList.get(studentGradeList.size() / 2));
+							
 							float sum = 0;
 							for (Integer grade : studentGradeList) {
 								sum += grade;
-								if (grade < 55)// grade between0to54
+								if (grade >= 0 && grade <= 9)// grade between0to54
 									sumGradeRanges[0]++;
-								else if (grade > 54 && grade < 65)// grade between55to64
+								else if (grade >= 10 && grade <= 19)// grade between55to64
 									sumGradeRanges[1]++;
-								else if (grade > 64 && grade < 75)// grade between 65to74
+								else if (grade >= 20 && grade <= 29)// grade between 65to74
 									sumGradeRanges[2]++;
-								else if (grade > 74 && grade < 85)// grade between 75to84
+								else if (grade >= 30 && grade <= 39)// grade between 75to84
 									sumGradeRanges[3]++;
-								else if (grade > 84 && grade < 95)// grade between 85to94
+								else if (grade >= 40 && grade <= 49)// grade between 85to94
 									sumGradeRanges[4]++;
-								else if (grade > 94)// grade between 95to100
+								else if (grade >= 50 && grade <= 59)// grade between 95to100
 									sumGradeRanges[5]++;
+								else if (grade >= 60 && grade <= 69)// grade between0to54
+									sumGradeRanges[6]++;
+								else if (grade >= 70 && grade <= 79)// grade between0to54
+									sumGradeRanges[70]++;
+								else if (grade >= 80 && grade <= 89)// grade between0to54
+									sumGradeRanges[8]++;
+								else if (grade >= 90 && grade <= 100)// grade between0to54
+									sumGradeRanges[9]++;
 							}
+							if (studentGradeList.size() % 2 == 0)
+								medianTextField.setText(" " + studentGradeList.get((studentGradeList.size() / 2) - 1));
+							else
+								medianTextField.setText(" " + studentGradeList.get(studentGradeList.size() / 2));
 							if (studentGradeList.size() > 0)
 								averageTextField.setText(" " + sum / studentGradeList.size());
 							ShowHistogramInBarChart();
@@ -296,15 +304,15 @@ public class DirectorControl extends UserControl implements Initializable {
 						errorMsg("There is no exams");
 					}
 				});
-		}
+			}
 		} catch (NullPointerException e) {
 			errorMsg("There is no request to confirm .");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} /*catch (ArrayIndexOutOfBoundsException e) {
-			errorMsg("There is no exams");
-		}*/
+		} /*
+			 * catch (ArrayIndexOutOfBoundsException e) { errorMsg("There is no exams"); }
+			 */
 	}
 
 	/*******************************************************
@@ -313,7 +321,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	public void showDetailsButtonPressed(ActionEvent e) {
 		requestId = (requestsTable.getSelectionModel().getSelectedItems().get(0).getRequestID());
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding homePage window
-		openScreen("directorBoundary","addingTimeRequest");
+		openScreen("directorBoundary", "addingTimeRequest");
 	}
 
 	@SuppressWarnings("unchecked") // showing list of request that waiting to answer
@@ -444,25 +452,25 @@ public class DirectorControl extends UserControl implements Initializable {
 		}
 	}
 
-	public float[] sumRangGrades(float[] rangeArray, ExecutedExam eExam) throws IndexOutOfBoundsException {
-		rangeArray[0] += eExam.getRange0to54();
-		rangeArray[1] += eExam.getRange55to64();
-		rangeArray[2] += eExam.getRange65to74();
-		rangeArray[3] += eExam.getRange75to84();
-		rangeArray[4] += eExam.getRange85to94();
-		rangeArray[5] += eExam.getRange95to100();
-		return rangeArray;
+	public void sumRangGrades(ExecutedExam eExam) throws IndexOutOfBoundsException {
+		for (int i = 0; i < sumGradeRanges.length; i++)
+			sumGradeRanges[i] += eExam.getGradeRang()[i];
 	}
 
 	public void ShowHistogramInBarChart() throws NullPointerException {
 		// set values in the bar chart
-		histogram.getData().add(new XYChart.Data("0-54", sumGradeRanges[0]));
-		histogram.getData().add(new XYChart.Data("55-65", sumGradeRanges[1]));
-		histogram.getData().add(new XYChart.Data("65-75", sumGradeRanges[2]));
-		histogram.getData().add(new XYChart.Data("75-84", sumGradeRanges[3]));
-		histogram.getData().add(new XYChart.Data("85-94", sumGradeRanges[4]));
-		histogram.getData().add(new XYChart.Data("95-100", sumGradeRanges[5]));
-
+		for (int i = 0,j=9; i < sumGradeRanges.length*10; i += 10,j+=10) {
+			histogram.getData().add(new XYChart.Data(i + "-" +j, sumGradeRanges[i/10]));
+		}
+		histogram.getData().add(new XYChart.Data("90-100", sumGradeRanges[9]));
+		/*
+		 * histogram.getData().add(new XYChart.Data("0-54", sumGradeRanges[0]));
+		 * histogram.getData().add(new XYChart.Data("55-65", sumGradeRanges[1]));
+		 * histogram.getData().add(new XYChart.Data("65-75", sumGradeRanges[2]));
+		 * histogram.getData().add(new XYChart.Data("75-84", sumGradeRanges[3]));
+		 * histogram.getData().add(new XYChart.Data("85-94", sumGradeRanges[4]));
+		 * histogram.getData().add(new XYChart.Data("95-100", sumGradeRanges[5]));
+		 */
 		barChart.getData().add(histogram);
 	}
 
@@ -474,7 +482,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	}
 
 	public void refreshPress() {
-		
+
 		chooseUserComboBox.getSelectionModel().clearSelection();
 		reportByComboBox.getSelectionModel().clearSelection();
 		subjectsComboBox.getSelectionModel().clearSelection();
@@ -496,8 +504,8 @@ public class DirectorControl extends UserControl implements Initializable {
 	}
 
 	public void refreshPressListener(ActionEvent e) {
-		
-		 refreshPressed = true; 
-		 refreshPress();
+
+		refreshPressed = true;
+		refreshPress();
 	}
 }
