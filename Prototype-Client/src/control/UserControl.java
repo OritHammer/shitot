@@ -151,6 +151,7 @@ public class UserControl implements Initializable {
 									TeacherControl tController = loader.getController();
 									String userName = user.getFullname().toLowerCase();
 									tController.setUserText(userName);/* send the name to the controller */
+									setMyUser(user);
 									getMyUser().setFullname(user.getFullname());
 									getMyUser().setRole(user.getRole());
 									getMyUser().setUsername(user.getUsername());
@@ -179,7 +180,7 @@ public class UserControl implements Initializable {
 											getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
 									home_page_parent = loader.load();
 									StudentControl sController = loader.getController();
-									//setMyUser(user);
+									setMyUser(user);
 									getMyUser().setFullname(user.getFullname());
 									getMyUser().setUsername(user.getUsername());
 									getMyUser().setRole(user.getRole());
@@ -209,6 +210,7 @@ public class UserControl implements Initializable {
 									home_page_parent = loader.load();
 									home_page_parent.getStylesheets()
 											.add(getClass().getResource("/style.css").toExternalForm());
+									setMyUser(user);
 									getMyUser().setFullname(user.getFullname());
 									getMyUser().setUsername(user.getUsername());
 									getMyUser().setRole(user.getRole());
@@ -307,6 +309,16 @@ public class UserControl implements Initializable {
 			 * send the name to the controller dController.setErrorMessage("ERROR");// send
 			 * a the error to the alert we made }
 			 */
+			 stage.setOnCloseRequest(event-> {
+				 connect(this);
+					messageToServer[0] = "performLogout";
+					messageToServer[1] =getMyUser().getUsername();
+					messageToServer[2] =null;
+					messageToServer[4] =getMyUser().getUsername();
+					chat.handleMessageFromClientUI(messageToServer);
+					
+		          
+		      });        
 			stage.setTitle(screen);
 			stage.setScene(scene);
 			stage.show();
