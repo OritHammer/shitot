@@ -527,7 +527,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			stage.close();
 			openScreen("directorBoundary", "QuestionStock");
 		});
-	}
+	} 
 	@FXML
 	public void GetQuestionStock(ActionEvent e) {
 		System.out.println("fkjhvkodn");
