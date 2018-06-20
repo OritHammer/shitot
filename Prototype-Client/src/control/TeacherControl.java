@@ -214,11 +214,6 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private Button updateBtn;
 
-	@FXML
-	private ListView<String> courseInCreateQuestion;
-
-	@FXML
-	private AnchorPane mainPane;
 
 	public void loadExamCopy(MouseEvent event) {
 		if (event.getClickCount() == 2) {
@@ -266,31 +261,42 @@ public class TeacherControl extends UserControl implements Initializable {
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
 	}
+	  @FXML
+	  private ListView<String> courseInCreateQuestion;
+	  
+	  @FXML
+	  private AnchorPane mainPane;
 
-	public void finalChange(ActionEvent event) {
-		if (newGrade.getText().equals("") && reason.getText().equals(""))
-			new Alert(Alert.AlertType.ERROR, "You must enter values.").showAndWait();
-		else if (newGrade.getText().equals("")
-				|| !(Integer.parseInt(newGrade.getText()) >= 0 && Integer.parseInt(newGrade.getText()) <= 100))
-			new Alert(Alert.AlertType.ERROR, "The grade must be between 0-100").showAndWait();
-		else if (reason.getText().equals(""))
-			new Alert(Alert.AlertType.ERROR, "If you want to change the grade you must enter a reason").showAndWait();
-		else {
-			StudentPerformExam student = tController.getSelectedStudentPerformExam();
-			student.setGrade(Float.valueOf(newGrade.getText()));
-			student.setReasonForChangeGrade(reason.getText());
-			tController.setOnTableView(student);
-			final Node source = (Node) event.getSource();
-			Stage stage = (Stage) source.getScene().getWindow();
-			stage.close();
-		}
+	    
 
-	}
+	  
+	
 
 	private void setOnTableView(StudentPerformExam student) {
 		studnetInExamTableView.getItems().remove(studnetInExamTableView.getSelectionModel().getSelectedIndex());
 		studnetInExamTableView.getItems().add(student);
 	}
+	    
+	    
+	    public void finalChange(ActionEvent event)  {
+	    	if(newGrade.getText().equals("") && reason.getText().equals(""))
+	    		new Alert(Alert.AlertType.ERROR, "You must enter values.").showAndWait();
+	    	else if(newGrade.getText().equals("") || !(Integer.parseInt(newGrade.getText())>= 0 && Integer.parseInt(newGrade.getText()) <= 100))
+	    		new Alert(Alert.AlertType.ERROR, "The grade must be between 0-100").showAndWait();
+	    	else if(reason.getText().equals(""))
+	    		new Alert(Alert.AlertType.ERROR, "If you want to change the grade you must enter a reason").showAndWait();
+	    	else
+	    	{
+	    		StudentPerformExam student=tController.getSelectedStudentPerformExam();
+	    		student.setGrade(Float.valueOf(newGrade.getText()));
+	    		student.setReasonForChangeGrade(reason.getText());
+	    		tController.setOnTableView(student);
+				final Node source = (Node) event.getSource();
+				Stage stage = (Stage) source.getScene().getWindow();
+				stage.close();
+	    	}
+	    	
+	    }
 
 	private StudentPerformExam getSelectedStudentPerformExam() {
 		return (studnetInExamTableView.getSelectionModel().getSelectedItem());
@@ -618,7 +624,9 @@ public class TeacherControl extends UserControl implements Initializable {
 			}
 			}
 			messageToServer[0] = "getSubjects";
-			messageToServer[1] = getMyUser().getUsername();
+			if(getMyUser().getRole().equals("director"))
+					messageToServer[1] =null;
+			else messageToServer[1] = getMyUser().getUsername();
 			messageToServer[2] = null;
 			chat.handleMessageFromClientUI(messageToServer);// send the message to server
 			break;
@@ -743,7 +751,9 @@ public class TeacherControl extends UserControl implements Initializable {
 		connect(this); // connecting to server
 		messageToServer[0] = "getQuestionsToTable";
 		messageToServer[1] = subjectSubString[0].trim() + "" + coursesSubString[0].trim();
-		messageToServer[2] = getMyUser().getUsername();
+		if(getMyUser().getRole().equals("durector"))
+				messageToServer[2]=null;
+		else messageToServer[2] = getMyUser().getUsername();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 
