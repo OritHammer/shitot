@@ -1167,19 +1167,63 @@ public class MysqlConnection {
 	
 	public void confirmExecutedExam(Object studentInExam, Object flag) {
 		Boolean flagExamChecked = (Boolean)flag;
+		String eid = ((StudentPerformExam) studentInExam).getExcecutedExamID(); 
 		try {
 			stmt = conn.createStatement();
 			if(flagExamChecked == true)
+			{
 				stmt.executeUpdate("UPDATE executedexam " + "SET status=\"checked\" WHERE executedExamID=\"" + ((StudentPerformExam) studentInExam).getExcecutedExamID() + "\";");
-			
+				stmt.executeUpdate("update shitot.executedexam " + 
+						"set" + 
+						" between0to9 = (select count(*) " + 
+						" from studentperformedexam as spe " + 
+						" where executedExamID = \""+eid+ "\" and spe.grade > -1 and spe.grade<10) ," + 
+						"   between10to19 = (select count(*)" + 
+						"          from studentperformedexam as spe " + 
+						"   where executedExamID = \"" +eid+ "\" and spe.grade > 9 and spe.grade<20) ," + 
+						"     between20to29 = (select count(*)" + 
+						"   from studentperformedexam as spe" + 
+						"   where executedExamID = \""+eid+"\" and spe.grade > 19 and spe.grade<30) ," + 
+						"      between40to49 = (select count(*)" + 
+						"   from studentperformedexam as spe " + 
+						"   where executedExamID = \""+eid+"\" and spe.grade > 29 and spe.grade<40) ," + 
+						" between40to49 = (select count(*)" + 
+						"   from studentperformedexam as spe" + 
+						"   where executedExamID = \""+eid+ "\" and spe.grade > 39 and spe.grade<50) ," + 
+						"  between50to59 = (select count(*)" + 
+						"     from studentperformedexam as spe " + 
+						"      where executedExamID = \""+eid+ "\" and spe.grade > 49 and spe.grade<60) ," + 
+						"       between60to69 = (select count(*)" + 
+						" from studentperformedexam as spe " + 
+						" where executedExamID = \""+eid+ "\" and spe.grade > 59 and spe.grade<70) ," + 
+						"  between0to54 = (select count(*)" + 
+						" from studentperformedexam as spe " + 
+						" where executedExamID = \""+eid+ "\" and spe.grade > 69 and spe.grade<80) ," + 
+						"  between0to54 = (select count(*)" + 
+						" from studentperformedexam as spe " + 
+						" where executedExamID = \""+eid+ "\" and spe.grade > 79 and spe.grade<90) ," + 
+						"  between0to54 = (select count(*)" + 
+						" from studentperformedexam as spe " + 
+						" where executedExamID = \""+eid+ "\" and spe.grade > 89 and spe.grade<101)" + 
+						"where executedExamID = \""+eid+ "\" ;");
+				stmt.executeUpdate("update shitot.executedexam " +
+				"set "+
+				"numOfStudentDidntFinished = (select count(*) as numStodentNF "+
+				  " from studentperformedexam as sp"+
+				  " where executedexam_id = \""+eid+"\" and sp.finished = 'no') , "+
+				"numOfStudentFinished =(select count(*) as numStodentF "+
+				"   from studentperformedexam as sp"+
+				 "  where executedexam_id = \""+eid+"\" and sp.finished = 'yes'  ) "+
+				" where executedExamID = \""+eid+"\" ;");
+			}
 			stmt.executeUpdate("UPDATE studentperformedexam " + "SET isApproved=\"approved\" , grade=\""+((StudentPerformExam) studentInExam).getGrade() + "\" WHERE student_UserName=\"" + ((StudentPerformExam) studentInExam).getUserName() + "\";");
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		
 		}
 		
 	}
-
 	/* lock the exam if the all students finished the */
 	public void checkIfAllStudentFinishedExam(Object executedExamID) {
 		String executedID=(String)executedExamID;
