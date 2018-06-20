@@ -1359,7 +1359,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			case "Update question":
 				examsTableView.setEditable(true);
 				btnDelete.setDisable(true);
-				break;
+				break; 
 			case "Update question in exam":
 				questionTableView.setDisable(true);
 				passQuestionR.setDisable(true);
