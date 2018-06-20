@@ -459,7 +459,7 @@ public class DirectorControl extends UserControl implements Initializable {
 
 	public void ShowHistogramInBarChart() throws NullPointerException {
 		// set values in the bar chart
-		for (int i = 0,j=9; i < sumGradeRanges.length*10; i += 10,j+=10) {
+		for (int i = 0,j=9; i < sumGradeRanges.length*10-10; i += 10,j+=10) {
 			histogram.getData().add(new XYChart.Data(i + "-" +j, sumGradeRanges[i/10]));
 		}
 		histogram.getData().add(new XYChart.Data("90-100", sumGradeRanges[9]));
