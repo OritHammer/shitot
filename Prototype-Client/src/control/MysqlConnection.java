@@ -1215,7 +1215,7 @@ public class MysqlConnection {
 				"   from studentperformedexam as sp"+
 				 "  where executedexam_id = \""+eid+"\" and sp.finished = 'yes'  ) "+
 				" where executedExamID = \""+eid+"\" ;");
-			}
+			} 
 			stmt.executeUpdate("UPDATE studentperformedexam " + "SET isApproved=\"approved\" , grade=\""+((StudentPerformExam) studentInExam).getGrade() + "\" WHERE student_UserName=\"" + ((StudentPerformExam) studentInExam).getUserName() + "\";");
 
 		} catch (SQLException e) {
