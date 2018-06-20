@@ -1350,14 +1350,14 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * function to show to director information
 	 ****************/
 	void setUnVisible() {
-		if (getMyUser().getRole().equals("director")) {
+		if (getMyUser()!=null&& getMyUser().getRole().equals("director")) {
 			switch (pageLabel.getText()) {
 			case "Update exam":
 				btnDelete.setDisable(true);
-				examsTableView.setDisable(true);
+				examsTableView.setEditable(true);
 				break;
 			case "Update question":
-				examsTableView.setDisable(true);
+				examsTableView.setEditable(true);
 				btnDelete.setDisable(true);
 				break;
 			case "Update question in exam":
