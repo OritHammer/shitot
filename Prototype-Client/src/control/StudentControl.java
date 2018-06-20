@@ -658,6 +658,7 @@ public void endExam(String message) {
 				if (stdSelected.equals("1")) {
 					answer1.setStyle("-fx-background-color: green;");
 					correctAns = true;
+					
 				}
 				correctRadioButton1.setSelected(true);
 				break;
