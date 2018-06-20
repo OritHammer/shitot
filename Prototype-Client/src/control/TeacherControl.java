@@ -753,7 +753,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		connect(this); // connecting to server
 		messageToServer[0] = "getQuestionsToTable";
 		messageToServer[1] = subjectSubString[0].trim() + "" + coursesSubString[0].trim();
-		if(getMyUser().getRole().equals("durector"))
+		if(getMyUser().getRole().equals("director"))
 				messageToServer[2]=null;
 		else messageToServer[2] = getMyUser().getUsername();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
