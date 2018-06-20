@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.DirectorControl">
+<AnchorPane maxHeight="-Infinity" styleClass="card" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.DirectorControl">
    <children>
       <Label fx:id="chooseUserNameLabel" layoutX="241.0" layoutY="45.0" text="Choose User Name:" />
       <Label layoutX="309.0" layoutY="113.0" text="Median" />

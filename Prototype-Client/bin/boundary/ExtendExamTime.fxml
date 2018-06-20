@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="564.0" prefWidth="614.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+<AnchorPane prefHeight="564.0" prefWidth="614.0" styleClass="card" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
       <Label layoutX="270.0" layoutY="507.0" text="Extend time by" />
       <Button layoutX="479.0" layoutY="524.0" mnemonicParsing="false" onAction="#closeScreen" text="Back" />
