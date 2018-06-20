@@ -677,27 +677,30 @@ public class MysqlConnection {
 		 * The function return the course list by the given subject code
 		 */
 		// Statement stmt;
-		ArrayList<ExecutedExam> executedexam = new ArrayList<ExecutedExam>();
+		ArrayList<ExecutedExam> executedexamARR = new ArrayList<ExecutedExam>();
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt
 					.executeQuery("SELECT * FROM executedexam WHERE teacherName=\"" + teacherUserName.toString()
 							+ "\" AND status='open' AND exam_id like \"" + (String) examId + "%\"" + ";");
 			while (rs.next()) {
-				executedexam.add(new ExecutedExam(rs.getString(1), Integer.parseInt(rs.getString(2)),
-						Integer.parseInt(rs.getString(3)), Integer.parseInt(rs.getString(4)),
-						Float.parseFloat(rs.getString(5)), Float.parseFloat(rs.getString(6)), rs.getString(7),
-						rs.getString(8), Integer.parseInt(rs.getString(9)), Integer.parseInt(rs.getString(10)),
-						Integer.parseInt(rs.getString(11)), Integer.parseInt(rs.getString(12)),
-						Integer.parseInt(rs.getString(13)), Integer.parseInt(rs.getString(14)), rs.getString(15),
-						Integer.parseInt(rs.getString(16)),Integer.parseInt(rs.getString(17)),Integer.parseInt(rs.getString(18)),
-						Integer.parseInt(rs.getString(19)),rs.getTime(20),rs.getDate(21)));
+				ExecutedExam executedExem=new ExecutedExam();
+				executedExem.setExecutedExamID(rs.getString(1));
+				executedExem.setNumOfStudentStarted(Integer.parseInt(rs.getString(2)));
+				executedExem.setNumOfStudentFinished(Integer.parseInt(rs.getString(3)));
+				executedExem.setNumOfStudentDidntFinished(Integer.parseInt(rs.getString(4)));
+				executedExem.setAverage(Float.parseFloat(rs.getString(5)));
+				executedExem.setMedian(Float.parseFloat(rs.getString(6)));
+				executedExem.setTeacherName(rs.getString(7));
+				executedExem.setExam_id(rs.getString(8));
+				executedExem.setStatus(rs.getString(15));
+				executedexamARR.add(executedExem);
 			}
 			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return executedexam;
+		return executedexamARR;
 	}
 
 	public ArrayList<Exam> getExams(Object examIDStart) {
