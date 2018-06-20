@@ -33,7 +33,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -702,6 +705,9 @@ public void endExam(String message) {
 				if (correctAns == false)
 					answer4.setStyle("-fx-background-color: red;");
 				break;
+			case "0" : 
+				Alert alert = new Alert(AlertType.INFORMATION, "there is no answer for  this question " , ButtonType.OK);
+				alert.showAndWait();
 			}
 			}catch(NullPointerException e) {
 				System.out.println("no answer for this question");
