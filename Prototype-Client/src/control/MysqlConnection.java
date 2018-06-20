@@ -640,7 +640,7 @@ public class MysqlConnection {
 				stmt.executeUpdate("INSERT INTO shitot.executedexam VALUES(\"" + exam.getExecutedExamID().trim()
 						+ "\",0,0,0,0,0,\"" + exam.getTeacherName() + "\",\"" + exam.getExam_id()
 						+ "\",0,0,0,0,0,0,\"open\",\"" + dateFormat.format(date) + "\", (select e.solutionTime\r\n" + 
-								" from exams as e where e.e_id = \""+exam.getExam_id()+"\"),0,0,0,0));");
+								" from exams as e where e.e_id = \""+exam.getExam_id()+"\"),0,0,0,0);");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
