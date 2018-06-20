@@ -1196,13 +1196,13 @@ public class MysqlConnection {
 						"       between60to69 = (select count(*)" + 
 						" from studentperformedexam as spe " + 
 						" where executedExamID = \""+eid+ "\" and spe.grade > 59 and spe.grade<70) ," + 
-						"  between0to54 = (select count(*)" + 
+						"  between70to79 = (select count(*)" + 
 						" from studentperformedexam as spe " + 
 						" where executedExamID = \""+eid+ "\" and spe.grade > 69 and spe.grade<80) ," + 
-						"  between0to54 = (select count(*)" + 
+						"  between80to89 = (select count(*)" + 
 						" from studentperformedexam as spe " + 
 						" where executedExamID = \""+eid+ "\" and spe.grade > 79 and spe.grade<90) ," + 
-						"  between0to54 = (select count(*)" + 
+						"  between90to100 = (select count(*)" + 
 						" from studentperformedexam as spe " + 
 						" where executedExamID = \""+eid+ "\" and spe.grade > 89 and spe.grade<101)" + 
 						"where executedExamID = \""+eid+ "\" ;");
