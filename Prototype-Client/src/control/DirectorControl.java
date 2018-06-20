@@ -107,7 +107,7 @@ public class DirectorControl extends UserControl implements Initializable {
 
 	private static String requestId;
 	private XYChart.Series histogram = null;
-	float[] sumGradeRanges;
+	private float[] sumGradeRanges;
 	private ArrayList<ExecutedExam> GradeList;
 	private ArrayList<Integer> studentGradeList;
 	private Boolean refreshPressed = false;
