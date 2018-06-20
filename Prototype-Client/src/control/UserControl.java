@@ -62,7 +62,7 @@ public class UserControl implements Initializable {
 	@FXML
 	private javafx.scene.control.Button closeButton;
 	@FXML
-	private Button logoutBtn;
+	public Button logoutBtn;
 	
 	// class variables
 	// date and author variables
@@ -235,7 +235,7 @@ public class UserControl implements Initializable {
 
 	/* check if the details of user is in the system */
 	public void loginPressed(ActionEvent e) throws IOException {
-		connect(this);
+			connect(this);
 		if (userName.getText().equals("") || password.getText().equals("")) {
 			errorMsg.setVisible(true);
 			errorImg.setVisible(true);
@@ -250,14 +250,14 @@ public class UserControl implements Initializable {
 	}
 	public void logoutPressed(ActionEvent e) throws IOException {
 		
-			connect(this);
-			messageToServer[0] = "perfornLogout";
-			messageToServer[1] = this.getMyUser().getUsername();
-			messageToServer[2] =null;
-			messageToServer[4] = this.getMyUser().getUsername();
-			this.chat.handleMessageFromClientUI(messageToServer);
-			//openScreen("boundary", "LoginGui");
-		}
+		connect(this);
+		messageToServer[0] = "performLogout";
+		messageToServer[1] =getMyUser().getUsername();
+		messageToServer[2] =null;
+		messageToServer[4] =getMyUser().getUsername();
+		chat.handleMessageFromClientUI(messageToServer);
+		openScreen("boundary", "LoginGui");
+	}
 	
 	public void setUserText(String userNameFromDB) {/* set the user name text in the "hello user" text */
 		this.userNameFromDB = userNameFromDB;

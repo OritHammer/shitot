@@ -73,7 +73,7 @@ public class StudentControl extends UserControl implements Initializable {
 	/********************** AddTime Variables ***************************/
 	private static ArrayList<String> requestId;
 
-	private static ChatClient chat;
+	
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
 
@@ -255,7 +255,7 @@ public class StudentControl extends UserControl implements Initializable {
 	{
 
 	}
-
+	
 	public void endExam(String message) {
 		timer.cancel();
 		Platform.runLater(() -> errorMsg(message));
