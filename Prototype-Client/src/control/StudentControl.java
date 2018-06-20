@@ -33,7 +33,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -52,8 +55,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 public class StudentControl extends UserControl implements Initializable {
-	
-	
+
 	private static ArrayList<Question> questioninexecutedexam;
 	private static HashMap<String, Integer> examAnswers;// saves the question id and the answers
 	private static Time solutionTime;
@@ -69,19 +71,17 @@ public class StudentControl extends UserControl implements Initializable {
 	protected static MouseEvent tempEvent;
 	private Boolean isLocked = false;
 	private Boolean isPerformExam;
-	/**********************AddTime Variables***************************/
+	/********************** AddTime Variables ***************************/
 	private static ArrayList<String> requestId;
-	
+
 	private static ChatClient chat;
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
-	
-	@FXML
-	private TextField newMsgTextField;
+
 	@FXML
 	private ToggleGroup answers;
 	// move to user
-	
+
 	/************************* Manual logo ***********************************/
 	@FXML
 	private ImageView wordLogo;
@@ -154,7 +154,6 @@ public class StudentControl extends UserControl implements Initializable {
 
 	// ******************** Showing exam copy ************//
 
-
 	/************************ Class Methods *************************/
 	public void connect(UserControl user) {
 		try {
@@ -164,13 +163,14 @@ public class StudentControl extends UserControl implements Initializable {
 			System.exit(1);
 		}
 	}
+
 	public void initialize(URL url, ResourceBundle rb) {
 		// connect(this);
-		isPerformExam=false;
-		messageToServer[4]=getMyUser().getUsername();
+		isPerformExam = false;
+		messageToServer[4] = getMyUser().getUsername();
 		switch (pageLabel.getText()) {
 		case ("Perform exam"): {
-			isPerformExam=true;
+			isPerformExam = true;
 			correctRadioButton1.setVisible(true);
 			correctRadioButton2.setVisible(true);
 			correctRadioButton3.setVisible(true);
@@ -187,7 +187,7 @@ public class StudentControl extends UserControl implements Initializable {
 				nextQuestion(null);
 			prevBTN.setVisible(false);
 			if (copyFlag == false) {
-				requestId=new ArrayList<String>();
+				requestId = new ArrayList<String>();
 				examAnswers = new HashMap<String, Integer>();
 				nextQuestion(null);
 				// timerTextField.setText("123");
@@ -199,6 +199,9 @@ public class StudentControl extends UserControl implements Initializable {
 			break;
 		}
 		case ("Manual exam"): {
+			requestId = new ArrayList<String>();
+			examAnswers = new HashMap<String, Integer>();
+			isPerformExam = true;
 			startTime();
 			break;
 		}
@@ -212,26 +215,29 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 
 	private void startTime() {
-		final StudentControl sControl=this;
+		final StudentControl sControl = this;
 		try {
-			chat=new ChatClient(ip, DEFAULT_PORT, sControl);
+			chat = new ChatClient(ip, DEFAULT_PORT, sControl);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+
 			e1.printStackTrace();
 		}
-		remainTime = solutionTime.getHours() * 3600 + solutionTime.getMinutes() * 60 + solutionTime.getSeconds();// remain is the time is seconds
+		remainTime = solutionTime.getHours() * 3600 + solutionTime.getMinutes() * 60 + solutionTime.getSeconds();// remain
+																													// is
+																													// the
+																													// time
+																													// is
+																													// seconds
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				connect(sControl);
 				int sec = setInterval();
-				connect(sControl);
+				// messageToServer[0] = "isChanged";
+				// messageToServer[1] = getMyUser().getUsername();
+				// messageToServer[2] = executedID;
+				// chat.handleMessageFromClientUI(messageToServer);// send the message to server
 
-//					messageToServer[0] = "isChanged";
-//					messageToServer[1] = getMyUser().getUsername();
-//					messageToServer[2] = executedID;
-//					chat.handleMessageFromClientUI(messageToServer);// send the message to server
-				
 				if (remainTime == 1) {
 					endExam("time is over");
 				}
@@ -244,28 +250,30 @@ public class StudentControl extends UserControl implements Initializable {
 	{
 
 	}
-public void endExam(String message) {
-	timer.cancel();
-	Platform.runLater(() -> errorMsg( message));
-	try {
-		questionContent.setText(message + "  click Finish");
-		correctRadioButton1.setVisible(false);
-		correctRadioButton2.setVisible(false);
-		correctRadioButton3.setVisible(false);
-		correctRadioButton4.setVisible(false);
-		answer1.setVisible(false);
-		answer2.setVisible(false);
-		answer3.setVisible(false);
-		answer4.setVisible(false);
-	} catch (NullPointerException exception) {
-		uploadManualExamButton.setVisible(false);
+
+	public void endExam(String message) {
+		timer.cancel();
+		Platform.runLater(() -> errorMsg(message));
 		try {
-			uploadFileToServer(null);
-		} catch (IOException e) {
-			e.printStackTrace();
+			questionContent.setText(message + "  click Finish");
+			correctRadioButton1.setVisible(false);
+			correctRadioButton2.setVisible(false);
+			correctRadioButton3.setVisible(false);
+			correctRadioButton4.setVisible(false);
+			answer1.setVisible(false);
+			answer2.setVisible(false);
+			answer3.setVisible(false);
+			answer4.setVisible(false);
+		} catch (NullPointerException exception) {
+			uploadManualExamButton.setVisible(false);
+			try {
+				uploadFileToServer(null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
-}
+
 	private static final int setInterval() {
 		if (remainTime == 1)
 			timer.cancel();
@@ -282,33 +290,30 @@ public void endExam(String message) {
 
 	/********************* general Functions *************************/
 
-
-
-
-	
 	// the problem is with the fact that we create a new scene each time and we need
 	// to prevent it in that way
 	// ***
-/*	public void closeScreen(ActionEvent e) throws IOException, SQLException {
-		final Node source = (Node) e.getSource();
-		Stage stage = (Stage) source.getScene().getWindow();
-		stage.close();
-	}
-*/
+	/*
+	 * public void closeScreen(ActionEvent e) throws IOException, SQLException {
+	 * final Node source = (Node) e.getSource(); Stage stage = (Stage)
+	 * source.getScene().getWindow(); stage.close(); }
+	 */
 	@FXML
 	public void goToHomePressed(ActionEvent e) throws Exception {
 		closeScreen(e);
-		openScreen("studentBoundary","NewDesignHomeScreenStudent");	}
+		openScreen("studentBoundary", "NewDesignHomeScreenStudent");
+	}
+
 	/********************* Student Home Screen listeners *************************/
 	public void myGradesPressed(ActionEvent e) {
 		try {
 			closeScreen(e);
-			openScreen("studentBoundary","MyGradesScreen");
+			openScreen("studentBoundary", "MyGradesScreen");
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+
 			e1.printStackTrace();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+
 			e1.printStackTrace();
 		}
 	}
@@ -316,12 +321,12 @@ public void endExam(String message) {
 	public void orderExamCopyPressed(ActionEvent e) {
 		try {
 			closeScreen(e);
-			openScreen("studentBoundary","OrderExamCopyScreen");
+			openScreen("studentBoundary", "OrderExamCopyScreen");
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+
 			e1.printStackTrace();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+
 			e1.printStackTrace();
 		}
 
@@ -330,12 +335,12 @@ public void endExam(String message) {
 	public void excecuteMorCExamPressed(ActionEvent e) {
 		try {
 			closeScreen(e);
-			openScreen("studentBoundary","ManualAndComputerizeExamScreen");
+			openScreen("studentBoundary", "ManualAndComputerizeExamScreen");
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+
 			e1.printStackTrace();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+
 			e1.printStackTrace();
 		}
 	}
@@ -362,6 +367,10 @@ public void endExam(String message) {
 		 * examCodeCombo.getValue(); messageToServer[2] = null;
 		 * chat.handleMessageFromClientUI(messageToServer);// send the message to server
 		 */
+		if (examCodeCombo.getValue() == null) {
+			errorMsg("Please select exam first");
+			return;
+		}
 		connect(this);
 		messageToServer[0] = "getStudentAnswers";
 		messageToServer[1] = examCodeCombo.getValue(); // sending executed exam id
@@ -400,64 +409,65 @@ public void endExam(String message) {
 		try {
 			chat.closeConnection();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+
 			e1.printStackTrace();
 		}
 		final Object[] msgFromServer = (Object[]) message;
-		if((isPerformExam==true && msgFromServer[4].equals("all")) || msgFromServer[4].equals(getMyUser().getUsername())) {
-		
-		try {
-			chat.closeConnection();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		System.out.println(msgFromServer[0].toString());
-		Platform.runLater(() -> {
+		if ((isPerformExam == true && msgFromServer[4].equals("all"))
+				|| msgFromServer[4].equals(getMyUser().getUsername())) {
+
 			try {
-				switch (msgFromServer[0].toString()) {
-				case "logoutProcess": {
-					openScreen("boundary","LoginGui");
-					break;
-				}
-				case "getExamsByUserName": {
-					showGradesOnTable((ArrayList<ExamDetailsMessage>) msgFromServer[1]);
-					break;
-				}
-				case "checkExecutedExam": {
-					if (msgFromServer[1] == null) {
-						errorMsg("Can't perform this exam");																			
-						return;
+				chat.closeConnection();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			System.out.println(msgFromServer[0].toString());
+			Platform.runLater(() -> {
+				try {
+					switch (msgFromServer[0].toString()) {
+					case "logoutProcess": {
+						openScreen("boundary", "LoginGui");
+						break;
 					}
-					checkExecutedExam((Object[]) msgFromServer);
-					break;
-				}
-				case "addTime": {
-	//				if(requestId.contains(arg0))
-					addTimeToExam(msgFromServer);
-					
-					break;
-				}
-				case "showingCopy":{
-					showingCopy((ArrayList<Question>) msgFromServer[1], (HashMap<String, Integer>) msgFromServer[2]);
-					break;
-				}
-				case "setExecutedExamLocked":{
-					if(((Boolean)msgFromServer[1]==true && (((String)msgFromServer[2]).equals(executedID))) ) {
-						if(isLocked==false)
-						{
-							isLocked=true;
-						endExam("Exam locked");
+					case "getExamsByUserName": {
+						showGradesOnTable((ArrayList<ExamDetailsMessage>) msgFromServer[1]);
+						break;
+					}
+					case "checkExecutedExam": {
+						if (msgFromServer[1] == null) {
+							errorMsg("Can't perform this exam");
+							return;
+						}
+						checkExecutedExam((Object[]) msgFromServer);
+						break;
+					}
+					case "addTime": {
+						// if(requestId.contains(arg0))
+						addTimeToExam(msgFromServer);
+
+						break;
+					}
+					case "showingCopy": {
+						showingCopy((ArrayList<Question>) msgFromServer[1],
+								(HashMap<String, Integer>) msgFromServer[2]);
+						break;
+					}
+					case "setExecutedExamLocked": {
+						if (((Boolean) msgFromServer[1] == true && (((String) msgFromServer[2]).equals(executedID)))) {
+							if (isLocked == false) {
+								isLocked = true;
+								endExam("Exam locked");
+							}
 						}
 					}
+					}
+				} catch (IndexOutOfBoundsException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				}
-			} catch (IndexOutOfBoundsException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		});
-	}
+			});
+		}
 	}
 
 	/**********************
@@ -468,7 +478,7 @@ public void endExam(String message) {
 	@SuppressWarnings("unchecked")
 	private void checkExecutedExam(Object[] message) throws IOException {
 		ArrayList<Question> questioninexam = (ArrayList<Question>) message[1];
-		isLocked=false;
+		isLocked = false;
 		Exam exam = (Exam) message[2];
 		solutionTime = Time.valueOf(exam.getSolutionTime());
 		questioninexecutedexam = questioninexam;
@@ -504,15 +514,20 @@ public void endExam(String message) {
 			Runtime.getRuntime()
 					.exec("rundll32 url.dll,FileProtocolHandler " + "Exams for student\\" + file.getFileName());
 
-			Platform.runLater(() -> openScreen("studentBoundary","ManualExam"));
+			Platform.runLater(() -> openScreen("studentBoundary", "ManualExam"));
 		} else {
-			Platform.runLater(() -> openScreen("studentBoundary","ComputerizedExam"));
+			Platform.runLater(() -> openScreen("studentBoundary", "ComputerizedExam"));
 
 		}
 	}
 
 	public void showingCopy(ArrayList<Question> ques, HashMap<String, Integer> ans) {
-
+		if (ans.isEmpty())
+		{
+			Alert emptyStdExam = new Alert(AlertType.INFORMATION, "Your exam has no answers please pay attention"
+							,ButtonType.NO);
+			emptyStdExam.showAndWait() ; 
+		}
 		examAnswers = ans;
 		questioninexecutedexam = ques;
 		copyFlag = true;
@@ -531,11 +546,11 @@ public void endExam(String message) {
 						primaryStage.setScene(scene);
 						primaryStage.show();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
+
 						e.printStackTrace();
 					}
 				} else {
-					openScreen("studentBoundary","ComputerizedExam");
+					openScreen("studentBoundary", "ComputerizedExam");
 				}
 			}
 		});
@@ -543,15 +558,15 @@ public void endExam(String message) {
 
 	@SuppressWarnings("deprecation")
 	public void addTimeToExam(Object[] message) {
-		if(!requestId.contains((String)message[3])) {
-		requestId.add((String)message[3]);
-		int timeToAdd;
-		Time timeFromMessage = (Time) message[2];
-		if (executedID.equals((String) message[1])) {// if the student perform the relevant exam
-			timeToAdd = timeFromMessage.getHours() * 3600 + timeFromMessage.getMinutes() * 60
-					+ timeFromMessage.getSeconds();// reamin time is he time in secods
-			remainTime += timeToAdd;
-		}
+		if (!requestId.contains((String) message[3])) {
+			requestId.add((String) message[3]);
+			int timeToAdd;
+			Time timeFromMessage = (Time) message[2];
+			if (executedID.equals((String) message[1])) {// if the student perform the relevant exam
+				timeToAdd = timeFromMessage.getHours() * 3600 + timeFromMessage.getMinutes() * 60
+						+ timeFromMessage.getSeconds();// reamin time is he time in secods
+				remainTime += timeToAdd;
+			}
 		}
 	}
 
@@ -637,69 +652,77 @@ public void endExam(String message) {
 
 		if (copyFlag == true) {
 			Boolean correctAns = false;
-			String stdSelected = examAnswers.get(questioninexecutedexam.get(index).getId()).toString();
 			String qustionAnswer = questioninexecutedexam.get(index).getCorrectAnswer();
 			answer1.setStyle("-fx-background-color: white;");
 			answer2.setStyle("-fx-background-color: white;");
 			answer3.setStyle("-fx-background-color: white;");
 			answer4.setStyle("-fx-background-color: white;");
-		
+			String stdSelected;
+			if (!examAnswers.isEmpty())
+				stdSelected = examAnswers.get(questioninexecutedexam.get(index).getId()).toString();
+			else if(examAnswers.size()<questioninexecutedexam.size())
+				stdSelected = "0";
+			else stdSelected = "-1" ;
 			try {
-			switch (qustionAnswer) {
-			case "1":
-				if (stdSelected.equals("1")) {
-					answer1.setStyle("-fx-background-color: green;");
-					correctAns = true;
+				switch (qustionAnswer) {
+				case "1":
+					if (stdSelected.equals("1")) {
+						answer1.setStyle("-fx-background-color: green;");
+						correctAns = true;
+					}
+					correctRadioButton1.setSelected(true);
+					break;
+				case "2":
+					if (stdSelected.equals("2")) {
+						answer2.setStyle("-fx-background-color: green;");
+						correctAns = true;
+					}
+					correctRadioButton2.setSelected(true);
+					break;
+				case "3":
+					if (stdSelected.equals("3")) {
+						answer3.setStyle("-fx-background-color: green;");
+						correctAns = true;
+					}
+					correctRadioButton3.setSelected(true);
+					break;
+				case "4":
+					if (stdSelected.equals("4")) {
+						answer4.setStyle("-fx-background-color: green;");
+						correctAns = true;
+					}
+					correctRadioButton4.setSelected(true);
+					break;
 				}
-				correctRadioButton1.setSelected(true);
-				break;
-			case "2":
-				if (stdSelected.equals("2")) {
-					answer2.setStyle("-fx-background-color: green;");
-					correctAns = true;
-				}
-				correctRadioButton2.setSelected(true);
-				break;
-			case "3":
-				if (stdSelected.equals("3")) {
-					answer3.setStyle("-fx-background-color: green;");
-					correctAns = true;
-				}
-				correctRadioButton3.setSelected(true);
-				break;
-			case "4":
-				if (stdSelected.equals("4")) {
-					answer4.setStyle("-fx-background-color: green;");
-					correctAns = true;
-				}
-				correctRadioButton4.setSelected(true);
-				break;
-			}
 
-			switch (stdSelected) {
-			case "1":
-				if (correctAns == false)
-					answer1.setStyle("-fx-background-color: red;");
-				break;
-			case "2":
-				if (correctAns == false)
-					answer2.setStyle("-fx-background-color: red;");
-				break;
-			case "3":
-				if (correctAns == false)
-					answer3.setStyle("-fx-background-color: red;");
-				break;
-			case "4":
-				if (correctAns == false)
-					answer4.setStyle("-fx-background-color: red;");
-				break;
-			}
-			}catch(NullPointerException e) {
+				switch (stdSelected) {
+				case "1":
+					if (correctAns == false)
+						answer1.setStyle("-fx-background-color: red;");
+					break;
+				case "2":
+					if (correctAns == false)
+						answer2.setStyle("-fx-background-color: red;");
+					break;
+				case "3":
+					if (correctAns == false)
+						answer3.setStyle("-fx-background-color: red;");
+					break;
+				case "4":
+					if (correctAns == false)
+						answer4.setStyle("-fx-background-color: red;");
+					break;
+				case "0":
+					Alert alert = new Alert(AlertType.INFORMATION, "Please pay attention there is no answer for "
+							+ "the next question ",	ButtonType.OK);
+					alert.showAndWait();
+				}
+			} catch (NullPointerException e) {
 				System.out.println("no answer for this question");
 			}
-			
-		
+
 		}
+
 	}
 
 	@FXML
@@ -716,7 +739,7 @@ public void endExam(String message) {
 
 	@FXML
 	private void finishExam(ActionEvent e) throws IOException {
-		isPerformExam=false;
+		isPerformExam = false;
 		if (justFlag) {
 			((Stage) ((Node) e.getSource()).getScene().getWindow()).close();
 			((Stage) ((Node) tempEvent.getSource()).getScene().getWindow()).show();
@@ -747,7 +770,7 @@ public void endExam(String message) {
 				e1.printStackTrace();
 			}
 		}
-		openScreen("studentBoundary","NewDesignHomeScreenStudent");
+		openScreen("studentBoundary", "NewDesignHomeScreenStudent");
 
 		if (copyFlag == true) {
 			index = -1;

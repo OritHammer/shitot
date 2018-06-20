@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="282.0" prefWidth="372.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+<AnchorPane prefHeight="282.0" prefWidth="372.0" styleClass="card" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
       <Button layoutX="131.0" layoutY="243.0" mnemonicParsing="false" onAction="#finalChange" text="Change" />
       <TextField fx:id="newGrade" layoutX="121.0" layoutY="78.0" prefHeight="25.0" prefWidth="177.0" />

@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
-
 import entity.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -28,18 +27,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-  
+
 public class UserControl implements Initializable {
 	@FXML
 	private TextField userName;
-	//*******homeScreenLabel***********//
+	// *******homeScreenLabel***********//
 	@FXML
 	private Label userNameLabel;
 	@FXML
 	private Label authorLabel;
 	@FXML
 	private Label dateLabel;
-	//******login screen**********//
+	// ******login screen**********//
 	@FXML
 	private PasswordField password;
 	@FXML
@@ -53,30 +52,31 @@ public class UserControl implements Initializable {
 	@FXML
 	private ImageView LoginButton;
 	@FXML
-	public Text userText;///user name
+	public Text userText;/// user name
 	@FXML
 	private Label userText1;
 	@FXML
 	private javafx.scene.control.Button closeButton;
-//class variables 
-	//date and author variables
+	// class variables
+	// date and author variables
 	private Calendar currentCalendar = Calendar.getInstance();
 	private Date currentTime = currentCalendar.getTime();
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
-	//FMXL variables
+	// FMXL variables
 	private Parent home_page_parent;
 	private Scene home_page_scene;
 	static Thread th;
 	protected String userNameFromDB;
-	
+
 	public void closeButtonAction(ActionEvent e) throws IOException {
 		Stage stage = (Stage) closeButton.getScene().getWindow();
 		stage.close();
-	} 
+	}
+
 	protected ComboBox<String> subjectsComboBox;
 	protected ComboBox<String> coursesComboBox;
 	protected ChatClient chat;
-	
+
 	protected Object[] messageToServer = new Object[5];
 	/* connections variables */
 	static String ip;// server ip
@@ -84,7 +84,7 @@ public class UserControl implements Initializable {
 	final public static int DEFAULT_PORT = 5555;
 
 	private static User myUser = new User();
-	
+
 	/* this method connected between client and server */
 	public void connect(UserControl user) {
 		try {
@@ -101,25 +101,25 @@ public class UserControl implements Initializable {
 		// this.ip = "77.138.70.98";
 		ip = "localhost";
 		// this.ip = sc.nextLine();
-		sc.close(); 
+		sc.close();
 		errorMsg.setVisible(false);
 		errorImg.setVisible(false);
 		errorImg1.setVisible(false);
 		LoginBtn.setDefaultButton(true);
 	}
- 
+
 	public void checkMessage(Object message) {
 		try {
-			chat.closeConnection();// close the connection 
+			chat.closeConnection();// close the connection
 			Object[] msg = (Object[]) message;
 			User user = (User) msg[1];
-			if (user==null) {
-				Platform.runLater(()->	{
+			if (user == null) {
+				Platform.runLater(() -> {
 					errorMsg.setVisible(true);
 					errorImg.setVisible(true);
 					errorImg1.setVisible(true);
 				});
-			
+
 				return;
 			}
 			if (msg[0].toString().equals("checkUserDetails")) {
@@ -133,24 +133,21 @@ public class UserControl implements Initializable {
 
 							@Override
 							public void run() {
-								// TODO Auto-generated method stub
 								try {
-									FXMLLoader loader=new FXMLLoader();
+									FXMLLoader loader = new FXMLLoader();
 									loader.setLocation(getClass().getResource("/boundary/HomeScreenTeacher.fxml"));
-					
 									home_page_parent = loader.load();
-									TeacherControl tController=loader.getController();
-									String userName=user.getFullname().toLowerCase();
-									tController.setUserText(userName);/*send the name to the controller*/
+									TeacherControl tController = loader.getController();
+									String userName = user.getFullname().toLowerCase();
+									tController.setUserText(userName);/* send the name to the controller */
 									getMyUser().setFullname(user.getFullname());
 									getMyUser().setUsername(user.getUsername());
-									
+									home_page_parent.getStylesheets()
+											.add(getClass().getResource("/style.css").toExternalForm());
 									home_page_scene = new Scene(home_page_parent);
-									home_page_scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 									Main.getStage().setTitle("HomeScreenTeacher");
 									Main.getStage().setScene(home_page_scene);
 								} catch (IOException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 							}
@@ -164,26 +161,25 @@ public class UserControl implements Initializable {
 
 							@Override
 							public void run() {
-								// TODO Auto-generated method stub
 								try {
-
-									FXMLLoader loader=new FXMLLoader();
-									loader.setLocation(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
+									FXMLLoader loader = new FXMLLoader();
+									loader.setLocation(
+											getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
 									home_page_parent = loader.load();
-									StudentControl sController=loader.getController();
-									setMyUser(user); 
+									StudentControl sController = loader.getController();
+									setMyUser(user);
 									getMyUser().setFullname(user.getFullname());
 									getMyUser().setUsername(user.getUsername());
-									sController.setStudentAuthor_Date_name();/*send the name to the controller*/
+									sController.setStudentAuthor_Date_name();/* send the name to the controller */
 									home_page_scene = new Scene(home_page_parent);
-									//	sController.setHomePScene(home_page_scene);
+									home_page_parent.getStylesheets()
+											.add(getClass().getResource("/style.css").toExternalForm());
 									Main.getStage().setTitle("HomeScreenStudent");
 									Main.getStage().setScene(home_page_scene);
 								} catch (IOException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
-		 					}
+							}
 						});
 						break;
 					}
@@ -193,22 +189,22 @@ public class UserControl implements Initializable {
 
 							@Override
 							public void run() {
-								// TODO Auto-generated method stub
 								try {
-									FXMLLoader loader=new FXMLLoader();
-									loader.setLocation(getClass().getResource("/directorBoundary/HomeScreenDirector.fxml"));
-									
+									FXMLLoader loader = new FXMLLoader();
+									loader.setLocation(
+											getClass().getResource("/directorBoundary/HomeScreenDirector.fxml"));
 									home_page_parent = loader.load();
+									home_page_parent.getStylesheets()
+											.add(getClass().getResource("/style.css").toExternalForm());
 									getMyUser().setFullname(user.getFullname());
 									getMyUser().setUsername(user.getUsername());
-									DirectorControl dController=loader.getController();
-									String userName=user.getFullname().toLowerCase();/*get the name of the user*/
-									dController.setUserText(userName);/*send the name to the controller*/
+									DirectorControl dController = loader.getController();
+									String userName = user.getFullname().toLowerCase();/* get the name of the user */
+									dController.setUserText(userName);/* send the name to the controller */
 									home_page_scene = new Scene(home_page_parent);
 									Main.getStage().setTitle("HomeScreenDirector");
 									Main.getStage().setScene(home_page_scene);
 								} catch (IOException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 							}
@@ -222,35 +218,35 @@ public class UserControl implements Initializable {
 			e.printStackTrace();
 		}
 	}
-/*check if the details of user is in the system */
+
+	/* check if the details of user is in the system */
 	public void loginPressed(ActionEvent e) throws IOException {
-		  connect(this);
-		  if (userName.getText().equals("") || password.getText().equals(""))
-		  {
+		connect(this);
+		if (userName.getText().equals("") || password.getText().equals("")) {
 			errorMsg.setVisible(true);
-		  	errorImg.setVisible(true);
+			errorImg.setVisible(true);
 			errorImg1.setVisible(true);
-		  }
-		  else {
-		   messageToServer[0] = "checkUserDetails";
-		   messageToServer[1] = userName.getText();
-		   messageToServer[2] = password.getText();
-		   messageToServer[4]=userName.getText();
-		   chat.handleMessageFromClientUI(messageToServer);
-		  }
-		 }
-	
-	public void setUserText(String userNameFromDB) {/*set the user name text in the "hello user" text*/
-		this.userNameFromDB=userNameFromDB;
-		getMyUser().setFullname(userNameFromDB);
-		if(this instanceof DirectorControl) {
-			 userText1.setText(userNameFromDB);
-		return;
+		} else {
+			messageToServer[0] = "checkUserDetails";
+			messageToServer[1] = userName.getText();
+			messageToServer[2] = password.getText();
+			messageToServer[4] = userName.getText();
+			chat.handleMessageFromClientUI(messageToServer);
 		}
-		 userText.setText(userNameFromDB);
-	} 
-	//functions relevant for all users 
-	public void loadCourses(String typeList,String subject) throws IOException {
+	}
+
+	public void setUserText(String userNameFromDB) {/* set the user name text in the "hello user" text */
+		this.userNameFromDB = userNameFromDB;
+		getMyUser().setFullname(userNameFromDB);
+		if (this instanceof DirectorControl) {
+			userText1.setText(userNameFromDB);
+			return;
+		}
+		userText.setText(userNameFromDB);
+	}
+
+	// functions relevant for all users
+	public void loadCourses(String typeList, String subject) throws IOException {
 		/* ask for the courses name */
 		if (subject == null)
 			return;
@@ -258,9 +254,10 @@ public class UserControl implements Initializable {
 		connect(this); // connecting to server
 		messageToServer[0] = "getCourses";
 		messageToServer[1] = subjectSubString[0].trim();
-		if(typeList=="All")
+		if (typeList == "All")
 			messageToServer[2] = null;
-		else messageToServer[2] = getMyUser().getUsername();
+		else
+			messageToServer[2] = getMyUser().getUsername();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 
@@ -272,18 +269,20 @@ public class UserControl implements Initializable {
 		UserControl.myUser = myUser;
 	}
 
-	/****************functions To Use Of all users*******************************/
-	public void openScreen(String boundary,String screen) {// open windows
+	/**************** functions To Use Of all users *******************************/
+	public void openScreen(String boundary, String screen) {// open windows
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/"+boundary+"/" + screen + ".fxml"));
+			loader.setLocation(getClass().getResource("/" + boundary + "/" + screen + ".fxml"));
 			Scene scene = new Scene(loader.load());
+			scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 			Stage stage = Main.getStage();
-	/*		if (screen.equals("ErrorMessage")) {
-				ErrorControl dController = loader.getController();
-				dController.setBackwardScreen(stage.getScene());// send the name to the controller 
-				dController.setErrorMessage("ERROR");// send a the error to the alert we made
-			} */
+			/*
+			 * if (screen.equals("ErrorMessage")) { ErrorControl dController =
+			 * loader.getController(); dController.setBackwardScreen(stage.getScene());//
+			 * send the name to the controller dController.setErrorMessage("ERROR");// send
+			 * a the error to the alert we made }
+			 */
 			stage.setTitle(screen);
 			stage.setScene(scene);
 			stage.show();
@@ -296,11 +295,13 @@ public class UserControl implements Initializable {
 	public void errorMsg(String message) {// for error message
 		new Alert(Alert.AlertType.ERROR, message).showAndWait();
 	}
+
 	public void closeScreen(ActionEvent e) throws IOException, SQLException {
 		final Node source = (Node) e.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
 	}
+
 	public void logoutPressed(ActionEvent e) throws Exception, SQLException { // *** move to userControl
 		connect(this);
 		messageToServer[0] = "logoutProcess";
@@ -309,11 +310,11 @@ public class UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 		closeScreen(e);
 	}
+
 	public void setStudentAuthor_Date_name() {// *** move to userControl rename userDetails
 		userNameLabel.setText(getMyUser().getFullname());
 		dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
-		authorLabel.setText(""+myUser.getRole());
+		authorLabel.setText("" + myUser.getRole());
 	}
 
-	
 }
