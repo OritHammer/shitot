@@ -141,6 +141,7 @@ public class UserControl implements Initializable {
 									String userName = user.getFullname().toLowerCase();
 									tController.setUserText(userName);/* send the name to the controller */
 									getMyUser().setFullname(user.getFullname());
+									getMyUser().setRole(user.getRole());
 									getMyUser().setUsername(user.getUsername());
 									home_page_parent.getStylesheets()
 											.add(getClass().getResource("/style.css").toExternalForm());
@@ -167,9 +168,10 @@ public class UserControl implements Initializable {
 											getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
 									home_page_parent = loader.load();
 									StudentControl sController = loader.getController();
-									setMyUser(user);
+									//setMyUser(user);
 									getMyUser().setFullname(user.getFullname());
 									getMyUser().setUsername(user.getUsername());
+									getMyUser().setRole(user.getRole());
 									sController.setStudentAuthor_Date_name();/* send the name to the controller */
 									home_page_scene = new Scene(home_page_parent);
 									home_page_parent.getStylesheets()
@@ -198,6 +200,7 @@ public class UserControl implements Initializable {
 											.add(getClass().getResource("/style.css").toExternalForm());
 									getMyUser().setFullname(user.getFullname());
 									getMyUser().setUsername(user.getUsername());
+									getMyUser().setRole(user.getRole());
 									DirectorControl dController = loader.getController();
 									String userName = user.getFullname().toLowerCase();/* get the name of the user */
 									dController.setUserText(userName);/* send the name to the controller */
