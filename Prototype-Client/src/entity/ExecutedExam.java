@@ -46,8 +46,8 @@ public class ExecutedExam implements Serializable,Comparable {
 		this.gradeRang[8] =range80to89;
 		this.gradeRang[9] =range90to100;
 		this.status=status;
-		this.actuallySolutionTime=actuallySolutionTime;
-		this.startDate=startDate;
+		this.setActuallySolutionTime(actuallySolutionTime);
+		this.setStartDate(startDate);
 	}
 
 	public int[] getGradeRang() {
@@ -137,6 +137,22 @@ public class ExecutedExam implements Serializable,Comparable {
 	}
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public Time getActuallySolutionTime() {
+		return actuallySolutionTime;
+	}
+
+	public void setActuallySolutionTime(Time actuallySolutionTime) {
+		this.actuallySolutionTime = actuallySolutionTime;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
 	}
 	
 	
