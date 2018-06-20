@@ -6,7 +6,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="549.0" prefWidth="1485.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+<AnchorPane prefHeight="549.0" prefWidth="1485.0" styleClass="card" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
       <Button cancelButton="true" graphicTextGap="0.0" layoutX="603.0" layoutY="494.0" mnemonicParsing="false" onAction="#closeScreen" text="Back">
          <textFill>

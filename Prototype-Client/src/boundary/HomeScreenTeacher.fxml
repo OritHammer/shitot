@@ -11,7 +11,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="573.0" prefWidth="391.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="573.0" styleClass="card" prefWidth="391.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
       <Button layoutX="142.0" layoutY="102.0" mnemonicParsing="false" onAction="#openUpdateQuestionScreen" text="Update question" />
       <Button layoutX="144.0" layoutY="131.0" mnemonicParsing="false" onAction="#openCreateQuestion" text="Create question" />
