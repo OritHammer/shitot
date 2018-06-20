@@ -522,7 +522,12 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 
 	public void showingCopy(ArrayList<Question> ques, HashMap<String, Integer> ans) {
-
+		if (ans.isEmpty())
+		{
+			Alert emptyStdExam = new Alert(AlertType.INFORMATION, "Your exam has no answers please pay attention"
+							,ButtonType.NO);
+			emptyStdExam.showAndWait() ; 
+		}
 		examAnswers = ans;
 		questioninexecutedexam = ques;
 		copyFlag = true;
@@ -655,8 +660,9 @@ public class StudentControl extends UserControl implements Initializable {
 			String stdSelected;
 			if (!examAnswers.isEmpty())
 				stdSelected = examAnswers.get(questioninexecutedexam.get(index).getId()).toString();
-			else
+			else if(examAnswers.size()<questioninexecutedexam.size())
 				stdSelected = "0";
+			else stdSelected = "-1" ;
 			try {
 				switch (qustionAnswer) {
 				case "1":
@@ -707,8 +713,8 @@ public class StudentControl extends UserControl implements Initializable {
 						answer4.setStyle("-fx-background-color: red;");
 					break;
 				case "0":
-					Alert alert = new Alert(AlertType.INFORMATION, "there is no answer for  this question ",
-							ButtonType.OK);
+					Alert alert = new Alert(AlertType.INFORMATION, "Please pay attention there is no answer for "
+							+ "the next question ",	ButtonType.OK);
 					alert.showAndWait();
 				}
 			} catch (NullPointerException e) {
