@@ -153,10 +153,7 @@ public class StudentControl extends UserControl implements Initializable {
 	private TextField timerTextField;
 
 	// ******************** Showing exam copy ************//
-	@FXML
-	private Label studentAnswer;
-	@FXML
-	private Label selectedAnswer;
+
 
 	/************************ Class Methods *************************/
 	public void connect(UserControl user) {
@@ -635,8 +632,7 @@ public void endExam(String message) {
 			answer2.setStyle("-fx-background-color: white;");
 			answer3.setStyle("-fx-background-color: white;");
 			answer4.setStyle("-fx-background-color: white;");
-			studentAnswer.setVisible(true);
-			selectedAnswer.setVisible(true);
+		
 			try {
 			switch (qustionAnswer) {
 			case "1":
@@ -691,7 +687,7 @@ public void endExam(String message) {
 				System.out.println("no answer for this question");
 			}
 			
-			//selectedAnswer.setText(examAnswers.get(questioninexecutedexam.get(index).getId()).toString());
+		
 		}
 	}
 
