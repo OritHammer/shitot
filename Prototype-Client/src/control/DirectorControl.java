@@ -529,8 +529,16 @@ public class DirectorControl extends UserControl implements Initializable {
 		});
 	} 
 	@FXML
-	public void GetQuestionStock(ActionEvent e) {
-		System.out.println("fkjhvkodn");
-	}
+	public void GetQuestionStock(ActionEvent e)  {
+		TeacherControl tcontroller=new TeacherControl();
+		Platform.runLater(() -> {
+			try {
+				tcontroller.openUpdateExamScreen(e);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+		}
 	
 }
