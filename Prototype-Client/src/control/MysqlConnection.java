@@ -679,7 +679,7 @@ public class MysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs;
-			if((String)type == "LockType")
+			if(((String)type).equals("LockType"))
 			{
 			 rs = stmt
 					.executeQuery("SELECT * FROM executedexam WHERE teacherName=\"" + teacherUserName.toString()
