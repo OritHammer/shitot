@@ -276,19 +276,26 @@ public class TeacherControl extends UserControl implements Initializable {
 	public void finalChange(ActionEvent event) {
 		if (newGrade.getText().equals("") && reason.getText().equals(""))
 			new Alert(Alert.AlertType.ERROR, "You must enter values.").showAndWait();
-		else if (newGrade.getText().equals("")
-				|| !(Integer.parseInt(newGrade.getText()) >= 0 && Integer.parseInt(newGrade.getText()) <= 100))
+		else if (!(newGrade.getText()).matches("[0-9]+"))
+			new Alert(Alert.AlertType.ERROR, "The grade must be number").showAndWait();
+		else if (!(Integer.parseInt(newGrade.getText()) >= 0 && Integer.parseInt(newGrade.getText()) <= 100))
 			new Alert(Alert.AlertType.ERROR, "The grade must be between 0-100").showAndWait();
 		else if (reason.getText().equals(""))
 			new Alert(Alert.AlertType.ERROR, "If you want to change the grade you must enter a reason").showAndWait();
+
 		else {
 			StudentPerformExam student = tController.getSelectedStudentPerformExam();
+			
 			student.setGrade(Float.valueOf(newGrade.getText()));
 			student.setReasonForChangeGrade(reason.getText());
 			tController.setOnTableView(student);
+			tController.studnetInExamTableView.refresh();
+			
 			final Node source = (Node) event.getSource();
 			Stage stage = (Stage) source.getScene().getWindow();
 			stage.close();
+			tController.studnetInExamTableView.getSortOrder().setAll(tController.getStudentId());
+			tController.studnetInExamTableView.getSelectionModel().clearSelection();
 		}
 
 	}
@@ -296,12 +303,17 @@ public class TeacherControl extends UserControl implements Initializable {
 	private StudentPerformExam getSelectedStudentPerformExam() {
 		return (studnetInExamTableView.getSelectionModel().getSelectedItem());
 	}
+	
+	private TableColumn<StudentPerformExam, String> getStudentId() {
+		return (studentId);
+	}
 
 	public void changeGrade(ActionEvent event) throws IOException {
 
 		studentInExamRow = studnetInExamTableView.getSelectionModel().getSelectedItem();
 		if (studentInExamRow == null)
 			return;
+		
 		final Stage dialog = new Stage();
 
 		final Node source = (Node) event.getSource();

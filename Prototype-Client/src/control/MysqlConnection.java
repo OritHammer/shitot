@@ -1184,7 +1184,7 @@ public class MysqlConnection {
 						"     between20to29 = (select count(*)" + 
 						"   from studentperformedexam as spe" + 
 						"   where executedExamID = \""+eid+"\" and spe.grade > 19 and spe.grade<30) ," + 
-						"      between40to49 = (select count(*)" + 
+						"      between30to39 = (select count(*)" + 
 						"   from studentperformedexam as spe " + 
 						"   where executedExamID = \""+eid+"\" and spe.grade > 29 and spe.grade<40) ," + 
 						" between40to49 = (select count(*)" + 
