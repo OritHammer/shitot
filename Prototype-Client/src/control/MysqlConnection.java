@@ -1317,7 +1317,7 @@ public class MysqlConnection {
 						+ "where teacherExams.eid = EE.exam_id;");
 			}else {
 				 rs = stmt.executeQuery("select EE.executedExamID ,teacherExams.timeGiven , EE.actuallySolutionTime ,EE.numOfStudentStarted,"
-						+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished "
+						+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished, EE.startDate "
 						+ "FROM (select exams.e_id as eid , exams.solutionTime as timeGiven "
 								+ "from exams "
 								+ "where exams.tUserName = \"" + (String)teacherUserName + "\" )  teacherExams , executedexam as EE "
