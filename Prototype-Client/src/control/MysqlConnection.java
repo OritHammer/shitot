@@ -342,7 +342,7 @@ public class MysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt
-					.executeQuery("SELECT * FROM shitot.requestforchangingtimeallocated where isApproved='waiting';");
+					.executeQuery("SELECT * FROM shitot.requestforchangingtimeallocated;");
 			while (rs.next()) {
 
 				requestList.add(new RequestForChangingTimeAllocated(rs.getString(1), rs.getString(2), rs.getString(3),

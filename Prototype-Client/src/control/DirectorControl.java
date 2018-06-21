@@ -63,6 +63,8 @@ public class DirectorControl extends UserControl implements Initializable {
 	@FXML
 	private TableColumn<RequestForChangingTimeAllocated, String> timeAddedColumn;
 	@FXML
+	private TableColumn<RequestForChangingTimeAllocated, String> StatusColumn;
+	@FXML
 	private Button showDetailsButton;
 
 	// FAML Adding Time Requests window
@@ -70,6 +72,8 @@ public class DirectorControl extends UserControl implements Initializable {
 	private TextField txtFATRexecutedExamId;
 	@FXML
 	private TextField txtFATRTeachName;
+	@FXML
+	private TextField txtStatusInApproveReq;
 	@FXML
 	private TextField txtFATRrequestId;
 	@FXML
@@ -345,12 +349,11 @@ public class DirectorControl extends UserControl implements Initializable {
 			requestsTable.setItems(addingTimeRequestsObservable);
 			// display the id in the table view
 			examIDColumn.setCellValueFactory(new PropertyValueFactory<>("IDexecutedExam"));
-
 			teacherNameColumn.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
-
+			StatusColumn.setCellValueFactory(new PropertyValueFactory<>("menagerApprove"));
 			timeAddedColumn.setCellValueFactory(new PropertyValueFactory<>("timeAdded"));
 			// requestsTable.getColumns().clear();
-			requestsTable.getColumns().addAll(examIDColumn, teacherNameColumn, timeAddedColumn);
+			requestsTable.getColumns().addAll(examIDColumn, teacherNameColumn, timeAddedColumn,StatusColumn);
 		});
 	}
 
@@ -362,7 +365,12 @@ public class DirectorControl extends UserControl implements Initializable {
 			txtFATRTimeAdded.setText(request.getTimeAdded());
 			txtFATRreasonAddingTime.setText(request.getReason());
 			txtFATRrequestId.setText(request.getRequestID());
+			txtStatusInApproveReq.setText(request.getMenagerApprove());
 			txtFATRexecutedExamId.setText(request.getIDexecutedExam());
+			if(!request.getMenagerApprove().equals("waiting")) {
+				btnATRApprove.setDisable(true);
+				btnATRreject.setDisable(true);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -552,10 +560,20 @@ public class DirectorControl extends UserControl implements Initializable {
 			try {
 				tcontroller.openUpdateExamScreen(e);
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		});
     }
-	
+
+    public void getExecutedExamsStock(ActionEvent e) {
+    	/*TeacherControl tcontroller=new TeacherControl();
+		Platform.runLater(() -> {
+			try {
+				tcontroller.openUpdateExamScreen(e);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		});*/
+    }
+
 }
