@@ -118,6 +118,7 @@ public class UserControl implements Initializable {
 
 	public void checkMessage(Object message) {
 		try {
+			UserControl uc=this;
 			chat.closeConnection();// close the connection
 			Object[] msg = (Object[]) message;
 			if(messagesRead.contains((int)msg[5])){
@@ -161,6 +162,17 @@ public class UserControl implements Initializable {
 									home_page_scene = new Scene(home_page_parent);
 									Main.getStage().setTitle("HomeScreenTeacher");
 									Main.getStage().setScene(home_page_scene);
+									Main.getStage().setOnCloseRequest(event-> {
+										 uc.connect(uc);
+											messageToServer[0] = "performLogout";
+											messageToServer[1] =getMyUser().getUsername();
+											messageToServer[2] =null;
+											messageToServer[4] =getMyUser().getUsername();
+											chat.handleMessageFromClientUI(messageToServer);
+											Platform.exit();
+											
+								          
+								      });        
 								} catch (IOException e) {
 									e.printStackTrace();
 								}
@@ -191,6 +203,16 @@ public class UserControl implements Initializable {
 											.add(getClass().getResource("/style.css").toExternalForm());
 									Main.getStage().setTitle("HomeScreenStudent");
 									Main.getStage().setScene(home_page_scene);
+									Main.getStage().setOnCloseRequest(event-> {
+										 uc.connect(uc);
+											messageToServer[0] = "performLogout";
+											messageToServer[1] =getMyUser().getUsername();
+											messageToServer[2] =null;
+											messageToServer[4] =getMyUser().getUsername();
+											chat.handleMessageFromClientUI(messageToServer);
+											Platform.exit();
+								          
+								      });        
 								} catch (IOException e) {
 									e.printStackTrace();
 								}
@@ -221,6 +243,16 @@ public class UserControl implements Initializable {
 									home_page_scene = new Scene(home_page_parent);
 									Main.getStage().setTitle("HomeScreenDirector");
 									Main.getStage().setScene(home_page_scene);
+									Main.getStage().setOnCloseRequest(event-> {
+										 uc.connect(uc);
+											messageToServer[0] = "performLogout";
+											messageToServer[1] =getMyUser().getUsername();
+											messageToServer[2] =null;
+											messageToServer[4] =getMyUser().getUsername();
+											chat.handleMessageFromClientUI(messageToServer);
+											Platform.exit();
+								          
+								      });        
 								} catch (IOException e) {
 									e.printStackTrace();
 								}
@@ -317,7 +349,7 @@ public class UserControl implements Initializable {
 					messageToServer[2] =null;
 					messageToServer[4] =getMyUser().getUsername();
 					chat.handleMessageFromClientUI(messageToServer);
-					
+					Platform.exit();
 		          
 		      });        
 			stage.setTitle(screen);
