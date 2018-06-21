@@ -55,6 +55,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
+/**
+ * @author lior hammer
+ *
+ */
 public class StudentControl extends UserControl implements Initializable {
 
 	protected static ArrayList<Question> questioninexecutedexam;
@@ -73,7 +77,6 @@ public class StudentControl extends UserControl implements Initializable {
 	/********************** AddTime Variables ***************************/
 	private static ArrayList<String> requestId;
 
-	
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
 
@@ -93,8 +96,6 @@ public class StudentControl extends UserControl implements Initializable {
 	@FXML
 	private Text remarksForStudentText;
 	
-
-
 	ObservableList<ExamDetailsMessage> detailsList = FXCollections.observableArrayList();
 	ObservableList<String> executeExamList = FXCollections.observableArrayList();
 	
@@ -142,17 +143,13 @@ public class StudentControl extends UserControl implements Initializable {
 	@FXML
 	protected ComboBox<String> examCodeCombo;
 	/************************ Class Methods *************************/
-	public Boolean connect(UserControl user) {
-		try {
-			chat = new ChatClient(ip, DEFAULT_PORT, user);
-			return true;
-		} catch (IOException exception) {
-			System.out.println("Error: Can't setup connection!" + " Terminating client.");
-			return false;
-			
-		}
-	}
-
+	
+	/**
+	 * initialize(URL url, ResourceBundle rb) 
+	*Arguments:URL url, RResourceBundle rb
+	* The  method initialize the javaFX screens by their names 
+	* @author Lior Hammer
+	*/
 	public void initialize(URL url, ResourceBundle rb) {
 		// connect(this);
 		isPerformExam = false;
@@ -204,7 +201,12 @@ public class StudentControl extends UserControl implements Initializable {
 			return;
 		}
 	}
-
+	/**
+	 * startTime()
+	*Arguments:No args
+	* The  method start the time for the students that start executing exam
+	* @author Lior Hammer
+	*/
 	private void startTime() {
 		final StudentControl sControl = this;
 		try {
@@ -248,7 +250,14 @@ public class StudentControl extends UserControl implements Initializable {
 	{
 
 	}
-	
+	/**
+	 * endExam(String message)
+	*Arguments:message
+	* The  method called when the time is over or the exam has been locked 
+	* by the teacher , the message is for the reason that explain why the exam
+	* has been finished 
+	* @author Lior Hammer
+	*/
 	public void endExam(String message) {
 		timer.cancel();
 		Platform.runLater(() -> errorMsg(message));
@@ -271,13 +280,23 @@ public class StudentControl extends UserControl implements Initializable {
 			}
 		}
 	}
-
+	/**
+	 * setInterval()
+	*Arguments: No args
+	* The method check if the exam executed time has over 
+	* @author Aviv Mahulya
+	*/
 	private static final int setInterval() {
 		if (remainTime == 1)
 			timer.cancel();
 		return --remainTime;
 	}
-
+	/**
+	 * Time intToTime(int seconds)
+	*Arguments: seconds
+	* The method transform from second to the relevant time units 
+	* @author Lior Hammer
+	*/
 	public static Time intToTime(int seconds) {
 		int hours = seconds / 3600;
 		int minutes = (seconds % 3600) / 60;
@@ -288,14 +307,12 @@ public class StudentControl extends UserControl implements Initializable {
 
 	/********************* general Functions *************************/
 
-	// the problem is with the fact that we create a new scene each time and we need
-	// to prevent it in that way
-	// ***
-	/*
-	 * public void closeScreen(ActionEvent e) throws IOException, SQLException {
-	 * final Node source = (Node) e.getSource(); Stage stage = (Stage)
-	 * source.getScene().getWindow(); stage.close(); }
-	 */
+	/**
+	 * goToHomePressed(ActionEvent e) 
+	*Arguments: ActionEvent
+	* The method catch an click on the "go home" button
+	* @author Lior Hammer
+	*/
 	@FXML
 	public void goToHomePressed(ActionEvent e) throws Exception {
 		closeScreen(e);
@@ -303,6 +320,12 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 
 	/********************* Student Home Screen listeners *************************/
+	/**
+	 * myGradesPressed(ActionEvent e)
+	*Arguments: ActionEvent
+	* The method catch an click on the "my grades" button
+	* @author Lior Hammer
+	*/
 	public void myGradesPressed(ActionEvent e) {
 		try {
 			closeScreen(e);
@@ -315,7 +338,12 @@ public class StudentControl extends UserControl implements Initializable {
 			e1.printStackTrace();
 		}
 	}
-
+	/**
+	 * orderExamCopyPressed(ActionEvent e)
+	*Arguments: ActionEvent
+	* The method catch an click on the "order" button
+	* @author Lior Hammer
+	*/
 	public void orderExamCopyPressed(ActionEvent e) {
 		try {
 			closeScreen(e);
@@ -329,7 +357,12 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 
 	}
-
+	/**
+	 * excecuteMorCExamPressed(ActionEvent e)
+	*Arguments: ActionEvent
+	* The method catch an click on the "execute exam" button
+	* @author Lior Hammer
+	*/
 	public void excecuteMorCExamPressed(ActionEvent e) {
 		try {
 			closeScreen(e);
@@ -370,6 +403,12 @@ public class StudentControl extends UserControl implements Initializable {
 
 	/************************* checking message ***********************************/
 	// for all windows
+	
+	/**
+	 * @see control.UserControl#checkMessage(java.lang.Object)
+	 * checking the message that sent by the server and call the relevant methods
+	 *  @author Lior Hammer
+	 */
 	@SuppressWarnings({ "unchecked", "unused" })
 	@Override
 	public void checkMessage(Object message) {
@@ -439,6 +478,15 @@ public class StudentControl extends UserControl implements Initializable {
 	 * 
 	 * @throws IOException
 	 ***********************/
+	
+	/**
+	 * checkExecutedExam(Object[] message)
+	 * @param message
+	 * @throws IOException
+	 * The method check the type of executed exam that have been sent from the server 
+	 * and execute block of code by the type of the returned exam
+	 *  @author Tom Zarhin
+	 */
 	@SuppressWarnings("unchecked")
 	private void checkExecutedExam(Object[] message) throws IOException {
 		ArrayList<Question> questioninexam = (ArrayList<Question>) message[1];
@@ -488,6 +536,12 @@ public class StudentControl extends UserControl implements Initializable {
 
 	
 
+	/**
+	 * addTimeToExam
+	 * @param message
+	 * The method add time to a running exam 
+	 * @author Aviv Mahulya
+	 */
 	@SuppressWarnings("deprecation")
 	public void addTimeToExam(Object[] message) {
 		if (!requestId.contains((String) message[3])) {
@@ -503,6 +557,14 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 
 	/************************ Student performing exam *************/
+	
+	/**
+	 * nextQuestion(ActionEvent e)
+	*Arguments: ActionEvent
+	* The method catch an click on the "next" button and set 
+	* the "next" button dis\enable according to the conditions 
+	* @author Lior Hammer
+	*/
 	@FXML
 	private void nextQuestion(ActionEvent e) {
 		if (index >= 0 && copyFlag == false)
@@ -515,19 +577,11 @@ public class StudentControl extends UserControl implements Initializable {
 			prevBTN.setVisible(true);
 
 	}
-
+/**
+ * setQuestion()
+ * setting the context of the relevant question on the screen
+ */
 	private void setQuestion() {
-
-		/*
-		 * before setting questions need to get the answer the student selected if there
-		 * is such answer , if null need to put on the correct answer of the current
-		 * question as null .
-		 * 
-		 * need to use RadioButton selected = (RadioButton) group.getSelectedToggle();
-		 * String selectedId = selected.getId(); int correctAns = need to get the number
-		 * of the selected answer with switch case (chcking the value of "index" can be
-		 * negative ? questioninexecutedexam.get(--index).setCorrectAnswer(correctAns);
-		 */
 
 		correctRadioButton1.setSelected(false);
 		correctRadioButton2.setSelected(false);
@@ -630,7 +684,13 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 
 	}
-
+	/**
+	 * previousQuestion(ActionEvent e)
+	*Arguments: ActionEvent
+	* The method catch an click on the "previous" button and set 
+	* the "previous" button dis\enable according to the conditions 
+	* @author Lior Hammer
+	*/
 	@FXML
 	private void previousQuestion(ActionEvent e) {
 		if (copyFlag == false)
@@ -642,7 +702,13 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 		nextBTN.setVisible(true);
 	}
-
+	/**
+	 * finishExam(ActionEvent e)
+	*Arguments: ActionEvent
+	* The method catch an click on the "Finish" button ans 
+	* also send the data from the ckient to the server and go back to home screen
+	* @author Lior Hammer
+	*/
 	@FXML
 	private void finishExam(ActionEvent e) throws IOException {
 		isPerformExam = false;
@@ -686,7 +752,12 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 
 	}
-
+	/**
+	 * addAnswerToHashMap()
+	*Arguments: No args 
+	* The method add an answer to the HashMap if he answer on some question
+	* @author Lior Hammer
+	*/
 	public void addAnswerToHashMap() {
 		int selectedAnswer = 0;
 		if (index <= -1)
@@ -713,12 +784,23 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 
 	/************************ Student perform manual exam *************/
+	/**
+	 * dragOver(DragEvent e)
+	*Arguments: DragEvent e
+	* The method handle a drag event when student want to set a file or take a file 
+	* @author Tom Zarhin
+	*/
 	public void dragOver(DragEvent e) {
 		if (e.getDragboard().hasFiles()) {
 			e.acceptTransferModes(TransferMode.ANY);
 		}
 	}
-
+	/**
+	 * dropFileToImage(DragEvent e)
+	*Arguments: DragEvent e
+	* The method handle a drop file 
+	* @author Tom Zarhin
+	*/
 	public void dropFileToImage(DragEvent e) {
 		fileFromClient = e.getDragboard().getFiles();
 		boolean wordFile = fileFromClient.get(0).getAbsolutePath().contains(".docx");
@@ -733,7 +815,12 @@ public class StudentControl extends UserControl implements Initializable {
 			fileName.setVisible(false);
 		}
 	}
-
+	/**
+	 * uploadFileToServer(ActionEvent e)
+	*Arguments: ActionEvent e
+	* The method catch a click on upload and sent the file to the server 
+	* @author Tom Zarhin
+	*/
 	@SuppressWarnings("resource")
 	public void uploadFileToServer(ActionEvent e) throws IOException {
 		MyFile file = null;
