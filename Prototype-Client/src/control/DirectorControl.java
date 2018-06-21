@@ -112,11 +112,13 @@ public class DirectorControl extends UserControl implements Initializable {
 	private Button btnRefresh;
 
 	private static String requestId;
+	@SuppressWarnings("rawtypes")
 	private XYChart.Series histogram = null;
 	private float[] sumGradeRanges;
 	private ArrayList<ExecutedExam> GradeList;
 	private ArrayList<Integer> studentGradeList;
 	private Boolean refreshPressed = false;
+	
 	// FXML System information
 	@FXML
 	private JFXButton btnQuestionStock;
