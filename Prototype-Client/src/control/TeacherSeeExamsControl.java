@@ -2,6 +2,7 @@ package control;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +50,9 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
     
     @FXML
     private TableColumn<ExecutedExam, Integer> numOfStudentDidntFinished;
+
+    @FXML
+    private TableColumn<ExecutedExam, String> date;
     
     
     public void initialize(URL url, ResourceBundle rb) {
@@ -89,6 +93,7 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 						ObservableList<ExecutedExam> observablelistExamsForTeacher = FXCollections
 								.observableArrayList((ArrayList<ExecutedExam>) msg[1]);
 						executedExamID.setCellValueFactory(new PropertyValueFactory<>("executedExamID"));
+						date.setCellValueFactory(new PropertyValueFactory<ExecutedExam, String>("date"));
 						executionTime.setCellValueFactory(new PropertyValueFactory<ExecutedExam, Time>("actuallySolutionTime"));
 						timeAllocated.setCellValueFactory(new PropertyValueFactory<>("SolutionTime"));
 						numOfStudentStarted.setCellValueFactory(new PropertyValueFactory<ExecutedExam,Integer>("numOfStudentStarted"));
