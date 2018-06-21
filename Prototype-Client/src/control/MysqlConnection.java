@@ -30,10 +30,16 @@ import javafx.scene.control.ListView;
 public class MysqlConnection {
 	static Connection conn;
 	private Statement stmt;
+	public String user;
+	private String dbUser;
+	private String dbPass;
 	ArrayList<TeachingProfessionals> subjectList = null;
 
 	/************************** Class Constructor ********************************/
-	public MysqlConnection() {
+	public MysqlConnection(String user,String password) {
+		
+		dbUser=user;
+		dbPass=password;
 		/*
 		 * used to enter server details Scanner sc = new Scanner(System.in);
 		 * System.out.println("enter your DB name: "); serverName = sc.nextLine();
@@ -49,7 +55,7 @@ public class MysqlConnection {
 		} catch (Exception ex) {
 			/* handle the error */}
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/shitot", "root", "1234");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/shitot", dbUser, dbPass);
 			System.out.println("SQL connection succeed");
 			// createTableQuestion();
 		} catch (SQLException ex) {/* handle any errors */

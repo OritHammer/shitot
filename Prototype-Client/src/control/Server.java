@@ -9,6 +9,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.URL;
+import java.net.UnknownHostException;
 
 // This file contains material supporting section 3.7 of the textbook:
 // "Object Oriented Software Engineering" and is issued under the open-source
@@ -17,6 +20,7 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ResourceBundle;
 
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -34,8 +38,13 @@ import entity.RequestForChangingTimeAllocated;
 import entity.StudentPerformExam;
 import entity.TeachingProfessionals;
 import entity.User;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFieldBuilder;
 import javafx.stage.Stage;
 import ocsf.server.*;
 
@@ -51,13 +60,26 @@ import ocsf.server.*;
  */
 public class Server extends AbstractServer {
 	// Class variables *************************************************
-
+	@FXML
+	private TextField serverId;
+	@FXML
+	private TextField dbName;
+	@FXML
+	private TextField dbPass;
+	@FXML
+	private Button connectBtn;
+	@FXML
+	private Label srv;
+	@FXML
+	private Label dbn;
+	@FXML
+	private Label dbp;
 	/**
 	 * The default port to listen on.
 	 */
 	private static int  msgCounter;
 	final public static int DEFAULT_PORT = 5555;
-	MysqlConnection con = new MysqlConnection();
+	MysqlConnection con;
 	// Question questionDetails = new Question();
 	Object[] serverMessage = new Object[6];
 	// Constructors ****************************************************
@@ -68,9 +90,9 @@ public class Server extends AbstractServer {
 	 * @param port
 	 *            The port number to connect on.
 	 */
-	public Server(int port) {
-		super(port);
-		msgCounter=0;
+	public Server(String user,String pass) {
+		super(DEFAULT_PORT);
+		con = new MysqlConnection(user,pass);
 	}
 
 	// Instance methods ************************************************
@@ -83,7 +105,9 @@ public class Server extends AbstractServer {
 	 * @param client
 	 *            The connection from which the message originated.
 	 */
-
+	public void initialize(URL url, ResourceBundle rb) {
+		
+	}
 	// change data to our form
 	public int parsingTheData(String Id) {
 		return Integer.parseInt(Id);
@@ -537,10 +561,10 @@ public class Server extends AbstractServer {
 			port = DEFAULT_PORT; // Set port to 5555
 		}
 
-		Server sv = new Server(port);
+	//	sServer sv = new Server(port);
 
 		try {
-			sv.listen(); // Start listening for connections
+		//	sv.listen(); // Start listening for connections
 		} catch (Exception ex) {
 			System.out.println("ERROR - Could not listen for clients!");
 		}

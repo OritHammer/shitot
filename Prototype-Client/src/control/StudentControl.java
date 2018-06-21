@@ -142,12 +142,14 @@ public class StudentControl extends UserControl implements Initializable {
 	@FXML
 	protected ComboBox<String> examCodeCombo;
 	/************************ Class Methods *************************/
-	public void connect(UserControl user) {
+	public Boolean connect(UserControl user) {
 		try {
 			chat = new ChatClient(ip, DEFAULT_PORT, user);
+			return true;
 		} catch (IOException exception) {
 			System.out.println("Error: Can't setup connection!" + " Terminating client.");
-			System.exit(1);
+			return false;
+			
 		}
 	}
 

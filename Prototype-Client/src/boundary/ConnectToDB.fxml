@@ -16,11 +16,6 @@
       <Button fx:id="connectBtn" layoutX="206.0" layoutY="330.0" mnemonicParsing="false" onAction="#connectPressed" prefHeight="25.0" prefWidth="141.0" text="Connect" />
       <TextField fx:id="dbName" layoutX="200.0" layoutY="136.0" />
       <TextField fx:id="dbPass" layoutX="200.0" layoutY="188.0" />
-      <TextField fx:id="serverId" layoutX="200.0" layoutY="53.0" text="server Id" />
-      <Label fx:id="srv" layoutX="102.0" layoutY="49.0" text="server ip:" textFill="#f5f2f2">
-         <font>
-            <Font size="23.0" />
-         </font></Label>
       <Label fx:id="dbn" layoutX="25.0" layoutY="132.0" text="Data Base name:" textFill="#fffefe">
          <font>
             <Font size="23.0" />
