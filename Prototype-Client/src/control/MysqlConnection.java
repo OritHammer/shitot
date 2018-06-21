@@ -586,7 +586,7 @@ public class MysqlConnection {
 							+ (String) executedExamId + "\" AND student_UserName = UserName AND isApproved='waiting'");
 			while (rs.next()) {
 				studentsInExam.add(new StudentPerformExam(rs.getString(1), rs.getString(2), rs.getString(3),
-						rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8),
+						rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7),null,
 						rs.getString(9), rs.getString(10)));
 			}
 			rs.close();
@@ -1179,8 +1179,8 @@ public class MysqlConnection {
 		return studentGradesList;
 	}
 	
-	public void confirmExecutedExam(Object studentInExam, Object flag) {
-		Boolean flagExamChecked = (Boolean)flag;
+	public void confirmExecutedExam(Object studentInExam, Object flagIfExamChecked) {
+		Boolean flagExamChecked = (Boolean)flagIfExamChecked;
 		String eid = ((StudentPerformExam) studentInExam).getExcecutedExamID(); 
 		try {
 			stmt = conn.createStatement();
@@ -1230,7 +1230,9 @@ public class MysqlConnection {
 				 "  where executedexam_id = \""+eid+"\" and sp.finished = 'yes'  ) "+
 				" where executedExamID = \""+eid+"\" ;");
 			} 
-			stmt.executeUpdate("UPDATE studentperformedexam " + "SET isApproved=\"approved\" , grade=\""+((StudentPerformExam) studentInExam).getGrade() + "\" WHERE student_UserName=\"" + ((StudentPerformExam) studentInExam).getUserName() + "\";");
+			stmt.executeUpdate("UPDATE studentperformedexam " + "SET isApproved=\"approved\" , grade=\""+((StudentPerformExam) studentInExam).getGrade() + "\" , "
+					+ "reasonForChangeGrade=\"" + ((StudentPerformExam) studentInExam).getReasonForChangeGrade() + "\" "
+					+ " WHERE student_UserName=\"" + ((StudentPerformExam) studentInExam).getUserName() + "\";");
 
 		} catch (SQLException e) {
 			e.printStackTrace();

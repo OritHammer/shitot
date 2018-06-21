@@ -66,6 +66,7 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	private TeacherControl tController;
 
+	
 	private ActionEvent temp;
 	private ObservableList<Exam> exams;
 	private Question questionSelected;
@@ -193,6 +194,10 @@ public class TeacherControl extends UserControl implements Initializable {
 	private TableColumn<StudentPerformExam, String> studentName;
 	@FXML
 	private TableColumn<StudentPerformExam, String> grade;
+	@FXML
+	private TableColumn<StudentPerformExam, String> status;
+	@FXML
+	private TableColumn<StudentPerformExam, String> reasonForChangeGrade;
 
 	@FXML
 	private ComboBox<String> subjectsComboBox;
@@ -207,6 +212,7 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	@FXML
 	private ListView<String> courseInCreateQuestion;
+	
 	
 	@FXML
 	private Button passQuestionL;
@@ -619,6 +625,8 @@ public class TeacherControl extends UserControl implements Initializable {
 						studentId.setCellValueFactory(new PropertyValueFactory<>("userId"));
 						studentName.setCellValueFactory(new PropertyValueFactory<>("userFullname"));
 						grade.setCellValueFactory(new PropertyValueFactory<>("grade"));
+						status.setCellValueFactory(new PropertyValueFactory<>("isApproved"));
+						reasonForChangeGrade.setCellValueFactory(new PropertyValueFactory<>("reasonForChangeGrade"));
 						studnetInExamTableView.setItems(observablelistOfStudentInExam);
 						break;
 					}
@@ -1519,7 +1527,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	/**
 	* The createExtendTimeRequest function creating an extend time request
 	* 
-	* @author Tom Zarinh
+	* @author Tom Zarhin
 	*/
 	public void createExtendTimeRequest(ActionEvent e) throws IOException {
 		if (timeForExamHours.getText().equals("") || timeForExamMinute.getText().equals("")) {
@@ -1555,7 +1563,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	/**
 	* The lockSubject function locking the subject function (subject combobox)
 	* 
-	* @author Tom Zarinh
+	* @author Tom Zarhin
 	*/
 	public void lockSubject(ActionEvent e) {
 		subjectsComboBox.setDisable(true);
@@ -1564,7 +1572,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	/**
 	* The lockExam function locking the exam
 	* 
-	* @author Tom Zarinh
+	* @author Tom Zarhin
 	*/
 	public void lockExam(ActionEvent e) throws IOException {
 		ExecutedExam executedexam = executedExamTableView.getSelectionModel().getSelectedItem();
@@ -1585,7 +1593,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	/**
 	* The setUnVisible function for showing to director information
 	* 
-	* @author Tom Zarinh
+	* @author Tom Zarhin
 	*/
 	void setUnVisible() {
 		try {
