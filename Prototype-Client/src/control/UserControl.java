@@ -109,9 +109,6 @@ public class UserControl implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("enter server ip");
-		// this.ip = "77.138.70.98";
-		//ip = "localhost";
-		// this.ip = sc.nextLine();
 		sc.close();
 		errorMsg.setVisible(false);
 		errorImg.setVisible(false);
