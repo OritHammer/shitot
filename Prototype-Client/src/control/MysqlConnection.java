@@ -1291,25 +1291,30 @@ public class MysqlConnection {
 
 	public ArrayList<ExecutedExam> getAllExecutedExams(Object teacherUserName) {
 		ArrayList<ExecutedExam> executedexams = new ArrayList<ExecutedExam>();
+		int[] gradesRang=new int[10];
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs;
 			if (teacherUserName == null) {
 				rs = stmt.executeQuery(
 						"select EE.executedExamID ,teacherExams.timeGiven , EE.actuallySolutionTime ,EE.numOfStudentStarted,"
-								+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished, EE.startDate  "
+								+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished, EE.startDate, EE.between0to9, EE.between10to19, "
+								+ "EE.between20to29, EE.between30to39, EE.between40to49, EE.between50to59, EE.between60to69, EE.between70to79, " 
+								+ "EE.between80to89, EE.between90to100 "
 								+ "FROM (select exams.e_id as eid , exams.solutionTime as timeGiven "
 								+ "from exams)  teacherExams , executedexam as EE "
 								+ "where teacherExams.eid = EE.exam_id;");
 			} else {
 				rs = stmt.executeQuery(
 						"select EE.executedExamID ,teacherExams.timeGiven , EE.actuallySolutionTime ,EE.numOfStudentStarted,"
-								+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished, EE.startDate "
+								+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished, EE.startDate, EE.between0to9, EE.between10to19, "
+								+ "EE.between20to29, EE.between30to39, EE.between40to49, EE.between50to59, EE.between60to69, EE.between70to79, "
+								+ "EE.between80to89, EE.between90to100 "
 								+ "FROM (select exams.e_id as eid , exams.solutionTime as timeGiven " + "from exams "
 								+ "where exams.tUserName = \"" + (String) teacherUserName
 								+ "\" )  teacherExams , executedexam as EE " + "where teacherExams.eid = EE.exam_id;");
 			}
-
+			
 			while (rs.next()) {
 				ExecutedExam executedexam = new ExecutedExam();
 				executedexam.setExecutedExamID(rs.getString(1));
@@ -1319,7 +1324,12 @@ public class MysqlConnection {
 				executedexam.setNumOfStudentFinished(Integer.parseInt(rs.getString(5)));
 				executedexam.setNumOfStudentDidntFinished(Integer.parseInt(rs.getString(6)));
 				executedexam.setDate(rs.getString(7));
+				for(int i=0;i<10;i++)
+				gradesRang[i]=rs.getInt(i+8);
+				executedexam.setGradeRang(gradesRang);
 				executedexams.add(executedexam);
+				
+				executedexam.setGradeRang(gradesRang);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

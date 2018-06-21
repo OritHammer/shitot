@@ -1662,4 +1662,15 @@ public class TeacherControl extends UserControl implements Initializable {
 
 		}
 	}
+	public void showStatistic(ActionEvent e) {
+		ExecutedExam executedexam = executedExamTableView.getSelectionModel().getSelectedItem();
+		if (executedexam == null) {
+			errorMsg("Please choose an exam");
+			return;
+		}
+		connect(this); // connecting to server
+		messageToServer[0] = "getReportByExecutedExamCode";
+		messageToServer[1] = executedexam.getExecutedExamID();
+		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
+	}
 }

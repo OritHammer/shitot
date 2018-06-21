@@ -7,15 +7,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="353.0" prefWidth="482.0" styleClass="card" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="441.0" prefWidth="591.0" styleClass="card" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="248.0" layoutY="56.0" text="Median" />
-      <Label layoutX="122.0" layoutY="56.0" text="Average" />
-      <TextField layoutX="299.0" layoutY="52.0" prefHeight="25.0" prefWidth="48.0" />
-      <TextField layoutX="176.0" layoutY="52.0" prefHeight="25.0" prefWidth="49.0" />
-      <ComboBox layoutX="309.0" layoutY="14.0" prefHeight="25.0" prefWidth="120.0" />
-      <Label layoutX="51.0" layoutY="18.0" prefHeight="17.0" prefWidth="141.0" text="Get  Statistic Report By" />
-      <BarChart layoutX="17.0" layoutY="85.0" prefHeight="269.0" prefWidth="427.0">
+      <Label layoutX="305.0" layoutY="56.0" text="Median" />
+      <Label layoutX="146.0" layoutY="56.0" text="Average" />
+      <TextField layoutX="367.0" layoutY="52.0" prefHeight="25.0" prefWidth="48.0" />
+      <TextField layoutX="209.0" layoutY="52.0" prefHeight="25.0" prefWidth="49.0" />
+      <BarChart layoutX="68.0" layoutY="96.0" prefHeight="289.0" prefWidth="455.0">
          <xAxis>
             <CategoryAxis prefHeight="13.0" prefWidth="369.0" side="BOTTOM" />
          </xAxis>
@@ -23,6 +21,6 @@
             <NumberAxis prefHeight="210.0" prefWidth="28.0" side="LEFT" />
          </yAxis>
       </BarChart>
-      <ComboBox layoutX="180.0" layoutY="14.0" prefHeight="25.0" prefWidth="120.0" />
+      <Button fx:id="backButton" layoutX="258.0" layoutY="385.0" mnemonicParsing="false" text="Back" />
    </children>
 </AnchorPane>

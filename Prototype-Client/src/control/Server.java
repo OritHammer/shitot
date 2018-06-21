@@ -459,7 +459,10 @@ public class Server extends AbstractServer {
 			this.sendToAllClients(serverMessage);
 			msgCounter++;
 			break;
-		}
+		} 
+		case "getReportByExecutedExamCode":
+			//ExecutedExam
+			break;
 		case "finishExam": {
 			String[] details=((String[]) message[1]);
 			con.finishExam(details, (HashMap<String, Integer>) message[2], (boolean) message[3]);
