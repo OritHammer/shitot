@@ -883,8 +883,7 @@ public class TeacherControl extends UserControl implements Initializable {
 				coursesSubString = course.split("-");
 				messageToServer[1] = subjectSubString[0].trim() + "" + coursesSubString[0].trim();
 				messageToServer[2] = getMyUser().getUsername();
-			} 
-			else {
+			} else {
 				messageToServer[1] = subjectSubString[0].trim();
 				messageToServer[2] = null;
 			}
@@ -1623,7 +1622,7 @@ public class TeacherControl extends UserControl implements Initializable {
 					break;
 				case "Update question":
 					coursesComboBox.setVisible(false);
-					examsTableView.setEditable(true);
+					questionTableView.setEditable(false);
 					btnDelete.setDisable(true);
 					break;
 				case "Update question in exam":
@@ -1631,10 +1630,9 @@ public class TeacherControl extends UserControl implements Initializable {
 					questionTableView.setDisable(true);
 					passQuestionR.setDisable(true);
 					passQuestionL.setDisable(true);
-					btnDelete.setDisable(true);
 					break;
 				}
-				default: pageLabel.setVisible(false);
+				pageLabel.setVisible(false);
 			}
 		} catch (NullPointerException e) {
 
