@@ -45,12 +45,16 @@ public class ManualExamControl extends AbstractClient implements Initializable {
 	public ManualExamControl(String host, int port) {
 		super(host, port);
 	}
-
 	public ManualExamControl() throws IOException {
 		super("localhost", 5555);
 		openConnection();
 	}
-
+	/**
+	 * handleMessageFromServer(Object msg) 
+	*  Arguments:Object message
+	*  The  method handle the message from server
+	* @author Aviv Mahulya
+	*/
 	@Override
 	protected void handleMessageFromServer(Object msg) {
 		final Object[] msgFromServer = (Object[]) msg;
@@ -61,7 +65,12 @@ public class ManualExamControl extends AbstractClient implements Initializable {
 		}
 		}
 	}
-
+	/**
+	 * addTimeToExam(Object[] message)
+	*  Arguments:Object[] message
+	*  The  method add time to the exam that the student perform right now
+	* @author Aviv Mahulya
+	*/
 	public void addTimeToExam(Object[] message) {
 		int timeToAdd;
 		Time timeFromMessage = (Time) message[2];
@@ -71,19 +80,23 @@ public class ManualExamControl extends AbstractClient implements Initializable {
 			remainTime += timeToAdd;
 		}
 	}
-
 	public void dragOver(DragEvent e) {
 		if (e.getDragboard().hasFiles()) {
 			e.acceptTransferModes(TransferMode.ANY);
 		}
 	}
-
+	/**
+	 * dropFileToImage(DragEvent e)
+	*  Arguments:DragEvent e
+	*  The  method handle the drop file into the area
+	* @author Tom Zarhin
+	*/
 	public void dropFileToImage(DragEvent e) {
 		fileFromClient = e.getDragboard().getFiles();
 		boolean wordFile = fileFromClient.get(0).getAbsolutePath().contains(".docx");
-		if (wordFile) {
-			wordLogo.setVisible(true);
-			uploadManualExamButton.setDisable(false);
+		if (wordFile) {//If its a word file
+			wordLogo.setVisible(true);//show the image
+			uploadManualExamButton.setDisable(false);//enable the button
 			fileName.setText(fileFromClient.get(0).getName());
 			fileName.setVisible(true);
 		} else {
@@ -92,7 +105,12 @@ public class ManualExamControl extends AbstractClient implements Initializable {
 			fileName.setVisible(false);
 		}
 	}
-
+	/**
+	 * uploadFileToServer(ActionEvent e)
+	*  Arguments:ActionEvent e
+	*  The  method upload the file to the server
+	* @author Tom Zarhin
+	*/
 	@SuppressWarnings("resource")
 	public void uploadFileToServer(ActionEvent e) {
 		MyFile file = new MyFile(fileFromClient.get(0).getName()+".docx");
@@ -103,27 +121,18 @@ public class ManualExamControl extends AbstractClient implements Initializable {
 			byte[] mybytearray = new byte[(int) newFile.length()];
 			FileInputStream fis = new FileInputStream(newFile);
 			BufferedInputStream bis = new BufferedInputStream(fis);
-
 			file.initArray(mybytearray.length);
 			file.setSize(mybytearray.length);
-
 			bis.read(file.getMybytearray(), 0, mybytearray.length);
-			
-			
-			
 			String details[] = new String[2];
 			details[0] = executedID;//the executed exam
 			details[1] = myUserName;//name of the student
 			messageToServer[0] = "saveExamOfStudent";
 			messageToServer[1] = details;
 			messageToServer[2] = file;
-			messageToServer[3] =e==null?false:true;
-			
-			
-			
-			
-			//messageToServer[1] = getMyUser().getuserName();
+			messageToServer[3] =e==null?false:true;/*If the student finish the exam or not*/
 			sendToServer(messageToServer);
+			/*Go to home screen*/
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/studentBoundary/NewDesignHomeScreenStudent.fxml"));
 			Scene scene = new Scene(loader.load());
