@@ -370,15 +370,8 @@ public class MysqlConnection {
 		ResultSet rs=null;
 		try {
 			stmt = conn.createStatement();
-			if(teacherUserName==null) {
-				stmt.executeQuery(
-						
-						"SELECT Q.question_id,Q.teacher_name,Q.question_text,Q.answer1,Q.answer2,Q.answer3,Q.answer4,"
-								+ "Q.Correct_answer FROM questions Q,teacherincourse TIC,questionincourse QIC WHERE Q.question_id like \""
-								+ subjectid + "%\" AND TIC.courseID like \"" + courseid + "%\""
-								+ " AND QIC.q_id=Q.question_id And QIC.course_id=\"" + courseid
-								+ "\" AND TIC.courseID=QIC.course_id;");
-			}
+			if(teacherUserName==null) 
+				stmt.executeQuery("SELECT * FROM shitot.questions;");
 			else{
 				rs = stmt.executeQuery(
 			
