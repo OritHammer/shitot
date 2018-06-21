@@ -33,16 +33,15 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class UserControl implements Initializable {
+	/*FXML Variables*/
 	@FXML
 	private TextField userName;
-	// *******homeScreenLabel***********//
 	@FXML
 	private Label userNameLabel;
 	@FXML
 	private Label authorLabel;
 	@FXML
 	private Label dateLabel;
-	// ******login screen**********//
 	@FXML
 	private PasswordField password;
 	@FXML
@@ -63,37 +62,37 @@ public class UserControl implements Initializable {
 	private Button closeButton;
 	@FXML
 	public Button logoutBtn;
-
+	protected ComboBox<String> subjectsComboBox;
+	protected ComboBox<String> coursesComboBox;
 	
 	// class variables
 	// date and author variables
 	private Calendar currentCalendar = Calendar.getInstance();
 	private Date currentTime = currentCalendar.getTime();
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
-	// FMXL variables
+
 	private Parent home_page_parent;
 	private Scene home_page_scene;
 	static Thread th;
 	protected String userNameFromDB;
 	protected ArrayList <Integer> messagesRead=new ArrayList<Integer>();
-	public void closeButtonAction(ActionEvent e) throws IOException {
-		Stage stage = (Stage) closeButton.getScene().getWindow();
-		stage.close();
-	}
+	
 
-	protected ComboBox<String> subjectsComboBox;
-	protected ComboBox<String> coursesComboBox;
-	protected ChatClient chat;
-
-	protected Object[] messageToServer = new Object[5];
+	protected Object[] messageToServer = new Object[5];//The message the user send to the message
 	/* connections variables */
 	static String ip;// server ip
 	 final UserControl uc=this;
 	final public static int DEFAULT_PORT = 5555;
-
+	protected ChatClient chat;
 	private static User myUser = new User();
 
 	/* this method connected between client and server */
+	/**
+	 * connect(UserControl user)
+	*Arguments:(UserControl user
+	* The  method connect the user as client to the server
+	* @author Aviv Mahulya
+	*/
 	public void connect(UserControl user) {
 		try {
 			chat = new ChatClient(ip, DEFAULT_PORT, user);
@@ -102,7 +101,12 @@ public class UserControl implements Initializable {
 			System.exit(1);
 		}
 	}
-
+	/**
+	 * initialize(URL arg0, ResourceBundle arg1)
+	*Arguments:URL arg0, ResourceBundle arg1
+	* The  method initialize the javaFX screens
+	* @author Aviv Mahulya
+	*/
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("enter server ip");
@@ -115,16 +119,21 @@ public class UserControl implements Initializable {
 		errorImg1.setVisible(false);
 		LoginBtn.setDefaultButton(true);
 	}
-
+	/**
+	 * checkMessage(Object message)
+	*Arguments:Object message
+	* The  method handle the message from server
+	* @author Aviv Mahulya
+	*/
 	public void checkMessage(Object message) {
 		try {
 			UserControl uc=this;
-			chat.closeConnection();// close the connection
+			chat.closeConnection();/*close the connection with the server*/
 			Object[] msg = (Object[]) message;
-			if(messagesRead.contains((int)msg[5])){
+			if(messagesRead.contains((int)msg[5])){/*Check if the user already read this message*/
 				return;
 			}
-			messagesRead.add((int)msg[5]);
+			messagesRead.add((int)msg[5]);/*Save the serial number of the message*/
 			User user = (User) msg[1];
 			if (user == null) {
 				Platform.runLater(() -> {
@@ -135,15 +144,13 @@ public class UserControl implements Initializable {
 
 				return;
 			}
-			if (msg[0].toString().equals("checkUserDetails")) {
+			if (msg[0].toString().equals("checkUserDetails")) {/*check if the message contains the user details*/
 				if (user != null) {
-					switch (user.getRole().toLowerCase()) {
+					switch (user.getRole().toLowerCase()) {/*check the role of the user and set the permisiion according to that*/
 					case "teacher": {
-						// Platform.exit();
-
 						System.out.println("teacher screen request");
 						Platform.runLater(new Runnable() {
-
+							/*open the home screen of teacher*/
 							@Override
 							public void run() {
 								try {
@@ -184,7 +191,7 @@ public class UserControl implements Initializable {
 					case "student": {
 						System.out.println("student screen request");
 						Platform.runLater(new Runnable() {
-
+							/*open the home screen of student*/
 							@Override
 							public void run() {
 								try {
@@ -223,7 +230,7 @@ public class UserControl implements Initializable {
 					case "director": {
 						System.out.println("director screen request");
 						Platform.runLater(new Runnable() {
-
+							/*open the home screen of director*/
 							@Override
 							public void run() {
 								try {
@@ -268,14 +275,21 @@ public class UserControl implements Initializable {
 		}
 	}
 
-	/* check if the details of user is in the system */
+	/**
+	* loginPressed(ActionEvent e)
+	* *Arguments:Object message
+	* The  method handle loginButtonPressed
+	* The method shall send the server message with the details of the user as written in the form
+	* @author Aviv Mahulya
+	*/
 	public void loginPressed(ActionEvent e) throws IOException {
 			connect(this);
-		if (userName.getText().equals("") || password.getText().equals("")) {
+		if (userName.getText().equals("") || password.getText().equals("")) {/*if one of the fields is empty*/
 			errorMsg.setVisible(true);
 			errorImg.setVisible(true);
 			errorImg1.setVisible(true);
 		} else {
+			/*send message to server*/
 			messageToServer[0] = "checkUserDetails";
 			messageToServer[1] = userName.getText();
 			messageToServer[2] = password.getText();
@@ -283,6 +297,14 @@ public class UserControl implements Initializable {
 			chat.handleMessageFromClientUI(messageToServer);
 		}
 	}
+	/**
+	 * logoutPressed(ActionEvent e)
+	 *  Arguments:ActionEvent e
+	* The  method handle logout Button Pressed
+	* The method shall send the server message with the details of the user.
+	* The method shall open the login screen
+	* @author Aviv Mahulya
+	*/
 	public void logoutPressed(ActionEvent e) throws IOException {
 		
 		connect(this);
@@ -293,7 +315,12 @@ public class UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer);
 		openScreen("boundary", "LoginGui");
 	}
-	
+	/**
+	 * setUserText(String userNameFromDB)
+	* Arguments:String userNameFromDB
+	* The method shall set the userName of USER to userNameFromDB
+	* @author Aviv Mahulya
+	*/
 	public void setUserText(String userNameFromDB) {/* set the user name text in the "hello user" text */
 		this.userNameFromDB = userNameFromDB;
 		getMyUser().setFullname(userNameFromDB);
@@ -303,14 +330,28 @@ public class UserControl implements Initializable {
 		}
 		userText.setText(userNameFromDB);
 	}
-
-	// functions relevant for all users
+	/**
+	 * closeButtonAction(ActionEvent e)
+	* Arguments:ActionEvent e
+	* The method handle the press on close button
+	* @author Aviv Mahulya
+	*/
+	public void closeButtonAction(ActionEvent e) throws IOException {
+		Stage stage = (Stage) closeButton.getScene().getWindow();
+		stage.close();
+	}
+	/**
+	* loadCourses(String typeList, String subject)
+	*  Arguments:String typeList, String subject
+	* The method send to the server request of all the courses of the relevant teacher and relevant subject
+	* @author Aviv Mahulya
+	*/
 	public void loadCourses(String typeList, String subject) throws IOException {
-		/* ask for the courses name */
+		
 		if (subject == null)
 			return;
 		String[] subjectSubString = subject.split("-");
-		connect(this); // connecting to server
+		connect(this); /*connecting to server*/
 		messageToServer[0] = "getCourses";
 		messageToServer[1] = subjectSubString[0].trim();
 		if (typeList == "All")
@@ -319,30 +360,40 @@ public class UserControl implements Initializable {
 			messageToServer[2] = getMyUser().getUsername();
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
-
+	/**
+	*  getMyUser()
+	*  Arguments:
+	* The method return the current User details(entity)
+	* @author Aviv Mahulya
+	*/
 	public static User getMyUser() {
 		return myUser;
 	}
-
+	/**
+	*  setMyUser()
+	*  Arguments:
+	* The method set the current User details(entity)
+	* @author Aviv Mahulya
+	*/
 	public static void setMyUser(User myUser) {
 		UserControl.myUser = myUser;
 	}
 
-	/**************** functions To Use Of all users *******************************/
+	/**************** methods To Use Of all users *******************************/
+	/**
+	*  openScreen(String boundary, String screen)
+	*  Arguments:String boundary, String screen
+	* the method open the 'screen' from the directory 'boundary'
+	* @author Aviv Mahulya
+	*/
 	public void openScreen(String boundary, String screen) {// open windows
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/" + boundary + "/" + screen + ".fxml"));
+			loader.setLocation(getClass().getResource("/" + boundary + "/" + screen + ".fxml"));/*Get the relevant FXL file*/
 			Scene scene = new Scene(loader.load());
-			scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());/*select the style sheet for the scene(css)*/
 			Stage stage = Main.getStage();
-			/*
-			 * if (screen.equals("ErrorMessage")) { ErrorControl dController =
-			 * loader.getController(); dController.setBackwardScreen(stage.getScene());//
-			 * send the name to the controller dController.setErrorMessage("ERROR");// send
-			 * a the error to the alert we made }
-			 */
-			 stage.setOnCloseRequest(event-> {
+			 stage.setOnCloseRequest(event-> {/*set listener for x button, perforn logout*/
 				 connect(this);
 					messageToServer[0] = "performLogout";
 					messageToServer[1] =getMyUser().getUsername();
@@ -360,11 +411,21 @@ public class UserControl implements Initializable {
 			System.out.println("Error in opening the page");
 		}
 	}
-
+	/**
+	* errorMsg(String message)
+	*  Arguments:String message
+	* the method open the error message with the string 'message'
+	* @author Aviv Mahulya
+	*/
 	public void errorMsg(String message) {// for error message
 		new Alert(Alert.AlertType.ERROR, message).showAndWait();
 	}
-
+	/**
+	* closeScreen(ActionEvent e)
+	*  Arguments:ActionEvent e
+	* the method close the source screen of e 
+	* @author Aviv Mahulya
+	*/
 	public void closeScreen(ActionEvent e) throws IOException, SQLException {
 		final Node source = (Node) e.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
