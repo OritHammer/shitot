@@ -13,6 +13,8 @@
           <TableColumn fx:id="studentId" prefWidth="106.0" text="Student id" />
           <TableColumn fx:id="studentName" prefWidth="111.0" text="Name" />
             <TableColumn fx:id="grade" prefWidth="111.0" text="Grade" />
+            <TableColumn fx:id="status" prefWidth="111.0" text="Status" />
+            <TableColumn fx:id="reasonForChangeGrade" prefWidth="147.0" text="Reason For Change" />
         </columns>
       </TableView>
       <ComboBox fx:id="executedExamsComboBox" layoutX="269.0" layoutY="236.0" onAction="#loadStudenstInExam" prefHeight="25.0" prefWidth="170.0" promptText="Choose executed exam" />

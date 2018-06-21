@@ -13,7 +13,7 @@ public class StudentPerformExam implements Serializable{
 	private Float grade ;
 	private String excecutedExamID = " ";
 	private String userName = " ";
-	private Boolean isApproved = false ;
+	private String isApproved = " " ;
 	private String reasonForChangeGrade = " ";
 	private String userId;
 	private String userFullname; 
@@ -29,9 +29,7 @@ public class StudentPerformExam implements Serializable{
 		grade = Float.parseFloat(gradeDB);
 		excecutedExamID = excecutedExamIDDB ; 
 		userName = userNameDB ; 
-		if (isApprovedDB == "approved") {
-			isApproved = true;
-		}
+		setIsApproved(isApprovedDB);
 		reasonForChangeGrade = reasonForChangeGradeDB ; 
 		setUserId(id);
 		setUserFullname(name);
@@ -85,13 +83,7 @@ public class StudentPerformExam implements Serializable{
 		this.userName = userName;
 	}
 
-	public Boolean getIsApproved() {
-		return isApproved;
-	}
 
-	public void setIsApproved(Boolean isApproved) {
-		this.isApproved = isApproved;
-	}
 
 	public String getReasonForChangeGrade() {
 		return reasonForChangeGrade;
@@ -115,6 +107,14 @@ public class StudentPerformExam implements Serializable{
 
 	public void setUserFullname(String userFullname) {
 		this.userFullname = userFullname;
+	}
+
+	public String getIsApproved() {
+		return isApproved;
+	}
+
+	public void setIsApproved(String isApproved) {
+		this.isApproved = isApproved;
 	}
 
 	

@@ -66,6 +66,7 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	private TeacherControl tController;
 
+	
 	private ActionEvent temp;
 	private ObservableList<Exam> exams;
 	private Question questionSelected;
@@ -193,6 +194,10 @@ public class TeacherControl extends UserControl implements Initializable {
 	private TableColumn<StudentPerformExam, String> studentName;
 	@FXML
 	private TableColumn<StudentPerformExam, String> grade;
+	@FXML
+	private TableColumn<StudentPerformExam, String> status;
+	@FXML
+	private TableColumn<StudentPerformExam, String> reasonForChangeGrade;
 
 	@FXML
 	private ComboBox<String> subjectsComboBox;
@@ -205,6 +210,10 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private ComboBox<String> executedExamsComboBox;
 
+	@FXML
+	private ListView<String> courseInCreateQuestion;
+	
+	
 	@FXML
 	private Button passQuestionL;
 	@FXML
@@ -267,7 +276,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/**
-	* The confirmExecutedExam confirm grade of executed exam of spesific student
+	* The closeChange exit from the changeGrade window.
 	*
 	* @author Or Edri
 	*/
@@ -277,17 +286,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		stage.close();
 	}
 
-	@FXML
-	private ListView<String> courseInCreateQuestion;
-
-	@FXML
-	private AnchorPane mainPane;
-
-	private void setOnTableView(StudentPerformExam student) {
-		studnetInExamTableView.getItems().remove(studnetInExamTableView.getSelectionModel().getSelectedIndex());
-		studnetInExamTableView.getItems().add(student);
-	}
-
+	/**
+	* The finalChange function is changing the grade of the student
+	*
+	* @author Or Edri
+	*/
 	public void finalChange(ActionEvent event) {
 		if (newGrade.getText().equals("") && reason.getText().equals(""))
 			new Alert(Alert.AlertType.ERROR, "You must enter values.").showAndWait();
@@ -314,15 +317,40 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 
 	}
-
+	
+	/**
+	* The setOnTableView function add student to studnetInExam TableView
+	*
+	* @author Tom Zarhin
+	*/
+	private void setOnTableView(StudentPerformExam student) {
+		studnetInExamTableView.getItems().remove(studnetInExamTableView.getSelectionModel().getSelectedIndex());
+		studnetInExamTableView.getItems().add(student);
+	}
+	
+	/**
+	* The getSelectedStudentPerformExam function get selected student from studnetInExam table view
+	*
+	* @author Tom Zarhin
+	*/
 	private StudentPerformExam getSelectedStudentPerformExam() {
 		return (studnetInExamTableView.getSelectionModel().getSelectedItem());
 	}
 	
+	/**
+	* The getStudentId function get the table column studentId from studnetInExam table view
+	*
+	* @author Tom Zarhin
+	*/
 	private TableColumn<StudentPerformExam, String> getStudentId() {
 		return (studentId);
 	}
-
+	
+	/**
+	* The changeGrade function open new window with option to change grade and write the reason
+	*
+	* @author Or Edri
+	*/
 	public void changeGrade(ActionEvent event) throws IOException {
 
 		studentInExamRow = studnetInExamTableView.getSelectionModel().getSelectedItem();
@@ -343,6 +371,12 @@ public class TeacherControl extends UserControl implements Initializable {
 		dialog.show();
 	}
 
+	
+	/**
+	* The setTeacherController function is for setting teacherControl
+	*
+	* @author Tom Zarhin
+	*/
 	private void setTeacherController(TeacherControl teacherControl) {
 		tController = teacherControl;
 
@@ -591,6 +625,8 @@ public class TeacherControl extends UserControl implements Initializable {
 						studentId.setCellValueFactory(new PropertyValueFactory<>("userId"));
 						studentName.setCellValueFactory(new PropertyValueFactory<>("userFullname"));
 						grade.setCellValueFactory(new PropertyValueFactory<>("grade"));
+						status.setCellValueFactory(new PropertyValueFactory<>("isApproved"));
+						reasonForChangeGrade.setCellValueFactory(new PropertyValueFactory<>("reasonForChangeGrade"));
 						studnetInExamTableView.setItems(observablelistOfStudentInExam);
 						break;
 					}
@@ -1491,7 +1527,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	/**
 	* The createExtendTimeRequest function creating an extend time request
 	* 
-	* @author Tom Zarinh
+	* @author Tom Zarhin
 	*/
 	public void createExtendTimeRequest(ActionEvent e) throws IOException {
 		if (timeForExamHours.getText().equals("") || timeForExamMinute.getText().equals("")) {
@@ -1527,7 +1563,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	/**
 	* The lockSubject function locking the subject function (subject combobox)
 	* 
-	* @author Tom Zarinh
+	* @author Tom Zarhin
 	*/
 	public void lockSubject(ActionEvent e) {
 		subjectsComboBox.setDisable(true);
@@ -1536,7 +1572,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	/**
 	* The lockExam function locking the exam
 	* 
-	* @author Tom Zarinh
+	* @author Tom Zarhin
 	*/
 	public void lockExam(ActionEvent e) throws IOException {
 		ExecutedExam executedexam = executedExamTableView.getSelectionModel().getSelectedItem();
@@ -1557,7 +1593,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	/**
 	* The setUnVisible function for showing to director information
 	* 
-	* @author Tom Zarinh
+	* @author Tom Zarhin
 	*/
 	void setUnVisible() {
 		try {
