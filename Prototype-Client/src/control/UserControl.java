@@ -93,26 +93,22 @@ public class UserControl implements Initializable {
 	* The  method connect the user as client to the server
 	* @author Aviv Mahulya
 	*/
-	public void connect(UserControl user) {
+	public Boolean connect(UserControl user) {
 		try {
 			chat = new ChatClient(ip, DEFAULT_PORT, user);
+			return true;
 		} catch (IOException exception) {
 			System.out.println("Error: Can't setup connection!" + " Terminating client.");
-			System.exit(1);
+			return false;
+			//System.exit(1);
 		}
 	}
-	/**
-	 * initialize(URL arg0, ResourceBundle arg1)
-	*Arguments:URL arg0, ResourceBundle arg1
-	* The  method initialize the javaFX screens
-	* @author Aviv Mahulya
-	*/
+	public void setServerIp(String ip) {
+		this.ip=ip;
+		}
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("enter server ip");
-		// this.ip = "77.138.70.98";
-		ip = "localhost";
-		// this.ip = sc.nextLine();
 		sc.close();
 		errorMsg.setVisible(false);
 		errorImg.setVisible(false);

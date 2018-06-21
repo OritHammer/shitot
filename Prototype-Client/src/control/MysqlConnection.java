@@ -364,7 +364,7 @@ public class MysqlConnection {
 		// Statement stmt;
 		ArrayList<Question> questionList = new ArrayList<Question>();
 		String userName = null;
-		String courseid=null;
+		String courseid = null;
 		if (teacherUserName != null) {
 			userName = (String) teacherUserName;
 			courseid = ((String) subject).substring(2, 4);
@@ -375,7 +375,7 @@ public class MysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			if (teacherUserName == null)
-				rs=stmt.executeQuery("SELECT * FROM shitot.questions where question_id like '" + subjectid + "%';");
+				rs = stmt.executeQuery("SELECT * FROM shitot.questions where question_id like '" + subjectid + "%';");
 			else {
 				rs = stmt.executeQuery(
 
@@ -1134,20 +1134,17 @@ public class MysqlConnection {
 			stmt = conn.createStatement();
 			switch ((String) reportBy) {
 			case "getReportByTeacher":
-				rs = stmt.executeQuery(
-						"SELECT average,median FROM shitot.executedexam where teacherName='"
-								+ id_userName + "'AND status='checked';");
+				rs = stmt.executeQuery("SELECT average,median FROM shitot.executedexam where teacherName='"
+						+ id_userName + "'AND status='checked';");
 				break;
 			case "getReportByCourse":
-				rs = stmt.executeQuery(
-						"SELECT average,median FROM shitot.executedexam where exam_id like \"__"
-								+ id_userName + "%\" AND status='checked';");
+				rs = stmt.executeQuery("SELECT average,median FROM shitot.executedexam where exam_id like \"__"
+						+ id_userName + "%\" AND status='checked';");
 				break;
 			}
 			while (rs.next()) {
-				executedExamList.add(new ExecutedExam(null, 0, 0, 0,
-						Float.parseFloat(rs.getString(1)),Float.parseFloat(rs.getString(2)),null,null,
-						0,0,0,0,0,0,null,0,0,0,0, null, null));
+				executedExamList.add(new ExecutedExam(null, 0, 0, 0, Float.parseFloat(rs.getString(1)),
+						Float.parseFloat(rs.getString(2)), null, null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, null, null));
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -1291,7 +1288,7 @@ public class MysqlConnection {
 
 	public ArrayList<ExecutedExam> getAllExecutedExams(Object teacherUserName) {
 		ArrayList<ExecutedExam> executedexams = new ArrayList<ExecutedExam>();
-		int[] gradesRang=new int[10];
+		int[] gradesRang = new int[10];
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs;
@@ -1299,7 +1296,7 @@ public class MysqlConnection {
 				rs = stmt.executeQuery(
 						"select EE.executedExamID ,teacherExams.timeGiven , EE.actuallySolutionTime ,EE.numOfStudentStarted,"
 								+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished, EE.startDate, EE.between0to9, EE.between10to19, "
-								+ "EE.between20to29, EE.between30to39, EE.between40to49, EE.between50to59, EE.between60to69, EE.between70to79, " 
+								+ "EE.between20to29, EE.between30to39, EE.between40to49, EE.between50to59, EE.between60to69, EE.between70to79, "
 								+ "EE.between80to89, EE.between90to100 "
 								+ "FROM (select exams.e_id as eid , exams.solutionTime as timeGiven "
 								+ "from exams)  teacherExams , executedexam as EE "
@@ -1314,7 +1311,7 @@ public class MysqlConnection {
 								+ "where exams.tUserName = \"" + (String) teacherUserName
 								+ "\" )  teacherExams , executedexam as EE " + "where teacherExams.eid = EE.exam_id;");
 			}
-			
+
 			while (rs.next()) {
 				ExecutedExam executedexam = new ExecutedExam();
 				executedexam.setExecutedExamID(rs.getString(1));
@@ -1324,11 +1321,11 @@ public class MysqlConnection {
 				executedexam.setNumOfStudentFinished(Integer.parseInt(rs.getString(5)));
 				executedexam.setNumOfStudentDidntFinished(Integer.parseInt(rs.getString(6)));
 				executedexam.setDate(rs.getString(7));
-				for(int i=0;i<10;i++)
-				gradesRang[i]=rs.getInt(i+8);
+				for (int i = 0; i < 10; i++)
+					gradesRang[i] = rs.getInt(i + 8);
 				executedexam.setGradeRang(gradesRang);
 				executedexams.add(executedexam);
-				
+
 				executedexam.setGradeRang(gradesRang);
 			}
 		} catch (SQLException e) {
