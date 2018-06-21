@@ -344,7 +344,7 @@ public class UserControl implements Initializable {
 	* loadCourses(String typeList, String subject)
 	*  Arguments:String typeList, String subject
 	* The method send to the server request of all the courses of the relevant teacher and relevant subject
-	* @author Aviv Mahulya
+	* @author Orit Hammer
 	*/
 	public void loadCourses(String typeList, String subject) throws IOException {
 		
@@ -384,7 +384,7 @@ public class UserControl implements Initializable {
 	*  openScreen(String boundary, String screen)
 	*  Arguments:String boundary, String screen
 	* the method open the 'screen' from the directory 'boundary'
-	* @author Aviv Mahulya
+	* @author Or Edri
 	*/
 	public void openScreen(String boundary, String screen) {// open windows
 		try {
@@ -424,7 +424,7 @@ public class UserControl implements Initializable {
 	* closeScreen(ActionEvent e)
 	*  Arguments:ActionEvent e
 	* the method close the source screen of e 
-	* @author Aviv Mahulya
+	* @author Tom Zarhin
 	*/
 	public void closeScreen(ActionEvent e) throws IOException, SQLException {
 		final Node source = (Node) e.getSource();
