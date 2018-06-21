@@ -477,7 +477,7 @@ public class Server extends AbstractServer {
 		
 		case "getAllExecutedExams": {
 			ArrayList<ExecutedExam> executedexams;
-			executedexams = con.getAllExecutedExams((String)message[1]);
+			executedexams = con.getAllExecutedExams(message[1]);
 			serverMessage[0] = "getAllExecutedExams";
 			serverMessage[1] = executedexams;
 			this.sendToAllClients(serverMessage);

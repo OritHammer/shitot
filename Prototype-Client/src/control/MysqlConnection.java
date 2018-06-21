@@ -1304,7 +1304,7 @@ public class MysqlConnection {
 
 	}
 
-	public ArrayList<ExecutedExam> getAllExecutedExams(String teacherUserName) {
+	public ArrayList<ExecutedExam> getAllExecutedExams(Object teacherUserName) {
 		ArrayList<ExecutedExam> executedexams = new ArrayList<ExecutedExam>();
 		try {
 			stmt = conn.createStatement();
@@ -1320,7 +1320,7 @@ public class MysqlConnection {
 						+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished "
 						+ "FROM (select exams.e_id as eid , exams.solutionTime as timeGiven "
 								+ "from exams "
-								+ "where exams.tUserName = \"" + teacherUserName + "\" )  teacherExams , executedexam as EE "
+								+ "where exams.tUserName = \"" + (String)teacherUserName + "\" )  teacherExams , executedexam as EE "
 						+ "where teacherExams.eid = EE.exam_id;");
 			}
 
