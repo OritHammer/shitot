@@ -358,8 +358,8 @@ public class TeacherControl extends UserControl implements Initializable {
 
 					case "showingCopy": {
 					    MyGradesControl scontrol = new MyGradesControl();
-					    MyGradesControl.justFlag = true;
-					    MyGradesControl.showingCopy((ArrayList<Question>) msg[1], (HashMap<String, Integer>) msg[2]);
+						scontrol.justFlag = true;
+						scontrol.showingCopy((ArrayList<Question>) msg[1], (HashMap<String, Integer>) msg[2]);
 						break;
 					}
 
