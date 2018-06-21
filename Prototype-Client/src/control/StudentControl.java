@@ -564,7 +564,7 @@ public class StudentControl extends UserControl implements Initializable {
 			String stdSelected;
 			if (!examAnswers.isEmpty())
 				stdSelected = examAnswers.get(questioninexecutedexam.get(index).getId()).toString();
-			else if(examAnswers.size()<questioninexecutedexam.size())
+			else if(examAnswers.size()<questioninexecutedexam.size()&&examAnswers.size()>0)
 				stdSelected = "0";
 			else stdSelected = "-1" ;
 			try {
