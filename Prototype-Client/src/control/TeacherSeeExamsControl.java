@@ -52,11 +52,16 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
     
     
     public void initialize(URL url, ResourceBundle rb) {
+    	if(getMyUser().getRole().equals("director")) {
+			messageToServer[1] = null;
+    	}
+    	else {
+			messageToServer[1] = getMyUser().getUsername();
+    	}
 		messageToServer[4] = getMyUser().getUsername();
 		setUnVisible();
 			connect(this); // connecting to server
 			messageToServer[0] = "getAllExecutedExams";
-			messageToServer[1] = getMyUser().getUsername();
 			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 		}
     

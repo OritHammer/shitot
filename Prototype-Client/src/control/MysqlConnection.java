@@ -1304,16 +1304,26 @@ public class MysqlConnection {
 
 	}
 
-	public ArrayList<ExecutedExam> getAllExecutedExams(String string) {
+	public ArrayList<ExecutedExam> getAllExecutedExams(String teacherUserName) {
 		ArrayList<ExecutedExam> executedexams = new ArrayList<ExecutedExam>();
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("select EE.executedExamID ,teacherExams.timeGiven , EE.actuallySolutionTime ,EE.numOfStudentStarted,"
-							+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished "
-							+ "FROM (select exams.e_id as eid , exams.solutionTime as timeGiven "
-									+ "from exams "
-									+ "where exams.tUserName = \"" + string + "\" )  teacherExams , executedexam as EE "
-							+ "where teacherExams.eid = EE.exam_id;");
+			ResultSet rs;
+			if(teacherUserName==null) {
+				 rs = stmt.executeQuery("select EE.executedExamID ,teacherExams.timeGiven , EE.actuallySolutionTime ,EE.numOfStudentStarted,"
+						+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished "
+						+ "FROM (select exams.e_id as eid , exams.solutionTime as timeGiven "
+								+ "from exams)  teacherExams , executedexam as EE "
+						+ "where teacherExams.eid = EE.exam_id;");
+			}else {
+				 rs = stmt.executeQuery("select EE.executedExamID ,teacherExams.timeGiven , EE.actuallySolutionTime ,EE.numOfStudentStarted,"
+						+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished "
+						+ "FROM (select exams.e_id as eid , exams.solutionTime as timeGiven "
+								+ "from exams "
+								+ "where exams.tUserName = \"" + teacherUserName + "\" )  teacherExams , executedexam as EE "
+						+ "where teacherExams.eid = EE.exam_id;");
+			}
+
 			while(rs.next())
 			{
 				ExecutedExam executedexam = new ExecutedExam();
