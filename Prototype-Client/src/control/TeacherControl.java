@@ -206,6 +206,9 @@ public class TeacherControl extends UserControl implements Initializable {
 	private ComboBox<String> executedExamsComboBox;
 
 	@FXML
+	private ListView<String> courseInCreateQuestion;
+	
+	@FXML
 	private Button passQuestionL;
 	@FXML
 	private Button passQuestionR;
@@ -267,7 +270,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/**
-	* The confirmExecutedExam confirm grade of executed exam of spesific student
+	* The closeChange exit from the changeGrade window.
 	*
 	* @author Or Edri
 	*/
@@ -277,17 +280,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		stage.close();
 	}
 
-	@FXML
-	private ListView<String> courseInCreateQuestion;
-
-	@FXML
-	private AnchorPane mainPane;
-
-	private void setOnTableView(StudentPerformExam student) {
-		studnetInExamTableView.getItems().remove(studnetInExamTableView.getSelectionModel().getSelectedIndex());
-		studnetInExamTableView.getItems().add(student);
-	}
-
+	/**
+	* The finalChange function is changing the grade of the student
+	*
+	* @author Or Edri
+	*/
 	public void finalChange(ActionEvent event) {
 		if (newGrade.getText().equals("") && reason.getText().equals(""))
 			new Alert(Alert.AlertType.ERROR, "You must enter values.").showAndWait();
@@ -314,15 +311,40 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 
 	}
-
+	
+	/**
+	* The setOnTableView function add student to studnetInExam TableView
+	*
+	* @author Tom Zarhin
+	*/
+	private void setOnTableView(StudentPerformExam student) {
+		studnetInExamTableView.getItems().remove(studnetInExamTableView.getSelectionModel().getSelectedIndex());
+		studnetInExamTableView.getItems().add(student);
+	}
+	
+	/**
+	* The getSelectedStudentPerformExam function get selected student from studnetInExam table view
+	*
+	* @author Tom Zarhin
+	*/
 	private StudentPerformExam getSelectedStudentPerformExam() {
 		return (studnetInExamTableView.getSelectionModel().getSelectedItem());
 	}
 	
+	/**
+	* The getStudentId function get the table column studentId from studnetInExam table view
+	*
+	* @author Tom Zarhin
+	*/
 	private TableColumn<StudentPerformExam, String> getStudentId() {
 		return (studentId);
 	}
-
+	
+	/**
+	* The changeGrade function open new window with option to change grade and write the reason
+	*
+	* @author Or Edri
+	*/
 	public void changeGrade(ActionEvent event) throws IOException {
 
 		studentInExamRow = studnetInExamTableView.getSelectionModel().getSelectedItem();
@@ -343,6 +365,12 @@ public class TeacherControl extends UserControl implements Initializable {
 		dialog.show();
 	}
 
+	
+	/**
+	* The setTeacherController function is for setting teacherControl
+	*
+	* @author Tom Zarhin
+	*/
 	private void setTeacherController(TeacherControl teacherControl) {
 		tController = teacherControl;
 
