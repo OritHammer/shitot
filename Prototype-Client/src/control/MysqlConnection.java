@@ -1304,15 +1304,15 @@ public class MysqlConnection {
 
 	}
 
-	public ArrayList<ExecutedExam> getAllExecutedExams(String string) {
+	public ArrayList<ExecutedExam> getAllExecutedExams(String teacherUserName) {
 		ArrayList<ExecutedExam> executedexams = new ArrayList<ExecutedExam>();
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("select EE.executedExamID ,teacherExams.timeGiven , EE.actuallySolutionTime ,EE.numOfStudentStarted,"
-							+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished "
+							+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished, EE.startDate "
 							+ "FROM (select exams.e_id as eid , exams.solutionTime as timeGiven "
 									+ "from exams "
-									+ "where exams.tUserName = \"" + string + "\" )  teacherExams , executedexam as EE "
+									+ "where exams.tUserName = \"" + teacherUserName + "\" )  teacherExams , executedexam as EE "
 							+ "where teacherExams.eid = EE.exam_id;");
 			while(rs.next())
 			{
@@ -1323,6 +1323,7 @@ public class MysqlConnection {
 				executedexam.setNumOfStudentStarted(Integer.parseInt(rs.getString(4)));
 				executedexam.setNumOfStudentFinished(Integer.parseInt(rs.getString(5)));
 				executedexam.setNumOfStudentDidntFinished(Integer.parseInt(rs.getString(6)));
+				executedexam.setDate(rs.getString(7));
 				executedexams.add(executedexam);
 			}
 		} catch (SQLException e) {
@@ -1331,5 +1332,4 @@ public class MysqlConnection {
 		}
 		return executedexams;
 	}
-
 }
