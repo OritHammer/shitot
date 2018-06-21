@@ -475,6 +475,15 @@ public class Server extends AbstractServer {
 			break;
 		}
 		
+		case "getAllExecutedExams": {
+			ArrayList<ExecutedExam> executedexams;
+			executedexams = con.getAllExecutedExams((String)message[1]);
+			serverMessage[0] = "getAllExecutedExams";
+			serverMessage[1] = executedexams;
+			this.sendToAllClients(serverMessage);
+			break;
+		}
+		
 		/*
 		 * case "getExecutedExamCodeList" :{// for using on confirm request of adding
 		 * time to exam con.getRequestsList(message[1]); break; }

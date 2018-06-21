@@ -678,6 +678,9 @@ public class TeacherControl extends UserControl implements Initializable {
 	public void openExtendExamTimeScreen(ActionEvent e) throws IOException {
 		openScreen(e, "ExtendExamTime");
 	}
+	public void openTeacherSeeExamScreen(ActionEvent e) throws IOException {
+		openScreen(e, "TeacherSeeExams");
+	}
 
 	/* open the screen UpdateQuestion */
 	public void openUpdateQuestionScreen(ActionEvent e) throws IOException {

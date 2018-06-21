@@ -689,6 +689,7 @@
 }
 
 .table-cell {
+	
 	-fx-border-color: transparent; /* Vertical Lines*/
 	-fx-border-width: 1;
 }
