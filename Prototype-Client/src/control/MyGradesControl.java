@@ -40,16 +40,27 @@ public class MyGradesControl extends StudentControl implements Initializable {
 		@FXML
 		private TableColumn<ExamDetailsMessage, String> executedIDCol;
 
-
+		/**
+		 * initialize(URL arg0, ResourceBundle arg1)
+		*Arguments:URL arg0, ResourceBundle arg1
+		* The  method initialize the javaFX screens
+		* @author Aviv Mahulya
+		*/
 	public void initialize(URL url, ResourceBundle rb) {
 		connect(this);
 		messageToServer[0] = "getExamsByUserName";
-		messageToServer[1] = getMyUser().getUsername();
+		messageToServer[1] = getMyUser().getUsername();/*send the user name of the current user*/
 		messageToServer[2] = null;
 		chat.handleMessageFromClientUI(messageToServer);// send the message to server
 	}
+	/**
+	 * showingCopy(ArrayList<Question> ques, HashMap<String, Integer> ans)
+	*Arguments:ArrayList<Question> ques, HashMap<String, Integer> ans
+	* The  method shows copy of exam that student performed
+	* @author Orit Aharon
+	*/
 	public void showingCopy(ArrayList<Question> ques, HashMap<String, Integer> ans) {
-		if (ans.isEmpty())
+		if (ans.isEmpty())/*if the exam is empty*/
 		{
 			Alert emptyStdExam = new Alert(AlertType.INFORMATION, "Your exam has no answers please pay attention"
 							,ButtonType.OK);
@@ -82,6 +93,12 @@ public class MyGradesControl extends StudentControl implements Initializable {
 			}
 		});
 	}
+	/**
+	 * checkMessage(Object message)
+	*Arguments:Object message
+	* The  method handle the message from server
+	* @author Aviv Mahulya
+	*/
 	public void checkMessage(Object message) {
 		try {
 			chat.closeConnection();
@@ -95,7 +112,7 @@ public class MyGradesControl extends StudentControl implements Initializable {
 				showGradesOnTable((ArrayList<ExamDetailsMessage>) msgFromServer[1]);
 				break;
 			}
-			case "showingCopy": {
+			case "showingCopy": {/*get copy of exam and display it*/
 				showingCopy((ArrayList<Question>) msgFromServer[1],
 						(HashMap<String, Integer>) msgFromServer[2]);
 				break;
@@ -103,6 +120,12 @@ public class MyGradesControl extends StudentControl implements Initializable {
 			}
 		});
 	}
+	/**
+	 * showGradesOnTable(ArrayList<ExamDetailsMessage> detailsFromS)
+	*Arguments:ArrayList<ExamDetailsMessage> detailsFromS
+	* The  method shows the grades of students, by getting all his exams
+	* @author Aviv Mahulya
+	*/
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void showGradesOnTable(ArrayList<ExamDetailsMessage> detailsFromS) {
 
@@ -128,17 +151,14 @@ public class MyGradesControl extends StudentControl implements Initializable {
 		 * observeable list into the relevante combobox .
 		 */
 	}
-	/*********************
-	 * Student Order Copy
-	 * 
-	 * @throws IOException
-	 *************************/
+	/**
+	 * rderExamPressed(ActionEvent e)
+	*  ActionEvent e
+	*  send request for the questions and answers of specific exam(of user)
+	* @author Aviv Mahulya
+	*/
 	public void orderExamPressed(ActionEvent e) {
-		/*
-		 * messageToServer[0] = "getExamsCopyByUserName"; messageToServer[1] =
-		 * examCodeCombo.getValue(); messageToServer[2] = null;
-		 * chat.handleMessageFromClientUI(messageToServer);// send the message to server
-		 */
+		
 		if (examCodeCombo.getValue() == null) {
 			errorMsg("Please select exam first");
 			return;
