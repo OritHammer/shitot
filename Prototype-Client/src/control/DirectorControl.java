@@ -585,7 +585,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	}
 
 	public void getStudentsCopiesStock(ActionEvent e) {
-		StudentControl sController = new StudentControl();
-		sController.myGradesPressed(null);
+		TeacherControl sController = new TeacherControl();
+		//sController.myGradesPressed(null);
 	}
 }
