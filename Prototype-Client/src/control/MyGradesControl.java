@@ -52,7 +52,7 @@ public class MyGradesControl extends StudentControl implements Initializable {
 		if (ans.isEmpty())
 		{
 			Alert emptyStdExam = new Alert(AlertType.INFORMATION, "Your exam has no answers please pay attention"
-							,ButtonType.NO);
+							,ButtonType.OK);
 			emptyStdExam.showAndWait() ; 
 		}
 		examAnswers = ans;
