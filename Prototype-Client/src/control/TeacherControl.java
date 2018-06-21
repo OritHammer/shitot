@@ -1631,9 +1631,10 @@ public class TeacherControl extends UserControl implements Initializable {
 					questionTableView.setDisable(true);
 					passQuestionR.setDisable(true);
 					passQuestionL.setDisable(true);
+					btnDelete.setDisable(true);
 					break;
 				}
-				pageLabel.setVisible(false);
+				default: pageLabel.setVisible(false);
 			}
 		} catch (NullPointerException e) {
 
