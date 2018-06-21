@@ -119,9 +119,10 @@ public class DirectorControl extends UserControl implements Initializable {
 	private Boolean refreshPressed = false;
 	// FXML System information
 	@FXML
-    private JFXButton btnQuestionStock;
-    @FXML
-    private JFXButton btnExamStock;
+	private JFXButton btnQuestionStock;
+	@FXML
+	private JFXButton btnExamStock;
+
 	/******************************************************************
 	 * homePageButtons
 	 **********************************************************/
@@ -167,7 +168,8 @@ public class DirectorControl extends UserControl implements Initializable {
 			sumGradeRanges[i] = 0;
 		}
 	}
-	//open window of buttons in home page
+
+	// open window of buttons in home page
 	public void openTimeRequestTable(ActionEvent e) {
 		Platform.runLater(() -> {
 			final Node source = (Node) e.getSource();
@@ -201,10 +203,10 @@ public class DirectorControl extends UserControl implements Initializable {
 	public void checkMessage(Object message) {
 		try {
 			final Object[] msg = (Object[]) message;
-			if(messagesRead.contains((int)msg[5])){
+			if (messagesRead.contains((int) msg[5])) {
 				return;
 			}
-			messagesRead.add((int)msg[5]);
+			messagesRead.add((int) msg[5]);
 			if (msg[4].equals(getMyUser().getUsername())) {
 				chat.closeConnection();// close the connection
 				/*
@@ -278,7 +280,7 @@ public class DirectorControl extends UserControl implements Initializable {
 								studentGradeList.clear();
 							studentGradeList = (ArrayList<Integer>) msg[1];
 							Collections.sort(studentGradeList);
-							
+
 							float sum = 0;
 							for (Integer grade : studentGradeList) {
 								sum += grade;
@@ -321,7 +323,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		} catch (NullPointerException e) {
 			errorMsg("There is no request to confirm .");
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		} /*
 			 * catch (ArrayIndexOutOfBoundsException e) { errorMsg("There is no exams"); }
@@ -353,7 +355,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			StatusColumn.setCellValueFactory(new PropertyValueFactory<>("menagerApprove"));
 			timeAddedColumn.setCellValueFactory(new PropertyValueFactory<>("timeAdded"));
 			// requestsTable.getColumns().clear();
-			requestsTable.getColumns().addAll(examIDColumn, teacherNameColumn, timeAddedColumn,StatusColumn);
+			requestsTable.getColumns().addAll(examIDColumn, teacherNameColumn, timeAddedColumn, StatusColumn);
 		});
 	}
 
@@ -367,7 +369,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			txtFATRrequestId.setText(request.getRequestID());
 			txtStatusInApproveReq.setText(request.getMenagerApprove());
 			txtFATRexecutedExamId.setText(request.getIDexecutedExam());
-			if(!request.getMenagerApprove().equals("waiting")) {
+			if (!request.getMenagerApprove().equals("waiting")) {
 				btnATRApprove.setDisable(true);
 				btnATRreject.setDisable(true);
 			}
@@ -432,6 +434,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			chat.handleMessageFromClientUI(messageToServer);
 		}
 	}
+
 	@FXML
 	public void loadCourses(ActionEvent e) throws IOException {// load list of courses to combobox
 		String subject = subjectsComboBox.getValue(); // get the subject code
@@ -442,6 +445,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			loadCourses("All", subject);
 		}
 	}
+
 	@FXML
 	public void getReportUser(ActionEvent e) {// load Statistic details of user on window
 		String userName = chooseUserComboBox.getValue();
@@ -457,6 +461,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			chat.handleMessageFromClientUI(messageToServer);
 		}
 	}
+
 	@FXML
 	public void getReportByCourseCode(ActionEvent e) {// load Statistic details of course on window
 		String courseName = coursesComboBox.getValue();
@@ -478,11 +483,11 @@ public class DirectorControl extends UserControl implements Initializable {
 
 	public void ShowHistogramInBarChart() throws NullPointerException {
 		// set values in the bar chart
-		for (int i = 0,j=9; i < sumGradeRanges.length*10-10; i += 10,j+=10) {
-			histogram.getData().add(new XYChart.Data(i + "-" +j, sumGradeRanges[i/10]));
+		for (int i = 0, j = 9; i < sumGradeRanges.length * 10 - 10; i += 10, j += 10) {
+			histogram.getData().add(new XYChart.Data(i + "-" + j, sumGradeRanges[i / 10]));
 		}
 		histogram.getData().add(new XYChart.Data("90-100", sumGradeRanges[9]));
-		/* 
+		/*
 		 * histogram.getData().add(new XYChart.Data("0-54", sumGradeRanges[0]));
 		 * histogram.getData().add(new XYChart.Data("55-65", sumGradeRanges[1]));
 		 * histogram.getData().add(new XYChart.Data("65-75", sumGradeRanges[2]));
@@ -521,12 +526,14 @@ public class DirectorControl extends UserControl implements Initializable {
 		initWindow();
 		refreshPressed = false;
 	}
+
 	@FXML
 	public void refreshPressListener(ActionEvent e) {
 
 		refreshPressed = true;
 		refreshPress();
 	}
+
 	/*******************************************************
 	 *********** system information functions **************
 	 *******************************************************/
@@ -539,10 +546,11 @@ public class DirectorControl extends UserControl implements Initializable {
 			stage.close();
 			openScreen("directorBoundary", "QuestionStock");
 		});
-	} 
+	}
+
 	@FXML
-	public void GetQuestionStock(ActionEvent e)  {
-		TeacherControl tcontroller=new TeacherControl();
+	public void GetQuestionStock(ActionEvent e) {
+		TeacherControl tcontroller = new TeacherControl();
 		Platform.runLater(() -> {
 			try {
 				tcontroller.openUpdateQuestionScreen(e);
@@ -551,11 +559,11 @@ public class DirectorControl extends UserControl implements Initializable {
 				e1.printStackTrace();
 			}
 		});
-		}
+	}
 
-    @FXML
-    void GetExamsStock(ActionEvent e) {
-    	TeacherControl tcontroller=new TeacherControl();
+	@FXML
+	void GetExamsStock(ActionEvent e) {
+		TeacherControl tcontroller = new TeacherControl();
 		Platform.runLater(() -> {
 			try {
 				tcontroller.openUpdateExamScreen(e);
@@ -563,10 +571,10 @@ public class DirectorControl extends UserControl implements Initializable {
 				e1.printStackTrace();
 			}
 		});
-    }
+	}
 
-    public void getExecutedExamsStock(ActionEvent e) {
-    	TeacherSeeExamsControl tcontroller=new TeacherSeeExamsControl();
+	public void getExecutedExamsStock(ActionEvent e) {
+		TeacherSeeExamsControl tcontroller = new TeacherSeeExamsControl();
 		Platform.runLater(() -> {
 			try {
 				tcontroller.openTeacherSeeExamScreen(e);
@@ -574,6 +582,10 @@ public class DirectorControl extends UserControl implements Initializable {
 				e1.printStackTrace();
 			}
 		});
-    }
+	}
 
+	public void getStudentsCopiesStock(ActionEvent e) {
+		StudentControl sController = new StudentControl();
+		sController.myGradesPressed(null);
+	}
 }

@@ -17,5 +17,6 @@
       <JFXButton fx:id="btnQuestionStock" layoutX="134.0" layoutY="165.0" onAction="#GetQuestionStock" prefHeight="61.0" prefWidth="140.0" text="Question Stock" />
       <JFXButton fx:id="btnExamStock" layoutX="335.0" layoutY="165.0" onAction="#GetExamsStock" prefHeight="61.0" prefWidth="132.0" text="Exams Stock" />
       <JFXButton layoutX="134.0" layoutY="242.0" onAction="#getExecutedExamsStock" prefHeight="61.0" prefWidth="140.0" text="Executed exams Stock" />
+      <JFXButton layoutX="331.0" layoutY="242.0" onAction="#getStudentsCopiesStock" prefHeight="61.0" prefWidth="140.0" text="Students Copies Stock" />
    </children>
 </AnchorPane>
