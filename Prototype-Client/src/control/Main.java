@@ -14,7 +14,6 @@ public class Main extends Application {
 		try {
 			/* display update question UI */
 			// Parent root =
-			// FXMLLoader.load(getClass().getResource("/boundary/updateQuestion.fxml"));
 
 			Parent root = FXMLLoader.load(getClass().getResource("/boundary/LoginGui.fxml"));
 			// Parent root =
@@ -24,7 +23,7 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 			guiStage.setTitle("Login");
 			guiStage.setScene(scene);
-			guiStage.getIcons().add(new Image("edit.png"));
+			guiStage.getIcons().add(new Image("Owl.png"));
 			guiStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -260,13 +260,11 @@ public class DirectorControl extends UserControl implements Initializable {
 							GradeList = (ArrayList<ExecutedExam>) msg[1];
 							float average = 0;
 							int sumStudent = 0;
-							for (ExecutedExam e : GradeList) {
-								sumRangGrades(e);
-								average += e.getAverage() * e.getNumOfStudentStarted();
-								sumStudent += e.getNumOfStudentStarted();
+							for (ExecutedExam executedExam : GradeList) {
+								average +=executedExam.getAverage();
 							}
-							if (sumStudent > 0)
-								averageTextField.setText(" " + (average / (float) sumStudent));
+							if (GradeList.size() > 0)
+								averageTextField.setText(" " + (average / (float)GradeList.size()));
 							Collections.sort(GradeList);
 							if (GradeList.size() % 2 == 0)
 								medianTextField.setText(" " + GradeList.get((GradeList.size() / 2) - 1).getMedian());

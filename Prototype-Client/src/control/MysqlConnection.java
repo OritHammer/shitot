@@ -212,11 +212,11 @@ public class MysqlConnection {
 
 			performLogin(userID);
 			// updating user status
-			
-//			stmt.executeUpdate( "UPDATE users " +
-//			"SET status=\"connected\" WHERE username=\""+userID+"\" AND password=\"" +userPass+"\";");// setting a new status
-//			 System.out.println("user set as connected");
-			 
+
+			// stmt.executeUpdate( "UPDATE users " +
+			// "SET status=\"connected\" WHERE username=\""+userID+"\" AND password=\""
+			// +userPass+"\";");// setting a new status
+			// System.out.println("user set as connected");
 
 			return newUser;
 			// in the end userDetails will have the UserID,userName,role
@@ -235,6 +235,7 @@ public class MysqlConnection {
 			e.printStackTrace();
 		}
 	}
+
 	public void performLogin(Object userName) {
 		try {
 			stmt = conn.createStatement();
@@ -244,6 +245,7 @@ public class MysqlConnection {
 			e.printStackTrace();
 		}
 	}
+
 	public ArrayList<ExamDetailsMessage> getPrefExamDetails(String userName) {
 		ArrayList<ExamDetailsMessage> detailsList = new ArrayList<ExamDetailsMessage>();
 		try {
@@ -317,8 +319,8 @@ public class MysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			if (teacherUserName == null) {
-				rs = stmt.executeQuery("SELECT DISTINCT c.courseID,c.name FROM courses c,teacherincourse tc" + " WHERE tp_ID=\""
-						+ subject + "\" AND tc.courseID=c.courseID");
+				rs = stmt.executeQuery("SELECT DISTINCT c.courseID,c.name FROM courses c,teacherincourse tc"
+						+ " WHERE tp_ID=\"" + subject + "\" AND tc.courseID=c.courseID");
 			} else {
 				rs = stmt.executeQuery("SELECT c.courseID,c.name FROM courses c,teacherincourse tc" + " WHERE tp_ID=\""
 						+ subject + "\" AND tc.courseID=c.courseID AND tc.UserNameTeacher=\""
@@ -341,8 +343,7 @@ public class MysqlConnection {
 		ArrayList<RequestForChangingTimeAllocated> requestList = new ArrayList<RequestForChangingTimeAllocated>();
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt
-					.executeQuery("SELECT * FROM shitot.requestforchangingtimeallocated;");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM shitot.requestforchangingtimeallocated;");
 			while (rs.next()) {
 
 				requestList.add(new RequestForChangingTimeAllocated(rs.getString(1), rs.getString(2), rs.getString(3),
@@ -362,25 +363,28 @@ public class MysqlConnection {
 		 */
 		// Statement stmt;
 		ArrayList<Question> questionList = new ArrayList<Question>();
-		String userName=null;
-		if(teacherUserName!=null)
+		String userName = null;
+		String courseid=null;
+		if (teacherUserName != null) {
 			userName = (String) teacherUserName;
+			courseid = ((String) subject).substring(2, 4);
+		}
 		String subjectid = ((String) subject).substring(0, 2);
-		String courseid = ((String) subject).substring(2, 4);
-		ResultSet rs=null;
+
+		ResultSet rs = null;
 		try {
 			stmt = conn.createStatement();
-			if(teacherUserName==null) 
-				stmt.executeQuery("SELECT * FROM shitot.questions;");
-			else{
+			if (teacherUserName == null)
+				rs=stmt.executeQuery("SELECT * FROM shitot.questions where question_id like '" + subjectid + "%';");
+			else {
 				rs = stmt.executeQuery(
-			
-					"SELECT Q.question_id,Q.teacher_name,Q.question_text,Q.answer1,Q.answer2,Q.answer3,Q.answer4,"
-							+ "Q.Correct_answer FROM questions Q,teacherincourse TIC,questionincourse QIC WHERE Q.question_id like \""
-							+ subjectid + "%\" AND " + "TIC.UserNameTeacher=\"" + userName
-							+ "\" AND TIC.courseID like \"" + courseid + "%\""
-							+ " AND QIC.q_id=Q.question_id And QIC.course_id=\"" + courseid
-							+ "\" AND TIC.courseID=QIC.course_id;");
+
+						"SELECT Q.question_id,Q.teacher_name,Q.question_text,Q.answer1,Q.answer2,Q.answer3,Q.answer4,"
+								+ "Q.Correct_answer FROM questions Q,teacherincourse TIC,questionincourse QIC WHERE Q.question_id like \""
+								+ subjectid + "%\" AND " + "TIC.UserNameTeacher=\"" + userName
+								+ "\" AND TIC.courseID like \"" + courseid + "%\""
+								+ " AND QIC.q_id=Q.question_id And QIC.course_id=\"" + courseid
+								+ "\" AND TIC.courseID=QIC.course_id;");
 			}
 			while (rs.next()) {
 				questionList.add(new Question(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
@@ -579,8 +583,8 @@ public class MysqlConnection {
 							+ (String) executedExamId + "\" AND student_UserName = UserName AND isApproved='waiting'");
 			while (rs.next()) {
 				studentsInExam.add(new StudentPerformExam(rs.getString(1), rs.getString(2), rs.getString(3),
-						rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7),null,
-						rs.getString(9), rs.getString(10)));
+						rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), null, rs.getString(9),
+						rs.getString(10)));
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -651,14 +655,14 @@ public class MysqlConnection {
 				Date date = new Date();
 				stmt.executeUpdate("INSERT INTO shitot.executedexam VALUES(\"" + exam.getExecutedExamID().trim()
 						+ "\",0,0,0,0,0,\"" + exam.getTeacherName() + "\",\"" + exam.getExam_id()
-						+ "\",0,0,0,0,0,0,\"open\",\"" + dateFormat.format(date) + "\", (select e.solutionTime\r\n" + 
-								" from exams as e where e.e_id = \""+exam.getExam_id()+"\"),0,0,0,0);");
+						+ "\",0,0,0,0,0,0,\"open\",\"" + dateFormat.format(date) + "\", (select e.solutionTime\r\n"
+						+ " from exams as e where e.e_id = \"" + exam.getExam_id() + "\"),0,0,0,0);");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
-		return(true);
+		return (true);
 		// stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
 
 	}
@@ -684,7 +688,7 @@ public class MysqlConnection {
 
 	}
 
-	public ArrayList<ExecutedExam> getExecutedExam(Object examId, Object teacherUserName,Object type) {
+	public ArrayList<ExecutedExam> getExecutedExam(Object examId, Object teacherUserName, Object type) {
 		/*
 		 * The function return the course list by the given subject code
 		 */
@@ -693,22 +697,21 @@ public class MysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs;
-			if(((String)type).equals("LockType"))
-			{
-			 rs = stmt
-					.executeQuery("SELECT * FROM executedexam WHERE teacherName=\"" + teacherUserName.toString()
-							+ "\" AND status='open' AND exam_id like \"" + (String) examId + "%\"" + ";");
+			if (((String) type).equals("LockType")) {
+				rs = stmt.executeQuery("SELECT * FROM executedexam WHERE teacherName=\"" + teacherUserName.toString()
+						+ "\" AND status='open' AND exam_id like \"" + (String) examId + "%\"" + ";");
 			}
-			
-			else
-			{
-				 rs = stmt
-							.executeQuery("SELECT distinct * FROM executedexam EE,studentperformedexam SPE WHERE EE.teacherName=\"" + teacherUserName.toString()
-									+ "\" AND EE.status='close' AND EE.numOfStudentStarted > 0 AND EE.exam_id like \"" + (String) examId + "%\"" + " "
-											+ "AND SPE.executedexam_id=EE.executedExamID AND SPE.isApproved='waiting' GROUP BY EE.executedExamID;");
+
+			else {
+				rs = stmt.executeQuery(
+						"SELECT distinct * FROM executedexam EE,studentperformedexam SPE WHERE EE.teacherName=\""
+								+ teacherUserName.toString()
+								+ "\" AND EE.status='close' AND EE.numOfStudentStarted > 0 AND EE.exam_id like \""
+								+ (String) examId + "%\"" + " "
+								+ "AND SPE.executedexam_id=EE.executedExamID AND SPE.isApproved='waiting' GROUP BY EE.executedExamID;");
 			}
 			while (rs.next()) {
-				ExecutedExam executedExem=new ExecutedExam();
+				ExecutedExam executedExem = new ExecutedExam();
 				executedExem.setExecutedExamID(rs.getString(1));
 				executedExem.setNumOfStudentStarted(Integer.parseInt(rs.getString(2)));
 				executedExem.setNumOfStudentFinished(Integer.parseInt(rs.getString(3)));
@@ -912,7 +915,7 @@ public class MysqlConnection {
 						} else
 							mistakes++;
 					}
-					
+
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -1132,21 +1135,19 @@ public class MysqlConnection {
 			switch ((String) reportBy) {
 			case "getReportByTeacher":
 				rs = stmt.executeQuery(
-						"SELECT numOfStudentStarted,average,median,between0to9,between10to19,between20to29,between30to39,between40to49,between50to59,between60to69,between70to79,between80to89,between90to100 FROM shitot.executedexam where teacherName='"
+						"SELECT average,median FROM shitot.executedexam where teacherName='"
 								+ id_userName + "'AND status='checked';");
 				break;
 			case "getReportByCourse":
 				rs = stmt.executeQuery(
-						"SELECT numOfStudentStarted,average,median,between0to9,between10to19,between20to29,between30to39,between40to49,between50to59,between60to69,between70to79,between80to89,between90to100 FROM shitot.executedexam where exam_id like \"__"
+						"SELECT average,median FROM shitot.executedexam where exam_id like \"__"
 								+ id_userName + "%\" AND status='checked';");
 				break;
 			}
 			while (rs.next()) {
-				executedExamList.add(new ExecutedExam(null, Integer.parseInt(rs.getString(1)), 0, 0,
-						Float.parseFloat(rs.getString(2)), Float.parseFloat(rs.getString(3)), null, null,
-						Integer.parseInt(rs.getString(4)), Integer.parseInt(rs.getString(5)),
-						Integer.parseInt(rs.getString(6)), Integer.parseInt(rs.getString(7)),
-						Integer.parseInt(rs.getString(8)), Integer.parseInt(rs.getString(9)), null,Integer.parseInt(rs.getString(10)),Integer.parseInt(rs.getString(11)),Integer.parseInt(rs.getString(12)),Integer.parseInt(rs.getString(13)),null,null));
+				executedExamList.add(new ExecutedExam(null, 0, 0, 0,
+						Float.parseFloat(rs.getString(1)),Float.parseFloat(rs.getString(2)),null,null,
+						0,0,0,0,0,0,null,0,0,0,0, null, null));
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -1171,84 +1172,75 @@ public class MysqlConnection {
 		}
 		return studentGradesList;
 	}
-	
+
 	public void confirmExecutedExam(Object studentInExam, Object flagIfExamChecked) {
-		Boolean flagExamChecked = (Boolean)flagIfExamChecked;
-		String eid = ((StudentPerformExam) studentInExam).getExcecutedExamID(); 
+		Boolean flagExamChecked = (Boolean) flagIfExamChecked;
+		String eid = ((StudentPerformExam) studentInExam).getExcecutedExamID();
 		try {
 			stmt = conn.createStatement();
-			if(flagExamChecked == true)
-			{
-				stmt.executeUpdate("UPDATE executedexam " + "SET status=\"checked\" WHERE executedExamID=\"" + ((StudentPerformExam) studentInExam).getExcecutedExamID() + "\";");
-				stmt.executeUpdate("update shitot.executedexam " + 
-						"set" + 
-						" between0to9 = (select count(*) " + 
-						" from studentperformedexam as spe " + 
-						" where executedExamID = \""+eid+ "\" and spe.grade > -1 and spe.grade<10) ," + 
-						"   between10to19 = (select count(*)" + 
-						"          from studentperformedexam as spe " + 
-						"   where executedExamID = \"" +eid+ "\" and spe.grade > 9 and spe.grade<20) ," + 
-						"     between20to29 = (select count(*)" + 
-						"   from studentperformedexam as spe" + 
-						"   where executedExamID = \""+eid+"\" and spe.grade > 19 and spe.grade<30) ," + 
-						"      between30to39 = (select count(*)" + 
-						"   from studentperformedexam as spe " + 
-						"   where executedExamID = \""+eid+"\" and spe.grade > 29 and spe.grade<40) ," + 
-						" between40to49 = (select count(*)" + 
-						"   from studentperformedexam as spe" + 
-						"   where executedExamID = \""+eid+ "\" and spe.grade > 39 and spe.grade<50) ," + 
-						"  between50to59 = (select count(*)" + 
-						"     from studentperformedexam as spe " + 
-						"      where executedExamID = \""+eid+ "\" and spe.grade > 49 and spe.grade<60) ," + 
-						"       between60to69 = (select count(*)" + 
-						" from studentperformedexam as spe " + 
-						" where executedExamID = \""+eid+ "\" and spe.grade > 59 and spe.grade<70) ," + 
-						"  between70to79 = (select count(*)" + 
-						" from studentperformedexam as spe " + 
-						" where executedExamID = \""+eid+ "\" and spe.grade > 69 and spe.grade<80) ," + 
-						"  between80to89 = (select count(*)" + 
-						" from studentperformedexam as spe " + 
-						" where executedExamID = \""+eid+ "\" and spe.grade > 79 and spe.grade<90) ," + 
-						"  between90to100 = (select count(*)" + 
-						" from studentperformedexam as spe " + 
-						" where executedExamID = \""+eid+ "\" and spe.grade > 89 and spe.grade<101)" + 
-						"where executedExamID = \""+eid+ "\" ;");
-				stmt.executeUpdate("update shitot.executedexam " +
-				"set "+
-				"numOfStudentDidntFinished = (select count(*) as numStodentNF "+
-				  " from studentperformedexam as sp"+
-				  " where executedexam_id = \""+eid+"\" and sp.finished = 'no') , "+
-				"numOfStudentFinished =(select count(*) as numStodentF "+
-				"   from studentperformedexam as sp"+
-				 "  where executedexam_id = \""+eid+"\" and sp.finished = 'yes'  ) "+
-				" where executedExamID = \""+eid+"\" ;");
-			} 
-			stmt.executeUpdate("UPDATE studentperformedexam " + "SET isApproved=\"approved\" , grade=\""+((StudentPerformExam) studentInExam).getGrade() + "\" , "
-					+ "reasonForChangeGrade=\"" + ((StudentPerformExam) studentInExam).getReasonForChangeGrade() + "\" "
+			if (flagExamChecked == true) {
+				stmt.executeUpdate("UPDATE executedexam " + "SET status=\"checked\" WHERE executedExamID=\""
+						+ ((StudentPerformExam) studentInExam).getExcecutedExamID() + "\";");
+				stmt.executeUpdate("update shitot.executedexam " + "set" + " between0to9 = (select count(*) "
+						+ " from studentperformedexam as spe " + " where executedExamID = \"" + eid
+						+ "\" and spe.grade > -1 and spe.grade<10) ," + "   between10to19 = (select count(*)"
+						+ "          from studentperformedexam as spe " + "   where executedExamID = \"" + eid
+						+ "\" and spe.grade > 9 and spe.grade<20) ," + "     between20to29 = (select count(*)"
+						+ "   from studentperformedexam as spe" + "   where executedExamID = \"" + eid
+						+ "\" and spe.grade > 19 and spe.grade<30) ," + "      between30to39 = (select count(*)"
+						+ "   from studentperformedexam as spe " + "   where executedExamID = \"" + eid
+						+ "\" and spe.grade > 29 and spe.grade<40) ," + " between40to49 = (select count(*)"
+						+ "   from studentperformedexam as spe" + "   where executedExamID = \"" + eid
+						+ "\" and spe.grade > 39 and spe.grade<50) ," + "  between50to59 = (select count(*)"
+						+ "     from studentperformedexam as spe " + "      where executedExamID = \"" + eid
+						+ "\" and spe.grade > 49 and spe.grade<60) ," + "       between60to69 = (select count(*)"
+						+ " from studentperformedexam as spe " + " where executedExamID = \"" + eid
+						+ "\" and spe.grade > 59 and spe.grade<70) ," + "  between70to79 = (select count(*)"
+						+ " from studentperformedexam as spe " + " where executedExamID = \"" + eid
+						+ "\" and spe.grade > 69 and spe.grade<80) ," + "  between80to89 = (select count(*)"
+						+ " from studentperformedexam as spe " + " where executedExamID = \"" + eid
+						+ "\" and spe.grade > 79 and spe.grade<90) ," + "  between90to100 = (select count(*)"
+						+ " from studentperformedexam as spe " + " where executedExamID = \"" + eid
+						+ "\" and spe.grade > 89 and spe.grade<101)" + "where executedExamID = \"" + eid + "\" ;");
+				stmt.executeUpdate("update shitot.executedexam " + "set "
+						+ "numOfStudentDidntFinished = (select count(*) as numStodentNF "
+						+ " from studentperformedexam as sp" + " where executedexam_id = \"" + eid
+						+ "\" and sp.finished = 'no') , " + "numOfStudentFinished =(select count(*) as numStodentF "
+						+ "   from studentperformedexam as sp" + "  where executedexam_id = \"" + eid
+						+ "\" and sp.finished = 'yes'  ) " + " where executedExamID = \"" + eid + "\" ;");
+			}
+			stmt.executeUpdate("UPDATE studentperformedexam " + "SET isApproved=\"approved\" , grade=\""
+					+ ((StudentPerformExam) studentInExam).getGrade() + "\" , " + "reasonForChangeGrade=\""
+					+ ((StudentPerformExam) studentInExam).getReasonForChangeGrade() + "\" "
 					+ " WHERE student_UserName=\"" + ((StudentPerformExam) studentInExam).getUserName() + "\";");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		
+
 		}
-		
+
 	}
+
 	/* lock the exam if the all students finished the */
 	public void checkIfAllStudentFinishedExam(Object executedExamID) {
-		String executedID=(String)executedExamID;
+		String executedID = (String) executedExamID;
 		ResultSet rs = null;
-		int numOfStudentInCourse,numOfStudentPerformedExam;
+		int numOfStudentInCourse, numOfStudentPerformedExam;
 		try {
-			stmt = conn.createStatement();//לסיים את השאילתא
-			rs = stmt.executeQuery("SELECT count(SIC.studentUserName) as numOfStudentInCourse FROM shitot.studentincourse SIC,shitot.executedexam "
-					+ "E WHERE E.exam_id LIKE CONCAT('__',SIC.course_ID, '%') AND E.executedExamID=\""+executedID+"\";");
+			stmt = conn.createStatement();// לסיים את השאילתא
+			rs = stmt.executeQuery(
+					"SELECT count(SIC.studentUserName) as numOfStudentInCourse FROM shitot.studentincourse SIC,shitot.executedexam "
+							+ "E WHERE E.exam_id LIKE CONCAT('__',SIC.course_ID, '%') AND E.executedExamID=\""
+							+ executedID + "\";");
 			rs.next();
-			numOfStudentInCourse=Integer.parseInt(rs.getString(1));
-			rs = stmt.executeQuery("SELECT numOfStudentStarted FROM shitot.executedexam WHERE executedExamID=\""+executedID+"\";");
+			numOfStudentInCourse = Integer.parseInt(rs.getString(1));
+			rs = stmt.executeQuery(
+					"SELECT numOfStudentStarted FROM shitot.executedexam WHERE executedExamID=\"" + executedID + "\";");
 			rs.next();
-			numOfStudentPerformedExam=Integer.parseInt(rs.getString(1));
-			if(numOfStudentInCourse==numOfStudentPerformedExam) {
-				stmt.executeUpdate("UPDATE shitot.executedexam SET status = 'close' WHERE executedExamID=\""+executedID+"\";");
+			numOfStudentPerformedExam = Integer.parseInt(rs.getString(1));
+			if (numOfStudentInCourse == numOfStudentPerformedExam) {
+				stmt.executeUpdate(
+						"UPDATE shitot.executedexam SET status = 'close' WHERE executedExamID=\"" + executedID + "\";");
 			}
 			rs.close();
 
@@ -1256,14 +1248,14 @@ public class MysqlConnection {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void updateStudentToExecutedExam(Object executedExamID) {
-		
-		String executedID=(String)executedExamID;
+
+		String executedID = (String) executedExamID;
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate("update shitot.executedexam set numOfStudentStarted = numOfStudentStarted+1 "
-					+ "where executedexam.executedExamID = \""+ executedID +"\" ; ");
+					+ "where executedexam.executedExamID = \"" + executedID + "\" ; ");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -1271,31 +1263,29 @@ public class MysqlConnection {
 	}
 
 	public void setRealTimeOfExecutedExam(String requestID) {
-		// getting executed exam id 
+		// getting executed exam id
 		ResultSet rs = null;
-		String executedID="";
+		String executedID = "";
 		try {
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT request.IDexecutedExam " + 
-					"FROM requestforchangingtimeallocated as request " + 
-					"WHERE request.requestID = \""+requestID+"\" ;");
-			if(rs.isBeforeFirst()) {
+			rs = stmt.executeQuery("SELECT request.IDexecutedExam " + "FROM requestforchangingtimeallocated as request "
+					+ "WHERE request.requestID = \"" + requestID + "\" ;");
+			if (rs.isBeforeFirst()) {
 				executedID = rs.getString(1);
 			}
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}	
-		// adding solution time to the actual solution time by executed exam id 
-		try {
-			stmt = conn.createStatement();
-			stmt.executeUpdate("UPDATE shitot.executedexam SET actuallySolutionTime = actuallySolutionTime + "+
-					"(SELECT request.timeAdded FROM requestforchangingtimeallocated as request WHERE"
-					+ " request.IDexecutedExam = \""+executedID+"\") "
-					+ "WHERE executedexam.executedExamID = \""+executedID+"\";");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+		// adding solution time to the actual solution time by executed exam id
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("UPDATE shitot.executedexam SET actuallySolutionTime = actuallySolutionTime + "
+					+ "(SELECT request.timeAdded FROM requestforchangingtimeallocated as request WHERE"
+					+ " request.IDexecutedExam = \"" + executedID + "\") " + "WHERE executedexam.executedExamID = \""
+					+ executedID + "\";");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -1304,23 +1294,23 @@ public class MysqlConnection {
 		try {
 			stmt = conn.createStatement();
 			ResultSet rs;
-			if(teacherUserName==null) {
-				 rs = stmt.executeQuery("select EE.executedExamID ,teacherExams.timeGiven , EE.actuallySolutionTime ,EE.numOfStudentStarted,"
-						+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished, EE.startDate  "
-						+ "FROM (select exams.e_id as eid , exams.solutionTime as timeGiven "
+			if (teacherUserName == null) {
+				rs = stmt.executeQuery(
+						"select EE.executedExamID ,teacherExams.timeGiven , EE.actuallySolutionTime ,EE.numOfStudentStarted,"
+								+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished, EE.startDate  "
+								+ "FROM (select exams.e_id as eid , exams.solutionTime as timeGiven "
 								+ "from exams)  teacherExams , executedexam as EE "
-						+ "where teacherExams.eid = EE.exam_id;");
-			}else {
-				 rs = stmt.executeQuery("select EE.executedExamID ,teacherExams.timeGiven , EE.actuallySolutionTime ,EE.numOfStudentStarted,"
-						+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished, EE.startDate "
-						+ "FROM (select exams.e_id as eid , exams.solutionTime as timeGiven "
-								+ "from exams "
-								+ "where exams.tUserName = \"" + (String)teacherUserName + "\" )  teacherExams , executedexam as EE "
-						+ "where teacherExams.eid = EE.exam_id;");
+								+ "where teacherExams.eid = EE.exam_id;");
+			} else {
+				rs = stmt.executeQuery(
+						"select EE.executedExamID ,teacherExams.timeGiven , EE.actuallySolutionTime ,EE.numOfStudentStarted,"
+								+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished, EE.startDate "
+								+ "FROM (select exams.e_id as eid , exams.solutionTime as timeGiven " + "from exams "
+								+ "where exams.tUserName = \"" + (String) teacherUserName
+								+ "\" )  teacherExams , executedexam as EE " + "where teacherExams.eid = EE.exam_id;");
 			}
 
-			while(rs.next())
-			{
+			while (rs.next()) {
 				ExecutedExam executedexam = new ExecutedExam();
 				executedexam.setExecutedExamID(rs.getString(1));
 				executedexam.setSolutionTime(rs.getString(2));
