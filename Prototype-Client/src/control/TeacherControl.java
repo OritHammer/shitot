@@ -224,38 +224,39 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private Button btnDelete;
 
+	
 	/**
-	 * The loadExamCopy function order exam Copy of spesific student
-	 *
-	 * @author Or Edri
-	 */
+	*  loadExamCopy(MouseEvent event)
+	*  Arguments:MouseEvent event
+	*  The  method order exam Copy of spesific student
+	*  @author  Or Edri
+	*/
 	public void loadExamCopy(MouseEvent event) {
 		if (event.getClickCount() == 2) {
 			connect(this);
 			messageToServer[0] = "getStudentAnswers";
-			messageToServer[1] = executedExamsComboBox.getValue(); // sending executed exam id
-			messageToServer[2] = studnetInExamTableView.getSelectionModel().getSelectedItem().getUserName(); // sending
-																												// the
-																												// user
-																												// name
+			messageToServer[1] = executedExamsComboBox.getValue(); /*sending executed exam id*/ 
+			messageToServer[2] = studnetInExamTableView.getSelectionModel().getSelectedItem().getUserName(); /*send the user name*/
 			chat.handleMessageFromClientUI(messageToServer);
 			StudentControl studentControl = new StudentControl();
 			studentControl.tempEvent = event;
 		}
 	}
 
+	
 	/**
-	 * The confirmExecutedExam confirm grade of executed exam of spesific student
-	 *
-	 * @author Or Edri
-	 */
+	* confirmExecutedExam(ActionEvent event)
+	*  Arguments:ActionEvent event
+	*  The method  send message to server with the exam details in order to confirm grade of executed exam of spesific student
+	*  @author  Or Edri
+	*/
 	public void confirmExecutedExam(ActionEvent event) throws IOException {
-		if (studnetInExamTableView.getSelectionModel().getSelectedItem() == null)
+		if (studnetInExamTableView.getSelectionModel().getSelectedItem() == null)//if ther is nothing chosen in the table view
 			return;
 
-		StudentPerformExam studentinexm = studnetInExamTableView.getSelectionModel().getSelectedItem();
-		studnetInExamTableView.getItems().remove(studentinexm);
-		if (studnetInExamTableView.getItems().isEmpty()) {
+		StudentPerformExam studentinexm = studnetInExamTableView.getSelectionModel().getSelectedItem();/*get the chosen student in exam*/
+		studnetInExamTableView.getItems().remove(studentinexm);/*remove the object from the table view*/
+		if (studnetInExamTableView.getItems().isEmpty()) {/*if the table view is empty*/
 			Parent tableViewParent = FXMLLoader.load(getClass().getResource("/boundary/CheckExam.fxml"));
 			Scene tableViewScene = new Scene(tableViewParent);
 			tableViewScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
@@ -265,31 +266,37 @@ public class TeacherControl extends UserControl implements Initializable {
 			window.show();
 			messageToServer[2] = true;
 		} else
-			messageToServer[2] = false;
+		messageToServer[2] = false;
 		messageToServer[0] = "confirmExecutedExam";
 		messageToServer[1] = studentinexm;
-
+		/*connect to server and send the message*/
 		connect(this);
 		chat.handleMessageFromClientUI(messageToServer);
 	}
 
+	
 	/**
-	 * The closeChange exit from the changeGrade window.
-	 *
-	 * @author Or Edri
-	 */
+	* closeChange(ActionEvent event)
+	*  Arguments:ActionEvent event
+	* The method exit from the changeGrade window.
+	*  @author  Or Edri
+	*/
 	public void closeChange(ActionEvent event) {
 		final Node source = (Node) event.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
 	}
 
+
 	/**
-	 * The finalChange function is changing the grade of the student
-	 *
-	 * @author Or Edri
-	 */
+	*  finalChange(ActionEvent event)
+	*  Arguments:ActionEvent event
+	*  The  method  changs the grade of the student
+	*  The method handle grade change
+	*  @author  Or Edri
+	*/
 	public void finalChange(ActionEvent event) {
+		/*Check the inputs from the textFields*/
 		if (newGrade.getText().equals("") && reason.getText().equals(""))
 			new Alert(Alert.AlertType.ERROR, "You must enter values.").showAndWait();
 		else if (!(newGrade.getText()).matches("[0-9]+"))
@@ -298,10 +305,9 @@ public class TeacherControl extends UserControl implements Initializable {
 			new Alert(Alert.AlertType.ERROR, "The grade must be between 0-100").showAndWait();
 		else if (reason.getText().equals(""))
 			new Alert(Alert.AlertType.ERROR, "If you want to change the grade you must enter a reason").showAndWait();
-
+		/*If the values are proper  */
 		else {
-			StudentPerformExam student = tController.getSelectedStudentPerformExam();
-
+			StudentPerformExam student = tController.getSelectedStudentPerformExam();/*set new controller in order to send values between controllers*/
 			student.setGrade(Float.valueOf(newGrade.getText()));
 			student.setReasonForChangeGrade(reason.getText());
 			tController.setOnTableView(student);
@@ -322,6 +328,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * @author Tom Zarhin
 	 */
 	private void setOnTableView(StudentPerformExam student) {
+		/*Set the objects in the table view*/
 		studnetInExamTableView.getItems().remove(studnetInExamTableView.getSelectionModel().getSelectedIndex());
 		studnetInExamTableView.getItems().add(student);
 	}
@@ -353,13 +360,13 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * @author Or Edri
 	 */
 	public void changeGrade(ActionEvent event) throws IOException {
-
-		studentInExamRow = studnetInExamTableView.getSelectionModel().getSelectedItem();
+ 
+		studentInExamRow = studnetInExamTableView.getSelectionModel().getSelectedItem();/*get the details of the chosen student*/
 		if (studentInExamRow == null)
 			return;
 
 		final Stage dialog = new Stage();
-
+		/*open change grade screen with the relevant values*/
 		final Node source = (Node) event.getSource();
 		dialog.initModality(Modality.APPLICATION_MODAL);
 		dialog.initOwner((Stage) source.getScene().getWindow());
@@ -383,29 +390,30 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/**
-	 * The checkMessage function check the content message from server
-	 *
-	 * @author Or Edri/Tom Zarhin
-	 */
+	 * checkMessage(Object message)
+	*Arguments:Object message
+	* The  method handle the message from server
+	* @author Aviv Mahulya
+	*/
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
 		try {
 			final Object[] msg = (Object[]) message;
-			if (messagesRead.contains((int) msg[5])) {
+			if (messagesRead.contains((int) msg[5])) {/*if the client already read the current message*/
 				return;
 			}
-			messagesRead.add((int) msg[5]);
-			if (msg[4].equals(getMyUser().getUsername())) {
+			messagesRead.add((int) msg[5]);/*save the message the client read */
+			if (msg[4].equals(getMyUser().getUsername())) {/*If the message should be read by the current client(by username)*/
 				chat.closeConnection();// close the connection
 
 				Platform.runLater(() -> {
 					switch (msg[0].toString()) {
 
 					/***************************************
-					 * General "get" items from serer to client
+					 * General "get" items from server to client
 					 ************************************/
 
-					case "showingCopy": {
+					case "showingCopy": {/*show copy of exam*/
 						MyGradesControl scontrol = new MyGradesControl();
 						scontrol.justFlag = true;
 						scontrol.showingCopy((ArrayList<Question>) msg[1], (HashMap<String, Integer>) msg[2]);
@@ -501,6 +509,7 @@ public class TeacherControl extends UserControl implements Initializable {
 					case ("getExams"): /* get the exams list from server */
 					{
 						if (pageLabel.getText().equals("Update exam")) {
+							/*set the javaFX containers*/
 							exams = FXCollections.observableArrayList((ArrayList<Exam>) msg[1]);
 							questionIDTable.setCellValueFactory(new PropertyValueFactory<>("e_id"));
 							teacherNameTable.setCellValueFactory(new PropertyValueFactory<>("teacherUserName"));
@@ -585,22 +594,22 @@ public class TeacherControl extends UserControl implements Initializable {
 						if (!text.equals("Exam locked successfully ✔")) {
 							text = "Exam code created successfully ✔";
 						}
-						if ((boolean) msg[1] == true) {
+						if ((boolean) msg[1] == true) {/*if the answer is correct*/
 							allertText.setFill(Color.GREEN);
 							allertText.setText(text);
 						} else {
-							allertText.setFill(Color.RED);
+							allertText.setFill(Color.RED);/*if the answer is incorrect*/
 							allertText.setText("There is already a code like that, please choose another code ❌");
 						}
 						break;
 					}
 					case ("updateExam"): /* the server return true/false if the exam updated or not */
 					{
-						if ((boolean) msg[1] == true) {
+						if ((boolean) msg[1] == true) {/*The exam was udated*/
 							examsTableView.refresh();
 						} else {
-							exams.remove(exams.indexOf(examSelected));
-							exams.add(oldExam);
+							exams.remove(exams.indexOf(examSelected));/*The exam didn't changed*/
+							exams.add(oldExam);/*Load the old exam*/
 							errorMsg("This exam is in active exam.");
 							examsTableView.getSortOrder().setAll(questionIDTable);
 						}
@@ -618,8 +627,9 @@ public class TeacherControl extends UserControl implements Initializable {
 						break;
 					}
 
-					case ("getStudenstInExam"): /*   */
+					case ("getStudenstInExam"): /*get the student who performed the exam before*/
 					{
+						/*set the values to the containers*/
 						ObservableList<StudentPerformExam> observablelistOfStudentInExam = FXCollections
 								.observableArrayList((ArrayList<StudentPerformExam>) msg[1]);
 						studentId.setCellValueFactory(new PropertyValueFactory<>("userId"));
@@ -647,18 +657,19 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	/**
 	 * The initialize function intialize function go first after loading fxml
-	 *
-	 * @author Or Edri/Tom Zarhin
+	 *The  method initialize the javaFX screens
+	 * @author Aviv Mahulya
 	 */
 	public void initialize(URL url, ResourceBundle rb) {
+		
 		messageToServer[4] = getMyUser().getUsername();
 		setUnVisible();
 		switch (pageLabel.getText()) {
-		case ("Home screen"): {
+		case ("Home screen"): {/*If its the home page*/
 			userText.setText(getMyUser().getFullname());
 			break;
 		}
-		case ("Update question in exam"): {
+		case ("Update question in exam"): {/*If its the "update question page*/
 			updateBtn.setDisable(true);
 			if (blockPassQuestionButton) {
 				passQuestionL.setDisable(true);
@@ -668,7 +679,7 @@ public class TeacherControl extends UserControl implements Initializable {
 				allertText.setText("You can't edit this exam cause its an active exam");
 			}
 
-			setToQuestionInExamTableView();
+			setToQuestionInExamTableView();/*Load the questionInExam TableView*/
 			connect(this); // connecting to server
 			messageToServer[0] = "getQuestionsToTable";
 			messageToServer[1] = tempExamId.substring(0, 4);
@@ -1058,6 +1069,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			String[] subjectSubString = subject.split("-");
 			ArrayList<String> courses = (ArrayList<String>) coursesListToCreateQuestion.stream()
 					.collect(Collectors.toList());
+		/*Send to the server request to add question in the DB*/
 			connect(this); // connecting to server
 			messageToServer[0] = "SetQuestion";
 			messageToServer[1] = subjectSubString[0].trim();
@@ -1082,7 +1094,12 @@ public class TeacherControl extends UserControl implements Initializable {
 
 		}
 	}
-
+	/**
+	* removeCoursesFromList(ActionEvent event)
+	*  Arguments:ActionEvent event
+	* If there are no items in the Courses combobox remove the subject combobox
+	*  @author  Or Edri
+	*/
 	public void removeCoursesFromList(ActionEvent event) {
 		if (courseInCreateQuestion.getSelectionModel().getSelectedItem() != null) {
 			coursesListToCreateQuestion.remove(courseInCreateQuestion.getSelectionModel().getSelectedItem());
@@ -1106,7 +1123,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		String toSend;
 		if (!pageLabel.getText().equals("Create exam code") && !pageLabel.getText().equals("Update exam")) {
 			toSend = "getExecutedExams";
-			messageToServer[2] = getMyUser().getUsername();
+			messageToServer[2] = getMyUser().getUsername();//send the user name of the client
 			if (pageLabel.getText().equals("Lock exam"))
 				messageToServer[3] = "LockType";
 			else
@@ -1127,7 +1144,12 @@ public class TeacherControl extends UserControl implements Initializable {
 		messageToServer[1] = examIDStart;
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
-
+	/**
+	 * loadStudenstInExam(ActionEvent e)
+	 *  Arguments:ActionEvent event
+	 * The method send request of the student who performed specific exam
+	 *  @author  Or Edri
+	 */
 	public void loadStudenstInExam(ActionEvent e) throws IOException {
 		connect(this); // connecting to server
 		messageToServer[0] = "getStudenstInExam";
@@ -1142,7 +1164,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	 */
 	public void changeRemarksForTeacherOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
 		examSelected = examsTableView.getSelectionModel().getSelectedItem();
-		oldExam = new Exam();
+		oldExam = new Exam();/*save a copy of the exam'will be used in case that the changing failed*/
 		oldExam.setE_id(examSelected.getE_id());
 		oldExam.setSolutionTime(examSelected.getSolutionTime());
 		oldExam.setRemarksForTeacher(examSelected.getRemarksForTeacher());
@@ -1164,7 +1186,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	 */
 	public void changeRemarksForStudentOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
 		examSelected = examsTableView.getSelectionModel().getSelectedItem();
-		oldExam = new Exam();
+		oldExam = new Exam();/*save a copy of the exam'will be used in case that the changing failed*/
 		oldExam.setE_id(examSelected.getE_id());
 		oldExam.setSolutionTime(examSelected.getSolutionTime());
 		oldExam.setRemarksForTeacher(examSelected.getRemarksForTeacher());
@@ -1184,7 +1206,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	 */
 	public void changeTypeOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
 		examSelected = examsTableView.getSelectionModel().getSelectedItem();
-		oldExam = new Exam();
+		oldExam = new Exam();/*save a copy of the exam'will be used in case that the changing failed*/
 		oldExam.setE_id(examSelected.getE_id());
 		oldExam.setSolutionTime(examSelected.getSolutionTime());
 		oldExam.setRemarksForTeacher(examSelected.getRemarksForTeacher());
@@ -1257,6 +1279,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	@SuppressWarnings("static-access")
 	public void createExam(ActionEvent e) {
 		int sumOfPoints = 0;
+		/*check if the teacher fill the form coreect*/
 		if (timeForExamHours.getText().equals("") || timeForExamMinute.getText().equals("")
 				|| Integer.valueOf(timeForExamHours.getText()) < 0) {
 			errorMsg("Please fill time for exam");
@@ -1272,7 +1295,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			errorMsg("invalid time");
 			return;
 		}
-
+		/*check if the number of points is 100*/
 		for (QuestionInExam q : questionInExamObservable) {
 			sumOfPoints += q.getPoints();
 			if (q.getPoints() == 0) {
@@ -1298,6 +1321,7 @@ public class TeacherControl extends UserControl implements Initializable {
 																									// class format
 		exam.setSolutionTime(time.toString());
 		exam.setType(typeComboBox.getValue());
+		/*ask the server to create exam in the DB*/
 		messageToServer[0] = "setExam";
 		messageToServer[1] = questioninexam;
 		messageToServer[2] = exam;
