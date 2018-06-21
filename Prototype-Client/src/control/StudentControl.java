@@ -618,7 +618,7 @@ public class StudentControl extends UserControl implements Initializable {
 			answer3.setStyle("-fx-background-color: white;");
 			answer4.setStyle("-fx-background-color: white;");
 			String stdSelected;
-			if (!examAnswers.isEmpty())
+			if (!examAnswers.isEmpty()&&examAnswers.containsKey(questioninexecutedexam.get(index).getId()))
 				stdSelected = examAnswers.get(questioninexecutedexam.get(index).getId()).toString();
 			else if(examAnswers.size()<questioninexecutedexam.size()&&examAnswers.size()>0)
 				stdSelected = "0";
