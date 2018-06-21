@@ -333,7 +333,11 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	}
 
-	/* check the content message from server */
+	/**
+	* The checkMessage function check the content message from server
+	*
+	* @author Or Edri/Tom Zarhin
+	*/
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
 		try {
@@ -353,9 +357,9 @@ public class TeacherControl extends UserControl implements Initializable {
 					 ************************************/
 
 					case "showingCopy": {
-						StudentControl scontrol = new StudentControl();
-						scontrol.justFlag = true;
-						scontrol.showingCopy((ArrayList<Question>) msg[1], (HashMap<String, Integer>) msg[2]);
+					    MyGradesControl scontrol = new MyGradesControl();
+					    MyGradesControl.justFlag = true;
+					    MyGradesControl.showingCopy((ArrayList<Question>) msg[1], (HashMap<String, Integer>) msg[2]);
 						break;
 					}
 
@@ -590,7 +594,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	/* intialize function go first after loading fxml */
+	/**
+	* The initialize function intialize function go first after loading fxml
+	*
+	* @author Or Edri/Tom Zarhin
+	*/
 	public void initialize(URL url, ResourceBundle rb) {
 		messageToServer[4] = getMyUser().getUsername();
 		setUnVisible();
@@ -662,7 +670,12 @@ public class TeacherControl extends UserControl implements Initializable {
 		AnchorPane myPane = FXMLLoader.load(getClass().getResource("/boundary/CreateQuestion.fxml"));
 		mainPane.getChildren().setAll(myPane);
 	}
-
+	
+	/**
+	* The openScreen function getting ActionEvent and "String" address to fmxl file and open it
+	*
+	* @author Or Edri
+	*/
 	public void openScreen(ActionEvent e, String screen) throws IOException {
 
 		Parent tableViewParent = FXMLLoader.load(getClass().getResource("/boundary/" + screen + ".fxml"));
@@ -674,51 +687,93 @@ public class TeacherControl extends UserControl implements Initializable {
 		window.show();
 	}
 
-	/* open the screen ExtendExamTime */
+	/**
+	* The openExtendExamTimeScreen function open the screen ExtendExamTime
+	*
+	* @author Tom Zarhin
+	*/
 	public void openExtendExamTimeScreen(ActionEvent e) throws IOException {
 		openScreen(e, "ExtendExamTime");
-		
 	}
+	
+	
+	/**
+	* The openTeacherSeeExamScreen function open the screen TeacherSeeExam
+	*
+	* @author Tom Zarhin
+	*/
 	public void openTeacherSeeExamScreen(ActionEvent e) throws IOException {
 		openScreen(e, "TeacherSeeExams");
 	}
 
-	/* open the screen UpdateQuestion */
+	/**
+	* The openUpdateQuestionScreen function open the screen UpdateQuestion
+	*
+	* @author Tom Zarhin
+	*/
 	public void openUpdateQuestionScreen(ActionEvent e) throws IOException {
 		openScreen(e, "UpdateQuestion");
 	}
 
-	/* open the screen CreateExamCode */
+	/**
+	* The openExamCodeScreen function open the screen CreateExamCode
+	*
+	* @author Tom Zarhin
+	*/
 	public void openExamCodeScreen(ActionEvent e) throws IOException {
 		openScreen(e, "CreateExamCode");
 	}
 
-	/* open the screen CreateExam */
+	/**
+	* The openCreateExam function open the screen CreateExam
+	*
+	* @author Tom Zarhin
+	*/
 	public void openCreateExam(ActionEvent e) throws IOException {
 		openScreen(e, "CreateExam");
 	}
 
-	/* open the screen CreateQuestion */
+	/**
+	* The openCreateQuestion function open the screen CreateQuestion
+	*
+	* @author Tom Zarhin
+	*/
 	public void openCreateQuestion(ActionEvent e) throws IOException {
 		openScreen(e, "CreateQuestion");
 	}
 
-	/* open the screen UpdateExam */
+	/**
+	* The openUpdateExamScreen function open the screen UpdateExam
+	*
+	* @author Tom Zarhin
+	*/
 	public void openUpdateExamScreen(ActionEvent e) throws IOException {
 		openScreen(e, "UpdateExam");
 	}
 
-	/* open the screen CheckExam */
+	/**
+	* The openCheckExamScreen function open the screen CheckExam 
+	*
+	* @author Tom Zarhin
+	*/
 	public void openCheckExamScreen(ActionEvent e) throws IOException {
 		openScreen(e, "CheckExam");
 	}
 
-	/* opening the screen LockExam */
+	/**
+	* The openLockExamScreen function open the screen LockExam 
+	*
+	* @author Tom Zarhin
+	*/
 	public void openLockExamScreen(ActionEvent e) throws IOException {
 		openScreen("LockExam");
 	}
 
-	/* open the screen ErrorMessage and sending an object */
+	/**
+	* The openScreen function getting "String" address to fmxl file and open it
+	*
+	* @author Tom Zarhim
+	*/
 	public void openScreen(String screen) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -734,7 +789,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	/* close button was pressed */
+	/**
+	* The closeScreen function close the window if close button was pressed 
+	*
+	* @author Tom Zarhin
+	*/
 	public void closeScreen(ActionEvent e) throws IOException, SQLException {
 		final Node source = (Node) e.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
@@ -749,14 +808,24 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * update question screen
 	 *******************************************************/
 
-	/* make a new question to save the oldest question before changing it */
+	
+	/**
+	* The createBackUpQuestion function make a new question 
+	* to save the oldest question before changing it
+	*
+	* @author Or Edri
+	*/
 	public Question createBackUpQuestion(Question questionSelected) {
 		return new Question(questionSelected.getId(), questionSelected.getTeacherName(),
 				questionSelected.getQuestionContent(), questionSelected.getAnswer1(), questionSelected.getAnswer2(),
 				questionSelected.getAnswer3(), questionSelected.getAnswer4(), questionSelected.getCorrectAnswer());
 	}
 
-	/* request to load questions to table view */
+	/**
+	* The loadQuestions function request to load questions to table view
+	*
+	* @author Or Edri
+	*/
 	public void loadQuestions(ActionEvent e) throws IOException {
 		/* ask for the qustions text */
 		String subject = subjectsComboBox.getValue(); // get the subject code
@@ -777,7 +846,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 
-	/* change the question content on table view */
+	/**
+	* The changeQuestionContentOnTable function change the question content on table view
+	*
+	* @author Or Edri
+	*/
 	public void changeQuestionContentOnTable(CellEditEvent<Question, String> edittedCell) {
 
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
@@ -788,7 +861,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	/* change the answer 1 on table view */
+	/**
+	* The changeAnswer1OnTable function change the answer 1 content on table view
+	*
+	* @author Or Edri
+	*/
 	public void changeAnswer1OnTable(CellEditEvent<Question, String> edittedCell) {
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		oldQuestion = createBackUpQuestion(questionSelected);
@@ -798,7 +875,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	/* change the answer 2 content on table view */
+	/**
+	* The changeAnswer2OnTable function change the answer 2 content on table view
+	*
+	* @author Or Edri
+	*/
 	public void changeAnswer2OnTable(CellEditEvent<Question, String> edittedCell) {
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		oldQuestion = createBackUpQuestion(questionSelected);
@@ -809,7 +890,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	/* change the answer 3 content on table view */
+	/**
+	* The changeAnswer3OnTable function change the answer 3 content on table view
+	*
+	* @author Or Edri
+	*/
 	public void changeAnswer3OnTable(CellEditEvent<Question, String> edittedCell) {
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		oldQuestion = createBackUpQuestion(questionSelected);
@@ -820,7 +905,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	/* change the answer 4 content on table view */
+	/**
+	* The changeAnswer4OnTable function change the answer 4 content on table view
+	*
+	* @author Or Edri
+	*/
 	public void changeAnswer4OnTable(CellEditEvent<Question, String> edittedCell) {
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		oldQuestion = createBackUpQuestion(questionSelected);
@@ -830,7 +919,12 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	/* change the correct answer on table view */
+	
+	/**
+	* The changeCorrectAnswerOnTable function change the correct answer on table view 
+	*
+	* @author Or Edri
+	*/
 	public void changeCorrectAnswerOnTable(CellEditEvent<Question, String> edittedCell) {
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		oldQuestion = createBackUpQuestion(questionSelected);
@@ -841,7 +935,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	/* updating the question that has been selected */
+	/**
+	* The updateQuestion function updating the question that has been selected 
+	* 
+	* @author Or Edri
+	*/
 	public void updateQuestion(Question questionSelected) {
 		messageToServer[0] = "updateQuestion";
 		messageToServer[1] = questionSelected;
@@ -849,7 +947,12 @@ public class TeacherControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
 	}
 
-	/* deleting question from the tableview and from the database */
+	
+	/**
+	* The deleteQuestion function deleting question from the table view and from the database  
+	* 
+	* @author Or Edri
+	*/
 	public void deleteQuestion(ActionEvent e) {
 		questionSelected = questionTableView.getSelectionModel().getSelectedItem();
 		if (questionSelected == null) {
@@ -866,7 +969,11 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * create question screen
 	 ***********************************************/
 
-	/* create a new question */
+	/**
+	* The createQuestionClick function create a new question 
+	* 
+	* @author Tom Zarhin
+	*/
 	public void createQuestionClick(ActionEvent e) throws IOException {
 		if (subjectsComboBox.getValue() == null) {
 			errorMsg("Please choose subject");
@@ -941,7 +1048,11 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * Update exam screen
 	 ***********************************************************************/
 
-	/* requesting the exams from the database */
+	/**
+	* The loadExams function requesting the exams from the database
+	* 
+	* @author Tom Zarhin
+	*/
 	public void loadExams(ActionEvent e) throws IOException {
 		String examIDStart;
 		String toSend;
@@ -976,7 +1087,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 
-	/* changing the remarks for teacher */
+	/**
+	* The changeRemarksForTeacherOnTable function changing the remarks for teacher
+	* 
+	* @author Tom Zarhin
+	*/
 	public void changeRemarksForTeacherOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
 		examSelected = examsTableView.getSelectionModel().getSelectedItem();
 		oldExam = new Exam();
@@ -993,7 +1108,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	/* changing the remarks for student on the table view */
+	/**
+	* The changeRemarksForStudentOnTable function changing the remarks for student on the table view
+	* 
+	* @author Tom Zarhin
+	*/
 	public void changeRemarksForStudentOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
 		examSelected = examsTableView.getSelectionModel().getSelectedItem();
 		oldExam = new Exam();
@@ -1009,7 +1128,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	/* changing the type of the exam */
+	/**
+	* The changeTypeOnTable function changing the type of the exam
+	* 
+	* @author Tom Zarhin
+	*/
 	public void changeTypeOnTable(CellEditEvent<Exam, String> edittedCell) throws IOException {
 		examSelected = examsTableView.getSelectionModel().getSelectedItem();
 		oldExam = new Exam();
@@ -1025,7 +1148,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	/* get the question in a specific exam */
+	/**
+	* The viewQuestion function get the question in a specific exam 
+	* 
+	* @author Tom Zarhin
+	*/
 	public void viewQuestion(ActionEvent e) throws IOException {
 		try {
 			temp = e;
@@ -1040,7 +1167,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	/* updating the exam in the database */
+	/**
+	* The updateExam function updating the exam in the database
+	* 
+	* @author Tom Zarhin
+	*/
 	public void updateExam(Exam examSelected) {
 		messageToServer[0] = "updateExam";
 		messageToServer[1] = examSelected;
@@ -1048,7 +1179,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer); // send the request to the server
 	}
 
-	/* removing the exam from the database */
+	/**
+	* The deleteExam function removing the exam from the database
+	* 
+	* @author Or Edri
+	*/
 	public void deleteExam(ActionEvent e) {
 		examSelected = examsTableView.getSelectionModel().getSelectedItem();
 		if (examSelected == null) {
@@ -1065,7 +1200,12 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * (Create + Update) questions in exam screens
 	 ***********************************************/
 
-	/* creating exam */
+	
+	/**
+	* The createExam function creating exam 
+	* 
+	* @author Tom Zarhin
+	*/
 	@SuppressWarnings("static-access")
 	public void createExam(ActionEvent e) {
 		int sumOfPoints = 0;
@@ -1122,7 +1262,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	/* moving the question to the question in exam table view */
+	/**
+	* The createExam function moving the question to the question in exam table view
+	* 
+	* @author Tom Zarhin
+	*/
 	@SuppressWarnings("unchecked")
 	public void toQuestionInExam(ActionEvent e) {
 		int flag = 0;
@@ -1153,7 +1297,11 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	}
 
-	/* setting the question in the table view (question in exam) */
+	/**
+	* The setToQuestionInExamTableView function setting the question in the table view (question in exam)
+	* 
+	* @author Tom Zarhin
+	*/
 	private void setToQuestionInExamTableView() {
 		questionPointsTableView.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
 		questionNameTableView.setCellValueFactory(new PropertyValueFactory<>("questionID"));// display the id in the
@@ -1163,7 +1311,12 @@ public class TeacherControl extends UserControl implements Initializable {
 		questionsInExamTableView.setItems(questionInExamObservable);
 	}
 
-	/* removing the question from the tableview */
+	
+	/**
+	* The removeFromTableView function removing the question from the table view
+	* 
+	* @author Tom Zarhin/Or Edri
+	*/
 	@SuppressWarnings("unchecked")
 	public void removeFromTableView(ActionEvent e) {
 		ObservableList<QuestionInExam> questiontoremove;
@@ -1195,7 +1348,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		// add the question back to the tableview
 	}
 
-	/* removing the question from the tableview */
+	/**
+	* The updateQuestionInExam function updating the question and the points of the exam
+	* 
+	* @author Tom Zarhin
+	*/
 	public void updateQuestionInExam(ActionEvent e) {
 		int sumOfPoints = 0;
 		for (QuestionInExam q : questionInExamObservable) {
@@ -1223,7 +1380,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
-	/* set new points in the table view */
+	/**
+	* The setPoints function set new points in the table view
+	* 
+	* @author Tom Zarhin
+	*/
 	@SuppressWarnings("unlikely-arg-type")
 	public void setPoints(CellEditEvent<QuestionInExam, Float> edittedCell) {
 		QuestionInExam questionSelected = questionsInExamTableView.getSelectionModel().getSelectedItem();
@@ -1237,7 +1398,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		backButton.setDisable(false);
 	}
 
-	/* event for locking the back button when u editing points */
+	/**
+	* The blockBackButton function is for locking the back button when u editing points
+	* 
+	* @author Tom Zarhin
+	*/
 	public void blockBackButton() {
 		backButton.setDisable(true);
 	}
@@ -1246,7 +1411,11 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * Create exam code screen
 	 ***********************************************************/
 
-	/* creating exam code */
+	/**
+	* The createExamCode function creating exam code
+	* 
+	* @author Or Edri
+	*/
 	public void createExamCode(ActionEvent e) {
 		ExecutedExam exam;
 		String examID = examComboBox.getValue();
@@ -1286,7 +1455,11 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	}
 
-	/* loading courses from database by subject */
+	/**
+	* The loadCourses function loading courses from database by subject 
+	* 
+	* @author Or Edri
+	*/
 	public void loadCourses(ActionEvent e) throws IOException {
 		/* ask for the courses name */
 		try {
@@ -1310,7 +1483,11 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * Extend exam time screen
 	 ***********************************************************/
 
-	/* creating an extend time request */
+	/**
+	* The createExtendTimeRequest function creating an extend time request
+	* 
+	* @author Tom Zarinh
+	*/
 	public void createExtendTimeRequest(ActionEvent e) throws IOException {
 		if (timeForExamHours.getText().equals("") || timeForExamMinute.getText().equals("")) {
 			errorMsg("Please fill the time you want to extend by");
@@ -1342,12 +1519,20 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * TOM ????
 	 ************************************************************/
 
-	/* locking the subject function (subject combobox) */
+	/**
+	* The lockSubject function locking the subject function (subject combobox)
+	* 
+	* @author Tom Zarinh
+	*/
 	public void lockSubject(ActionEvent e) {
 		subjectsComboBox.setDisable(true);
 	}
 
-	/* locking the exam */
+	/**
+	* The lockExam function locking the exam
+	* 
+	* @author Tom Zarinh
+	*/
 	public void lockExam(ActionEvent e) throws IOException {
 		ExecutedExam executedexam = executedExamTableView.getSelectionModel().getSelectedItem();
 		if (executedexam == null) {
@@ -1364,9 +1549,11 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * Check exam
 	 ************************************************************/
 
-	/**************************
-	 * function to show to director information
-	 ****************/
+	/**
+	* The setUnVisible function for showing to director information
+	* 
+	* @author Tom Zarinh
+	*/
 	void setUnVisible() {
 		try {
 		if ( getMyUser().getRole().equals("director")) {
