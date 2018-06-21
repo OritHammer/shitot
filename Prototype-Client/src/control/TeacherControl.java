@@ -217,6 +217,11 @@ public class TeacherControl extends UserControl implements Initializable {
 	@FXML
 	private Button btnDelete;
 
+	/**
+	* The loadExamCopy function order exam Copy of spesific student
+	*
+	* @author Or Edri
+	*/
 	public void loadExamCopy(MouseEvent event) {
 		if (event.getClickCount() == 2) {
 			connect(this);
@@ -232,6 +237,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
+	/**
+	* The confirmExecutedExam confirm grade of executed exam of spesific student
+	*
+	* @author Or Edri
+	*/
 	public void confirmExecutedExam(ActionEvent event) throws IOException {
 		if (studnetInExamTableView.getSelectionModel().getSelectedItem() == null)
 			return;
@@ -256,6 +266,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		chat.handleMessageFromClientUI(messageToServer);
 	}
 
+	/**
+	* The confirmExecutedExam confirm grade of executed exam of spesific student
+	*
+	* @author Or Edri
+	*/
 	public void closeChange(ActionEvent event) {
 		final Node source = (Node) event.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
@@ -661,16 +676,6 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * Opening screens action-events
 	 ***************************************/
 
-	public void justTest(ActionEvent e) throws IOException {
-		AnchorPane myPane = FXMLLoader.load(getClass().getResource("/boundary/CreateExamCode.fxml"));
-		mainPane.getChildren().setAll(myPane);
-	}
-
-	public void justTest2(ActionEvent e) throws IOException {
-		AnchorPane myPane = FXMLLoader.load(getClass().getResource("/boundary/CreateQuestion.fxml"));
-		mainPane.getChildren().setAll(myPane);
-	}
-	
 	/**
 	* The openScreen function getting ActionEvent and "String" address to fmxl file and open it
 	*
