@@ -57,12 +57,12 @@ import javafx.stage.Stage;
 
 public class StudentControl extends UserControl implements Initializable {
 
-	protected static ArrayList<Question> questioninexecutedexam;
-	protected static HashMap<String, Integer> examAnswers;// saves the question id and the answers
+	private static ArrayList<Question> questioninexecutedexam;
+	private static HashMap<String, Integer> examAnswers;// saves the question id and the answers
 	private static int remainTime;
 	private static ExecutedExam exam;
 	private static Timer timer;
-	protected static Boolean copyFlag = false;
+	private static Boolean copyFlag = false;
 	private List<File> fileFromClient;
 	private int index = -1;
 	private static String timeToString;
@@ -92,8 +92,22 @@ public class StudentControl extends UserControl implements Initializable {
 	private Label fileName;
 	@FXML
 	private Text remarksForStudentText;
-	
+	// *********for student see his grades AND can order exam***********//
+	@FXML
+	private TableView<ExamDetailsMessage> examGradesTable;
+	@FXML
+	private TableColumn<ExamDetailsMessage, String> examCodeColumn;
+	@FXML
+	private TableColumn<ExamDetailsMessage, String> courseCodeColumn;
+	@FXML
+	private TableColumn<ExamDetailsMessage, String> gradeColumn;
+	@FXML
+	private TableColumn<ExamDetailsMessage, String> dateColumn;
+	@FXML
+	private TableColumn<ExamDetailsMessage, String> executedIDCol;
 
+	@FXML
+	private ComboBox<String> examCodeCombo;
 
 	ObservableList<ExamDetailsMessage> detailsList = FXCollections.observableArrayList();
 	ObservableList<String> executeExamList = FXCollections.observableArrayList();
@@ -139,8 +153,7 @@ public class StudentControl extends UserControl implements Initializable {
 	private TextField timerTextField;
 
 	// ******************** Showing exam copy ************//
-	@FXML
-	protected ComboBox<String> examCodeCombo;
+
 	/************************ Class Methods *************************/
 	public void connect(UserControl user) {
 		try {
@@ -196,6 +209,10 @@ public class StudentControl extends UserControl implements Initializable {
 				remarksForStudentText.setText(exam.getExam().getRemarksForStudent());
 			});
 			startTime();
+			break;
+		}
+		case ("My Grades sheet "): {
+			getGradesFromServer();
 			break;
 		}
 		default:
@@ -341,6 +358,38 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 	}
 
+	/*********************
+	 * Student see his grades or get copy
+	 *************************/
+	public void getGradesFromServer() {
+		connect(this);
+		messageToServer[0] = "getExamsByUserName";
+		messageToServer[1] = getMyUser().getUsername();
+		messageToServer[2] = null;
+		chat.handleMessageFromClientUI(messageToServer);// send the message to server
+	}
+
+	/*********************
+	 * Student Order Copy
+	 * 
+	 * @throws IOException
+	 *************************/
+	public void orderExamPressed(ActionEvent e) {
+		/*
+		 * messageToServer[0] = "getExamsCopyByUserName"; messageToServer[1] =
+		 * examCodeCombo.getValue(); messageToServer[2] = null;
+		 * chat.handleMessageFromClientUI(messageToServer);// send the message to server
+		 */
+		if (examCodeCombo.getValue() == null) {
+			errorMsg("Please select exam first");
+			return;
+		}
+		connect(this);
+		messageToServer[0] = "getStudentAnswers";
+		messageToServer[1] = examCodeCombo.getValue(); // sending executed exam id
+		messageToServer[2] = getMyUser().getUsername(); // sending the user name
+		chat.handleMessageFromClientUI(messageToServer);
+	}
 
 	/***************************
 	 * Student excecute exam
@@ -398,7 +447,10 @@ public class StudentControl extends UserControl implements Initializable {
 						openScreen("boundary", "LoginGui");
 						break;
 					}
-
+					case "getExamsByUserName": {
+						showGradesOnTable((ArrayList<ExamDetailsMessage>) msgFromServer[1]);
+						break;
+					}
 					case "checkExecutedExam": {
 						if (msgFromServer[1] == null) {
 							errorMsg("Can't perform this exam");
@@ -413,7 +465,11 @@ public class StudentControl extends UserControl implements Initializable {
 
 						break;
 					}
-
+					case "showingCopy": {
+						showingCopy((ArrayList<Question>) msgFromServer[1],
+								(HashMap<String, Integer>) msgFromServer[2]);
+						break;
+					}
 					case "setExecutedExamLocked": {
 						if (((Boolean) msgFromServer[1] == true && (((String) msgFromServer[2]).equals(exam.getExecutedExamID())))) {
 							if (isLocked == false) {
@@ -484,7 +540,40 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 	}
 
-	
+	public void showingCopy(ArrayList<Question> ques, HashMap<String, Integer> ans) {
+		if (ans.isEmpty())
+		{
+			Alert emptyStdExam = new Alert(AlertType.INFORMATION, "Your exam has no answers please pay attention"
+							,ButtonType.OK);
+			emptyStdExam.showAndWait() ; 
+		}
+		examAnswers = ans;
+		questioninexecutedexam = ques;
+		copyFlag = true;
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				if (justFlag == true) {
+					((Stage) ((Node) tempEvent.getSource()).getScene().getWindow()).hide();
+					Stage primaryStage = new Stage();
+					FXMLLoader loader = new FXMLLoader();
+					Pane root;
+					try {
+						root = loader
+								.load(getClass().getResource("/studentBoundary/ComputerizedExam.fxml").openStream());
+						Scene scene = new Scene(root);
+						primaryStage.setScene(scene);
+						primaryStage.show();
+					} catch (IOException e) {
+
+						e.printStackTrace();
+					}
+				} else {
+					openScreen("studentBoundary", "ComputerizedExam");
+				}
+			}
+		});
+	}
 
 	@SuppressWarnings("deprecation")
 	public void addTimeToExam(Object[] message) {
@@ -498,6 +587,32 @@ public class StudentControl extends UserControl implements Initializable {
 				remainTime += timeToAdd;
 			}
 		}
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void showGradesOnTable(ArrayList<ExamDetailsMessage> detailsFromS) {
+
+		for (ExamDetailsMessage edM : detailsFromS) {
+			detailsList.add(edM);
+			executeExamList.add(edM.getExcecutedExamID());
+		}
+
+		if (examGradesTable != null && examGradesTable.getColumns() != null)
+			examGradesTable.getColumns().clear();
+		if (examCodeCombo != null && examCodeCombo.getItems() != null)
+			examCodeCombo.getItems().clear();
+		examCodeCombo.setItems(executeExamList);
+		examGradesTable.setItems(detailsList);
+		examCodeColumn.setCellValueFactory(new PropertyValueFactory("examID"));
+		dateColumn.setCellValueFactory(new PropertyValueFactory("examDate"));
+		gradeColumn.setCellValueFactory(new PropertyValueFactory("examGrade"));
+		courseCodeColumn.setCellValueFactory(new PropertyValueFactory("examCourse"));
+		executedIDCol.setCellValueFactory(new PropertyValueFactory<>("excecutedExamID"));
+		examGradesTable.getColumns().addAll(examCodeColumn, courseCodeColumn, gradeColumn, dateColumn, executedIDCol);
+		/*
+		 * also need to take from detailsFromS the exam_id's and insert them to
+		 * observeable list into the relevante combobox .
+		 */
 	}
 
 	/************************ Student performing exam *************/
@@ -644,8 +759,7 @@ public class StudentControl extends UserControl implements Initializable {
 	@FXML
 	private void finishExam(ActionEvent e) throws IOException {
 		isPerformExam = false;
-		if(timer!=null)
-			timer.cancel();
+		timer.cancel();
 		if (justFlag) {
 			((Stage) ((Node) e.getSource()).getScene().getWindow()).close();
 			((Stage) ((Node) tempEvent.getSource()).getScene().getWindow()).show();
