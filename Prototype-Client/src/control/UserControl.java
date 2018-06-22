@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
+import entity.ExecutedExam;
 import entity.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -20,6 +21,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -85,6 +88,15 @@ public class UserControl implements Initializable {
 	final public static int DEFAULT_PORT = 5555;
 	protected ChatClient chat;
 	private static User myUser = new User();
+	/**
+	 * variables to show statisticRepot to teacher And Director
+	*/
+	@FXML
+	public BarChart<?, ?> barChart;
+	@SuppressWarnings("rawtypes")
+	public XYChart.Series histogram = null;
+	public int[] sumGradeRanges;
+	public ArrayList<ExecutedExam> GradeList;
 
 	/* this method connected between client and server */
 	/**
@@ -427,13 +439,41 @@ public class UserControl implements Initializable {
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
 	}
-
-	
-
+	/**
+	 * setStudentAuthor_Date_name()
+	 * @author LeeOrr hammer
+	 */
 	public void setStudentAuthor_Date_name() {// *** move to userControl rename userDetails
 		userNameLabel.setText(getMyUser().getFullname());
 		dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
 		authorLabel.setText("" + myUser.getRole());
+	}
+	/**
+	 * ShowHistogramInBarChart()
+	 * @throws NullPointerException
+	 * @author orit Hammer
+	 */
+	public void ShowHistogramInBarChart() throws NullPointerException {
+		if(myUser.getRole().equals("student")==false) {
+		// set values in the bar chart
+		for (int i = 0, j = 9; i < sumGradeRanges.length * 10 - 10; i += 10, j += 10) {
+			histogram.getData().add(new XYChart.Data(i + "-" + j, sumGradeRanges[i / 10]));
+		}
+		histogram.getData().add(new XYChart.Data("90-100", sumGradeRanges[9]));
+		barChart.getData().add(histogram);
+		}
+	}
+	/**
+	 * sumRangGrades(ExecutedExam eExam)
+	 * @param eExam
+	 * @throws IndexOutOfBoundsException
+	 * @author orit Hammer
+	 */
+	public void sumRangGrades(ExecutedExam eExam) throws IndexOutOfBoundsException {
+		if(myUser.getRole().equals("student")==false) {
+		for (int i = 0; i < sumGradeRanges.length; i++)
+			sumGradeRanges[i] += eExam.getGradeRang()[i];
+		}
 	}
 
 }

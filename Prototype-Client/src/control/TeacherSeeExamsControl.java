@@ -60,8 +60,8 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 
 	@FXML
 	private TableColumn<ExecutedExam, Integer> numOfStudentDidntFinished;
-    @FXML
-    private Button showStudentsButton;
+	@FXML
+	private Button showStudentsButton;
 	@FXML
 	private TableColumn<ExecutedExam, String> date;
 	@FXML
@@ -73,11 +73,13 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 
 	static private ArrayList<ExecutedExam> executedExam;
 	static private ExecutedExam choosenExecutedExamToReport;
-	@FXML
-	static protected BarChart<?, ?> barChart;
-	@SuppressWarnings("rawtypes")
-	static protected XYChart.Series histogram = null;
 
+	/*
+	 * @FXML static protected BarChart<?, ?> barChart;
+	 * 
+	 * @SuppressWarnings("rawtypes") static protected XYChart.Series histogram =
+	 * null;
+	 */
 	public void initialize(URL url, ResourceBundle rb) {
 		if (pageLabel == null) {
 			executedExam = new ArrayList<ExecutedExam>();
@@ -95,6 +97,16 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 		} else if (pageLabel.getText().equals("StatisticReportTeacher")) {
 			medianTxtFiled.setText(" " + choosenExecutedExamToReport.getMedian());
 			avgTxtFiled.setText(" " + choosenExecutedExamToReport.getAverage());
+			if (histogram == null)
+				histogram = new XYChart.Series<>();// initialize histogram
+			else
+				histogram.getData().clear();
+			if (sumGradeRanges == null)
+				sumGradeRanges = new int[10];
+			for (int i = 0; i < 10; i++) {
+				sumGradeRanges[i] = 0;
+			}
+			sumRangGrades(choosenExecutedExamToReport);
 			ShowHistogramInBarChart();
 		}
 	}
@@ -175,35 +187,18 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 			errorMsg("Please choose an exam");
 			return;
 		}
-
-		openScreen(e, "StatisticReportTeacher");
+		for (ExecutedExam ex : executedExam)
+			if (ex.getExecutedExamID().equals(choosenExecutedExamToReport.getExecutedExamID())) {
+				choosenExecutedExamToReport = ex;
+				openScreen(e, "StatisticReportTeacher");
+				break;
+			}
 		
-		 for (ExecutedExam ex : executedExam) if
-		  (ex.getExecutedExamID().equals(choosenExecutedExamToReport.getExecutedExamID())) {
-		  choosenExecutedExamToReport=ex;
-		  openScreen("boundary","StatisticReportTeacher"); }
-		  
-		 
+
 	}
 
-	/**
-	 * void ShowHistogramInBarChart() The function show an specific executedExam
-	 * statistic in histogram Report to teacher and manager
-	 * 
-	 * @author Orit Hammer
-	 */
-	@SuppressWarnings("rawtypes")
-	public void ShowHistogramInBarChart() throws NullPointerException {
-		// set values in the bar chart
-		int[] sumGradeRanges = choosenExecutedExamToReport.getGradeRang();
-		for (int i = 0, j = 9; i < 90; i += 10, j += 10) {
-			histogram.getData().add(new XYChart.Data(i + "-" + j, sumGradeRanges[i / 10]));
-		} 
-		histogram.getData().add(new XYChart.Data("90-100", sumGradeRanges[9]));
-		barChart.getData().add(histogram);
-	}
 	public void showStudentsInThisExam(ActionEvent e) throws IOException {
-		tempExamId=ExamsForTeacher.getSelectionModel().getSelectedItem().getExecutedExamID();
+		tempExamId = ExamsForTeacher.getSelectionModel().getSelectedItem().getExecutedExamID();
 		openCheckExamScreen(e);
 	}
 }
