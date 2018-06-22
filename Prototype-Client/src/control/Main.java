@@ -18,8 +18,9 @@ public class Main extends Application {
    guiStage = primaryStage;
    Scene scene = new Scene(root);
    scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
-   guiStage.setTitle("Login");
+   guiStage.setTitle("AES-Login");
    guiStage.setScene(scene);
+   Main.getStage().getIcons().setAll(new Image("Owl.png"));
    guiStage.show(); 
   } 
   catch(Exception e)

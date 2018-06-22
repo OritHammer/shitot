@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 public class MainServer  extends Application{
 	  private static Stage guiStage;
 	  
@@ -13,8 +14,9 @@ public class MainServer  extends Application{
 	    guiStage = primaryStage;
 	    Scene scene = new Scene(root);
 	    scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
-	    guiStage.setTitle("Connect");
+	    guiStage.setTitle("AES - Connect Server");
 	    guiStage.setScene(scene);
+	    guiStage.getIcons().setAll(new Image("Owl.png"));
 	    guiStage.show(); 
 	   } 
 	   catch(Exception e)
