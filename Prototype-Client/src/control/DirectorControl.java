@@ -94,10 +94,6 @@ public class DirectorControl extends UserControl implements Initializable {
 	private ComboBox<String> subjectsComboBox;
 	@FXML
 	private ComboBox<String> coursesComboBox;
-	private String reportByChoose;
-
-	@FXML
-	private BarChart<?, ?> barChart;
 	@FXML
 	private TextField averageTextField;
 	@FXML
@@ -112,10 +108,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	private Button btnRefresh;
 
 	private static String requestId;
-	@SuppressWarnings("rawtypes")
-	private XYChart.Series histogram = null;
-	private float[] sumGradeRanges;
-	private ArrayList<ExecutedExam> GradeList;
+	private String reportByChoose;
 	private ArrayList<Integer> studentGradeList;
 	private Boolean refreshPressed = false;
 	
@@ -165,7 +158,7 @@ public class DirectorControl extends UserControl implements Initializable {
 		else
 			histogram.getData().clear();
 		if (sumGradeRanges == null)
-			sumGradeRanges = new float[10];
+			sumGradeRanges = new int[10];
 		for (int i = 0; i < 10; i++) {
 			sumGradeRanges[i] = 0;
 		}
@@ -477,27 +470,6 @@ public class DirectorControl extends UserControl implements Initializable {
 		}
 	}
 
-	public void sumRangGrades(ExecutedExam eExam) throws IndexOutOfBoundsException {
-		for (int i = 0; i < sumGradeRanges.length; i++)
-			sumGradeRanges[i] += eExam.getGradeRang()[i];
-	}
-
-	public void ShowHistogramInBarChart() throws NullPointerException {
-		// set values in the bar chart
-		for (int i = 0, j = 9; i < sumGradeRanges.length * 10 - 10; i += 10, j += 10) {
-			histogram.getData().add(new XYChart.Data(i + "-" + j, sumGradeRanges[i / 10]));
-		}
-		histogram.getData().add(new XYChart.Data("90-100", sumGradeRanges[9]));
-		/*
-		 * histogram.getData().add(new XYChart.Data("0-54", sumGradeRanges[0]));
-		 * histogram.getData().add(new XYChart.Data("55-65", sumGradeRanges[1]));
-		 * histogram.getData().add(new XYChart.Data("65-75", sumGradeRanges[2]));
-		 * histogram.getData().add(new XYChart.Data("75-84", sumGradeRanges[3]));
-		 * histogram.getData().add(new XYChart.Data("85-94", sumGradeRanges[4]));
-		 * histogram.getData().add(new XYChart.Data("95-100", sumGradeRanges[5]));
-		 */
-		barChart.getData().add(histogram);
-	}
 
 	public void clearData() {
 		barChart.getData().clear();
