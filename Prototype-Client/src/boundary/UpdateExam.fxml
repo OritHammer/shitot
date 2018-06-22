@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -9,13 +13,12 @@
 <?import javafx.scene.paint.RadialGradient?>
 <?import javafx.scene.paint.Stop?>
 
-<AnchorPane prefHeight="563.0" prefWidth="957.0" styleClass="card" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+<AnchorPane prefHeight="563.0" prefWidth="957.0" styleClass="card" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
       <TableView fx:id="examsTableView" editable="true" layoutX="8.0" layoutY="158.0" prefHeight="356.0" prefWidth="939.0">
          <columns>
-            <TableColumn fx:id="questionIDTable" prefWidth="76.0" text="Question ID" />
+            <TableColumn fx:id="examIDTable" prefWidth="76.0" text="exam id" />
             <TableColumn fx:id="teacherNameTable" prefWidth="94.0" text="Teacher name" />
-            <TableColumn fx:id="examITable" prefWidth="149.0" text="exam id" />
             <TableColumn fx:id="solutionTimeTable" prefWidth="168.0" text="solution time" />
             <TableColumn fx:id="remarksForTeacherTable" onEditCommit="#changeRemarksForTeacherOnTable" prefWidth="193.0" text="remarks for teacher" />
             <TableColumn fx:id="remarksForStudentTable" onEditCommit="#changeRemarksForStudentOnTable" prefWidth="151.0" text="remarks for student" />

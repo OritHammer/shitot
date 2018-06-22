@@ -246,7 +246,12 @@ public class Server extends AbstractServer {
 		}
 
 		case "createChangingRequest": {
-			con.createChangingRequest(message[1]);
+			Boolean ifExtendTimeAdded;
+			ifExtendTimeAdded = con.createChangingRequest(message[1]);
+			serverMessage[1] = ifExtendTimeAdded;
+			serverMessage[5] = msgCounter;
+			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 
@@ -260,6 +265,10 @@ public class Server extends AbstractServer {
 		}
 		case "setExam": {/* client request is to create exam in DB */
 			String examId = con.createExam(message[1], message[2]);
+			serverMessage[1] = examId;
+			serverMessage[5] = msgCounter;
+			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			if (((Exam) message[2]).getType().equals("manual")) {
 				ArrayList<Question> questions = con.getQuestions(message[1]);
 				((Exam) message[2]).setE_id(examId);
@@ -370,7 +379,6 @@ public class Server extends AbstractServer {
 			Boolean ifQuestionCreated;
 			ifQuestionCreated = con.createQuestion(message[1], message[2], message[3]);
 			serverMessage[1] = ifQuestionCreated;
-			serverMessage[5] = msgCounter;
 			this.sendToAllClients(serverMessage);
 			break;
 		}

@@ -522,7 +522,7 @@ public class MysqlConnection {
 
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			return null;
 		}
 		// stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
 		return fullExamNumber;
@@ -769,7 +769,7 @@ public class MysqlConnection {
 		return examList;
 	}
 
-	public synchronized void createChangingRequest(Object requestDetails) {
+	public synchronized Boolean createChangingRequest(Object requestDetails) {
 		RequestForChangingTimeAllocated request = (RequestForChangingTimeAllocated) requestDetails;
 		String fullRequestNumber;
 		int requestNum;
@@ -787,10 +787,10 @@ public class MysqlConnection {
 					+ "\",\"" + request.getTeacherName() + "\",\"" + request.getReason() + "\",\""
 					+ request.getMenagerApprove() + "\",\"" + request.getIDexecutedExam() + "\",\""
 					+ request.getTimeAdded() + "\");");
-
 			rs.close();
+			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			return false;
 		}
 		// stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
 
