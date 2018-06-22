@@ -584,10 +584,4 @@ public class DirectorControl extends UserControl implements Initializable {
 		});
 	}
 
-	public void getStudentsCopiesStock(ActionEvent e) throws IOException {
-		TeacherControl sController = new TeacherControl();
-
-			sController.openCheckExamScreen(e);
-
-	}
 }

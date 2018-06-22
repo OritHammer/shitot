@@ -27,6 +27,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -59,7 +60,8 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 
 	@FXML
 	private TableColumn<ExecutedExam, Integer> numOfStudentDidntFinished;
-
+    @FXML
+    private Button showStudentsButton;
 	@FXML
 	private TableColumn<ExecutedExam, String> date;
 	@FXML
@@ -81,6 +83,7 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 			executedExam = new ArrayList<ExecutedExam>();
 			if (getMyUser().getRole().equals("director")) {
 				messageToServer[1] = null;
+				showStudentsButton.setVisible(true);
 			} else {
 				messageToServer[1] = getMyUser().getUsername();
 			}
