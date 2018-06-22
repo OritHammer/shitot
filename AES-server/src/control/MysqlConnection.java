@@ -1303,7 +1303,7 @@ public class MysqlConnection {
 						"select EE.executedExamID ,teacherExams.timeGiven , EE.actuallySolutionTime ,EE.numOfStudentStarted,"
 								+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished, EE.startDate, EE.between0to9, EE.between10to19, "
 								+ "EE.between20to29, EE.between30to39, EE.between40to49, EE.between50to59, EE.between60to69, EE.between70to79, "
-								+ "EE.between80to89, EE.between90to100 "
+								+ "EE.between80to89, EE.between90to100 ,EE.average, EE.median "
 								+ "FROM (select exams.e_id as eid , exams.solutionTime as timeGiven "
 								+ "from exams)  teacherExams , executedexam as EE "
 								+ "where teacherExams.eid = EE.exam_id;");
@@ -1312,7 +1312,7 @@ public class MysqlConnection {
 						"select EE.executedExamID ,teacherExams.timeGiven , EE.actuallySolutionTime ,EE.numOfStudentStarted,"
 								+ "EE.numOfStudentFinished, EE.numOfStudentDidntFinished, EE.startDate, EE.between0to9, EE.between10to19, "
 								+ "EE.between20to29, EE.between30to39, EE.between40to49, EE.between50to59, EE.between60to69, EE.between70to79, "
-								+ "EE.between80to89, EE.between90to100 "
+								+ "EE.between80to89, EE.between90to100, EE.average, EE.median "
 								+ "FROM (select exams.e_id as eid , exams.solutionTime as timeGiven " + "from exams "
 								+ "where exams.tUserName = \"" + (String) teacherUserName
 								+ "\" )  teacherExams , executedexam as EE " + "where teacherExams.eid = EE.exam_id;");
@@ -1326,6 +1326,8 @@ public class MysqlConnection {
 				executedexam.setNumOfStudentStarted(Integer.parseInt(rs.getString(4)));
 				executedexam.setNumOfStudentFinished(Integer.parseInt(rs.getString(5)));
 				executedexam.setNumOfStudentDidntFinished(Integer.parseInt(rs.getString(6)));
+				executedexam.setAverage(rs.getFloat(18));
+				executedexam.setMedian(rs.getFloat(19));
 				executedexam.setDate(rs.getString(7));
 				for (int i = 0; i < 10; i++)
 					gradesRang[i] = rs.getInt(i + 8);

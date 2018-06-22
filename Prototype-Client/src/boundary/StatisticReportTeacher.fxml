@@ -23,6 +23,6 @@
             <NumberAxis prefHeight="210.0" prefWidth="28.0" side="LEFT" />
          </yAxis>
       </BarChart>
-      <Button fx:id="backButton" layoutX="258.0" layoutY="385.0" mnemonicParsing="false" text="Back" />
+      <Button fx:id="backButton" layoutX="258.0" layoutY="385.0" mnemonicParsing="false" onAction="#closeScreen" text="Back" />
    </children>
 </AnchorPane>

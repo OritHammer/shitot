@@ -92,7 +92,7 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 		} else if (pageLabel.getText().equals("StatisticReportTeacher")) {
 			medianTxtFiled.setText(" " + choosenExecutedExamToReport.getMedian());
 			avgTxtFiled.setText(" " + choosenExecutedExamToReport.getAverage());
-			// ShowHistogramInBarChart();
+			ShowHistogramInBarChart();
 		}
 	}
 
@@ -174,12 +174,13 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 		}
 
 		openScreen(e, "StatisticReportTeacher");
-		/*
-		 * for (ExecutedExam ex : executedExam) if
-		 * (ex.getExecutedExamID().equals(chooseExecutedExam.getExecutedExamID())) {
-		 * choosenExecutedExamToReport=ex;
-		 * openScreen("boundary","StatisticReportTeacher"); }
-		 */
+		
+		 for (ExecutedExam ex : executedExam) if
+		  (ex.getExecutedExamID().equals(choosenExecutedExamToReport.getExecutedExamID())) {
+		  choosenExecutedExamToReport=ex;
+		  openScreen("boundary","StatisticReportTeacher"); }
+		  
+		 
 	}
 
 	/**
