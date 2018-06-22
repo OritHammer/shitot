@@ -237,7 +237,12 @@ public class TeacherControl extends UserControl implements Initializable {
 		if (event.getClickCount() == 2) {
 			connect(this);
 			messageToServer[0] = "getStudentAnswers";
-			messageToServer[1] = executedExamsComboBox.getValue(); /*sending executed exam id*/ 
+			//this condition is for the director
+			if(getMyUser().getRole().equals("director")) {
+				messageToServer[1] = tempExamId;
+			}else {
+				messageToServer[1] = executedExamsComboBox.getValue(); /*sending executed exam id*/ 
+			}
 			messageToServer[2] = studnetInExamTableView.getSelectionModel().getSelectedItem().getUserName(); /*send the user name*/
 			chat.handleMessageFromClientUI(messageToServer);
 			StudentControl studentControl = new StudentControl();
