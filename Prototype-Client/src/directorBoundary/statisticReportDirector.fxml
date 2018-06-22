@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" styleClass="card" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.DirectorControl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="card" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.DirectorControl">
    <children>
       <Label fx:id="chooseUserNameLabel" layoutX="241.0" layoutY="45.0" text="Choose User Name:" />
       <Label layoutX="309.0" layoutY="113.0" text="Median" />
@@ -18,8 +19,8 @@
       <Label fx:id="chooseSubjectLabel" layoutX="240.0" layoutY="45.0" text="Choose Subject" />
       <ComboBox fx:id="subjectsComboBox" layoutX="240.0" layoutY="62.0" onAction="#loadCourses" prefHeight="25.0" prefWidth="141.0" />
       <Label layoutX="96.0" layoutY="45.0" prefHeight="17.0" prefWidth="141.0" text="Get  Statistic Report By:" />
-      <NumberAxis layoutX="451.0" layoutY="146.0" prefHeight="210.0" prefWidth="28.0" side="LEFT" />
-      <BarChart fx:id="barChart" alternativeRowFillVisible="false" animated="false" blendMode="HARD_LIGHT" horizontalGridLinesVisible="false" horizontalZeroLineVisible="false" layoutX="39.0" layoutY="139.0" mouseTransparent="true" prefHeight="242.0" prefWidth="524.0" title="Histogram" verticalGridLinesVisible="false">
+      <NumberAxis layoutX="451.0" layoutY="146.0" prefHeight="210.0" prefWidth="28.0" side="LEFT" visible="false" />
+      <BarChart fx:id="barChart" alternativeRowFillVisible="false" animated="false" blendMode="HARD_LIGHT" horizontalGridLinesVisible="false" horizontalZeroLineVisible="false" layoutX="39.0" layoutY="139.0" mouseTransparent="true" prefHeight="242.0" prefWidth="513.0" title="Histogram" verticalGridLinesVisible="false">
          <xAxis>
             <CategoryAxis label="Grade" prefHeight="41.0" prefWidth="410.0">
                <opaqueInsets>
