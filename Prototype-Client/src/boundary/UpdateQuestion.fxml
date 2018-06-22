@@ -42,7 +42,7 @@
             <TableColumn fx:id="a3" onEditCommit="#changeAnswer3OnTable" prefWidth="105.0" text="Answer 3" />
             <TableColumn fx:id="a4" onEditCommit="#changeAnswer4OnTable" prefWidth="100.0" text="Answer 4" />
             <TableColumn fx:id="correctAns" onEditCommit="#changeCorrectAnswerOnTable" prefWidth="109.0" text="Correct answer" />
-            <TableColumn fx:id="c1" onEditCommit="#changeCorrectAnswerOnTable" prefWidth="33.0" text="Edit" />
+            
         </columns>
       </TableView>
       <ComboBox fx:id="subjectsComboBox" layoutX="22.0" layoutY="31.0" onAction="#loadCourses" prefWidth="150.0" promptText="Choose subject" />

@@ -456,7 +456,6 @@ public class StudentControl extends UserControl implements Initializable {
 					case "addTime": {
 						// if(requestId.contains(arg0))
 						addTimeToExam(msgFromServer);
-
 						break;
 					}
 

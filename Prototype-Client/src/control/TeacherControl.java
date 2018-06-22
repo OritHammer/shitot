@@ -296,6 +296,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		final Node source = (Node) event.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
+		
 	}
 
 
@@ -384,6 +385,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		FXMLLoader fxmlLoader = new FXMLLoader();
 		AnchorPane myPane = fxmlLoader.load(getClass().getResource("/boundary/ChangeGrade.fxml").openStream());
 		Scene dialogScene = new Scene(myPane);
+		dialogScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 		tController = (TeacherControl) fxmlLoader.getController();
 		tController.setTeacherController(this);
 		dialog.setScene(dialogScene);
@@ -399,7 +401,9 @@ public class TeacherControl extends UserControl implements Initializable {
 		dialog.initOwner((Stage) source.getScene().getWindow());
 		FXMLLoader fxmlLoader = new FXMLLoader();
 		AnchorPane myPane = fxmlLoader.load(getClass().getResource("/boundary/" + screen + ".fxml").openStream());
+		
 		Scene dialogScene = new Scene(myPane);
+		dialogScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 		dialog.setScene(dialogScene);
 		dialog.show();
 	}
@@ -615,12 +619,12 @@ public class TeacherControl extends UserControl implements Initializable {
 								} else {
 									blockPassQuestionButton = false;
 								}
-								try {
-									openScreen(tempEvent, "UpdateQuestionInExam");
-								} catch (IOException e) {
-
-									e.printStackTrace();
-								}
+									try {
+										openSceneInTheSameWindow(tempEvent , "UpdateQuestionInExam");
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
 							});
 						} catch (NullPointerException exception) {
 							errorMsg("exam does not have any question");
@@ -941,17 +945,19 @@ public class TeacherControl extends UserControl implements Initializable {
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
 		questionInExamObservable.clear();
+		if(pageLabel.getText().equals("Update question in exam"))
+		{
+			for ( int i = 0; i<questionsInExamTableView.getItems().size(); i++) {
+				questionsInExamTableView.getItems().clear();
+			}
+			return;
+		}
 		if (getMyUser().getRole().equals("teacher"))
 			openScreen("HomeScreenTeacher");
 		else
 			openScreen("directorBoundary", "HomeScreenDirector");
 	}
 	
-	public void closeScreenToTheLastScreen(ActionEvent e) throws IOException, SQLException {
-		final Node source = (Node) e.getSource();
-		Stage stage = (Stage) source.getScene().getWindow();
-		stage.close();
-	}
 
 	/**************************************************
 	 * update question screen
@@ -1493,6 +1499,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		int flag = 0;
 		try {
 			questiontoremove = questionsInExamTableView.getSelectionModel().getSelectedItems();
+			if(questionsInExamTableView.getSelectionModel().getSelectedItem() == null)
+			{
+				errorMsg("Please choose question to delete");
+				return;
+			}
 			Question question = new Question();
 			question.setQuestionContent(questiontoremove.get(0).getQuestionContent());
 			question.setTeacherName(questiontoremove.get(0).getTeacherUserName());
@@ -1512,7 +1523,7 @@ public class TeacherControl extends UserControl implements Initializable {
 				coursesComboBox.setDisable(false);
 			}
 		} catch (RuntimeException exception) {
-			errorMsg("Please choose question to delete");
+			
 			return;
 		}
 		// add the question back to the tableview
@@ -1540,16 +1551,11 @@ public class TeacherControl extends UserControl implements Initializable {
 		ArrayList<QuestionInExam> questioninexam = (ArrayList<QuestionInExam>) questionInExamObservable.stream()
 				.collect(Collectors.toList());// making the observable a lis
 		infoMsg("The questions changed succssefuly");
-		try {
-			closeScreenToTheLastScreen(e);
-		} catch (IOException | SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		messageToServer[0] = "updateQuestionInExam";
 		messageToServer[1] = questioninexam;
 		messageToServer[2] = tempExamId;
 		connect(this);
+		chat.handleMessageFromClientUI(messageToServer);
 	}
 
 	/**
@@ -1562,12 +1568,15 @@ public class TeacherControl extends UserControl implements Initializable {
 		QuestionInExam questionSelected = questionsInExamTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getPoints())) {
 			questionSelected.setPoints(edittedCell.getNewValue());
+			updateBtn.setDisable(false);
 		}
-		if (pageLabel.getText().equals("Update question in exam")) {
+		/*if (pageLabel.getText().equals("Update question in exam")) {
 			updateBtn.setDisable(false);
 
-		}
+		}*/
 		backButton.setDisable(false);
+		passQuestionR.setDisable(false);
+		passQuestionL.setDisable(false);
 	}
 
 	/**
@@ -1578,6 +1587,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	 */
 	public void blockBackButton() {
 		backButton.setDisable(true);
+		passQuestionR.setDisable(true);
+		passQuestionL.setDisable(true);
 	}
 
 	/*********************************************

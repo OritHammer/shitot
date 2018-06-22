@@ -352,7 +352,7 @@ public class Server extends AbstractServer {
 				createManualExam(exam, questions);// This method create word(docx)file to manual exam
 			}
 			serverMessage[5] = msgCounter;
-			this.sendToAllClients(serverMessage);
+			//this.sendToAllClients(serverMessage);
 			msgCounter++;
 			break;
 		}
