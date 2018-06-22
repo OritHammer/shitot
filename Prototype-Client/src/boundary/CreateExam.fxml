@@ -13,8 +13,8 @@
       <Label layoutX="678.0" layoutY="313.0" text="Remarks for teacher" />
       <TextField fx:id="remarksForStudent" layoutX="678.0" layoutY="277.0" prefHeight="25.0" prefWidth="245.0" />
       <TextField fx:id="remarksForTeacher" layoutX="678.0" layoutY="336.0" prefHeight="25.0" prefWidth="245.0" />
-      <Button layoutX="378.0" layoutY="336.0" mnemonicParsing="false" onAction="#removeFromTableView" text="&lt;" />
-      <Button layoutX="378.0" layoutY="301.0" mnemonicParsing="false" onAction="#toQuestionInExam" text="&gt;" />
+      <Button fx:id="passQuestionL" layoutX="378.0" layoutY="318.0" mnemonicParsing="false" onAction="#removeFromTableView" text="&lt;" />
+      <Button fx:id="passQuestionR" layoutX="378.0" layoutY="349.0" mnemonicParsing="false" onAction="#toQuestionInExam" text="&gt;" />
       <Label layoutX="28.0" layoutY="28.0" text="Questions" />
       <Label fx:id="pageLabel" layoutX="390.0" layoutY="20.0" text="Create exam" />
       <TextField fx:id="timeForExamHours" layoutX="679.0" layoutY="390.0" prefHeight="25.0" prefWidth="59.0" promptText="00" text="00" AnchorPane.leftAnchor="679.0" />
