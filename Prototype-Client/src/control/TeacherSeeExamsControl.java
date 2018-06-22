@@ -45,23 +45,18 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 	private TableView<ExecutedExam> ExamsForTeacher;
 	@FXML
 	private TableColumn<ExecutedExam, Time> executionTime;
-
 	@FXML
 	private TableColumn<ExecutedExam, Integer> numOfStudentStarted;
-
 	@FXML
 	private TableColumn<ExecutedExam, Integer> numOfStudentFinished;
-
 	@FXML
 	private TableColumn<ExecutedExam, String> timeAllocated;
-
 	@FXML
 	private TableColumn<ExecutedExam, String> executedExamID;
-
 	@FXML
 	private TableColumn<ExecutedExam, Integer> numOfStudentDidntFinished;
-    @FXML
-    private Button showStudentsButton;
+	@FXML
+	private Button showStudentsButton;
 	@FXML
 	private TableColumn<ExecutedExam, String> date;
 	@FXML
@@ -81,6 +76,8 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 	public void initialize(URL url, ResourceBundle rb) {
 		if (pageLabel == null) {
 			executedExam = new ArrayList<ExecutedExam>();
+			// this condition is to initialize the screen that the director
+			// see executed exam
 			if (getMyUser().getRole().equals("director")) {
 				messageToServer[1] = null;
 				showStudentsButton.setVisible(true);
@@ -177,13 +174,13 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 		}
 
 		openScreen(e, "StatisticReportTeacher");
-		
-		 for (ExecutedExam ex : executedExam) if
-		  (ex.getExecutedExamID().equals(choosenExecutedExamToReport.getExecutedExamID())) {
-		  choosenExecutedExamToReport=ex;
-		  openScreen("boundary","StatisticReportTeacher"); }
-		  
-		 
+
+		for (ExecutedExam ex : executedExam)
+			if (ex.getExecutedExamID().equals(choosenExecutedExamToReport.getExecutedExamID())) {
+				choosenExecutedExamToReport = ex;
+				openScreen("boundary", "StatisticReportTeacher");
+			}
+
 	}
 
 	/**
@@ -198,12 +195,13 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 		int[] sumGradeRanges = choosenExecutedExamToReport.getGradeRang();
 		for (int i = 0, j = 9; i < 90; i += 10, j += 10) {
 			histogram.getData().add(new XYChart.Data(i + "-" + j, sumGradeRanges[i / 10]));
-		} 
+		}
 		histogram.getData().add(new XYChart.Data("90-100", sumGradeRanges[9]));
 		barChart.getData().add(histogram);
 	}
+
 	public void showStudentsInThisExam(ActionEvent e) throws IOException {
-		tempExamId=ExamsForTeacher.getSelectionModel().getSelectedItem().getExecutedExamID();
+		tempExamId = ExamsForTeacher.getSelectionModel().getSelectedItem().getExecutedExamID();
 		openCheckExamScreen(e);
 	}
 }
