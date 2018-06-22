@@ -379,7 +379,9 @@ public class Server extends AbstractServer {
 			Boolean ifQuestionCreated;
 			ifQuestionCreated = con.createQuestion(message[1], message[2], message[3]);
 			serverMessage[1] = ifQuestionCreated;
+			serverMessage[5] = msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 		case "logoutProcess": {
