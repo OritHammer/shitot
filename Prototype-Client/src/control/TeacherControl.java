@@ -726,8 +726,9 @@ public class TeacherControl extends UserControl implements Initializable {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
+					return;
 				}
-				return;
+				break;
 			}
 			}
 			messageToServer[0] = "getSubjects";
