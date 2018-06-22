@@ -718,7 +718,7 @@ public class StudentControl extends UserControl implements Initializable {
 		isPerformExam = false;
 		if(timer!=null)
 			timer.cancel();
-		if (justFlag) {
+		if (!getMyUser().getRole().equals("student")) {
 			((Stage) ((Node) e.getSource()).getScene().getWindow()).close();
 			((Stage) ((Node) tempEvent.getSource()).getScene().getWindow()).show();
 			return;
