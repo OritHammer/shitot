@@ -264,6 +264,7 @@ public class DirectorControl extends UserControl implements Initializable {
 							int sumStudent = 0;
 							for (ExecutedExam executedExam : GradeList) {
 								average +=executedExam.getAverage();
+								sumRangGrades(executedExam);
 							}
 							if (GradeList.size() > 0)
 								averageTextField.setText(" " + (average / (float)GradeList.size()));
