@@ -76,7 +76,7 @@ public class MysqlConnection {
 		}
 	}
 
-	public synchronized void createQuestion(Object subject, Object question, Object courses) {
+	public synchronized Boolean createQuestion(Object subject, Object question, Object courses) {
 		String fullQuestionNumber;
 		int questionNumber;
 		int first = 0;
@@ -121,10 +121,11 @@ public class MysqlConnection {
 						+ courseSubString[0].trim() + "\");");
 
 			}
-
 			rs.close();
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 

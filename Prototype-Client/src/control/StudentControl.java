@@ -396,6 +396,7 @@ public class StudentControl extends UserControl implements Initializable {
 			return;
 		}
 		// everything fine
+		copyFlag = false;
 		exam=new ExecutedExam();
 		exam.setExecutedExamID(codeTextField.getText());
 		connect(this); // connecting to server

@@ -13,6 +13,7 @@ import java.util.Scanner;
 import entity.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -416,6 +417,11 @@ public class UserControl implements Initializable {
 	public void errorMsg(String message) {// for error message
 		new Alert(Alert.AlertType.ERROR, message).showAndWait();
 	}
+	public void infoMsg(String message) {
+		new Alert(Alert.AlertType.INFORMATION, message).showAndWait();
+	}
+	
+	
 	/**
 	* closeScreen(ActionEvent e)
 	*  Arguments:ActionEvent e
