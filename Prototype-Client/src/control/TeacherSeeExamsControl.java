@@ -202,4 +202,8 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 		histogram.getData().add(new XYChart.Data("90-100", sumGradeRanges[9]));
 		barChart.getData().add(histogram);
 	}
+	public void showStudentsInThisExam(ActionEvent e) throws IOException {
+		tempExamId=ExamsForTeacher.getSelectionModel().getSelectedItem().getExecutedExamID();
+		openCheckExamScreen(e);
+	}
 }

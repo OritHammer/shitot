@@ -19,9 +19,9 @@
             <TableColumn fx:id="numOfStudentDidntFinished" prefWidth="180.0" text="student didnt finished" />
         </columns>
       </TableView>
-      <Label layoutX="320.0" layoutY="32.0" text="Executed exams repoer" />
+      <Label layoutX="320.0" layoutY="32.0" prefHeight="17.0" prefWidth="151.0" text="Executed exams repoert" />
       <Button layoutX="496.0" layoutY="429.0" mnemonicParsing="false" onAction="#closeScreen" text="Back" />
       <Button fx:id="btnShowStatistic" layoutX="372.0" layoutY="429.0" mnemonicParsing="false" onAction="#showStatistic" text="Show Statistic" />
-      <Button fx:id="showStudentsButton" layoutX="255.0" layoutY="429.0" mnemonicParsing="false" onAction="#showStatistic" text="Show Students" visible="false" />
+      <Button fx:id="showStudentsButton" layoutX="255.0" layoutY="429.0" mnemonicParsing="false" onAction="#showStudentsInThisExam" text="Show Students" visible="false" />
    </children>
 </AnchorPane>

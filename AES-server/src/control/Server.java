@@ -144,7 +144,7 @@ public class Server extends AbstractServer {
 		}
 
 		case "getStudenstInExam": {/* */
-			ArrayList<StudentPerformExam> studentsInExam = con.getStudenstInExam(message[1]);
+			ArrayList<StudentPerformExam> studentsInExam = con.getStudenstInExam(message[1],message[2]);
 			serverMessage[1] = studentsInExam;
 			serverMessage[5] = msgCounter;
 			this.sendToAllClients(serverMessage);

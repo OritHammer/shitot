@@ -579,14 +579,23 @@ public class MysqlConnection {
 		return exam;
 	}
 
-	public ArrayList<StudentPerformExam> getStudenstInExam(Object executedExamId) {
+	public ArrayList<StudentPerformExam> getStudenstInExam(Object executedExamId,Object isDirector) {
 		ArrayList<StudentPerformExam> studentsInExam = new ArrayList<StudentPerformExam>();
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(
-					"SELECT date,time,finished,executedexam_id,student_UserName,grade,isApproved,reasonForChangeGrade,"
-							+ "userID,name FROM users,studentperformedexam WHERE executedexam_id " + "= " + "\""
-							+ (String) executedExamId + "\" AND student_UserName = UserName AND isApproved='waiting'");
+			ResultSet rs;
+			if(isDirector!=null) {
+				rs = stmt.executeQuery(
+						"SELECT date,time,finished,executedexam_id,student_UserName,grade,isApproved,reasonForChangeGrade,"
+								+ "userID,name FROM users,studentperformedexam WHERE executedexam_id " + "= " + "\""
+								+ (String) executedExamId + "\" AND student_UserName = UserName");
+			}else {
+				rs = stmt.executeQuery(
+						"SELECT date,time,finished,executedexam_id,student_UserName,grade,isApproved,reasonForChangeGrade,"
+								+ "userID,name FROM users,studentperformedexam WHERE executedexam_id " + "= " + "\""
+								+ (String) executedExamId + "\" AND student_UserName = UserName AND isApproved='waiting'");
+			}
+	
 			while (rs.next()) {
 				studentsInExam.add(new StudentPerformExam(rs.getString(1), rs.getString(2), rs.getString(3),
 						rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), null, rs.getString(9),

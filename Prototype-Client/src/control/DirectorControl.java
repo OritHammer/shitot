@@ -583,5 +583,4 @@ public class DirectorControl extends UserControl implements Initializable {
 				}
 		});
 	}
-
 }

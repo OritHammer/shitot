@@ -71,7 +71,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	private Question questionSelected;
 	private Question oldQuestion;
 	private StudentPerformExam studentInExamRow;
-	private static String tempExamId;
+	protected static String tempExamId;
 	private Exam examSelected;
 	private Exam oldExam;
 	private String text = "";
@@ -223,8 +223,10 @@ public class TeacherControl extends UserControl implements Initializable {
 
 	@FXML
 	private Button btnDelete;
-
-	
+	@FXML
+	private Button confirmButton;
+	@FXML
+	private Button changeGradeButton;
 	/**
 	*  loadExamCopy(MouseEvent event)
 	*  Arguments:MouseEvent event
@@ -704,6 +706,24 @@ public class TeacherControl extends UserControl implements Initializable {
 				typeComboBox.setItems(FXCollections.observableArrayList("computerized", "manual"));
 				break;
 			}
+			//this case is for the director for loading the students to the tableview
+			case ("Check exam"): {
+				if(getMyUser().getRole().equals("director")) {
+					subjectsComboBox.setVisible(false);
+					coursesComboBox.setVisible(false);
+					executedExamsComboBox.setVisible(false);
+					studnetInExamTableView.setPrefHeight(500);
+					studnetInExamTableView.setLayoutY(80);
+					confirmButton.setVisible(false);
+					changeGradeButton.setVisible(false);
+					try {
+						loadStudenstInExam(null);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				return;
+			}
 			}
 			messageToServer[0] = "getSubjects";
 			if (getMyUser().getRole().equals("director"))
@@ -1153,7 +1173,12 @@ public class TeacherControl extends UserControl implements Initializable {
 	public void loadStudenstInExam(ActionEvent e) throws IOException {
 		connect(this); // connecting to server
 		messageToServer[0] = "getStudenstInExam";
-		messageToServer[1] = executedExamsComboBox.getValue();
+		if(getMyUser().getRole().equals("director")) {
+			messageToServer[1] = tempExamId;
+			messageToServer[2] = "director";
+		}else {
+			messageToServer[1] = executedExamsComboBox.getValue();
+		}
 		chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 	}
 
