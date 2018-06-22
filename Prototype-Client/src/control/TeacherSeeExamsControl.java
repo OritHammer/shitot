@@ -45,19 +45,14 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 	private TableView<ExecutedExam> ExamsForTeacher;
 	@FXML
 	private TableColumn<ExecutedExam, Time> executionTime;
-
 	@FXML
 	private TableColumn<ExecutedExam, Integer> numOfStudentStarted;
-
 	@FXML
 	private TableColumn<ExecutedExam, Integer> numOfStudentFinished;
-
 	@FXML
 	private TableColumn<ExecutedExam, String> timeAllocated;
-
 	@FXML
 	private TableColumn<ExecutedExam, String> executedExamID;
-
 	@FXML
 	private TableColumn<ExecutedExam, Integer> numOfStudentDidntFinished;
 	@FXML
@@ -83,6 +78,8 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 	public void initialize(URL url, ResourceBundle rb) {
 		if (pageLabel == null) {
 			executedExam = new ArrayList<ExecutedExam>();
+			// this condition is to initialize the screen that the director
+			// see executed exam
 			if (getMyUser().getRole().equals("director")) {
 				messageToServer[1] = null;
 				showStudentsButton.setVisible(true);
@@ -193,10 +190,9 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 				openScreen(e, "StatisticReportTeacher");
 				break;
 			}
-		
-
 	}
 
+	
 	public void showStudentsInThisExam(ActionEvent e) throws IOException {
 		tempExamId = ExamsForTeacher.getSelectionModel().getSelectedItem().getExecutedExamID();
 		openCheckExamScreen(e);
