@@ -579,23 +579,14 @@ public class MysqlConnection {
 		return exam;
 	}
 
-	public ArrayList<StudentPerformExam> getStudenstInExam(Object executedExamId,Object isDirector) {
+	public ArrayList<StudentPerformExam> getStudenstInExam(Object executedExamId) {
 		ArrayList<StudentPerformExam> studentsInExam = new ArrayList<StudentPerformExam>();
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs;
-			if(isDirector!=null) {
-				rs = stmt.executeQuery(
-						"SELECT date,time,finished,executedexam_id,student_UserName,grade,isApproved,reasonForChangeGrade,"
-								+ "userID,name FROM users,studentperformedexam WHERE executedexam_id " + "= " + "\""
-								+ (String) executedExamId + "\" AND student_UserName = UserName");
-			}else {
-				rs = stmt.executeQuery(
-						"SELECT date,time,finished,executedexam_id,student_UserName,grade,isApproved,reasonForChangeGrade,"
-								+ "userID,name FROM users,studentperformedexam WHERE executedexam_id " + "= " + "\""
-								+ (String) executedExamId + "\" AND student_UserName = UserName AND isApproved='waiting'");
-			}
-	
+			ResultSet rs = stmt.executeQuery(
+					"SELECT date,time,finished,executedexam_id,student_UserName,grade,isApproved,reasonForChangeGrade,"
+							+ "userID,name FROM users,studentperformedexam WHERE executedexam_id " + "= " + "\""
+							+ (String) executedExamId + "\" AND student_UserName = UserName AND isApproved='waiting'");
 			while (rs.next()) {
 				studentsInExam.add(new StudentPerformExam(rs.getString(1), rs.getString(2), rs.getString(3),
 						rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), null, rs.getString(9),
@@ -1143,28 +1134,23 @@ public class MysqlConnection {
 
 	public ArrayList<ExecutedExam> returnReportByTeacherOrCoursesDetails(Object reportBy, Object idOrUserName) {
 		ArrayList<ExecutedExam> executedExamList = new ArrayList<ExecutedExam>();
-		String eEid_userName = (String) idOrUserName;
+		String id_userName = (String) idOrUserName;
 		ResultSet rs = null;
 		try {
 			stmt = conn.createStatement();
 			switch ((String) reportBy) {
 			case "getReportByTeacher":
-				rs = stmt.executeQuery("SELECT average, median, between0to9, between10to19, between20to29, " + 
-						"between30to39, between40to49, between50to59, between60to69, between70to79, "+
-						"between80to89,between90to100 FROM shitot.executedexam where teacherName='"
-						+ eEid_userName + "'AND status='checked';");
+				rs = stmt.executeQuery("SELECT average,median FROM shitot.executedexam where teacherName='"
+						+ id_userName + "'AND status='checked';");
 				break;
 			case "getReportByCourse":
-				rs = stmt.executeQuery("SELECT average, median, between0to9, between10to19, between20to29, " + 
-						"between30to39, between40to49, between50to59, between60to69, between70to79, " + 
-						"between80to89,between90to100  FROM shitot.executedexam where exam_id like \"__"
-						+ eEid_userName + "%\" AND status='checked';");
+				rs = stmt.executeQuery("SELECT average,median FROM shitot.executedexam where exam_id like \"__"
+						+ id_userName + "%\" AND status='checked';");
 				break;
 			}
 			while (rs.next()) {
-				executedExamList.add(new ExecutedExam(null, 0, 0, 0, rs.getFloat(1),
-						rs.getFloat(2), null, null, rs.getInt(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getInt(7),
-						rs.getInt(8), null, rs.getInt(9), rs.getInt(10), rs.getInt(11), rs.getInt(12), null, null));
+				executedExamList.add(new ExecutedExam(null, 0, 0, 0, Float.parseFloat(rs.getString(1)),
+						Float.parseFloat(rs.getString(2)), null, null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, null, null));
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -1199,25 +1185,25 @@ public class MysqlConnection {
 				stmt.executeUpdate("UPDATE executedexam " + "SET status=\"checked\" WHERE executedExamID=\""
 						+ ((StudentPerformExam) studentInExam).getExcecutedExamID() + "\";");
 				stmt.executeUpdate("update shitot.executedexam " + "set" + " between0to9 = (select count(*) "
-						+ " from studentperformedexam as spe " + " where executedExamID = \"" + eid
+						+ " from studentperformedexam as spe " + " where spe.executedexam_id = \"" + eid
 						+ "\" and spe.grade > -1 and spe.grade<10) ," + "   between10to19 = (select count(*)"
-						+ "          from studentperformedexam as spe " + "   where executedExamID = \"" + eid
+						+ "          from studentperformedexam as spe " + "   where spe.executedexam_id = \"" + eid
 						+ "\" and spe.grade > 9 and spe.grade<20) ," + "     between20to29 = (select count(*)"
-						+ "   from studentperformedexam as spe" + "   where executedExamID = \"" + eid
+						+ "   from studentperformedexam as spe" + "   where spe.executedexam_id = \"" + eid
 						+ "\" and spe.grade > 19 and spe.grade<30) ," + "      between30to39 = (select count(*)"
-						+ "   from studentperformedexam as spe " + "   where executedExamID = \"" + eid
+						+ "   from studentperformedexam as spe " + "   where spe.executedexam_id = \"" + eid
 						+ "\" and spe.grade > 29 and spe.grade<40) ," + " between40to49 = (select count(*)"
-						+ "   from studentperformedexam as spe" + "   where executedExamID = \"" + eid
+						+ "   from studentperformedexam as spe" + "   where spe.executedexam_id = \"" + eid
 						+ "\" and spe.grade > 39 and spe.grade<50) ," + "  between50to59 = (select count(*)"
-						+ "     from studentperformedexam as spe " + "      where executedExamID = \"" + eid
+						+ "     from studentperformedexam as spe " + "      where spe.executedexam_id = \"" + eid
 						+ "\" and spe.grade > 49 and spe.grade<60) ," + "       between60to69 = (select count(*)"
-						+ " from studentperformedexam as spe " + " where executedExamID = \"" + eid
+						+ " from studentperformedexam as spe " + " where spe.executedexam_id = \"" + eid
 						+ "\" and spe.grade > 59 and spe.grade<70) ," + "  between70to79 = (select count(*)"
-						+ " from studentperformedexam as spe " + " where executedExamID = \"" + eid
+						+ " from studentperformedexam as spe " + " where spe.executedexam_id = \"" + eid
 						+ "\" and spe.grade > 69 and spe.grade<80) ," + "  between80to89 = (select count(*)"
-						+ " from studentperformedexam as spe " + " where executedExamID = \"" + eid
+						+ " from studentperformedexam as spe " + " where spe.executedexam_id = \"" + eid
 						+ "\" and spe.grade > 79 and spe.grade<90) ," + "  between90to100 = (select count(*)"
-						+ " from studentperformedexam as spe " + " where executedExamID = \"" + eid
+						+ " from studentperformedexam as spe " + " where spe.executedexam_id = \"" + eid
 						+ "\" and spe.grade > 89 and spe.grade<101)" + "where executedExamID = \"" + eid + "\" ;");
 				stmt.executeUpdate("update shitot.executedexam " + "set "
 						+ "numOfStudentDidntFinished = (select count(*) as numStodentNF "

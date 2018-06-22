@@ -197,6 +197,10 @@ public class StudentControl extends UserControl implements Initializable {
 			startTime();
 			break;
 		}
+		case("Home Page"):{
+		setStudentAuthor_Date_name();	
+		break;
+		}
 		default:
 			return;
 		}
