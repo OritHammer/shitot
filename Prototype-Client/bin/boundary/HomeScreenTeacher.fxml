@@ -2,48 +2,122 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="573.0" prefWidth="391.0" styleClass="card" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="477.0" prefWidth="647.0" styleClass="card" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
-      <Button layoutX="146.0" layoutY="123.0" mnemonicParsing="false" onAction="#openUpdateQuestionScreen" text="Update question" />
-      <Button layoutX="148.0" layoutY="159.0" mnemonicParsing="false" onAction="#openCreateQuestion" text="Create question" />
-      <Button layoutX="156.0" layoutY="230.0" mnemonicParsing="false" onAction="#openCreateExam" text="Create exam" />
-      <Button layoutX="157.0" layoutY="262.0" mnemonicParsing="false" onAction="#openCheckExamScreen" text="Check exam" />
-      <Button layoutX="139.0" layoutY="295.0" mnemonicParsing="false" onAction="#openExamCodeScreen" text="Create exam code" />
-      <Button layoutX="139.0" layoutY="333.0" mnemonicParsing="false" onAction="#openExtendExamTimeScreen" text="Extend exam time" />
-      <Button layoutX="158.0" layoutY="367.0" mnemonicParsing="false" onAction="#openLockExamScreen" text="Lock exam" />
-      <Label fx:id="pageLabel" layoutX="146.0" layoutY="14.0" prefHeight="17.0" prefWidth="85.0" text="Home screen" visible="false" />
-      <Button fx:id="logoutBtn" layoutX="287.0" layoutY="529.0" mnemonicParsing="false" onAction="#logoutPressed" text="Logout" />
-      <Label fx:id="dateLabel" layoutX="125.0" layoutY="528.0" prefHeight="17.0" prefWidth="138.0" text="DateField">
+      <Button layoutX="62.0" layoutY="173.0" mnemonicParsing="false" onAction="#openCreateQuestion" prefHeight="69.0" prefWidth="153.0" style="-fx-content-display: top;" text="Create Question">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../doubts-button.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button layoutX="239.0" layoutY="173.0" mnemonicParsing="false" onAction="#openUpdateQuestionScreen" prefHeight="69.0" prefWidth="153.0" style="-fx-content-display: top;" text="Update/Delete question">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" style="-fx-content-display: top;">
+               <image>
+                  <Image url="@../edit-button.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button layoutX="419.0" layoutY="173.0" mnemonicParsing="false" onAction="#openCreateExam" prefHeight="69.0" prefWidth="153.0" style="-fx-content-display: top;" text="Create Exam">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../center-alignment-button.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button layoutX="62.0" layoutY="280.0" mnemonicParsing="false" onAction="#openUpdateExamScreen" prefHeight="69.0" prefWidth="153.0" style="-fx-content-display: top;" text="Update/Delete exam">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../edit-button%20(1).png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button layoutX="239.0" layoutY="280.0" mnemonicParsing="false" onAction="#openCheckExamScreen" prefHeight="69.0" prefWidth="153.0" style="-fx-content-display: top;" text="Check exam">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../zoom-button.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button layoutX="419.0" layoutY="280.0" mnemonicParsing="false" onAction="#openExamCodeScreen" prefHeight="69.0" prefWidth="153.0" style="-fx-content-display: top;" text="Create exam code">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../text-button.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button layoutX="239.0" layoutY="376.0" mnemonicParsing="false" onAction="#openLockExamScreen" prefHeight="69.0" prefWidth="153.0" style="-fx-content-display: top;" text="Lock exam">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../padlock.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button layoutX="62.0" layoutY="376.0" mnemonicParsing="false" onAction="#openExtendExamTimeScreen" prefHeight="69.0" prefWidth="153.0" style="-fx-content-display: top;" text="Extend exam time">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../wall-clock.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button layoutX="419.0" layoutY="376.0" mnemonicParsing="false" onAction="#openTeacherSeeExamScreen" prefHeight="69.0" prefWidth="153.0" style="-fx-content-display: top;" text="Exams report">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../newspaper.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Label fx:id="pageLabel" layoutX="269.0" layoutY="6.0" text="Home screen" />
+      <Label layoutX="59.0" layoutY="39.0" prefHeight="34.0" prefWidth="63.0" text="Hello :">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Text fx:id="userText" layoutX="122.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="user name" />
+      <Label layoutX="221.0" layoutY="83.0" prefHeight="26.0" prefWidth="95.0" text="Teacher">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <Label layoutX="238.0" layoutY="63.0" prefHeight="26.0" prefWidth="95.0" text="Teacher">
+      <Label layoutX="61.0" layoutY="81.0" prefHeight="27.0" prefWidth="155.0" text="My authorization:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="65.0" layoutY="122.0" prefHeight="27.0" prefWidth="52.0" text="Date :">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="dateLabel" layoutX="122.0" layoutY="119.0" prefHeight="34.0" prefWidth="111.0" text="DateField">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <Label layoutX="55.0" layoutY="523.0" prefHeight="27.0" prefWidth="52.0" text="Date :">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="217.0" layoutY="33.0" prefHeight="27.0" prefWidth="155.0" text="My authorization:">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="49.0" layoutY="29.0" prefHeight="34.0" prefWidth="63.0" text="Hello :">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-      </Label>
-      <Text fx:id="userText" layoutX="49.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="user name" />
-      <Button layoutX="154.0" layoutY="195.0" mnemonicParsing="false" onAction="#openUpdateExamScreen" text="Update exam" />
-      <Button layoutX="153.0" layoutY="406.0" mnemonicParsing="false" onAction="#openTeacherSeeExamScreen" text="Exams Report" />
+      <Button fx:id="logoutBtn" layoutX="518.0" layoutY="26.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="26.0" prefWidth="54.0" text="Logout" />
    </children>
 </AnchorPane>

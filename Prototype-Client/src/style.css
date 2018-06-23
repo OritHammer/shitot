@@ -140,16 +140,8 @@
  * Button & ToggleButton                                                       *
  *                                                                             *
  ******************************************************************************/
-.button-raised {
-	-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0,
-		1);
-	-fx-background-color: rgb(250, 250, 250);
-}
 
-.button-flat {
-	-fx-effect: null;
-	-fx-background-color: transparent;
-}
+
 
 .toggle-button, .button {
 	-fx-background-color: -swatch-light-grey;
@@ -162,29 +154,13 @@
 	-fx-alignment: CENTER;
 }
 
-.button-raised .button .text, .button-flat .button .text {
-	-fx-text-weight: Bold;
-}
 
+
+.button:hover{
+	-fx-background-color: #efefef;
+}
 .button:default {
 	-fx-background-color: -swatch-500;
-	-fx-text-fill: -fx-text-button-colored;
-}
-
-.toggle-button:focused, .button:focused, .button:default:focused {
-	-fx-background-color: -swatch-light-grey;
-}
-
-.toggle-button:focused:selected {
-	-fx-background-color: derive(-swatch-500, 50.0%),
-		derive(-swatch-500, -20.0%);
-	-fx-background-insets: 0.0, 0.2em;
-	-fx-text-fill: -fx-text-button-colored;
-}
-
-.toggle-button:armed, .toggle-button:selected, .button:armed, .button:default:armed
-	{
-	-fx-background-color: -swatch-grey;
 	-fx-text-fill: -fx-text-button-colored;
 }
 
