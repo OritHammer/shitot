@@ -724,7 +724,7 @@ public class MysqlConnection {
 								+ teacherUserName.toString()
 								+ "\" AND EE.status='close' AND EE.numOfStudentStarted > 0 AND EE.exam_id like \""
 								+ (String) examId + "%\"" + " "
-								+ "AND SPE.executedexam_id=EE.executedExamID AND SPE.isApproved='waiting' GROUP BY EE.executedExamID;");
+								+ "AND SPE.executedexam_id=EE.executedExamID AND (SPE.isApproved='waiting' OR SPE.isApproved='copy') GROUP BY EE.executedExamID;");
 			}
 			while (rs.next()) {
 				ExecutedExam executedExem = new ExecutedExam();
