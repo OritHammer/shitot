@@ -244,7 +244,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		if (event.getClickCount() == 2) {
 			connect(this);
 			messageToServer[0] = "getStudentAnswers";
-			// this condition is for the director
+			// this condition is for the director to load copies of exams
 			if (getMyUser().getRole().equals("director")) {
 				messageToServer[1] = tempExamId;
 			} else {
@@ -492,7 +492,7 @@ public class TeacherControl extends UserControl implements Initializable {
 							try {
 								refreshPageAfterCreate(tempEvent, "CreateQuestion");
 							} catch (IOException e) {
-								// TODO Auto-generated catch block
+
 								e.printStackTrace();
 							}
 						} else
@@ -653,7 +653,7 @@ public class TeacherControl extends UserControl implements Initializable {
 									questionsInExamTableView.getItems().clear();
 								}
 							} catch (IOException e) {
-								// TODO Auto-generated catch block
+
 								e.printStackTrace();
 							}
 						} else
@@ -676,7 +676,7 @@ public class TeacherControl extends UserControl implements Initializable {
 							try {
 								refreshPageAfterCreate(tempEvent, "CreateExamCode");
 							} catch (IOException e) {
-								// TODO Auto-generated catch block
+
 								e.printStackTrace();
 							}
 						} else {
