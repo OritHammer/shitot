@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -18,11 +11,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="350.0" styleClass="card" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.UserControl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="350.0" styleClass="card" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.UserControl">
    <children>
       <ImageView fitHeight="440.0" fitWidth="350.0" layoutY="-1.0" opacity="0.48">
          <image>
-            <Image url="@../../colorful-bricks-1200309.jpg" />
+            <Image url="@../colorful-bricks-1200309.jpg" />
          </image>
       </ImageView>
       <Group layoutX="26.0" layoutY="322.0">
@@ -71,7 +64,7 @@
             <Blend />
          </effect>
          <image>
-            <Image url="@../../Error.jpg" />
+            <Image url="@../Error.jpg" />
          </image>
       </ImageView>
       <ImageView fx:id="errorImg" blendMode="MULTIPLY" fitHeight="59.0" fitWidth="103.0" layoutX="273.0" layoutY="271.0" pickOnBounds="true" preserveRatio="true" smooth="false">
@@ -79,7 +72,7 @@
             <Blend />
          </effect>
          <image>
-            <Image url="@../../Error.jpg" />
+            <Image url="@../Error.jpg" />
          </image>
       </ImageView>
    </children>

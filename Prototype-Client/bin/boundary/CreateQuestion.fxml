@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.paint.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
 
-<AnchorPane prefHeight="563.0" prefWidth="785.0" styleClass="card" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+<AnchorPane prefHeight="563.0" prefWidth="500.0" styleClass="card" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
-      <Label layoutX="50.0" layoutY="273.0" prefHeight="17.0" prefWidth="85.0" text="question name" />
-      <TextField fx:id="questionName" layoutX="50.0" layoutY="296.0" prefHeight="25.0" prefWidth="346.0" />
+      <Label layoutX="50.0" layoutY="292.0" prefHeight="17.0" prefWidth="85.0" text="question name" />
+      <TextField fx:id="questionName" layoutX="50.0" layoutY="315.0" prefHeight="25.0" prefWidth="346.0" />
       <Label layoutX="476.0" layoutY="202.0" />
-      <Button cancelButton="true" graphicTextGap="0.0" layoutX="362.0" layoutY="506.0" mnemonicParsing="false" onAction="#closeScreen" text="cancel">
+      <Button cancelButton="true" graphicTextGap="0.0" layoutX="243.0" layoutY="519.0" mnemonicParsing="false" onAction="#closeScreen" text="cancel">
          <textFill>
             <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
                <stops>
@@ -21,15 +28,15 @@
             </RadialGradient>
          </textFill>
       </Button>
-      <RadioButton id="4" fx:id="correctAns4" layoutX="432.0" layoutY="446.0" mnemonicParsing="false">
+      <RadioButton id="4" fx:id="correctAns4" layoutX="432.0" layoutY="465.0" mnemonicParsing="false">
          <toggleGroup>
             <ToggleGroup fx:id="group1" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton id="3" fx:id="correctAns3" layoutX="432.0" layoutY="412.0" mnemonicParsing="false" toggleGroup="$group1" />
-      <RadioButton id="2" fx:id="correctAns2" layoutX="432.0" layoutY="375.0" mnemonicParsing="false" toggleGroup="$group1" />
-      <RadioButton id="1" fx:id="correctAns1" layoutX="432.0" layoutY="338.0" mnemonicParsing="false" toggleGroup="$group1" />
-      <Button layoutX="270.0" layoutY="506.0" mnemonicParsing="false" onAction="#createQuestionClick" text="Create">
+      <RadioButton id="3" fx:id="correctAns3" layoutX="432.0" layoutY="431.0" mnemonicParsing="false" toggleGroup="$group1" />
+      <RadioButton id="2" fx:id="correctAns2" layoutX="432.0" layoutY="394.0" mnemonicParsing="false" toggleGroup="$group1" />
+      <RadioButton id="1" fx:id="correctAns1" layoutX="432.0" layoutY="357.0" mnemonicParsing="false" toggleGroup="$group1" />
+      <Button layoutX="157.0" layoutY="519.0" mnemonicParsing="false" onAction="#createQuestionClick" text="Create">
          <textFill>
             <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
                <stops>
@@ -39,19 +46,25 @@
             </RadialGradient>
          </textFill>
       </Button>
-      <Label layoutX="404.0" layoutY="310.0" text="correct answer" />
-      <Label layoutX="31.0" layoutY="338.0" text="A" />
-      <Label layoutX="32.0" layoutY="375.0" text="B" />
-      <Label layoutX="31.0" layoutY="412.0" text="C" />
-      <Label layoutX="32.0" layoutY="446.0" text="D" />
-      <TextField fx:id="answer1" layoutX="50.0" layoutY="334.0" prefHeight="25.0" prefWidth="346.0" />
-      <TextField fx:id="answer2" layoutX="50.0" layoutY="371.0" prefHeight="25.0" prefWidth="346.0" />
-      <TextField fx:id="answer3" layoutX="50.0" layoutY="408.0" prefHeight="25.0" prefWidth="346.0" />
-      <TextField fx:id="answer4" layoutX="50.0" layoutY="442.0" prefHeight="25.0" prefWidth="346.0" />
-      <Label fx:id="pageLabel" layoutX="378.0" layoutY="14.0" prefHeight="17.0" prefWidth="85.0" text="Create question" />
-      <ComboBox fx:id="coursesComboBox" layoutX="52.0" layoutY="92.0" onAction="#coursesToList" prefHeight="25.0" prefWidth="150.0" promptText="Choose course" />
-      <ComboBox fx:id="subjectsComboBox" layoutX="52.0" layoutY="49.0" onAction="#loadCourses" prefWidth="150.0" promptText="Choose subject" />
-      <ListView fx:id="courseInCreateQuestion" layoutX="218.0" layoutY="92.0" prefHeight="128.0" prefWidth="184.0" />
-      <Button layoutX="258.0" layoutY="230.0" mnemonicParsing="false" onAction="#removeCoursesFromList" text="Remove course" />
+      <Label layoutX="404.0" layoutY="329.0" text="correct answer" />
+      <Label layoutX="31.0" layoutY="357.0" text="A" />
+      <Label layoutX="32.0" layoutY="394.0" text="B" />
+      <Label layoutX="31.0" layoutY="431.0" text="C" />
+      <Label layoutX="32.0" layoutY="465.0" text="D" />
+      <TextField fx:id="answer1" layoutX="50.0" layoutY="353.0" prefHeight="25.0" prefWidth="346.0" />
+      <TextField fx:id="answer2" layoutX="50.0" layoutY="390.0" prefHeight="25.0" prefWidth="346.0" />
+      <TextField fx:id="answer3" layoutX="50.0" layoutY="427.0" prefHeight="25.0" prefWidth="346.0" />
+      <TextField fx:id="answer4" layoutX="50.0" layoutY="461.0" prefHeight="25.0" prefWidth="346.0" />
+      <Label fx:id="pageLabel" layoutX="208.0" layoutY="14.0" prefHeight="17.0" prefWidth="85.0" text="Create question" />
+      <ComboBox fx:id="coursesComboBox" layoutX="52.0" layoutY="67.0" onAction="#coursesToList" prefHeight="25.0" prefWidth="150.0" promptText="Choose course" />
+      <ComboBox fx:id="subjectsComboBox" layoutX="52.0" layoutY="31.0" onAction="#loadCourses" prefWidth="150.0" promptText="Choose subject" />
+      <ListView fx:id="courseInCreateQuestion" layoutX="43.0" layoutY="124.0" prefHeight="128.0" prefWidth="184.0" />
+      <Button layoutX="44.0" layoutY="257.0" mnemonicParsing="false" onAction="#removeCoursesFromList" text="Remove course" />
+      <Label layoutX="43.0" layoutY="100.0" prefHeight="17.0" prefWidth="160.0" text="Questin in course" />
+      <ImageView fitHeight="135.0" fitWidth="120.0" layoutX="344.0" layoutY="25.0">
+         <image>
+            <Image url="@../questionmark.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
