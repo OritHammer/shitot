@@ -876,7 +876,21 @@ public class StudentControl extends UserControl implements Initializable {
 		});
 
 	}
-
+	
+	/**
+	 * quitTheManualExam(ActionEvent e) Arguments: ActionEvent e The method catch a
+	 * click on quit button that the student didnt finish the exam
+	 * 
+	 * @author Tom Zarhin
+	 */
+	public void quitTheManualExam(ActionEvent e) throws IOException {
+		uploadFileToServer(null);
+	}
+	/**
+	 * setDetails method set the details of the exam (executed exam id)
+	 * 
+	 * @author Tom Zarhin
+	 */
 	public void setDetails(String executedExamId) {
 		exam.setExecutedExamID(executedExamId);
 	}

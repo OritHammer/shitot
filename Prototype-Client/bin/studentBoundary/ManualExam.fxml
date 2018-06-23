@@ -32,11 +32,12 @@
          </image>
       </ImageView>
       <Label fx:id="pageLabel" layoutX="252.0" layoutY="14.0" text="Manual exam" />
-      <Button fx:id="uploadManualExamButton" disable="true" layoutX="271.0" layoutY="408.0" mnemonicParsing="false" onAction="#uploadFileToServer" text="Upload" />
+      <Button fx:id="uploadManualExamButton" disable="true" layoutX="221.0" layoutY="408.0" mnemonicParsing="false" onAction="#uploadFileToServer" text="Upload" />
       <Text fx:id="remarksForStudentText" layoutX="116.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
       <Label layoutX="85.0" layoutY="57.0" text="Remarks for student" />
       <Label layoutX="410.0" layoutY="31.0" text="Time for exam" />
       <Label fx:id="fileName" layoutX="285.0" layoutY="307.0" text="Label" visible="false" />
       <Label fx:id="executedCode" layoutX="113.0" layoutY="31.0" text="executed" />
+      <Button layoutX="298.0" layoutY="407.0" mnemonicParsing="false" onAction="#quitTheManualExam" text="Quit" />
    </children>
 </AnchorPane>
