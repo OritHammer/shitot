@@ -1699,7 +1699,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		request.setReason(reasonForChange.getText());
 		request.setMenagerApprove("waiting");
 		request.setTeacherName(getMyUser().getUsername());
-		request.setTimeAdded(timeForExamHours.getText() + "" + timeForExamMinute.getText());
+		request.setTimeAdded(timeForExamHours.getText() + ":" + timeForExamMinute.getText()+":00");
 		connect(this); // connecting to server
 		messageToServer[0] = "createChangingRequest";
 		messageToServer[1] = request;
