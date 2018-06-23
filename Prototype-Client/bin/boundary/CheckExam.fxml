@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="633.0" prefWidth="704.0" styleClass="card" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+<AnchorPane prefHeight="633.0" prefWidth="704.0" styleClass="card" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
       <TableView fx:id="studnetInExamTableView" layoutX="59.0" layoutY="205.0" onMousePressed="#loadExamCopy" prefHeight="365.0" prefWidth="587.0">
         <columns>
@@ -21,7 +21,7 @@
       <ComboBox fx:id="executedExamsComboBox" layoutX="59.0" layoutY="144.0" onAction="#loadStudenstInExam" prefHeight="25.0" prefWidth="170.0" promptText="Choose executed exam" />
       <ComboBox fx:id="subjectsComboBox" layoutX="59.0" layoutY="57.0" onAction="#loadCourses" prefHeight="25.0" prefWidth="170.0" promptText="choose subject" />
       <ComboBox fx:id="coursesComboBox" layoutX="59.0" layoutY="100.0" onAction="#loadExams" prefHeight="25.0" prefWidth="170.0" promptText="Choose course" />
-      <Label fx:id="pageLabel" layoutX="308.0" layoutY="26.0" text="Check exam" />
+      <Label fx:id="pageLabel" layoutX="59.0" layoutY="14.0" prefHeight="17.0" prefWidth="587.0" text="Check exam" />
       <Button fx:id="backButton" layoutX="417.0" layoutY="584.0" mnemonicParsing="false" onAction="#closeScreen" text="Back" />
       <Button fx:id="changeGradeButton" layoutX="305.0" layoutY="584.0" mnemonicParsing="false" onAction="#changeGrade" text="Change grade" />
       <Button fx:id="confirmButton" layoutX="223.0" layoutY="584.0" mnemonicParsing="false" onAction="#confirmExecutedExam" text="Confirm" />

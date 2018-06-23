@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -13,9 +9,9 @@
 <?import javafx.scene.paint.RadialGradient?>
 <?import javafx.scene.paint.Stop?>
 
-<AnchorPane prefHeight="563.0" prefWidth="957.0" styleClass="card" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
+<AnchorPane prefHeight="563.0" prefWidth="981.0" styleClass="card" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.TeacherControl">
    <children>
-      <TableView fx:id="examsTableView" editable="true" layoutX="8.0" layoutY="158.0" prefHeight="356.0" prefWidth="939.0">
+      <TableView fx:id="examsTableView" editable="true" layoutX="21.0" layoutY="156.0" prefHeight="356.0" prefWidth="939.0">
          <columns>
             <TableColumn fx:id="examIDTable" prefWidth="76.0" text="exam id" />
             <TableColumn fx:id="teacherNameTable" prefWidth="94.0" text="Teacher name" />
@@ -25,8 +21,8 @@
             <TableColumn fx:id="typeTable" onEditCommit="#changeTypeOnTable" prefWidth="109.0" text="type" />
          </columns>
       </TableView>
-      <Label fx:id="pageLabel" layoutX="442.0" layoutY="14.0" text="Update exam" />
-      <Button fx:id="btnDelete" layoutX="426.0" layoutY="524.0" mnemonicParsing="false" onAction="#deleteExam" text="Delete">
+      <Label fx:id="pageLabel" layoutX="21.0" layoutY="14.0" prefHeight="17.0" prefWidth="939.0" text="Update exam" />
+      <Button fx:id="btnDelete" layoutX="457.0" layoutY="524.0" mnemonicParsing="false" onAction="#deleteExam" text="Delete">
          <textFill>
             <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
                <stops>
@@ -36,7 +32,7 @@
             </RadialGradient>
          </textFill>
       </Button>
-      <Button cancelButton="true" graphicTextGap="0.0" layoutX="491.0" layoutY="524.0" mnemonicParsing="false" onAction="#closeScreen" text="Back">
+      <Button cancelButton="true" graphicTextGap="0.0" layoutX="522.0" layoutY="524.0" mnemonicParsing="false" onAction="#closeScreen" text="Back">
          <textFill>
             <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
                <stops>
@@ -46,8 +42,8 @@
             </RadialGradient>
          </textFill>
       </Button>
-      <ComboBox fx:id="subjectsComboBox" layoutX="14.0" layoutY="31.0" onAction="#loadCourses" prefWidth="150.0" promptText="choose subject" />
-      <Button layoutX="318.0" layoutY="524.0" mnemonicParsing="false" onAction="#viewQuestion" text="View questions">
+      <ComboBox fx:id="subjectsComboBox" layoutX="21.0" layoutY="63.0" onAction="#loadCourses" prefWidth="150.0" promptText="choose subject" />
+      <Button layoutX="349.0" layoutY="524.0" mnemonicParsing="false" onAction="#viewQuestion" text="View questions">
          <textFill>
             <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">
                <stops>
@@ -57,6 +53,6 @@
             </RadialGradient>
          </textFill>
       </Button>
-      <ComboBox fx:id="coursesComboBox" layoutX="14.0" layoutY="76.0" onAction="#loadExams" prefHeight="25.0" prefWidth="150.0" promptText="Choose course" />
+      <ComboBox fx:id="coursesComboBox" layoutX="21.0" layoutY="115.0" onAction="#loadExams" prefHeight="25.0" prefWidth="150.0" promptText="Choose course" />
    </children>
 </AnchorPane>
