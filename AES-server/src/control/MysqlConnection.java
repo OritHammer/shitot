@@ -1196,6 +1196,10 @@ public class MysqlConnection {
 		String eid = ((StudentPerformExam) studentInExam).getExcecutedExamID();
 		try {
 			stmt = conn.createStatement();
+			stmt.executeUpdate("UPDATE studentperformedexam " + "SET isApproved=\"approved\" , grade=\""
+					+ ((StudentPerformExam) studentInExam).getGrade() + "\" , " + "reasonForChangeGrade=\""
+					+ ((StudentPerformExam) studentInExam).getReasonForChangeGrade() + "\" "
+					+ " WHERE student_UserName=\"" + ((StudentPerformExam) studentInExam).getUserName() + "\";");
 			if (flagExamChecked == true) {
 				stmt.executeUpdate("UPDATE executedexam " + "SET status=\"checked\" WHERE executedExamID=\""
 						+ ((StudentPerformExam) studentInExam).getExcecutedExamID() + "\";");
@@ -1220,18 +1224,21 @@ public class MysqlConnection {
 						+ "\" and spe.grade > 79 and spe.grade<90) ," + "  between90to100 = (select count(*)"
 						+ " from studentperformedexam as spe " + " where spe.executedexam_id = \"" + eid
 						+ "\" and spe.grade > 89 and spe.grade<101)" + "where executedExamID = \"" + eid + "\" ;");
+		stmt.executeUpdate("update shitot.executedexam  as ex " 
+						+"set ex.average = (select avg(spe.grade) "
+										+	"from studentperformedexam as spe "
+										+  "where spe.executedexam_id = \"" + eid + "\" ) "   
+	                                      +  "where ex.executedExamID = \"" + eid + "\" ;");
 				stmt.executeUpdate("update shitot.executedexam  as ex"
-					+"	set ex.average = (select avg(spe.grade)"+
-							"	from studentperformedexam as spe"+
-			               "     where spe.executedexam_id = '0001' ) ,"+
-			" ex.median =( SELECT grade Median FROM "+
-			"(SELECT spe1.student_UserName, spe1.grade, COUNT(spe2.grade) Rank "+
-			"FROM studentperformedexam spe1, studentperformedexam spe2 "+
-			"WHERE spe1.executedexam_id=spe2.executedexam_id AND spe1.executedexam_id='"+eid+"' AND (spe1.grade < spe2.grade OR (spe1.grade=spe2.grade AND spe1.student_UserName <= spe2.student_UserName)) "+
-			"group by spe1.student_UserName, spe1.grade "+ 
-			"order by spe1.grade desc) speMed "+
-			"WHERE Rank = (SELECT (COUNT(*)+1) DIV 2 FROM studentperformedexam)) "+		
-			"where ex.executedExamID = '"+eid+"' ;");
+						+ " set ex.median =( SELECT grade Median FROM "+
+									"(SELECT spe1.student_UserName, spe1.grade, COUNT(spe2.grade) Rank "+
+									"FROM studentperformedexam spe1, studentperformedexam spe2 "+
+									"WHERE spe1.executedexam_id=spe2.executedexam_id AND spe1.executedexam_id= \"" + eid + "\" AND (spe1.grade < spe2.grade OR (spe1.grade=spe2.grade AND spe1.student_UserName <= spe2.student_UserName)) "+
+									"group by spe1.student_UserName, spe1.grade "+ 
+									"order by spe1.grade desc) speMed "+
+									"WHERE Rank = (SELECT (COUNT(*)+1) DIV 2 FROM studentperformedexam)) "+		
+									"where ex.executedExamID = \"" + eid + "\"  ;");
+                                    
 				
 				stmt.executeUpdate("update shitot.executedexam " + "set "
 						+ "numOfStudentDidntFinished = (select count(*) as numStodentNF "
@@ -1240,10 +1247,7 @@ public class MysqlConnection {
 						+ "   from studentperformedexam as sp" + "  where executedexam_id = \"" + eid
 						+ "\" and sp.finished = 'yes'  ) " + " where executedExamID = \"" + eid + "\" ;");
 			}
-			stmt.executeUpdate("UPDATE studentperformedexam " + "SET isApproved=\"approved\" , grade=\""
-					+ ((StudentPerformExam) studentInExam).getGrade() + "\" , " + "reasonForChangeGrade=\""
-					+ ((StudentPerformExam) studentInExam).getReasonForChangeGrade() + "\" "
-					+ " WHERE student_UserName=\"" + ((StudentPerformExam) studentInExam).getUserName() + "\";");
+			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
