@@ -59,7 +59,7 @@ import javafx.stage.Stage;
  * @author lior hammer
  *
  */
-public class StudentControl extends UserControl implements Initializable {
+public class StudentControl extends UserControl implements Initializable { 
 
 	protected static ArrayList<Question> questioninexecutedexam;
 	protected static HashMap<String, Integer> examAnswers;// saves the question id and the answers
@@ -199,7 +199,7 @@ public class StudentControl extends UserControl implements Initializable {
 			startTime();
 			break;
 		}
-		case ("Home screen"): {/*If its the home page*/
+		case ("Home Screen"): {/*If its the home page*/
 			
 			userNameLabel.setText(getMyUser().getFullname());
 			dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
