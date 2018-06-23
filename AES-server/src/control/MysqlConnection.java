@@ -961,6 +961,7 @@ public class MysqlConnection {
 									break;
 								}
 								studentAnswers = new HashMap<String, Integer>();
+								studentAnswers.put(rs.getString(3), Integer.valueOf(rs.getString(4)));
 							} else
 								studentAnswers.put(rs.getString(3), Integer.valueOf(rs.getString(4)));
 						} while (rs.next());
