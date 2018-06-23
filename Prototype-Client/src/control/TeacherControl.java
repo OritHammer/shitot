@@ -741,7 +741,10 @@ public class TeacherControl extends UserControl implements Initializable {
 		setUnVisible();
 		switch (pageLabel.getText()) {
 		case ("Home screen"): {/*If its the home page*/
+			{
 			userText.setText(getMyUser().getFullname());
+			dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
+			}
 			break;
 		}
 		case ("Update question in exam"): {/*If its the "update question page*/
@@ -953,7 +956,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			return;
 		}
 		if (getMyUser().getRole().equals("teacher"))
-			openScreen("HomeScreenTeacher");
+			openScreen("boundary","HomeScreenTeacher");
 		else
 			openScreen("directorBoundary", "HomeScreenDirector");
 	}

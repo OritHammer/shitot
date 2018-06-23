@@ -124,7 +124,10 @@ public class DirectorControl extends UserControl implements Initializable {
 	public void initialize(URL url, ResourceBundle rb) {
 		messageToServer[4] = getMyUser().getUsername();
 		if (pageLabel.getText().equals("Home screen"))
+		{
 			userText1.setText(getMyUser().getFullname());
+			dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
+		}
 		else if (pageLabel.getText().contentEquals("requests")) {
 			connect(this);
 			messageToServer[0] = "getTimeRequestList";
