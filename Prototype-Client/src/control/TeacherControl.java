@@ -1549,6 +1549,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 		ArrayList<QuestionInExam> questioninexam = (ArrayList<QuestionInExam>) questionInExamObservable.stream()
 				.collect(Collectors.toList());// making the observable a lis
+		infoMsg("The question edited successfully");
 		messageToServer[0] = "updateQuestionInExam";
 		messageToServer[1] = questioninexam;
 		messageToServer[2] = tempExamId;
