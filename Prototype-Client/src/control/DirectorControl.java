@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
-import javax.print.attribute.standard.ReferenceUriSchemesSupported;
-
 import com.jfoenix.controls.JFXButton;
 
 import javafx.application.Platform;
@@ -21,13 +19,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -36,7 +30,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import sun.nio.cs.HistoricallyNamedCharset;
 
 public class DirectorControl extends UserControl implements Initializable {
 	ObservableList<RequestForChangingTimeAllocated> addingTimeRequestsObservable = FXCollections.observableArrayList();
@@ -110,8 +103,6 @@ public class DirectorControl extends UserControl implements Initializable {
 	private static String requestId;
 	private String reportByChoose;
 	private ArrayList<Integer> studentGradeList;
-	private Boolean refreshPressed = false;
-	
 	// FXML System information
 	@FXML
 	private JFXButton btnQuestionStock;
@@ -123,12 +114,10 @@ public class DirectorControl extends UserControl implements Initializable {
 	 **********************************************************/
 	public void initialize(URL url, ResourceBundle rb) {
 		messageToServer[4] = getMyUser().getUsername();
-		if (pageLabel.getText().equals("Home screen"))
-		{
+		if (pageLabel.getText().equals("Home screen")) {
 			userText1.setText(getMyUser().getFullname());
 			dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
-		}
-		else if (pageLabel.getText().contentEquals("requests")) {
+		} else if (pageLabel.getText().contentEquals("requests")) {
 			connect(this);
 			messageToServer[0] = "getTimeRequestList";
 			messageToServer[1] = null;
@@ -207,10 +196,6 @@ public class DirectorControl extends UserControl implements Initializable {
 			messagesRead.add((int) msg[5]);
 			if (msg[4].equals(getMyUser().getUsername())) {
 				chat.closeConnection();// close the connection
-				/*
-				 * if (refreshPressed) refreshPressed = false; else {
-				 */
-
 				Platform.runLater(() -> {
 					try {
 						switch (msg[0].toString()) {
@@ -257,13 +242,12 @@ public class DirectorControl extends UserControl implements Initializable {
 								GradeList.clear();
 							GradeList = (ArrayList<ExecutedExam>) msg[1];
 							float average = 0;
-							int sumStudent = 0;
 							for (ExecutedExam executedExam : GradeList) {
-								average +=executedExam.getAverage();
+								average += executedExam.getAverage();
 								sumRangGrades(executedExam);
 							}
 							if (GradeList.size() > 0)
-								averageTextField.setText(" " + (average / (float)GradeList.size()));
+								averageTextField.setText(" " + (average / (float) GradeList.size()));
 							Collections.sort(GradeList);
 							if (GradeList.size() % 2 == 0)
 								medianTextField.setText(" " + GradeList.get((GradeList.size() / 2) - 1).getMedian());
@@ -473,7 +457,6 @@ public class DirectorControl extends UserControl implements Initializable {
 		}
 	}
 
-
 	public void clearData() {
 		barChart.getData().clear();
 		histogram.getData().clear();
@@ -500,13 +483,11 @@ public class DirectorControl extends UserControl implements Initializable {
 		medianTextField.clear();
 		averageTextField.clear();
 		initWindow();
-		refreshPressed = false;
 	}
 
 	@FXML
 	public void refreshPressListener(ActionEvent e) {
 
-		refreshPressed = true;
 		refreshPress();
 	}
 
@@ -531,7 +512,7 @@ public class DirectorControl extends UserControl implements Initializable {
 			try {
 				tcontroller.openUpdateQuestionScreen(e);
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
+
 				e1.printStackTrace();
 			}
 		});
@@ -551,10 +532,10 @@ public class DirectorControl extends UserControl implements Initializable {
 
 	public void getExecutedExamsStock(ActionEvent e) {
 		TeacherSeeExamsControl tcontroller = new TeacherSeeExamsControl();
-				try {
-					tcontroller.openTeacherSeeExamScreen(e);
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+		try {
+			tcontroller.openTeacherSeeExamScreen(e);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 }

@@ -9,10 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -32,7 +29,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -42,15 +38,11 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
@@ -59,8 +51,8 @@ import javafx.stage.Stage;
  * @author lior hammer
  *
  */
-public class StudentControl extends UserControl implements Initializable { 
- 
+public class StudentControl extends UserControl implements Initializable {
+
 	protected static ArrayList<Question> questioninexecutedexam;
 	protected static HashMap<String, Integer> examAnswers;// saves the question id and the answers
 	private static int remainTime;
@@ -98,7 +90,7 @@ public class StudentControl extends UserControl implements Initializable {
 	private Label executedCode;
 	ObservableList<ExamDetailsMessage> detailsList = FXCollections.observableArrayList();
 	ObservableList<String> executeExamList = FXCollections.observableArrayList();
-	
+
 	// *******for student execute or download exam*********//
 	@FXML
 	private TextField codeTextField;
@@ -109,7 +101,7 @@ public class StudentControl extends UserControl implements Initializable {
 	@FXML
 	private Button finishButton;
 	// ******************** student perform exam ************//
-	
+
 	@FXML
 	private RadioButton correctRadioButton2;
 	@FXML
@@ -142,14 +134,15 @@ public class StudentControl extends UserControl implements Initializable {
 	// ******************** Showing exam copy ************//
 	@FXML
 	protected ComboBox<String> examCodeCombo;
+
 	/************************ Class Methods *************************/
-	
+
 	/**
-	 * initialize(URL url, ResourceBundle rb) 
-	*Arguments:URL url, RResourceBundle rb
-	* The  method initialize the javaFX screens by their names 
-	* @author Lior Hammer
-	*/
+	 * initialize(URL url, ResourceBundle rb) Arguments:URL url, RResourceBundle rb
+	 * The method initialize the javaFX screens by their names
+	 * 
+	 * @author Lior Hammer
+	 */
 	public void initialize(URL url, ResourceBundle rb) {
 		// connect(this);
 		isPerformExam = false;
@@ -180,9 +173,9 @@ public class StudentControl extends UserControl implements Initializable {
 				// s=solutionTime.toString();
 				// timerTextField.setText(s);
 				startTime();
-				Platform.runLater(()->{
+				Platform.runLater(() -> {
 					remarksForStudentText.setText(exam.getExam().getRemarksForStudent());
-					 courseName.setText(exam.getExecutedExamID());
+					courseName.setText(exam.getExecutedExamID());
 				});
 			}
 			break;
@@ -191,15 +184,15 @@ public class StudentControl extends UserControl implements Initializable {
 			requestId = new ArrayList<String>();
 			examAnswers = new HashMap<String, Integer>();
 			isPerformExam = true;
-			Platform.runLater(()->{
+			Platform.runLater(() -> {
 				executedCode.setText(exam.getExecutedExamID());
 				remarksForStudentText.setText(exam.getExam().getRemarksForStudent());
 			});
 			startTime();
 			break;
 		}
-		case ("Home Screen"): {/*If its the home page*/
-			
+		case ("Home Screen"): {/* If its the home page */
+
 			userNameLabel.setText(getMyUser().getFullname());
 			dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
 			break;
@@ -208,12 +201,14 @@ public class StudentControl extends UserControl implements Initializable {
 			return;
 		}
 	}
+
 	/**
-	 * startTime()
-	*Arguments:No args
-	* The  method start the time for the students that start executing exam
-	* @author Lior Hammer
-	*/
+	 * startTime() Arguments:No args The method start the time for the students that
+	 * start executing exam
+	 * 
+	 * @author Lior Hammer
+	 */
+	@SuppressWarnings("deprecation")
 	private void startTime() {
 		final StudentControl sControl = this;
 		try {
@@ -222,29 +217,24 @@ public class StudentControl extends UserControl implements Initializable {
 
 			e1.printStackTrace();
 		}
-		remainTime = Time.valueOf(exam.getSolutionTime()).getHours() * 3600 + Time.valueOf(exam.getSolutionTime()).getMinutes() * 60 
+		remainTime = Time.valueOf(exam.getSolutionTime()).getHours() * 3600
+				+ Time.valueOf(exam.getSolutionTime()).getMinutes() * 60
 				+ Time.valueOf(exam.getSolutionTime()).getSeconds();// remain
-																													// is
-																													// the
-																													// time
-																													// is
-																													// seconds
+																	// is
+																	// the
+																	// time
+																	// is
+																	// seconds
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				try {
 					chat.closeConnection();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				connect(sControl);
 				int sec = setInterval();
-				// messageToServer[0] = "isChanged";
-				// messageToServer[1] = getMyUser().getUsername();
-				// messageToServer[2] = executedID;
-				// chat.handleMessageFromClientUI(messageToServer);// send the message to server
-
 				if (remainTime == 1) {
 					endExam("time is over");
 				}
@@ -257,14 +247,14 @@ public class StudentControl extends UserControl implements Initializable {
 	{
 
 	}
+
 	/**
-	 * endExam(String message)
-	*Arguments:message
-	* The  method called when the time is over or the exam has been locked 
-	* by the teacher , the message is for the reason that explain why the exam
-	* has been finished 
-	* @author Lior Hammer
-	*/
+	 * endExam(String message) Arguments:message The method called when the time is
+	 * over or the exam has been locked by the teacher , the message is for the
+	 * reason that explain why the exam has been finished
+	 * 
+	 * @author Lior Hammer
+	 */
 	public void endExam(String message) {
 		timer.cancel();
 		Platform.runLater(() -> errorMsg(message));
@@ -287,27 +277,30 @@ public class StudentControl extends UserControl implements Initializable {
 			}
 		}
 	}
+
 	/**
-	 * setInterval()
-	*Arguments: No args
-	* The method check if the exam executed time has over 
-	* @author Aviv Mahulya
-	*/
+	 * setInterval() Arguments: No args The method check if the exam executed time
+	 * has over
+	 * 
+	 * @author Aviv Mahulya
+	 */
 	private static final int setInterval() {
 		if (remainTime == 1)
 			timer.cancel();
 		return --remainTime;
 	}
+
 	/**
-	 * Time intToTime(int seconds)
-	*Arguments: seconds
-	* The method transform from second to the relevant time units 
-	* @author Lior Hammer
-	*/
+	 * Time intToTime(int seconds) Arguments: seconds The method transform from
+	 * second to the relevant time units
+	 * 
+	 * @author Lior Hammer
+	 */
 	public static Time intToTime(int seconds) {
 		int hours = seconds / 3600;
 		int minutes = (seconds % 3600) / 60;
 		int sec = seconds % 60;
+		@SuppressWarnings("deprecation")
 		Time t = new Time(hours, minutes, sec);
 		return t;
 	}
@@ -315,11 +308,11 @@ public class StudentControl extends UserControl implements Initializable {
 	/********************* general Functions *************************/
 
 	/**
-	 * goToHomePressed(ActionEvent e) 
-	*Arguments: ActionEvent
-	* The method catch an click on the "go home" button
-	* @author Lior Hammer
-	*/
+	 * goToHomePressed(ActionEvent e) Arguments: ActionEvent The method catch an
+	 * click on the "go home" button
+	 * 
+	 * @author Lior Hammer
+	 */
 	@FXML
 	public void goToHomePressed(ActionEvent e) throws Exception {
 		closeScreen(e);
@@ -328,11 +321,11 @@ public class StudentControl extends UserControl implements Initializable {
 
 	/********************* Student Home Screen listeners *************************/
 	/**
-	 * myGradesPressed(ActionEvent e)
-	*Arguments: ActionEvent
-	* The method catch an click on the "my grades" button
-	* @author Lior Hammer
-	*/
+	 * myGradesPressed(ActionEvent e) Arguments: ActionEvent The method catch an
+	 * click on the "my grades" button
+	 * 
+	 * @author Lior Hammer
+	 */
 	public void myGradesPressed(ActionEvent e) {
 		try {
 			closeScreen(e);
@@ -345,12 +338,13 @@ public class StudentControl extends UserControl implements Initializable {
 			e1.printStackTrace();
 		}
 	}
+
 	/**
-	 * orderExamCopyPressed(ActionEvent e)
-	*Arguments: ActionEvent
-	* The method catch an click on the "order" button
-	* @author Lior Hammer
-	*/
+	 * orderExamCopyPressed(ActionEvent e) Arguments: ActionEvent The method catch
+	 * an click on the "order" button
+	 * 
+	 * @author Lior Hammer
+	 */
 	public void orderExamCopyPressed(ActionEvent e) {
 		try {
 			closeScreen(e);
@@ -364,12 +358,13 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 
 	}
+
 	/**
-	 * excecuteMorCExamPressed(ActionEvent e)
-	*Arguments: ActionEvent
-	* The method catch an click on the "execute exam" button
-	* @author Lior Hammer
-	*/
+	 * excecuteMorCExamPressed(ActionEvent e) Arguments: ActionEvent The method
+	 * catch an click on the "execute exam" button
+	 * 
+	 * @author Lior Hammer
+	 */
 	public void excecuteMorCExamPressed(ActionEvent e) {
 		try {
 			closeScreen(e);
@@ -382,7 +377,6 @@ public class StudentControl extends UserControl implements Initializable {
 			e1.printStackTrace();
 		}
 	}
-
 
 	/***************************
 	 * Student excecute exam
@@ -400,7 +394,7 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 		// everything fine
 		copyFlag = false;
-		exam=new ExecutedExam();
+		exam = new ExecutedExam();
 		exam.setExecutedExamID(codeTextField.getText());
 		connect(this); // connecting to server
 		messageToServer[0] = "checkExecutedExam";
@@ -411,13 +405,12 @@ public class StudentControl extends UserControl implements Initializable {
 
 	/************************* checking message ***********************************/
 	// for all windows
-	
+
 	/**
-	 * @see control.UserControl#checkMessage(java.lang.Object)
-	 * checking the message that sent by the server and call the relevant methods
-	 *  @author Lior Hammer
+	 * @see control.UserControl#checkMessage(java.lang.Object) checking the message
+	 *      that sent by the server and call the relevant methods
+	 * @author Lior Hammer
 	 */
-	@SuppressWarnings({ "unchecked", "unused" })
 	@Override
 	public void checkMessage(Object message) {
 		try {
@@ -427,10 +420,10 @@ public class StudentControl extends UserControl implements Initializable {
 			e1.printStackTrace();
 		}
 		final Object[] msgFromServer = (Object[]) message;
-		if(messagesRead.contains((int)msgFromServer[5])){
+		if (messagesRead.contains((int) msgFromServer[5])) {
 			return;
 		}
-		messagesRead.add((int)msgFromServer[5]);
+		messagesRead.add((int) msgFromServer[5]);
 		if ((isPerformExam == true && msgFromServer[4].equals("all"))
 				|| msgFromServer[4].equals(getMyUser().getUsername())) {
 
@@ -463,7 +456,8 @@ public class StudentControl extends UserControl implements Initializable {
 					}
 
 					case "setExecutedExamLocked": {
-						if (((Boolean) msgFromServer[1] == true && (((String) msgFromServer[2]).equals(exam.getExecutedExamID())))) {
+						if (((Boolean) msgFromServer[1] == true
+								&& (((String) msgFromServer[2]).equals(exam.getExecutedExamID())))) {
 							if (isLocked == false) {
 								isLocked = true;
 								endExam("Exam locked");
@@ -485,14 +479,16 @@ public class StudentControl extends UserControl implements Initializable {
 	 * 
 	 * @throws IOException
 	 ***********************/
-	
+
 	/**
 	 * checkExecutedExam(Object[] message)
+	 * 
 	 * @param message
 	 * @throws IOException
-	 * The method check the type of executed exam that have been sent from the server 
-	 * and execute block of code by the type of the returned exam
-	 *  @author Tom Zarhin
+	 *             The method check the type of executed exam that have been sent
+	 *             from the server and execute block of code by the type of the
+	 *             returned exam
+	 * @author Tom Zarhin
 	 */
 	@SuppressWarnings("unchecked")
 	private void checkExecutedExam(Object[] message) throws IOException {
@@ -541,12 +537,11 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 	}
 
-	
-
 	/**
 	 * addTimeToExam
+	 * 
 	 * @param message
-	 * The method add time to a running exam 
+	 *            The method add time to a running exam
 	 * @author Aviv Mahulya
 	 */
 	@SuppressWarnings("deprecation")
@@ -564,14 +559,14 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 
 	/************************ Student performing exam *************/
-	
+
 	/**
-	 * nextQuestion(ActionEvent e)
-	*Arguments: ActionEvent
-	* The method catch an click on the "next" button and set 
-	* the "next" button dis\enable according to the conditions 
-	* @author Lior Hammer
-	*/
+	 * nextQuestion(ActionEvent e) Arguments: ActionEvent The method catch an click
+	 * on the "next" button and set the "next" button dis\enable according to the
+	 * conditions
+	 * 
+	 * @author Lior Hammer
+	 */
 	@FXML
 	private void nextQuestion(ActionEvent e) {
 		if (index >= 0 && copyFlag == false)
@@ -584,10 +579,10 @@ public class StudentControl extends UserControl implements Initializable {
 			prevBTN.setVisible(true);
 
 	}
-/**
- * setQuestion()
- * setting the context of the relevant question on the screen
- */
+
+	/**
+	 * setQuestion() setting the context of the relevant question on the screen
+	 */
 	private void setQuestion() {
 
 		correctRadioButton1.setSelected(false);
@@ -625,11 +620,12 @@ public class StudentControl extends UserControl implements Initializable {
 			answer3.setStyle("-fx-background-color: white;");
 			answer4.setStyle("-fx-background-color: white;");
 			String stdSelected;
-			if (!examAnswers.isEmpty()&&examAnswers.containsKey(questioninexecutedexam.get(index).getId()))
+			if (!examAnswers.isEmpty() && examAnswers.containsKey(questioninexecutedexam.get(index).getId()))
 				stdSelected = examAnswers.get(questioninexecutedexam.get(index).getId()).toString();
-			else if(examAnswers.size()<questioninexecutedexam.size()&&examAnswers.size()>0)
+			else if (examAnswers.size() < questioninexecutedexam.size() && examAnswers.size() > 0)
 				stdSelected = "0";
-			else stdSelected = "-1" ;
+			else
+				stdSelected = "-1";
 			try {
 				switch (qustionAnswer) {
 				case "1":
@@ -680,8 +676,8 @@ public class StudentControl extends UserControl implements Initializable {
 						answer4.setStyle("-fx-background-color: red;");
 					break;
 				case "0":
-					Alert alert = new Alert(AlertType.INFORMATION, "Please pay attention there is no answer for "
-							+ "the next question ",	ButtonType.OK);
+					Alert alert = new Alert(AlertType.INFORMATION,
+							"Please pay attention there is no answer for " + "the next question ", ButtonType.OK);
 					alert.showAndWait();
 				}
 			} catch (NullPointerException e) {
@@ -691,13 +687,14 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 
 	}
+
 	/**
-	 * previousQuestion(ActionEvent e)
-	*Arguments: ActionEvent
-	* The method catch an click on the "previous" button and set 
-	* the "previous" button dis\enable according to the conditions 
-	* @author Lior Hammer
-	*/
+	 * previousQuestion(ActionEvent e) Arguments: ActionEvent The method catch an
+	 * click on the "previous" button and set the "previous" button dis\enable
+	 * according to the conditions
+	 * 
+	 * @author Lior Hammer
+	 */
 	@FXML
 	private void previousQuestion(ActionEvent e) {
 		if (copyFlag == false)
@@ -709,17 +706,18 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 		nextBTN.setVisible(true);
 	}
+
 	/**
-	 * finishExam(ActionEvent e)
-	*Arguments: ActionEvent
-	* The method catch an click on the "Finish" button ans 
-	* also send the data from the ckient to the server and go back to home screen
-	* @author Lior Hammer
-	*/
+	 * finishExam(ActionEvent e) Arguments: ActionEvent The method catch an click on
+	 * the "Finish" button ans also send the data from the ckient to the server and
+	 * go back to home screen
+	 * 
+	 * @author Lior Hammer
+	 */
 	@FXML
 	private void finishExam(ActionEvent e) throws IOException {
 		isPerformExam = false;
-		if(timer!=null)
+		if (timer != null)
 			timer.cancel();
 		if (!getMyUser().getRole().equals("student")) {
 			((Stage) ((Node) e.getSource()).getScene().getWindow()).close();
@@ -759,12 +757,13 @@ public class StudentControl extends UserControl implements Initializable {
 		}
 
 	}
+
 	/**
-	 * addAnswerToHashMap()
-	*Arguments: No args 
-	* The method add an answer to the HashMap if he answer on some question
-	* @author Lior Hammer
-	*/
+	 * addAnswerToHashMap() Arguments: No args The method add an answer to the
+	 * HashMap if he answer on some question
+	 * 
+	 * @author Lior Hammer
+	 */
 	public void addAnswerToHashMap() {
 		int selectedAnswer = 0;
 		if (index <= -1)
@@ -792,22 +791,23 @@ public class StudentControl extends UserControl implements Initializable {
 
 	/************************ Student perform manual exam *************/
 	/**
-	 * dragOver(DragEvent e)
-	*Arguments: DragEvent e
-	* The method handle a drag event when student want to set a file or take a file 
-	* @author Tom Zarhin
-	*/
+	 * dragOver(DragEvent e) Arguments: DragEvent e The method handle a drag event
+	 * when student want to set a file or take a file
+	 * 
+	 * @author Tom Zarhin
+	 */
 	public void dragOver(DragEvent e) {
 		if (e.getDragboard().hasFiles()) {
 			e.acceptTransferModes(TransferMode.ANY);
 		}
 	}
+
 	/**
-	 * dropFileToImage(DragEvent e)
-	*Arguments: DragEvent e
-	* The method handle a drop file 
-	* @author Tom Zarhin
-	*/
+	 * dropFileToImage(DragEvent e) Arguments: DragEvent e The method handle a drop
+	 * file
+	 * 
+	 * @author Tom Zarhin
+	 */
 	public void dropFileToImage(DragEvent e) {
 		fileFromClient = e.getDragboard().getFiles();
 		boolean wordFile = fileFromClient.get(0).getAbsolutePath().contains(".docx");
@@ -822,12 +822,13 @@ public class StudentControl extends UserControl implements Initializable {
 			fileName.setVisible(false);
 		}
 	}
+
 	/**
-	 * uploadFileToServer(ActionEvent e)
-	*Arguments: ActionEvent e
-	* The method catch a click on upload and sent the file to the server 
-	* @author Tom Zarhin
-	*/
+	 * uploadFileToServer(ActionEvent e) Arguments: ActionEvent e The method catch a
+	 * click on upload and sent the file to the server
+	 * 
+	 * @author Tom Zarhin
+	 */
 	@SuppressWarnings("resource")
 	public void uploadFileToServer(ActionEvent e) throws IOException {
 		MyFile file = null;
