@@ -2,19 +2,11 @@ package control;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import entity.Course;
-import entity.Exam;
 import entity.ExecutedExam;
-import entity.Question;
-import entity.QuestionInExam;
-import entity.StudentPerformExam;
-import entity.TeachingProfessionals;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,19 +17,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.converter.DefaultStringConverter;
 
 public class TeacherSeeExamsControl extends TeacherControl implements Initializable {
 
@@ -192,7 +179,6 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 			}
 	}
 
-	
 	public void showStudentsInThisExam(ActionEvent e) throws IOException {
 		tempExamId = ExamsForTeacher.getSelectionModel().getSelectedItem().getExecutedExamID();
 		openCheckExamScreen(e);

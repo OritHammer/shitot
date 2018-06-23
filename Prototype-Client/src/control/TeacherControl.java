@@ -1,7 +1,6 @@
 package control;
 
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -19,7 +18,6 @@ import entity.QuestionInExam;
 import entity.RequestForChangingTimeAllocated;
 import entity.StudentPerformExam;
 import entity.TeachingProfessionals;
-import entity.User;
 import javafx.application.Platform;
 
 import javafx.collections.FXCollections;
@@ -32,7 +30,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -48,8 +45,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -59,7 +54,18 @@ import javafx.util.converter.FloatStringConverter;
 
 public class TeacherControl extends UserControl implements Initializable {
 
-	private static ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
+	private static ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();// this
+																													// variable
+																													// is
+																													// for
+																													// saving
+																													// the
+																													// questions
+																													// in
+																													// exam
+																													// and
+																													// display
+																													// it
 	private ObservableList<String> coursesListToCreateQuestion = FXCollections.observableArrayList();
 	private ObservableList<Question> questionObservableList;
 	private static boolean blockPassQuestionButton;
@@ -233,6 +239,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * 
 	 * @author Or Edri
 	 */
+	@SuppressWarnings("static-access")
 	public void loadExamCopy(MouseEvent event) {
 		if (event.getClickCount() == 2) {
 			connect(this);
@@ -308,6 +315,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * 
 	 * @author Or Edri
 	 */
+	@SuppressWarnings("unchecked")
 	public void finalChange(ActionEvent event) {
 		/* Check the inputs from the textFields */
 		if (newGrade.getText().equals("") && reason.getText().equals(""))
@@ -609,41 +617,41 @@ public class TeacherControl extends UserControl implements Initializable {
 					}
 
 					case ("getQuestionInExam"): /*
-						 * get the question list of specific exam from server and check if the
-						 * exam active or not
-						 */
-								{
-								try {
-									((ArrayList<QuestionInExam>) msg[1]).forEach(questionInExamObservable::add);
-									final boolean flag1 = (boolean) msg[2];
-									Platform.runLater(() -> {
-										if (flag1 == false) {
-											blockPassQuestionButton = true;
-										} else {
-											blockPassQuestionButton = false;
-										}
-										try {
-											openScreen(tempEvent, "UpdateQuestionInExam");
-										} catch (IOException e) {
-								
-											e.printStackTrace();
-										}
-									});
-								} catch (NullPointerException exception) {
-									errorMsg("exam does not have any question");
+												 * get the question list of specific exam from server and check if the
+												 * exam active or not
+												 */
+					{
+						try {
+							((ArrayList<QuestionInExam>) msg[1]).forEach(questionInExamObservable::add);
+							final boolean flag1 = (boolean) msg[2];
+							Platform.runLater(() -> {
+								if (flag1 == false) {
+									blockPassQuestionButton = true;
+								} else {
 									blockPassQuestionButton = false;
-								
 								}
-								break;
+								try {
+									openScreen(tempEvent, "UpdateQuestionInExam");
+								} catch (IOException e) {
+
+									e.printStackTrace();
 								}
+							});
+						} catch (NullPointerException exception) {
+							errorMsg("exam does not have any question");
+							blockPassQuestionButton = false;
+
+						}
+						break;
+					}
 					case ("setExam"): {
 						if ((String) msg[1] != null) {
 							infoMsg("The exam added successfully");
 							try {
 								refreshPageAfterCreate(tempEvent, "CreateExam");
-							    for ( int i = 0; i<questionsInExamTableView.getItems().size(); i++) {
-							          questionsInExamTableView.getItems().clear();
-							         }
+								for (int i = 0; i < questionsInExamTableView.getItems().size(); i++) {
+									questionsInExamTableView.getItems().clear();
+								}
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -835,17 +843,16 @@ public class TeacherControl extends UserControl implements Initializable {
 		tableViewScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 		// This line gets the Stage information
 		Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
-		window.setOnCloseRequest(event-> {
-			 uc.connect(uc);
-				messageToServer[0] = "performLogout";
-				messageToServer[1] =getMyUser().getUsername();
-				messageToServer[2] =null;
-				messageToServer[4] =getMyUser().getUsername();
-				chat.handleMessageFromClientUI(messageToServer);
-				Platform.exit();
-				
-	          
-	      });        
+		window.setOnCloseRequest(event -> {
+			uc.connect(uc);
+			messageToServer[0] = "performLogout";
+			messageToServer[1] = getMyUser().getUsername();
+			messageToServer[2] = null;
+			messageToServer[4] = getMyUser().getUsername();
+			chat.handleMessageFromClientUI(messageToServer);
+			Platform.exit();
+
+		});
 		window.setScene(tableViewScene);
 		window.show();
 	}
@@ -1571,7 +1578,7 @@ public class TeacherControl extends UserControl implements Initializable {
 			e1.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * The setPoints function set new points in the table view
 	 * 
