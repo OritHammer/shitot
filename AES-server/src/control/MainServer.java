@@ -9,7 +9,13 @@ import javafx.scene.image.Image;
 
 public class MainServer extends Application {
 	private static Stage guiStage;
-
+	/**
+	 *  start(Stage primaryStage)
+	 *  Arguments:Stage primaryStage
+	 *  The method set the gui screen of the server connection
+	 * 
+	 * @author Aviv Mahulya
+	 */
 	public void start(Stage primaryStage) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/boundary/ConnectToDB.fxml"));

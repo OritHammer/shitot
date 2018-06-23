@@ -40,16 +40,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import ocsf.server.*;
 
-/**
- * This class overrides some of the methods in the abstract superclass in order
- * to give more functionality to the server.
- *
- * @author Dr Timothy C. Lethbridge
- * @author Dr Robert Lagani&egrave;re
- * @author Fran&ccedil;ois B&eacute;langer
- * @author Paul Holden
- * @version July 2000
- */
+
 public class Server extends AbstractServer {
 	// Class variables *************************************************
 	@FXML
@@ -105,7 +96,12 @@ public class Server extends AbstractServer {
 	public int parsingTheData(String Id) {
 		return Integer.parseInt(Id);
 	}
-
+	/**
+	 * checkMessage(Object message) Arguments:Object message The method handle the
+	 * message from server
+	 * 
+	 * @author Aviv Mahulya
+	 */
 	@SuppressWarnings("unchecked")
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		con.runDB();
@@ -126,6 +122,7 @@ public class Server extends AbstractServer {
 			System.out.println("arraylist to deliver");
 			break;
 		}
+		
 		case "getCourses": {/* client request all all the courses under some subject */
 			ArrayList<Course> courseList = con.getCourseList(message[1], message[2]);
 			serverMessage[1] = courseList;

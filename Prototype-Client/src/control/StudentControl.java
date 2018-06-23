@@ -64,9 +64,9 @@ public class StudentControl extends UserControl implements Initializable {
 	private static String timeToString;
 	protected static MouseEvent tempEvent;
 	private Boolean isLocked = false;
-	private Boolean isPerformExam;
+	
 	/********************** AddTime Variables ***************************/
-	private static ArrayList<String> requestId;
+	private static ArrayList<String> requestId; 
 
 	/********************* Variable declaration *************************/
 	// *********for HomePage***********//
@@ -192,7 +192,7 @@ public class StudentControl extends UserControl implements Initializable {
 			break;
 		}
 		case ("Home Screen"): {/* If its the home page */
-
+			authorLabel.setText(getMyUser().getRole());
 			userNameLabel.setText(getMyUser().getFullname());
 			dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
 			break;

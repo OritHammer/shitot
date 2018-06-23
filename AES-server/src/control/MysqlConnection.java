@@ -36,19 +36,27 @@ public class MysqlConnection {
 	ArrayList<TeachingProfessionals> subjectList = null;
 
 	/************************** Class Constructor ********************************/
+	/**
+	 *  MysqlConnection(String user, String password)
+	 *  Arguments:String user, String password
+	 * The method set the db name and password
+	 * 
+	 * @author Orit Aharon
+	 */
 	public MysqlConnection(String user, String password) {
 
 		dbUser = user;
 		dbPass = password;
-		/*
-		 * used to enter server details Scanner sc = new Scanner(System.in);
-		 * System.out.println("enter your DB name: "); serverName = sc.nextLine();
-		 * System.out.println("enter your server name: "); userPassword = sc.nextLine();
-		 * System.out.println("enter your password: "); DBname = sc.nextLine();
-		 */
 	}
 
 	/**************************** Class Methods **********************************/
+	/**
+	 *  runDB()
+	 *  Arguments:NA
+	 * The method create connection to the DB
+	 * 
+	 * @author Lior Hammer
+	 */
 	public void runDB() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -64,7 +72,13 @@ public class MysqlConnection {
 			System.out.println("VendorError: " + ex.getErrorCode());
 		}
 	}
-
+	/**
+	 * setStatusToAddingTimeRequest(Object RequestID, String newStatus)
+	 *  Arguments:Object RequestID, String newStatus
+	 * The method set  in the DB the status of request 'RequestID' to 'newStatus'
+	 * 
+	 * @author Lior Hammer
+	 */
 	public void setStatusToAddingTimeRequest(Object RequestID, String newStatus) {
 		try {
 			String reqID = (String) RequestID;
@@ -75,7 +89,14 @@ public class MysqlConnection {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * createQuestion(Object subject, Object question, Object courses)
+	 *  Arguments:Object subject, Object question, Object courses
+	 * The method set  new question in the DB 
+	 * The method return true if the question where added,otherwise return false
+	 * 
+	 * @author Aviv Mahulya
+	 */
 	public synchronized Boolean createQuestion(Object subject, Object question, Object courses) {
 		String fullQuestionNumber;
 		int questionNumber;
@@ -87,7 +108,7 @@ public class MysqlConnection {
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
 					"SELECT (question_id) FROM questions" + " WHERE question_id like " + "\"" + subject + "%\"" + ";");
-			if (!rs.isBeforeFirst()) {
+			if (!rs.isBeforeFirst()) {/*If there is question of the subject in stock*/
 				first = 0;
 			} else {
 				while (rs.next()) {
@@ -218,13 +239,6 @@ public class MysqlConnection {
 					rs.getString(6)); // in section 5 need to insert "connected"
 
 			performLogin(userID);
-			// updating user status
-
-			// stmt.executeUpdate( "UPDATE users " +
-			// "SET status=\"connected\" WHERE username=\""+userID+"\" AND password=\""
-			// +userPass+"\";");// setting a new status
-			// System.out.println("user set as connected");
-
 			return newUser;
 			// in the end userDetails will have the UserID,userName,role
 		} catch (SQLException e) {

@@ -38,7 +38,7 @@ public class UserControl implements Initializable {
 	@FXML
 	protected Label userNameLabel;
 	@FXML
-	private Label authorLabel;
+	protected Label authorLabel;
 	@FXML
 	protected Label dateLabel;
 	@FXML
@@ -75,17 +75,17 @@ public class UserControl implements Initializable {
 	private Scene home_page_scene;
 	static Thread th;
 	protected String userNameFromDB;
-	protected ArrayList<Integer> messagesRead = new ArrayList<Integer>();
+	protected  static ArrayList<Integer> messagesRead = new ArrayList<Integer>();
 
 	protected Object[] messageToServer = new Object[5];// The message the user send to the message
 	/* connections variables */
 	static String ip;// server ip
-	final UserControl uc = this;
+	final  UserControl uc = this;
 	final public static int DEFAULT_PORT = 5555;
-	protected ChatClient chat;
+	protected ChatClient chat; 
 	private static User myUser;
 	/**
-	 * variables to show statisticRepot to teacher And Director
+	 * variables to show statisticRepot to teacher And Director 
 	 */
 	@FXML
 	public BarChart<?, ?> barChart;
@@ -134,25 +134,26 @@ public class UserControl implements Initializable {
 	 */
 	public void checkMessage(Object message) {
 		try {
-			UserControl uc = this;
 			chat.closeConnection();/* close the connection with the server */
+			UserControl uc = this;
 			Object[] msg = (Object[]) message;
-			if (messagesRead.contains((int) msg[5])) {/* Check if the user already read this message */
-				return;
-			}
+		if (messagesRead.contains((int) msg[5])) {/* Check if the user already read this message */
+			return;
+		}
 			messagesRead.add((int) msg[5]);/* Save the serial number of the message */
 			User user = (User) msg[1];
 			if (user == null) {
-				Platform.runLater(() -> {
-					errorMsg.setVisible(true);
-					errorImg.setVisible(true);
-					errorImg1.setVisible(true);
-				});
+			
+			Platform.runLater(() -> {
+				errorMsg("not valid details");
+				openScreen("boundary", "LoginGui");
+
+			});
 
 				return;
 			}
 			if (msg[0].toString().equals("checkUserDetails")) {/* check if the message contains the user details */
-				if (user != null) {
+				if (user != null) {  
 					switch (user.getRole()
 							.toLowerCase()) {/* check the role of the user and set the permisiion according to that */
 					case "teacher": {
@@ -210,7 +211,7 @@ public class UserControl implements Initializable {
 									StudentControl sController = loader.getController();
 									setMyUser(user);
 									getMyUser().setFullname(user.getFullname());
-									getMyUser().setUsername(user.getUsername());
+									getMyUser().setUsername(user.getUsername());   
 									getMyUser().setRole(user.getRole());
 									sController.setStudentAuthor_Date_name();/* send the name to the controller */
 									home_page_scene = new Scene(home_page_parent);
@@ -291,14 +292,17 @@ public class UserControl implements Initializable {
 	 * 
 	 * @author Aviv Mahulya
 	 */
-	public void loginPressed(ActionEvent e) throws IOException {
-		connect(this);
+	public void loginPressed(ActionEvent e) throws IOException { 
+		
+		
+		
 		if (userName.getText().equals("") || password.getText().equals("")) {/* if one of the fields is empty */
 			errorMsg.setVisible(true);
 			errorImg.setVisible(true);
 			errorImg1.setVisible(true);
 		} else {
 			/* send message to server */
+			connect(this);
 			messageToServer[0] = "checkUserDetails";
 			messageToServer[1] = userName.getText();
 			messageToServer[2] = password.getText();
@@ -483,18 +487,49 @@ public class UserControl implements Initializable {
 		}
 	}
 
+	
 	/**
-	 * sumRangGrades(ExecutedExam eExam)
-	 * 
-	 * @param eExam
-	 * @throws IndexOutOfBoundsException
-	 * @author orit Hammer
-	 */
-	public void sumRangGrades(ExecutedExam eExam) throws IndexOutOfBoundsException {
-		if (myUser.getRole().equals("student") == false) {
-			for (int i = 0; i < sumGradeRanges.length; i++)
-				sumGradeRanges[i] += eExam.getGradeRang()[i];
-		}
-	}
-
+	  * sumRangGrades(float grade)
+	  * 
+	  * @param grade
+	  * @throws IndexOutOfBoundsException
+	  * @author orit Hammer
+	  */
+	 public void sumRangGrades(float grade) throws IndexOutOfBoundsException {
+	  if (myUser.getRole().equals("student") == false) {
+	   if (grade >= 0 && grade <= 9)// grade between0to9
+	    sumGradeRanges[0]++;
+	   else if (grade >= 10 && grade <= 19)// grade between10to19
+	    sumGradeRanges[1]++;
+	   else if (grade >= 20 && grade <= 29)// grade between 20to29
+	    sumGradeRanges[2]++;
+	   else if (grade >= 30 && grade <= 39)// grade between 30to39
+	    sumGradeRanges[3]++;
+	   else if (grade >= 40 && grade <= 49)// grade between 40to49
+	    sumGradeRanges[4]++;
+	   else if (grade >= 50 && grade <= 59)// grade between 50to59
+	    sumGradeRanges[5]++;
+	   else if (grade >= 60 && grade <= 69)// grade between60to69
+	    sumGradeRanges[6]++;
+	   else if (grade >= 70 && grade <= 79)// grade between70to79
+	    sumGradeRanges[7]++;
+	   else if (grade >= 80 && grade <= 89)// grade between80to89
+	    sumGradeRanges[8]++;
+	   else if (grade >= 90 && grade <= 100)// grade between90to100
+	    sumGradeRanges[9]++;
+	  }
+	 }
+	  /**
+	   * sumRangGrades(ExecutedExam eExam)
+	   * 
+	   * @param eExam
+	    @throws IndexOutOfBoundsException
+	    @author orit Hammer
+	   */
+	  public void sumRangGrades(ExecutedExam eExam) throws IndexOutOfBoundsException {
+	   if (myUser.getRole().equals("student") == false) {
+	    for (int i = 0; i < sumGradeRanges.length; i++)
+	     sumGradeRanges[i] += eExam.getGradeRang()[i];
+	   }
+	  }
 }

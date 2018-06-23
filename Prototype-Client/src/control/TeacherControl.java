@@ -60,7 +60,7 @@ public class TeacherControl extends UserControl implements Initializable {
 																													// for
 																													// saving
 																													// the
-																													// questions
+													 																// questions
 																													// in
 																													// exam
 																													// and
@@ -69,9 +69,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	private ObservableList<String> coursesListToCreateQuestion = FXCollections.observableArrayList();
 	private ObservableList<Question> questionObservableList;
 	private static boolean blockPassQuestionButton;
-
 	private TeacherControl tController;
-
 	private ActionEvent tempEvent;
 	private ObservableList<Exam> exams;
 	private Question questionSelected;
