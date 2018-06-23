@@ -95,7 +95,8 @@ public class StudentControl extends UserControl implements Initializable {
 	private Label fileName;
 	@FXML
 	private Text remarksForStudentText;
-	
+	@FXML
+	private Label executedCode;
 	ObservableList<ExamDetailsMessage> detailsList = FXCollections.observableArrayList();
 	ObservableList<String> executeExamList = FXCollections.observableArrayList();
 	
@@ -184,7 +185,7 @@ public class StudentControl extends UserControl implements Initializable {
 					remarksForStudentText.setText(exam.getExam().getRemarksForStudent());
 				});
 			}
-			// courseName.setText(questioninexecutedexam.get(0).getId().substring(0, 2));
+			 courseName.setText(exam.getExecutedExamID());
 			break;
 		}
 		case ("Manual exam"): {
@@ -192,14 +193,17 @@ public class StudentControl extends UserControl implements Initializable {
 			examAnswers = new HashMap<String, Integer>();
 			isPerformExam = true;
 			Platform.runLater(()->{
+				executedCode.setText(exam.getExecutedExamID());
 				remarksForStudentText.setText(exam.getExam().getRemarksForStudent());
 			});
 			startTime();
 			break;
 		}
-		case("Home Page"):{
-		setStudentAuthor_Date_name();	
-		break;
+		case ("Home screen"): {/*If its the home page*/
+			
+			userNameLabel.setText(getMyUser().getFullname());
+			dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
+			break;
 		}
 		default:
 			return;

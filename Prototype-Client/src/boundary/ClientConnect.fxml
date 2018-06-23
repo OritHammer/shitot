@@ -9,7 +9,7 @@
    <children>
       <Label layoutX="187.0" layoutY="122.0" text="Enter server IP" />
       <TextField fx:id="serverIpTextField" layoutX="270.0" layoutY="118.0" />
-      <Button fx:id="connectButton" layoutX="274.0" layoutY="277.0" mnemonicParsing="false" onAction="#connectPressed" text="Button" />
+      <Button fx:id="connectButton" layoutX="274.0" layoutY="277.0" mnemonicParsing="false" onAction="#connectPressed" text="connect" />
       <Label fx:id="errorLabel" layoutX="132.0" layoutY="200.0" prefHeight="53.0" prefWidth="311.0" text="Connection failed" textAlignment="CENTER">
          <font>
             <Font size="39.0" />

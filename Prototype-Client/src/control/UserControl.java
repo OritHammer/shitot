@@ -41,11 +41,11 @@ public class UserControl implements Initializable {
 	@FXML
 	private TextField userName;
 	@FXML
-	private Label userNameLabel;
+	protected Label userNameLabel;
 	@FXML
 	private Label authorLabel;
 	@FXML
-	private Label dateLabel;
+	protected Label dateLabel;
 	@FXML
 	private PasswordField password;
 	@FXML
@@ -72,9 +72,10 @@ public class UserControl implements Initializable {
 	// class variables
 	// date and author variables
 	private Calendar currentCalendar = Calendar.getInstance();
-	private Date currentTime = currentCalendar.getTime();
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy");
+	protected Date currentTime = currentCalendar.getTime();
 
+	protected SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy "); 
+	
 	private Parent home_page_parent;
 	private Scene home_page_scene;
 	static Thread th;
@@ -173,6 +174,7 @@ public class UserControl implements Initializable {
 									getMyUser().setFullname(user.getFullname());
 									getMyUser().setRole(user.getRole());
 									getMyUser().setUsername(user.getUsername());
+									tController.setStudentAuthor_Date_name();/* send the name to the controller */
 									home_page_parent.getStylesheets()
 											.add(getClass().getResource("/style.css").toExternalForm());
 									home_page_scene = new Scene(home_page_parent);
@@ -256,6 +258,7 @@ public class UserControl implements Initializable {
 									DirectorControl dController = loader.getController();
 									String userName = user.getFullname().toLowerCase();/* get the name of the user */
 									dController.setUserText(userName);/* send the name to the controller */
+									dController.setStudentAuthor_Date_name();/* send the name to the controller */
 									home_page_scene = new Scene(home_page_parent);
 									Main.getStage().setTitle("HomeScreenDirector");
 									Main.getStage().setScene(home_page_scene);
@@ -450,9 +453,9 @@ public class UserControl implements Initializable {
 	 * @author LeeOrr hammer
 	 */
 	public void setStudentAuthor_Date_name() {// *** move to userControl rename userDetails
-		userNameLabel.setText(getMyUser().getFullname());
+		//userNameLabel.setText(getMyUser().getFullname());
 		dateLabel.setText(dateFormat.format(currentTime));// Setting Current Date
-		authorLabel.setText("" + myUser.getRole());
+		//authorLabel.setText("" + myUser.getRole());
 	}
 	/**
 	 * ShowHistogramInBarChart()

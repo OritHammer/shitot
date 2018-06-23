@@ -38,7 +38,7 @@
             <Image url="@../../Copywriting-Master-Class-Owl-200x175.png" />
          </image>
       </ImageView>
-      <Label layoutX="168.0" layoutY="164.0" text="enter date">
+      <Label fx:id="dateLabel" layoutX="168.0" layoutY="164.0" text="enter date">
          <font>
             <Font name="System Bold Italic" size="24.0" />
          </font></Label>
