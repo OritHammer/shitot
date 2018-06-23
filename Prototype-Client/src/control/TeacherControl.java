@@ -949,13 +949,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
 		questionInExamObservable.clear();
-		if(pageLabel.getText().equals("Update question in exam"))
-		{
-			for ( int i = 0; i<questionsInExamTableView.getItems().size(); i++) {
-				questionsInExamTableView.getItems().clear();
-			}
-			return;
-		}
+
 		if (getMyUser().getRole().equals("teacher"))
 			openScreen("boundary","HomeScreenTeacher");
 		else
