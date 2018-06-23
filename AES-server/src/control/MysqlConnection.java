@@ -1225,21 +1225,39 @@ public class MysqlConnection {
 						+ "\" and spe.grade > 79 and spe.grade<90) ," + "  between90to100 = (select count(*)"
 						+ " from studentperformedexam as spe " + " where spe.executedexam_id = \"" + eid
 						+ "\" and spe.grade > 89 and spe.grade<101)" + "where executedExamID = \"" + eid + "\" ;");
-		stmt.executeUpdate("update shitot.executedexam  as ex " 
-						+"set ex.average = (select avg(spe.grade) "
-										+	"from studentperformedexam as spe "
-										+  "where spe.executedexam_id = \"" + eid + "\" ) "   
-	                                      +  "where ex.executedExamID = \"" + eid + "\" ;");
-				stmt.executeUpdate("update shitot.executedexam  as ex"
-						+ " set ex.median =( SELECT grade Median FROM "+
-									"(SELECT spe1.student_UserName, spe1.grade, COUNT(spe2.grade) Rank "+
-									"FROM studentperformedexam spe1, studentperformedexam spe2 "+
-									"WHERE spe1.executedexam_id=spe2.executedexam_id AND spe1.executedexam_id= \"" + eid + "\" AND (spe1.grade < spe2.grade OR (spe1.grade=spe2.grade AND spe1.student_UserName <= spe2.student_UserName)) "+
-									"group by spe1.student_UserName, spe1.grade "+ 
-									"order by spe1.grade desc) speMed "+
-									"WHERE Rank = (SELECT (COUNT(*)+1) DIV 2 FROM studentperformedexam)) "+		
-									"where ex.executedExamID = \"" + eid + "\"  ;");
+	
+		ArrayList <Integer> grades=new ArrayList<Integer>();
+		ResultSet rs = null;
+		
+		
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT grade FROM studentperformedexam WHERE executedexam_id = \"" + eid + "\" ;");
+
+			while (rs.next()) {
+				 
+				grades.add(rs.getInt(1));
+			}
+		grades.sort(null);
+		Float med;
+		int size=grades.size();
+		float avg=0;
+		if(size==1) {
+			med=(float) grades.get(0);
+		}
+		else {
+		med=(float) (grades.get(((size+1)/2)-1));
+		}
+		for (int i=0;i<grades.size();i++) {
+			avg+=grades.get(i);
+		}
+		if(size>0) {
+			avg=avg/size;
+		}
+		stmt.executeUpdate("update shitot.executedexam as ex "
+				+ "set ex.median = \"" + med + "\" WHERE ex.executedExamID = \"" + eid + "\" ;");
                                     
+		stmt.executeUpdate("update shitot.executedexam as ex "
+				+ "set ex.average = \"" + avg + "\" WHERE ex.executedExamID = \"" + eid + "\" ;");
 				
 				stmt.executeUpdate("update shitot.executedexam " + "set "
 						+ "numOfStudentDidntFinished = (select count(*) as numStodentNF "
