@@ -551,12 +551,10 @@ public class DirectorControl extends UserControl implements Initializable {
 
 	public void getExecutedExamsStock(ActionEvent e) {
 		TeacherSeeExamsControl tcontroller = new TeacherSeeExamsControl();
-		Platform.runLater(() -> {
 				try {
 					tcontroller.openTeacherSeeExamScreen(e);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-		});
 	}
 }

@@ -72,7 +72,7 @@ public class MyGradesControl extends StudentControl implements Initializable {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				if (getMyUser().getRole().equals("teacher") == true) {
+				if (!getMyUser().getRole().equals("student")) {
 					((Stage) ((Node) tempEvent.getSource()).getScene().getWindow()).hide();
 					Stage primaryStage = new Stage();
 					FXMLLoader loader = new FXMLLoader();
