@@ -1280,33 +1280,51 @@ public class MysqlConnection {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public void setRealTimeOfExecutedExam(String requestID) {
 		// getting executed exam id
 		ResultSet rs = null;
 		String executedID = "";
+		Time timeToAdd=new Time(0,0,0);
 		try {
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT request.IDexecutedExam " + "FROM requestforchangingtimeallocated as request "
+			rs = stmt.executeQuery("SELECT request.IDexecutedExam FROM requestforchangingtimeallocated as request "
 					+ "WHERE request.requestID = \"" + requestID + "\" ;");
 			if (rs.isBeforeFirst()) {
-				executedID = rs.getString(1);
+				rs.next();
+				executedID =""+ rs.getString(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		// adding solution time to the actual solution time by executed exam id
 		try {
-			stmt = conn.createStatement();
-			stmt.executeUpdate("UPDATE shitot.executedexam SET actuallySolutionTime = actuallySolutionTime + "
-					+ "(SELECT request.timeAdded FROM requestforchangingtimeallocated as request WHERE"
-					+ " request.IDexecutedExam = \"" + executedID + "\") " + "WHERE executedexam.executedExamID = \""
+			rs=stmt.executeQuery("SELECT request.timeAdded FROM requestforchangingtimeallocated as request WHERE "
+					+ "request.IDexecutedExam = \"" + executedID + "\" AND isApproved='approved';");
+			while(rs.next()) {
+				timeToAdd=timeToAddFunction(timeToAdd,rs.getTime(1));
+			}
+			rs=stmt.executeQuery("SELECT E.solutionTime FROM shitot.exams E,shitot.executedexam EE WHERE EE.executedExamID=\""+executedID+"\""
+					+ " AND E.e_id = EE.exam_id;");
+			while(rs.next()) {
+				timeToAdd=timeToAddFunction(timeToAdd,rs.getTime(1));
+			}
+			stmt.executeUpdate("UPDATE shitot.executedexam SET actuallySolutionTime = \""+timeToAdd+"\" "
+					+ "WHERE executedexam.executedExamID = \""
 					+ executedID + "\";");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 	}
-
+	
+	@SuppressWarnings("deprecation")
+	public Time timeToAddFunction(Time timeToAdd,Time time) {
+		timeToAdd.setHours(time.getHours()+timeToAdd.getHours());
+		timeToAdd.setMinutes(time.getMinutes()+timeToAdd.getMinutes());
+		timeToAdd.setSeconds(time.getSeconds()+timeToAdd.getSeconds());
+		return(timeToAdd);
+	}
 	public ArrayList<ExecutedExam> getAllExecutedExams(Object teacherUserName) {
 		ArrayList<ExecutedExam> executedexams = new ArrayList<ExecutedExam>();
 		int[] gradesRang = new int[10];
