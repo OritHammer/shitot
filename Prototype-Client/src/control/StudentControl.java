@@ -70,7 +70,6 @@ public class StudentControl extends UserControl implements Initializable {
 	private List<File> fileFromClient;
 	private int index = -1;
 	private static String timeToString;
-	protected static Boolean justFlag = false;
 	protected static MouseEvent tempEvent;
 	private Boolean isLocked = false;
 	private Boolean isPerformExam;
