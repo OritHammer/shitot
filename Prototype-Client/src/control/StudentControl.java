@@ -182,9 +182,9 @@ public class StudentControl extends UserControl implements Initializable {
 				startTime();
 				Platform.runLater(()->{
 					remarksForStudentText.setText(exam.getExam().getRemarksForStudent());
+					 courseName.setText(exam.getExecutedExamID());
 				});
 			}
-			 courseName.setText(exam.getExecutedExamID());
 			break;
 		}
 		case ("Manual exam"): {
