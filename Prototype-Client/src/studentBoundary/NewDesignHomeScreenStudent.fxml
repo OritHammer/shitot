@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="card" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.StudentControl">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="card" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.StudentControl">
    <children>
-      <Label fx:id="pageLabel" layoutX="81.0" layoutY="26.0" prefHeight="34.0" prefWidth="63.0" text="Hello :">
+      <Label layoutX="81.0" layoutY="26.0" prefHeight="34.0" prefWidth="63.0" text="Hello :">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -44,6 +44,6 @@
       <Button fx:id="logoutBtn" layoutX="410.0" layoutY="332.0" mnemonicParsing="false" onAction="#logoutPressed" text="Logout" />
       <Button layoutX="239.0" layoutY="112.0" mnemonicParsing="false" onAction="#myGradesPressed" text="My grades" />
       <Button layoutX="175.0" layoutY="153.0" mnemonicParsing="false" onAction="#excecuteMorCExamPressed" text="Execute manual\computerize exam" />
-      <Label layoutX="248.0" layoutY="21.0" text="Home Screen" />
+      <Label fx:id="pageLabel" layoutX="248.0" layoutY="21.0" text="Home Screen" />
    </children>
 </AnchorPane>

@@ -68,14 +68,14 @@ public class UserControl implements Initializable {
 	public Button logoutBtn;
 	protected ComboBox<String> subjectsComboBox;
 	protected ComboBox<String> coursesComboBox;
-	
+	 
 	// class variables
 	// date and author variables
 	private Calendar currentCalendar = Calendar.getInstance();
 	protected Date currentTime = currentCalendar.getTime();
 
 	protected SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy "); 
-	
+	protected Boolean isPerformExam;
 	private Parent home_page_parent;
 	private Scene home_page_scene;
 	static Thread th;
@@ -89,7 +89,7 @@ public class UserControl implements Initializable {
 	 final UserControl uc=this;
 	final public static int DEFAULT_PORT = 5555;
 	protected ChatClient chat;
-	private static User myUser = new User();
+	private static User myUser ;
 	/**
 	 * variables to show statisticRepot to teacher And Director
 	*/
@@ -121,9 +121,8 @@ public class UserControl implements Initializable {
 		this.ip=ip;
 		}
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("enter server ip");
-		sc.close();
+		
+		myUser=new User();
 		errorMsg.setVisible(false);
 		errorImg.setVisible(false);
 		errorImg1.setVisible(false);
@@ -406,14 +405,15 @@ public class UserControl implements Initializable {
 			scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());/*select the style sheet for the scene(css)*/
 			Stage stage = Main.getStage();
 			 stage.setOnCloseRequest(event-> {/*set listener for x button, perforn logout*/
+				 if(isPerformExam!=null && isPerformExam==false) {
 				 connect(this);
 					messageToServer[0] = "performLogout";
 					messageToServer[1] =getMyUser().getUsername();
 					messageToServer[2] =null;
 					messageToServer[4] =getMyUser().getUsername();
 					chat.handleMessageFromClientUI(messageToServer);
-					Platform.exit();
-		          
+					System.exit(0);
+				 }
 		      });        
 			stage.setTitle(screen);
 			stage.setScene(scene);

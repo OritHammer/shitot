@@ -58,7 +58,7 @@ import javafx.util.converter.DefaultStringConverter;
 import javafx.util.converter.FloatStringConverter;
 
 public class TeacherControl extends UserControl implements Initializable {
-
+ 
 	private static ObservableList<QuestionInExam> questionInExamObservable = FXCollections.observableArrayList();
 	private ObservableList<String> coursesListToCreateQuestion = FXCollections.observableArrayList();
 	private ObservableList<Question> questionObservableList;
@@ -455,6 +455,7 @@ public class TeacherControl extends UserControl implements Initializable {
 						for (TeachingProfessionals tp : (ArrayList<TeachingProfessionals>) msg[1]) {
 							observableList.add(tp.getTp_id() + " - " + tp.getName());
 						}
+						
 						subjectsComboBox.setItems(observableList);
 						break;
 					}

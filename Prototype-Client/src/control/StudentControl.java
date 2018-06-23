@@ -60,7 +60,7 @@ import javafx.stage.Stage;
  *
  */
 public class StudentControl extends UserControl implements Initializable { 
-
+ 
 	protected static ArrayList<Question> questioninexecutedexam;
 	protected static HashMap<String, Integer> examAnswers;// saves the question id and the answers
 	private static int remainTime;

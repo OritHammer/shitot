@@ -286,7 +286,7 @@ public class MysqlConnection {
 		 * This function separate the subject id from the whole Question id for useful
 		 * query
 		 */
-		if (subjectList == null) {
+		
 			subjectList = new ArrayList<TeachingProfessionals>();
 			// Statement stmt;
 			TeachingProfessionals teachingprofessions;
@@ -312,7 +312,7 @@ public class MysqlConnection {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
+		
 		return (subjectList);
 	}
 
