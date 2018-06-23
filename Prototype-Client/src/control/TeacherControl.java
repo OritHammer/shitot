@@ -835,6 +835,17 @@ public class TeacherControl extends UserControl implements Initializable {
 		tableViewScene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 		// This line gets the Stage information
 		Stage window = (Stage) ((Node) e.getSource()).getScene().getWindow();
+		window.setOnCloseRequest(event-> {
+			 uc.connect(uc);
+				messageToServer[0] = "performLogout";
+				messageToServer[1] =getMyUser().getUsername();
+				messageToServer[2] =null;
+				messageToServer[4] =getMyUser().getUsername();
+				chat.handleMessageFromClientUI(messageToServer);
+				Platform.exit();
+				
+	          
+	      });        
 		window.setScene(tableViewScene);
 		window.show();
 	}
