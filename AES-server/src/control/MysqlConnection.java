@@ -835,7 +835,7 @@ public class MysqlConnection {
 		Exam exam = new Exam();
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT E.e_id,E.solutionTime,E.remarksForTeacher,"
+			ResultSet rs = stmt.executeQuery("SELECT E.e_id,EE.actuallySolutionTime,E.remarksForTeacher,"
 					+ "E.remarksForStudent,E.type,E.tUserName FROM executedexam EE,exams E WHERE "
 					+ "EE.executedExamID=\"" + executedExamID + "\" AND EE.status=\"open\" AND EE.exam_id=E.e_id;");
 			if (!rs.isBeforeFirst()) {
