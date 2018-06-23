@@ -1568,7 +1568,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		QuestionInExam questionSelected = questionsInExamTableView.getSelectionModel().getSelectedItem();
 		if (!edittedCell.getNewValue().toString().equals(questionSelected.getPoints())) {
 			questionSelected.setPoints(edittedCell.getNewValue());
-			updateBtn.setDisable(false);
+			//updateBtn.setDisable(false);//אור עשית פה בעיה עם יצירת מבחן
 		}
 		/*if (pageLabel.getText().equals("Update question in exam")) {
 			updateBtn.setDisable(false);
@@ -1747,7 +1747,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * 
 	 * @author Tom Zarhin
 	 */
-	void setUnVisible() {
+	public void setUnVisible() {
 		try {
 			if (getMyUser().getRole().equals("director")) {
 				switch (pageLabel.getText()) {
@@ -1774,4 +1774,44 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 	}
 
+	/**
+	 * The incHours function is for increase the hour by 1
+	 * 
+	 * @author Tom Zarhin
+	 */
+	public void incHours(ActionEvent e) {
+		if(Integer.valueOf(timeForExamHours.getText())<60) {
+			timeForExamHours.setText(String.valueOf(Integer.valueOf(timeForExamHours.getText())+1));
+		}
+	}
+	/**
+	 * The decHours function is for decreasing the hour by 1
+	 * 
+	 * @author Tom Zarhin
+	 */
+	public void decHours(ActionEvent e) {
+		if(Integer.valueOf(timeForExamHours.getText())>0) {
+			timeForExamHours.setText(String.valueOf(Integer.valueOf(timeForExamHours.getText())-1));
+		}
+	}
+	/**
+	 * The incMinutes function is for increase the minute by 1
+	 * 
+	 * @author Tom Zarhin
+	 */
+	public void incMinutes(ActionEvent e) {
+		if(Integer.valueOf(timeForExamMinute.getText())<60) {
+			timeForExamMinute.setText(String.valueOf(Integer.valueOf(timeForExamMinute.getText())+1));
+		}
+	}
+	/**
+	 * The decMinutes function is for increase the minute by 1
+	 * 
+	 * @author Tom Zarhin
+	 */
+	public void decMinutes(ActionEvent e) {
+		if(Integer.valueOf(timeForExamMinute.getText())>0) {
+			timeForExamMinute.setText(String.valueOf(Integer.valueOf(timeForExamMinute.getText())-1));
+		}
+	}
 }
