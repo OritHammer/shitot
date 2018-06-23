@@ -610,34 +610,33 @@ public class TeacherControl extends UserControl implements Initializable {
 					}
 
 					case ("getQuestionInExam"): /*
-												 * get the question list of specific exam from server and check if the
-												 * exam active or not
-												 */
-					{
-						try {
-							((ArrayList<QuestionInExam>) msg[1]).forEach(questionInExamObservable::add);
-							final boolean flag1 = (boolean) msg[2];
-							Platform.runLater(() -> {
-								if (flag1 == false) {
-									blockPassQuestionButton = true;
-								} else {
-									blockPassQuestionButton = false;
-								}
+						 * get the question list of specific exam from server and check if the
+						 * exam active or not
+						 */
+								{
 								try {
-									openSceneInTheSameWindow(tempEvent, "UpdateQuestionInExam");
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
+									((ArrayList<QuestionInExam>) msg[1]).forEach(questionInExamObservable::add);
+									final boolean flag1 = (boolean) msg[2];
+									Platform.runLater(() -> {
+										if (flag1 == false) {
+											blockPassQuestionButton = true;
+										} else {
+											blockPassQuestionButton = false;
+										}
+										try {
+											openScreen(tempEvent, "UpdateQuestionInExam");
+										} catch (IOException e) {
+								
+											e.printStackTrace();
+										}
+									});
+								} catch (NullPointerException exception) {
+									errorMsg("exam does not have any question");
+									blockPassQuestionButton = false;
+								
 								}
-							});
-						} catch (NullPointerException exception) {
-							errorMsg("exam does not have any question");
-							blockPassQuestionButton = false;
-
-						}
-						break;
-					}
-
+								break;
+								}
 					case ("setExam"): {
 						if ((String) msg[1] != null) {
 							infoMsg("The exam added successfully");
@@ -952,7 +951,6 @@ public class TeacherControl extends UserControl implements Initializable {
 		Stage stage = (Stage) source.getScene().getWindow();
 		stage.close();
 		questionInExamObservable.clear();
-
 		if (getMyUser().getRole().equals("teacher"))
 			openScreen("boundary", "HomeScreenTeacher");
 		else
@@ -1551,14 +1549,18 @@ public class TeacherControl extends UserControl implements Initializable {
 		}
 		ArrayList<QuestionInExam> questioninexam = (ArrayList<QuestionInExam>) questionInExamObservable.stream()
 				.collect(Collectors.toList());// making the observable a lis
-		infoMsg("The questions changed succssefuly");
 		messageToServer[0] = "updateQuestionInExam";
 		messageToServer[1] = questioninexam;
 		messageToServer[2] = tempExamId;
 		connect(this);
-		chat.handleMessageFromClientUI(messageToServer);
+		chat.handleMessageFromClientUI(messageToServer);// send the message to server
+		try {
+			chat.closeConnection();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
-
+	
 	/**
 	 * The setPoints function set new points in the table view
 	 * 
