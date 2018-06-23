@@ -55,7 +55,7 @@
       <TextField fx:id="answer2" layoutX="50.0" layoutY="484.0" prefHeight="25.0" prefWidth="346.0" />
       <TextField fx:id="answer3" layoutX="50.0" layoutY="521.0" prefHeight="25.0" prefWidth="346.0" />
       <TextField fx:id="answer4" layoutX="50.0" layoutY="555.0" prefHeight="25.0" prefWidth="346.0" />
-      <Label fx:id="pageLabel" layoutX="40.0" layoutY="1.0" prefHeight="21.0" prefWidth="455.0" text="Create question" />
+      <Label fx:id="pageLabel" layoutX="201.0" layoutY="3.0" prefHeight="21.0" prefWidth="138.0" text="Create question" />
       <ComboBox fx:id="coursesComboBox" layoutX="52.0" layoutY="118.0" onAction="#coursesToList" prefHeight="25.0" prefWidth="150.0" promptText="Choose course" />
       <ComboBox fx:id="subjectsComboBox" layoutX="52.0" layoutY="66.0" onAction="#loadCourses" prefWidth="150.0" promptText="Choose subject" />
       <ListView fx:id="courseInCreateQuestion" layoutX="43.0" layoutY="204.0" prefHeight="128.0" prefWidth="184.0" />

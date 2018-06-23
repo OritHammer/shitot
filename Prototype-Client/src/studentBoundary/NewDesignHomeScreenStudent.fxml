@@ -1,49 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="card" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.StudentControl">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="card" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.StudentControl">
    <children>
-      <Label layoutX="81.0" layoutY="26.0" prefHeight="34.0" prefWidth="63.0" text="Hello :">
+      <Label layoutX="43.0" layoutY="65.0" prefHeight="34.0" prefWidth="63.0" text="Hello :">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="userNameLabel" layoutX="74.0" layoutY="60.0" prefHeight="26.0" prefWidth="118.0" text="user name" underline="true">
+      <Label fx:id="userNameLabel" layoutX="106.0" layoutY="69.0" prefHeight="26.0" prefWidth="118.0" text="user name" underline="true">
          <font> 
             <Font size="17.0" />
          </font>
       </Label>
-      <Label layoutX="410.0" layoutY="29.0" prefHeight="27.0" prefWidth="155.0" text="My authorization:">
+      <Label layoutX="43.0" layoutY="99.0" prefHeight="27.0" prefWidth="155.0" text="My authorization:">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="120.0" layoutY="329.0" prefHeight="27.0" prefWidth="52.0" text="Date :">
+      <Label layoutX="43.0" layoutY="129.0" prefHeight="27.0" prefWidth="52.0" text="Date :">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="authorLabel" layoutX="431.0" layoutY="59.0" prefHeight="26.0" prefWidth="95.0" text="author">
+      <Label fx:id="authorLabel" layoutX="201.0" layoutY="100.0" prefHeight="26.0" prefWidth="95.0" text="Student">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <Label fx:id="dateLabel" layoutX="190.0" layoutY="334.0" prefHeight="17.0" prefWidth="138.0" text="DateField">
+      <Label fx:id="dateLabel" layoutX="106.0" layoutY="130.0" prefHeight="17.0" prefWidth="138.0" text="DateField">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <Button fx:id="logoutBtn" layoutX="410.0" layoutY="332.0" mnemonicParsing="false" onAction="#logoutPressed" text="Logout" />
-      <Button layoutX="239.0" layoutY="112.0" mnemonicParsing="false" onAction="#myGradesPressed" text="My grades" />
-      <Button layoutX="175.0" layoutY="153.0" mnemonicParsing="false" onAction="#excecuteMorCExamPressed" text="Execute manual\computerize exam" />
-      <Label fx:id="pageLabel" layoutX="248.0" layoutY="21.0" text="Home Screen" />
+      <Button layoutX="164.0" layoutY="203.0" mnemonicParsing="false" onAction="#myGradesPressed" prefHeight="65.0" prefWidth="79.0" style="-fx-content-display: top;" text="My grades">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../btns/center-alignment-button.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button layoutX="256.0" layoutY="203.0" mnemonicParsing="false" onAction="#excecuteMorCExamPressed" prefHeight="65.0" prefWidth="203.0" style="-fx-content-display: top;" text="Execute manual\computerize exam">
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../btns/text-button.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Label fx:id="pageLabel" layoutX="249.0" layoutY="9.0" text="Home Screen" />
+      <Button fx:id="logoutBtn" layoutX="484.0" layoutY="17.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="26.0" prefWidth="82.0" text="Logout">
+         <graphic>
+            <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../btns/icons8-shutdown-16%20(2).png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>
