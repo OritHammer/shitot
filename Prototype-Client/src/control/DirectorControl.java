@@ -39,7 +39,7 @@ public class DirectorControl extends UserControl implements Initializable {
 	@FXML
 	private Label pageLabel;
 	@FXML
-	private Button AddingTime;
+	private Button AddingTime; 
 	@FXML
 	private Button StatisticReport;
 	@FXML
@@ -244,7 +244,7 @@ public class DirectorControl extends UserControl implements Initializable {
 							float average = 0;
 							for (ExecutedExam executedExam : GradeList) {
 								average += executedExam.getAverage();
-								sumRangGrades(executedExam);
+								sumRangGrades(executedExam.getAverage());
 							}
 							if (GradeList.size() > 0)
 								averageTextField.setText(" " + (average / (float) GradeList.size()));
@@ -265,26 +265,7 @@ public class DirectorControl extends UserControl implements Initializable {
 							float sum = 0;
 							for (Integer grade : studentGradeList) {
 								sum += grade;
-								if (grade >= 0 && grade <= 9)// grade between0to54
-									sumGradeRanges[0]++;
-								else if (grade >= 10 && grade <= 19)// grade between55to64
-									sumGradeRanges[1]++;
-								else if (grade >= 20 && grade <= 29)// grade between 65to74
-									sumGradeRanges[2]++;
-								else if (grade >= 30 && grade <= 39)// grade between 75to84
-									sumGradeRanges[3]++;
-								else if (grade >= 40 && grade <= 49)// grade between 85to94
-									sumGradeRanges[4]++;
-								else if (grade >= 50 && grade <= 59)// grade between 95to100
-									sumGradeRanges[5]++;
-								else if (grade >= 60 && grade <= 69)// grade between0to54
-									sumGradeRanges[6]++;
-								else if (grade >= 70 && grade <= 79)// grade between0to54
-									sumGradeRanges[70]++;
-								else if (grade >= 80 && grade <= 89)// grade between0to54
-									sumGradeRanges[8]++;
-								else if (grade >= 90 && grade <= 100)// grade between0to54
-									sumGradeRanges[9]++;
+								sumRangGrades((float)grade);
 							}
 							if (studentGradeList.size() % 2 == 0)
 								medianTextField.setText(" " + studentGradeList.get((studentGradeList.size() / 2) - 1));

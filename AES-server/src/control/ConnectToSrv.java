@@ -35,7 +35,14 @@ public class ConnectToSrv implements Initializable {
 		connectedLabel.setVisible(false);
 
 	}
-
+	/**
+	 * connectPressed(ActionEvent e) 
+	 *  Arguments:ActionEvent e 
+	 *  The method Handle the connect to server button
+	 * The method connect to the server
+	 * 
+	 * @author Tom Zarhin
+	 */
 	public void connectPressed(ActionEvent e) {
 		Server s = new Server(dbName.getText(), dbPass.getText());
 		try {
