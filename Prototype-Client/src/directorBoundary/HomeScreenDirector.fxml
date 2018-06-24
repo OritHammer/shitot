@@ -9,11 +9,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="card" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.DirectorControl">
    <children>
-      <ImageView fitHeight="400.0" fitWidth="600.0" opacity="0.5">
-         <image>
-            <Image url="@../../colorful-bricks-1200309.jpg" />
-         </image>
-      </ImageView>
+      <ImageView fitHeight="400.0" fitWidth="600.0" opacity="0.5" />
       <Button fx:id="AddingTime" layoutX="108.0" layoutY="201.0" mnemonicParsing="false" onAction="#openTimeRequestTable" prefHeight="61.0" prefWidth="128.0" style="-fx-content-display: top;" text="Adding time request">
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
