@@ -22,7 +22,7 @@
             <TableColumn fx:id="qtext" onEditCommit="#changeQuestionContentOnTable" prefWidth="161.0" text="Question text" />
          </columns>
       </TableView>
-      <Label fx:id="pageLabel" layoutX="294.0" layoutY="14.0" prefHeight="17.0" prefWidth="163.0" text="Update question in exam" />
+      <Label fx:id="pageLabel" layoutX="294.0" layoutY="14.0" prefHeight="17.0" prefWidth="210.0" text="Update question in exam" />
       <Button fx:id="passQuestionR" layoutX="383.0" layoutY="184.0" mnemonicParsing="false" onAction="#toQuestionInExam" text="&gt;" />
       <Button fx:id="passQuestionL" layoutX="383.0" layoutY="222.0" mnemonicParsing="false" onAction="#removeFromTableView" text="&lt;" />
       <Button fx:id="backButton" layoutX="412.0" layoutY="406.0" mnemonicParsing="false" onAction="#closeScreen" text="Back" />

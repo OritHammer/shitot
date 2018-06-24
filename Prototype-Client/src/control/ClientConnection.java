@@ -42,6 +42,8 @@ public class ClientConnection implements Initializable {
 					FXMLLoader loader = new FXMLLoader();
 					loader.setLocation(getClass().getResource("/boundary/LoginGui.fxml"));
 					home_page_parent = loader.load();
+					home_page_parent.getStylesheets()
+					.add(getClass().getResource("/style.css").toExternalForm());
 					UserControl uController = loader.getController();
 					uController.setServerIp(serverIpTextField.getText());
 					;/* send the name to the controller */
