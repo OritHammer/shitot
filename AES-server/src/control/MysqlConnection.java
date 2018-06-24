@@ -149,7 +149,14 @@ public class MysqlConnection {
 			return false;
 		}
 	}
-
+	/**
+	 * Boolean updateQuestion(Object question)
+	 *  Arguments:Oquestion
+	 * The method update the relevant question in the DB
+	 * The method return true if the question where updated,otherwise return false
+	 * 
+	 * @author Tom Zarhin
+	 */
 	public synchronized Boolean updateQuestion(Object question) {
 
 		Question q = (Question) question;
@@ -181,10 +188,16 @@ public class MysqlConnection {
 			e.printStackTrace();
 			return false;
 		}
-		// stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
-
 	}
-
+	/**
+	 * Boolean deleteQuestion(Object question)
+	 *  Arguments:Oquestion
+	 * The method delete question from the DB if there is such question and 
+	 * the question didnt appear in any running test 
+	 * The method return true if the question have been deleted,otherwise return false
+	 * 
+	 * @author Tom Zarhin
+	 */
 	public Boolean deleteQuestion(Object question) throws SQLException {
 		try {
 			// Statement stmt;
@@ -210,7 +223,15 @@ public class MysqlConnection {
 			return null;
 		}
 	}
-
+	/**
+	 * setExecutedExamLocked(Object executedExamID)
+	 *  Arguments:executedExamID
+	 * The method lock a "running" exam on the DB 
+	 * by setting status close in the relevant row (by  executedExamID)
+	 * The method return true if the query success ,otherwise return false
+	 * 
+	 * @author Aviv Mahulya
+	 */
 	public synchronized boolean setExecutedExamLocked(Object executedExamID) {
 		try {
 			stmt = conn.createStatement();
@@ -222,7 +243,15 @@ public class MysqlConnection {
 			return (false);
 		}
 	}
-
+	/**
+	 * checkUserDetails(Object userID, Object userPass)
+	 *  Arguments:Object userID, Object userPass
+	 * The method check if the user name and password are
+	 * match to some user in the DB 
+	 * The method return User object if there is such user,otherwise return null
+	 * 
+	 * @author Lior Hammer 
+	 */
 	public User checkUserDetails(Object userID, Object userPass) {
 		try {
 			stmt = conn.createStatement();
@@ -246,7 +275,13 @@ public class MysqlConnection {
 			return null;
 		}
 	}
-
+	/**
+	 * performLogout(Object userName)
+	 *  Arguments:userName
+	 * The method set status='unconnected' on the relevant row on users Table on the DB 
+	 * The method return doesn't return anything
+	 * @author Lior Hammer 
+	 */
 	public void performLogout(Object userName) {
 		try {
 			stmt = conn.createStatement();
@@ -256,7 +291,13 @@ public class MysqlConnection {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * performLogin(Object userName)
+	 *  Arguments:userName
+	 * The method set status='connected' on the relevant row on users Table on the DB 
+	* The method return doesn't return anything
+	 * @author Lior Hammer 
+	 */
 	public void performLogin(Object userName) {
 		try {
 			stmt = conn.createStatement();
@@ -266,7 +307,13 @@ public class MysqlConnection {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * getPrefExamDetails(String userName)
+	 *  Arguments:String userName
+	 * The method get executed exam data from the db (relevat to the student see his grades window)
+	* The method return relevant data or null if the query faield
+	 * @author Lior Hammer 
+	 */
 	public ArrayList<ExamDetailsMessage> getPrefExamDetails(String userName) {
 		ArrayList<ExamDetailsMessage> detailsList = new ArrayList<ExamDetailsMessage>();
 		try {
@@ -275,9 +322,6 @@ public class MysqlConnection {
 					+ " FROM shitot.executedexam  E , shitot.studentperformedexam  stdE "
 					+ "WHERE E.executedExamID = stdE.executedexam_id AND stdE.student_UserName =\"" + userName
 					+ "\" AND E.status = 'checked' AND stdE.isApproved='approved' ; ");
-			/*
-			 * if (!rs.first()) { return null; }
-			 */
 
 			while (rs.next()) {
 				detailsList.add(new ExamDetailsMessage(rs.getString(1), "" + rs.getString(2), rs.getDate(3).toString(),
@@ -294,13 +338,14 @@ public class MysqlConnection {
 		System.out.println("sending exams details");
 		return detailsList;
 	}
-
+	/**
+	 * getSubjectList(Object teacherUserName)
+	 *  Arguments:Object teacherUserName
+	 * The method return from the DB the relevant subjects (by the teacher user name) 
+	 * @author Or Edri
+	 */
 	public ArrayList<TeachingProfessionals> getSubjectList(Object teacherUserName) {
-		/*
-		 * This function separate the subject id from the whole Question id for useful
-		 * query
-		 */
-		
+			
 			subjectList = new ArrayList<TeachingProfessionals>();
 			// Statement stmt;
 			TeachingProfessionals teachingprofessions;
@@ -329,7 +374,14 @@ public class MysqlConnection {
 		
 		return (subjectList);
 	}
-
+	/**
+	 * getCourseList(Object subject, Object teacherUserName)
+	 *  Arguments:subject, teacherUserName
+	* The method return course list , in case the director ask for the
+	*  courses the reacher name will be null and the method will return 
+	*  the whole courses under the given subject
+	 * @author Or Edri
+	 */
 	public ArrayList<Course> getCourseList(Object subject, Object teacherUserName) {
 		/*
 		 * The function return the course list by the given subject code
@@ -356,11 +408,15 @@ public class MysqlConnection {
 		}
 		return courseList;
 	}
-
+	/**
+	 * getAddingTimeRequests()
+	 *  Arguments:NA
+	 * The method return all the open request for adding time (director need them 
+	 * for approvment)
+	 * @author Orit Hammer
+	 */
 	public ArrayList<RequestForChangingTimeAllocated> getAddingTimeRequests() {
-		/*
-		 * The function return the course list by the given subject code
-		 */
+		
 		ArrayList<RequestForChangingTimeAllocated> requestList = new ArrayList<RequestForChangingTimeAllocated>();
 		try {
 			stmt = conn.createStatement();
@@ -377,12 +433,18 @@ public class MysqlConnection {
 		}
 		return requestList;
 	}
-
+	/**
+	 * getQuestionListToTable(Object subject, Object teacherUserName)
+	 *  Arguments:subject , teacherUserName
+	* The method return the relevant questions , in case the director ask for 
+	* the question the teacher user name will be null and the method return the whole 
+	* questions that belong to the given subject
+	 * @author Tom Zarhin
+	 */
 	public ArrayList<Question> getQuestionListToTable(Object subject, Object teacherUserName) {
 		/*
 		 * The function return the question list by the given subject code
 		 */
-		// Statement stmt;
 		ArrayList<Question> questionList = new ArrayList<Question>();
 		String userName = null;
 		String courseid = null;
@@ -417,10 +479,13 @@ public class MysqlConnection {
 		}
 		return questionList;
 	}
-
+	/**
+	 * Question getQuestionDetails(Object quest)
+	 *  Arguments:quest
+	 * The method return question details by the question text
+	 * @author Lior Hammer
+	 */
 	public Question getQuestionDetails(Object quest) {
-		// ArrayList<String> answerList = new ArrayList<String>();
-		// Statement stmt;
 		Question question = null;
 		try {
 			stmt = conn.createStatement();
@@ -445,18 +510,20 @@ public class MysqlConnection {
 		return question;
 	}
 	//
-
+	/**
+	 * getAddingTimeRequestsDetails(String requestID)
+	 *  Arguments:requestID
+	 * The method return details about relevant adding time request by the 
+	 * give request ID 
+	 * @author Tom Zarhin 
+	 */
 	public RequestForChangingTimeAllocated getAddingTimeRequestsDetails(String requestID) {
 
 		RequestForChangingTimeAllocated tmpRequest = null;
 		try {
 			stmt = conn.createStatement();
-			// Query return all the details of specific question
 			ResultSet rs = stmt.executeQuery(
 					"SELECT * FROM requestforchangingtimeallocated " + "WHERE requestID=\"" + requestID + "\";");
-			// The next commands get the returned details from DB and insert them to
-			// question object
-
 			rs.next();
 			// inserting the data to String List , order by the same order in DB
 			tmpRequest = new RequestForChangingTimeAllocated(rs.getString(1), rs.getString(2), rs.getString(3),
@@ -471,10 +538,14 @@ public class MysqlConnection {
 		return tmpRequest;
 	}
 
-	//
+	/**
+	 * updateAnswer(Object questionID, Object newAnswer)
+	 *  Arguments:questionID , newAnswer
+	 * The method update the answer on the relevant question by question ID
+	 * @author Lior Hammer
+	 */
 	public void updateAnswer(Object questionID, Object newAnswer) throws SQLException {
 		try {
-			// Statement stmt;
 			stmt = conn.createStatement();
 			// query update on DB the correct answer of question that have the given
 			// questionID from client
@@ -485,7 +556,14 @@ public class MysqlConnection {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * createExam(Object questionInExams, Object examDetails)
+	 *  Arguments: questionInExams , examDetails
+	 *  
+	 * The method create new exam ID and a new exam with the question
+	 * the teacher choose 
+	 * @author Lior Hammer
+	 */
 	public synchronized String createExam(Object questionInExams, Object examDetails) {
 		@SuppressWarnings("unchecked")
 		ArrayList<QuestionInExam> questionInExam = (ArrayList<QuestionInExam>) questionInExams;
@@ -538,10 +616,15 @@ public class MysqlConnection {
 		} catch (SQLException e) {
 			return null;
 		}
-		// stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
 		return fullExamNumber;
 	}
-
+	/**
+	 * createExam(Object questionInExams, Object examDetails)
+	 *  Arguments: questionInExams , examDetails
+	 *  
+	 * The method return the questions that belong to some exam
+	 * @author Tom Zarhin
+	 */
 	public synchronized ArrayList<Question> getQuestions(Object questionInExams) {
 		@SuppressWarnings("unchecked")
 		ArrayList<QuestionInExam> questionInExam = (ArrayList<QuestionInExam>) questionInExams;
@@ -572,6 +655,13 @@ public class MysqlConnection {
 	}
 
 	////////
+	/**
+	 * getExam(Object examID)
+	 *  Arguments: examID 
+	 *  
+	 * The method return exam details by the given exam id 
+	 * @author Or Edri
+	 */
 	public synchronized Exam getExam(Object examID) {
 		String examId = (String) examID;
 		Exam exam = new Exam();
@@ -593,7 +683,15 @@ public class MysqlConnection {
 
 		return exam;
 	}
-
+	/**
+	 * getExam(Object examID)
+	 *  Arguments: examID 
+	 *  
+	 * The method return the student that waiting for their grade (for teacher)
+	 * and the whole student that execute some exam (doesn't matter if the status is
+	 * waiting or not ) for director use 
+	 * @author Tom Zarhin
+	 */
 	public ArrayList<StudentPerformExam> getStudenstInExam(Object executedExamId,Object isDirector) {
 		ArrayList<StudentPerformExam> studentsInExam = new ArrayList<StudentPerformExam>();
 		try {
@@ -626,6 +724,14 @@ public class MysqlConnection {
 	}
 
 	///////
+	/**
+	 * updateQuestionInExam(Object questionInExams, Object examId)
+	 *  Arguments: questionInExams , examId
+	 *  
+	 * The method update specific exam questions (according to both given parameters )
+	 * 
+	 * @author Tom Zarhin
+	 */
 	@SuppressWarnings("unused")
 	public synchronized void updateQuestionInExam(Object questionInExams, Object examId) {
 		int questionCounter = 1;
@@ -648,7 +754,15 @@ public class MysqlConnection {
 		// stmt. executeUpdate("INSERT INTO shitot.exams VALUES(
 
 	}
-
+	/**
+	 * deleteExam(Object exam)
+	 *  Arguments: exam 
+	 *  
+	 * The method delete exam from the DB by his id including delete in the 
+	 * "question in exam Table" 
+	 * 
+	 * @author Or Edri
+	 */
 	public Boolean deleteExam(Object exam) {
 		Exam ex = (Exam) exam;
 
@@ -700,29 +814,18 @@ public class MysqlConnection {
 	/************************************************************
 	 * director functions
 	 *********************************************************************************************/
-	@SuppressWarnings("unused")
-	public void getRequestsList(Object list) {// get list of executed exam code of exams that exist request to adding
-												// them time
-		list = new ArrayList<String>();
-		try {
-			stmt = conn.createStatement();
-			ResultSet rs = stmt
-					.executeQuery("select * FROM shitot.requestforchangingtimeallocated where isApproved='waiting'");
-			// insert to table view
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
-		}
-
-	}
-
+	
+	/**
+	 * getExecutedExam(Object examId, Object teacherUserName, Object type)
+	 *  Arguments: examId ,  teacherUserName , type
+	 *  
+	 * The method return the executed Exam that on status open for 
+	 * teacher uses like locking them or approve their grade 
+	 * 
+	 * @author Or Edri
+	 */
 	public ArrayList<ExecutedExam> getExecutedExam(Object examId, Object teacherUserName, Object type) {
-		/*
-		 * The function return the course list by the given subject code
-		 */
-		// Statement stmt;
+		
 		ArrayList<ExecutedExam> executedexamARR = new ArrayList<ExecutedExam>();
 		try {
 			stmt = conn.createStatement();
@@ -759,7 +862,14 @@ public class MysqlConnection {
 		}
 		return executedexamARR;
 	}
-
+	/**
+	 * getExams(Object examIDStart)
+	 *  Arguments: examIDStart 
+	 *  
+	 * The method return all the exams 
+	 * 
+	 * @author Tom Zarhin And Orit Hammer 
+	 */
 	public ArrayList<Exam> getExams(Object examIDStart) {
 		ArrayList<Exam> examList = new ArrayList<Exam>();
 		Exam exam;
@@ -782,7 +892,15 @@ public class MysqlConnection {
 		}
 		return examList;
 	}
-
+	/**
+	 * createChangingRequest(Object requestDetails)
+	 *  Arguments: requestDetails 
+	 *  
+	 * The method create a new adding time request on the db 
+	 * (it take the details from requestDetails)
+	 * 
+	 * @author Tom Zarhin
+	 */
 	public synchronized Boolean createChangingRequest(Object requestDetails) {
 		RequestForChangingTimeAllocated request = (RequestForChangingTimeAllocated) requestDetails;
 		String fullRequestNumber;
@@ -821,7 +939,15 @@ public class MysqlConnection {
 		}
 		return (details);
 	}
-
+	/**
+	 * checkStudentUserNameToPerformExam(String userName, String executedExamID)
+	 *  Arguments: userName ,  executedExamID
+	 *  
+	 * The method return true in case that the student can 
+	 * perform the exam , else return false
+	 * 
+	 * @author Or Edri
+	 */
 	private boolean checkStudentUserNameToPerformExam(String userName, String executedExamID) {
 		boolean flag = false;
 		try {
@@ -844,7 +970,14 @@ public class MysqlConnection {
 		}
 		return flag;
 	}
-
+	/**
+	 * getExamsByExecutedExam(Object executedExamID)
+	 *  Arguments:  executedExamID
+	 *  
+	 * The method return the exams that are now running by executedExamID
+	 * 
+	 * @author Tom Zarhin
+	 */
 	public Exam getExamsByExecutedExam(Object executedExamID) {
 		Exam exam = new Exam();
 		try {
@@ -869,7 +1002,15 @@ public class MysqlConnection {
 		}
 		return (exam);
 	}
-
+	/**
+	 * getQuestionByExecutedExam(Object executedExamID)
+	 *  Arguments:  executedExamID
+	 *  
+	 * The method return list of questions that belong to the executed exam by
+	 * his ID
+	 * 
+	 * @author Orit Hammer
+	 */
 	public ArrayList<Question> getQuestionByExecutedExam(Object executedExamID) {
 		ArrayList<Question> questionsinexam = new ArrayList<Question>();
 		Question question;
@@ -891,7 +1032,16 @@ public class MysqlConnection {
 		}
 		return (questionsinexam);
 	}
-
+	/**
+	 * getSolutionTime(Object executedExamID)
+	 *  Arguments:  executedExamID
+	 *  
+	 * The method return the solution time that belong to the 
+	 * exam by his id 
+	 * his ID
+	 * 
+	 * @author Orit Hammer
+	 */
 	public Time getSolutionTime(Object executedExamID) {
 
 		Time solutionTime = null;
@@ -910,7 +1060,17 @@ public class MysqlConnection {
 		}
 		return (solutionTime);
 	}
-
+	/**
+	 *public void finishExam
+	 *  Arguments:(String[] details, HashMap<String, Integer> answers, boolean finishedexam)
+	 *  
+	 * The method add the student answers to the DB 
+	 * and check if the student copy from his friends 
+	 * in case the student perform an manual exam the method 
+	 * save just the soft data . 
+	 * 
+	 * @author Or Edri and Tom zarhin 
+	 */
 	public void finishExam(String[] details, HashMap<String, Integer> answers, boolean finishedexam) {
 		String executedID = details[0];
 		String studentId = details[1];
@@ -1013,7 +1173,15 @@ public class MysqlConnection {
 		// Student can't perform this exam any more
 
 	}
-
+	/**
+	 *getadditionalTime(String requestId)
+	 *  Arguments:requestId
+	 *  
+	 * The method return the additional time and the executed exam id 
+	 * by the give request ID 
+	 * 
+	 * @author Or Edri 
+	 */
 	public synchronized Object[] getadditionalTime(String requestId) {
 		Object details[] = new Object[3];
 
@@ -1034,15 +1202,21 @@ public class MysqlConnection {
 		return details;
 
 	}
-
+	/**
+	 *updateExam(Object examToChange) 
+	 *  examToChange
+	 *  
+	 * The method return true if the exam was update (
+	 * such as remarks for student or teacher , solution time etc ... ) 
+	 * @author Lior Hammer 
+	 */
 	public Boolean updateExam(Object examToChange) {
 		Exam exam = (Exam) examToChange;
 
 		try {
 			if (!checkIfExamIsNotActive(exam.getE_id()))
 				return false;
-			// query update on DB the correct answer of question that have the given
-			// questionID from client
+			
 			stmt.executeUpdate("UPDATE exams SET solutionTime=\"" + exam.getSolutionTime() + "\", remarksForTeacher=\""
 					+ exam.getRemarksForTeacher() + "\", remarksForStudent = \"" + exam.getRemarksForStudent()
 					+ "\", type= \"" + exam.getType() + "\"," + "tUserName=\"" + exam.getTeacherUserName()
@@ -1055,7 +1229,13 @@ public class MysqlConnection {
 			return false;
 		}
 	}
-
+	/**
+	 *checkIfExamIsNotActive(Object examToChange)
+	 * Arguments: examToChange
+	 *  
+	 * The method return true if the give exam is not active 
+	 * @author Or Edri
+	 */
 	public Boolean checkIfExamIsNotActive(Object examToChange) {
 		// TODO Auto-generated method stub
 		String exam = (String) examToChange;
@@ -1079,7 +1259,14 @@ public class MysqlConnection {
 			return false;
 		}
 	}
-
+	/**
+	 *getQuestionInExam(Object examid) 
+	 * Arguments: examid
+	 *  
+	 * The method return a list of questions that belong to the exam 
+	 * with examid 
+	 * @author Or Edri
+	 */
 	public ArrayList<QuestionInExam> getQuestionInExam(Object examid) {
 		String examID = (String) examid;
 		ArrayList<QuestionInExam> questioninexam = new ArrayList<QuestionInExam>();
@@ -1104,7 +1291,13 @@ public class MysqlConnection {
 		}
 		return questioninexam;
 	}
-
+	/**
+	 *returnListForGetReport(String getBy)
+	 * Arguments: getBy
+	 *  
+	 * The method return names of teachers or student 
+	 * @author Orit Hammer
+	 */
 	public ArrayList<String> returnListForGetReport(String getBy) {
 		ArrayList<String> listForGetReport = new ArrayList<String>();
 		try {
@@ -1128,7 +1321,13 @@ public class MysqlConnection {
 		}
 		return listForGetReport;
 	}
-
+	/**
+	 *getStudentAns(String userName, String executedExamID)
+	 * Arguments: userName , executedExamID
+	 *  
+	 * The method return a list of the questionId and his answers by user userName
+	 * @author Orit Hammer
+	 */
 	public HashMap<String, Integer> getStudentAns(String userName, String executedExamID) {
 		HashMap<String, Integer> stdAns = new HashMap<>();
 		try {
@@ -1148,15 +1347,18 @@ public class MysqlConnection {
 		return stdAns;
 	}
 
-	public ArrayList<ArrayList<String>> returnUserReportDetails(Object object) {
-
-		return null;
-	}
-
 	public ArrayList<Question> getQuestionFromCloseExam(String executedECode) {
 		return getQuestionByExecutedExam(executedECode);
 	}
-
+	/**
+	 *returnReportByTeacherOrCoursesDetails(Object reportBy, Object idOrUserName)
+	 * Arguments: reportBy , idOrUserName
+	 *  
+	 * The method return executed exam details by teacher user name (
+	 * to get all the exams that some teacher done) or by  user name  
+	 * where the executed exam status is 'checked'
+	 * @author Orit Hammer And tom Zarhin
+	 */
 	public ArrayList<ExecutedExam> returnReportByTeacherOrCoursesDetails(Object reportBy, Object idOrUserName) {
 		ArrayList<ExecutedExam> executedExamList = new ArrayList<ExecutedExam>();
 		String eEid_userName = (String) idOrUserName;
@@ -1188,7 +1390,13 @@ public class MysqlConnection {
 		}
 		return executedExamList;
 	}
-
+	/**
+	 *returnReportByStudent(Object userName)
+	 * Arguments: userName
+	 *  
+	 * The method return the grades of specific student by his user name
+	 * @author Lior Hammer
+	 */
 	public ArrayList<Integer> returnReportByStudent(Object userName) {
 		ArrayList<Integer> studentGradesList = new ArrayList<Integer>();
 		String studentName = (String) userName;
@@ -1205,7 +1413,15 @@ public class MysqlConnection {
 		}
 		return studentGradesList;
 	}
-
+	/**
+	 *confirmExecutedExam(Object studentInExam, Object flagIfExamChecked)
+	 * Arguments: studentInExam , flagIfExamChecked
+	 *  
+	 * The method update a specific grade for student and when 
+	 * all of the students that executed the exam it update 
+	 * the relevant row with statistic details 
+	 * @author Lior Hammer And Tom Zarhin 
+	 */
 	public void confirmExecutedExam(Object studentInExam, Object flagIfExamChecked) {
 		Boolean flagExamChecked = (Boolean) flagIfExamChecked;
 		String eid = ((StudentPerformExam) studentInExam).getExcecutedExamID();
@@ -1289,7 +1505,7 @@ public class MysqlConnection {
 
 	}
 
-	/* lock the exam if the all students finished the */
+	/** lock the exam if the all students finished the */
 	public void checkIfAllStudentFinishedExam(Object executedExamID) {
 		String executedID = (String) executedExamID;
 		ResultSet rs = null;
@@ -1316,7 +1532,13 @@ public class MysqlConnection {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 *updateStudentToExecutedExam(Object executedExamID) 
+	 * Arguments: executedExamID 
+	 *  
+	 * The method update the number of student started (by executedExamID)
+	 * @author Lior Hammer 
+	 */
 	public void updateStudentToExecutedExam(Object executedExamID) {
 
 		String executedID = (String) executedExamID;
@@ -1329,7 +1551,14 @@ public class MysqlConnection {
 		}
 
 	}
-
+	/**
+	 *setRealTimeOfExecutedExam(String requestID)
+	 * Arguments: requestID 
+	 *  
+	 * The method update the actually real time on specific executed exam 
+	 * and update the request status to approve 
+	 * @author Lior Hammer 
+	 */
 	@SuppressWarnings("deprecation")
 	public void setRealTimeOfExecutedExam(String requestID) {
 		// getting executed exam id
@@ -1375,6 +1604,14 @@ public class MysqlConnection {
 		timeToAdd.setSeconds(time.getSeconds()+timeToAdd.getSeconds());
 		return(timeToAdd);
 	}
+	/**
+	 *getAllExecutedExams(Object teacherUserName)
+	 * Arguments: teacherUserName 
+	 *  
+	 * The method get the details of executed for the teacher or for the director 
+	 * (for the director in case teacher user name is null )
+	 * @author Orit Hammer And Tom Zarhin 
+	 */
 	public ArrayList<ExecutedExam> getAllExecutedExams(Object teacherUserName) {
 		ArrayList<ExecutedExam> executedexams = new ArrayList<ExecutedExam>();
 		int[] gradesRang = new int[10];
