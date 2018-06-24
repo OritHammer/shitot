@@ -31,7 +31,7 @@
             </RadialGradient>
          </textFill>
       </Button>
-      <Label fx:id="pageLabel" layoutX="22.0" layoutY="6.0" prefHeight="17.0" prefWidth="1086.0" text="Update question" />
+      <Label fx:id="pageLabel" layoutX="541.0" layoutY="14.0" prefHeight="17.0" prefWidth="133.0" text="Update question" />
       <TableView fx:id="questionTableView" editable="true" layoutX="23.0" layoutY="179.0" prefHeight="356.0" prefWidth="1095.0">
         <columns>
           <TableColumn fx:id="qid" prefWidth="76.0" text="Question ID" />

@@ -21,7 +21,7 @@
             <TableColumn fx:id="typeTable" onEditCommit="#changeTypeOnTable" prefWidth="109.0" text="type" />
          </columns>
       </TableView>
-      <Label fx:id="pageLabel" layoutX="21.0" layoutY="14.0" prefHeight="17.0" prefWidth="939.0" text="Update exam" />
+      <Label fx:id="pageLabel" layoutX="400.0" layoutY="6.0" prefHeight="17.0" prefWidth="125.0" text="Update exam" />
       <Button fx:id="btnDelete" layoutX="457.0" layoutY="524.0" mnemonicParsing="false" onAction="#deleteExam" text="Delete">
          <textFill>
             <RadialGradient centerX="0.4888888888888888" centerY="0.5095238095238095" radius="0.5">

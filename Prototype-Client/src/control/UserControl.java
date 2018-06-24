@@ -145,7 +145,7 @@ public class UserControl implements Initializable {
 			if (user == null) {
 			
 			Platform.runLater(() -> {
-				errorMsg("not valid details");
+				errorMsg("not valid details or you already connected");
 				openScreen("boundary", "LoginGui");
 
 			});
@@ -181,7 +181,7 @@ public class UserControl implements Initializable {
 									Main.getStage().setScene(home_page_scene);
 									Main.getStage().setOnCloseRequest(event -> {
 										uc.connect(uc);
-										messageToServer[0] = "performLogout";
+										messageToServer[0] = "logoutProcess";
 										messageToServer[1] = getMyUser().getUsername();
 										messageToServer[2] = null;
 										messageToServer[4] = getMyUser().getUsername();
@@ -221,7 +221,7 @@ public class UserControl implements Initializable {
 									Main.getStage().setScene(home_page_scene);
 									Main.getStage().setOnCloseRequest(event -> {
 										uc.connect(uc);
-										messageToServer[0] = "performLogout";
+										messageToServer[0] = "logoutProcess";
 										messageToServer[1] = getMyUser().getUsername();
 										messageToServer[2] = null;
 										messageToServer[4] = getMyUser().getUsername();
@@ -262,7 +262,7 @@ public class UserControl implements Initializable {
 									Main.getStage().setScene(home_page_scene);
 									Main.getStage().setOnCloseRequest(event -> {
 										uc.connect(uc);
-										messageToServer[0] = "performLogout";
+										messageToServer[0] = "logoutProcess";
 										messageToServer[1] = getMyUser().getUsername();
 										messageToServer[2] = null;
 										messageToServer[4] = getMyUser().getUsername();
@@ -321,7 +321,7 @@ public class UserControl implements Initializable {
 	public void logoutPressed(ActionEvent e) throws IOException {
 
 		connect(this);
-		messageToServer[0] = "performLogout";
+		messageToServer[0] = "logoutProcess";
 		messageToServer[1] = getMyUser().getUsername();
 		messageToServer[2] = null;
 		messageToServer[4] = getMyUser().getUsername();
@@ -415,7 +415,7 @@ public class UserControl implements Initializable {
 			stage.setOnCloseRequest(event -> {/* set listener for x button, perforn logout */
 				if (isPerformExam != null && isPerformExam == false) {
 					connect(this);
-					messageToServer[0] = "performLogout";
+					messageToServer[0] = "logoutProcess";
 					messageToServer[1] = getMyUser().getUsername();
 					messageToServer[2] = null;
 					messageToServer[4] = getMyUser().getUsername();

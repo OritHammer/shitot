@@ -180,7 +180,13 @@ public class TeacherSeeExamsControl extends TeacherControl implements Initializa
 	}
 
 	public void showStudentsInThisExam(ActionEvent e) throws IOException {
+		if(ExamsForTeacher.getSelectionModel().getSelectedItem() == null)
+		{
+			errorMsg("Please select a student");
+			return;
+		}
 		tempExamId = ExamsForTeacher.getSelectionModel().getSelectedItem().getExecutedExamID();
+
 		openCheckExamScreen(e);
 	}
 }

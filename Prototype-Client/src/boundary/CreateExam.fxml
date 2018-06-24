@@ -20,7 +20,7 @@
       <TextField fx:id="remarksForTeacher" layoutX="298.0" layoutY="539.0" prefHeight="25.0" prefWidth="245.0" />
       <Button fx:id="passQuestionL" layoutX="394.0" layoutY="239.0" mnemonicParsing="false" onAction="#removeFromTableView" text="&lt;" />
       <Button fx:id="passQuestionR" layoutX="394.0" layoutY="204.0" mnemonicParsing="false" onAction="#toQuestionInExam" text="&gt;" />
-      <Label fx:id="pageLabel" layoutX="24.0" layoutY="6.0" prefHeight="17.0" prefWidth="679.0" text="Create exam" />
+      <Label fx:id="pageLabel" layoutX="319.0" layoutY="6.0" prefHeight="17.0" prefWidth="106.0" text="Create exam" />
       <Label layoutX="282.0" layoutY="432.0" text="Time for exam" />
       <ComboBox fx:id="typeComboBox" layoutX="28.0" layoutY="464.0" prefWidth="150.0" />
       <Label layoutX="27.0" layoutY="435.0" text="Type of exam" />

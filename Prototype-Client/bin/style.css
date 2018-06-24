@@ -96,7 +96,9 @@
  * Material Design - Cards 				                       				   *
  *                                                                             *
  ******************************************************************************/
+ 
 .card {
+	
 	-fx-background-color: rgb(255.0, 255.0, 255.0);
 	-fx-background-radius: 4.0;
 	-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.15), 6.0, 0.7, 0.0,
@@ -140,22 +142,46 @@
  * Button & ToggleButton                                                       *
  *                                                                             *
  ******************************************************************************/
+#LoginBtn{
+	-fx-background-color: white;
+	-fx-text-fill: #5b5b5b;
+	-fx-font-family: 'Roboto';
+	  -fx-border-radius:3px, 3px, 2px, 1px; 
+	  	  -fx-border-color:#afafaf; 
 
+	  -fx-alignment: CENTER;
+	   -fx-content-display: LEFT;
+}
 
+#LoginBtn:hover{
+-fx-background-color: #afafaf;
+	-fx-text-fill: white;
+	-fx-font-family: 'Roboto';
+	  -fx-border-radius:3px, 3px, 2px, 1px; 
+	 -fx-text-fill: white;
+	  -fx-alignment: CENTER;
+	   -fx-content-display: LEFT;
+}
 
 .toggle-button, .button {
-	-fx-background-color: -swatch-light-grey;
-	-fx-text-fill: -fx-text-button-normal;
+-fx-background-color: white;
+	-fx-text-fill: #5b5b5b;
 	-fx-font-family: 'Roboto';
-	-fx-font-weight: bold;
-	-fx-background-insets: 0.0;
-	-fx-background-radius: 0.0;
-	-fx-padding: 0.3em;
-	-fx-alignment: CENTER;
+	  -fx-border-radius:3px, 3px, 2px, 1px; 
+	  	  -fx-border-color:#afafaf; 
+
+	  -fx-alignment: CENTER;
+	   -fx-content-display: LEFT;
 }
 
 .button:hover{
-	-fx-background-color: #efefef;
+-fx-background-color: #afafaf;
+	-fx-text-fill: white;
+	-fx-font-family: 'Roboto';
+	  -fx-border-radius:3px, 3px, 2px, 1px; 
+	 -fx-text-fill: white;
+	  -fx-alignment: CENTER;
+	   -fx-content-display: LEFT;
 }
 .button:default {
 	-fx-background-color: -swatch-500;
@@ -175,6 +201,7 @@
 	-fx-font-family: 'MaterialDesignIconicFont';
 	-fx-font-size: 24px;
 }
+
 
 /*******************************************************************************
  *                                                                             *

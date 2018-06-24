@@ -933,7 +933,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * @author Tom Zarhin
 	 */
 	public void openLockExamScreen(ActionEvent e) throws IOException {
-		openScreen("LockExam");
+		openScreen(e,"LockExam");
 	}
 
 	/**
@@ -969,7 +969,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		if (getMyUser().getRole().equals("teacher"))
 			openScreen("boundary", "HomeScreenTeacher");
 		else
-			openScreen("directorBoundary", "HomeScreenDirector");
+			openScreen("directorBoundary", "systemInformationDirector");
 	}
 
 	/**************************************************

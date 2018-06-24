@@ -105,11 +105,9 @@ public class Server extends AbstractServer {
 	@SuppressWarnings("unchecked")
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		con.runDB();
-		// String[] message = ((String) msg).split(" ");
+		
 		Object[] message = (Object[]) msg; // message = message returned from Client
 		System.out.println("Message received: " + msg + " from " + client);
-		// split the msg to 2 strings (message[0]=the name of the method the server need
-		// to call,message[1]=search key to work with in SQL
 		serverMessage[0] = message[0];
 		serverMessage[4] = message[4];
 		switch ((String) message[0]) {
@@ -140,7 +138,7 @@ public class Server extends AbstractServer {
 			break;
 		}
 
-		case "getStudenstInExam": {/* */
+		case "getStudenstInExam": {/*send back all the students who performed the exam */
 			ArrayList<StudentPerformExam> studentsInExam = con.getStudenstInExam(message[1],message[2]);
 			serverMessage[1] = studentsInExam;
 			serverMessage[5] = msgCounter;
@@ -149,7 +147,7 @@ public class Server extends AbstractServer {
 			break;
 		}
 
-		case "checkExecutedExam": {/* check the executed exam id validity */
+		case "checkExecutedExam": {/* check the executed exam id validity  and send back the exam*/
 			String executedExamID = (String) message[1];
 			try {
 				Object[] executedexam = con.checkExecutedExam(message[1], message[2]);
@@ -157,7 +155,7 @@ public class Server extends AbstractServer {
 				serverMessage[2] = executedexam[1];// exam
 				Exam exam = (Exam) executedexam[1];
 
-				if (exam.getType().equals("manual")) {
+				if (exam.getType().equals("manual")) {/*if its manual exam*/
 					MyFile file = new MyFile(exam.getE_id() + ".docx");
 					String LocalfilePath = "Exams/" + exam.getE_id() + ".docx";
 
@@ -171,12 +169,12 @@ public class Server extends AbstractServer {
 						file.setSize(mybytearray.length);
 
 						bis.read(file.getMybytearray(), 0, mybytearray.length);
-						serverMessage[3] = file;// צריך דחוףףףףף לסדר את זההההה
+						serverMessage[3] = file;/*the message contains the docx file of the exam*/ 
 					} catch (Exception exception) {
 						System.out.println("Error send (Files)msg) to Server");
 					}
 				}
-				con.updateStudentToExecutedExam(executedExamID);
+				con.updateStudentToExecutedExam(executedExamID);/*add the student to the db as start the exams*/
 			} catch (NullPointerException exception) {
 				System.out.println("This student cant perform this exam");
 				serverMessage[1] = null;
@@ -186,13 +184,13 @@ public class Server extends AbstractServer {
 			msgCounter++;
 			break;
 		}
-		case "getStudentAnswers": {
+		case "getStudentAnswers": {/*send back to the user the answer of student in specific exam*/
 			ArrayList<Question> questioninexam = con.getQuestionFromCloseExam((String) message[1]);
 			String userName = (String) message[2];
 			serverMessage[0] = "showingCopy";
 			HashMap<String, Integer> studentAns = con.getStudentAns(userName, (String) message[1]);
-			serverMessage[2] = studentAns;
-			serverMessage[1] = questioninexam;
+			serverMessage[2] = studentAns;/*hash map of questions and answers*/
+			serverMessage[1] = questioninexam;/*ArryList of the whole questions of the exam*/
 			serverMessage[5] = msgCounter;
 			this.sendToAllClients(serverMessage);
 			msgCounter++;
@@ -233,7 +231,7 @@ public class Server extends AbstractServer {
 			con.finishExam((String[]) message[1], null, (boolean) message[3]);
 			break;
 		}
-		case "getExams": {/* client request all all the exams under some courses */
+		case "getExams": {/* client request all  the exams under some courses */
 			ArrayList<Exam> examsList = con.getExams(message[1]);
 			serverMessage[1] = examsList;
 			serverMessage[5] = msgCounter;
@@ -242,9 +240,9 @@ public class Server extends AbstractServer {
 			break;
 		}
 
-		case "createChangingRequest": {
+		case "createChangingRequest": {/*create request to add time to the DB*/
 			Boolean ifExtendTimeAdded;
-			ifExtendTimeAdded = con.createChangingRequest(message[1]);
+			ifExtendTimeAdded = con.createChangingRequest(message[1]);/*ifExtendTimeAdded set to true if the request has  been added*/
 			serverMessage[1] = ifExtendTimeAdded;
 			serverMessage[5] = msgCounter;
 			this.sendToAllClients(serverMessage);
@@ -252,7 +250,7 @@ public class Server extends AbstractServer {
 			break;
 		}
 
-		case "getQuestionsToTable": {/* client request all all the questions under some subject */
+		case "getQuestionsToTable": {/* client request all ] the questions under some subject */
 			ArrayList<Question> questionList = con.getQuestionListToTable(message[1], message[2]);
 			serverMessage[1] = questionList;
 			serverMessage[5] = msgCounter;
@@ -262,7 +260,7 @@ public class Server extends AbstractServer {
 		}
 		case "setExam": {/* client request is to create exam in DB */
 			String examId = con.createExam(message[1], message[2]);
-			serverMessage[1] = examId;
+			serverMessage[1] = examId;/*send back the examID*/
 			serverMessage[5] = msgCounter;
 			this.sendToAllClients(serverMessage);
 			msgCounter++;
@@ -282,7 +280,7 @@ public class Server extends AbstractServer {
 			msgCounter++;
 			break;
 		}
-		case "getQuestionDetails": {
+		case "getQuestionDetails": {/*send back the question details according to the question text*/
 			Question q = con.getQuestionDetails(message[1]);
 			serverMessage[1] = q;
 			serverMessage[5] = msgCounter;
@@ -290,7 +288,7 @@ public class Server extends AbstractServer {
 			msgCounter++;
 			break;
 		}
-		case "updateCorrectAnswer": {
+		case "updateCorrectAnswer": {/*update the correct answer of exists question*/
 			try {
 				con.updateAnswer(message[1], message[2]);
 			} catch (SQLException e) {
@@ -307,7 +305,7 @@ public class Server extends AbstractServer {
 			msgCounter++;
 			break;
 		}
-		case "deleteQuestion": {
+		case "deleteQuestion": {/*delete question and send back true is succeed*/
 			Boolean flag;
 			try {
 				flag = con.deleteQuestion(message[1]);
@@ -321,7 +319,7 @@ public class Server extends AbstractServer {
 			}
 			break;
 		}
-		case "checkUserDetails": {
+		case "checkUserDetails": {/*check if the user details exists and if the iser is logged in or not*/
 			User user = con.checkUserDetails(message[1], message[2]);
 			serverMessage[1] = user;
 			serverMessage[5] = msgCounter;
@@ -329,7 +327,7 @@ public class Server extends AbstractServer {
 			msgCounter++;
 			break;
 		}
-		case "performLogout": {
+		case "performLogout": {/*set the status of the user to unconncected*/
 			con.performLogout(message[1]);
 			break;
 		}
@@ -354,7 +352,7 @@ public class Server extends AbstractServer {
 			break;
 		}
 
-		case "deleteExam": {
+		case "deleteExam": {/*delete the exam and retur true if succeed,else return false*/
 			Boolean deleted = con.deleteExam(message[1]);
 			serverMessage[1] = deleted;
 			serverMessage[5] = msgCounter;
@@ -362,7 +360,7 @@ public class Server extends AbstractServer {
 			msgCounter++;
 			break;
 		}
-		case "setExecutedExamLocked": {
+		case "setExecutedExamLocked": {/*lock exam and return the respond whther succeed or not*/
 			Boolean isLocked = con.setExecutedExamLocked(message[1]);
 			serverMessage[1] = isLocked;
 			serverMessage[2] = message[1];
@@ -388,7 +386,7 @@ public class Server extends AbstractServer {
 			msgCounter++;
 			break;
 		}
-		case "getTimeRequestList": {
+		case "getTimeRequestList": {/*send back all the time changing requests*/
 			ArrayList<RequestForChangingTimeAllocated> requestsList = con.getAddingTimeRequests();
 			serverMessage[1] = requestsList;
 			serverMessage[5] = msgCounter;
@@ -396,7 +394,7 @@ public class Server extends AbstractServer {
 			msgCounter++;
 			break;
 		}
-		case "getTimeRequestDetails": {
+		case "getTimeRequestDetails": {/*get the details of the request according to the requestID*/
 			RequestForChangingTimeAllocated request = con.getAddingTimeRequestsDetails((String) message[1]);
 			serverMessage[1] = request;
 			serverMessage[5] = msgCounter;
@@ -415,7 +413,7 @@ public class Server extends AbstractServer {
 			msgCounter++;
 			break;
 		}
-		case "getExamsByUserName": {
+		case "getExamsByUserName": {/*Send back exam of specific student*/
 			ArrayList<ExamDetailsMessage> examsPrefDetails = con.getPrefExamDetails((String) message[1]);
 			serverMessage[1] = examsPrefDetails;
 			serverMessage[5] = msgCounter;
@@ -423,7 +421,7 @@ public class Server extends AbstractServer {
 			msgCounter++;
 			break;
 		}
-		case "SetStatusToApproved": {
+		case "SetStatusToApproved": {/*set the status of the request to approved,and send back the adding time message*/
 			con.setStatusToAddingTimeRequest(((Object[]) msg)[1], "approved");
 			Object tmp[] = con.getadditionalTime((String) ((Object[]) message)[1]);
 			con.setRealTimeOfExecutedExam((String) ((Object[]) message)[1]);
@@ -437,7 +435,7 @@ public class Server extends AbstractServer {
 			msgCounter++;
 			break;
 		}
-		case "SetStatusToReject": {
+		case "SetStatusToReject": {/*set the status of the request to rejected*/
 			con.setStatusToAddingTimeRequest(((Object[]) msg)[1], "rejected");
 			break;
 		}
@@ -450,7 +448,7 @@ public class Server extends AbstractServer {
 			msgCounter++;
 			break;
 		}
-		case "getTeachersList": {// send to client list of all the teachers in the system
+		case "getTeachersList": {/* send to client list of all the teachers in the system*/
 			ArrayList<String> teacherList = con.returnListForGetReport("Teacher");
 			serverMessage[0] = "getTeachersList";
 			serverMessage[1] = teacherList;
@@ -459,7 +457,7 @@ public class Server extends AbstractServer {
 			msgCounter++;
 			break;
 		}
-		case "getReportByTeacher": {//// send to client statistic report of all the exam that teacher dose
+		case "getReportByTeacher": {/*send to client statistic report of all the exam that teacher dose*/
 			ArrayList<ExecutedExam> teacherReportDetails = con.returnReportByTeacherOrCoursesDetails(message[0],
 					message[1]);
 			serverMessage[0] = "getReportByTeacher";
@@ -489,7 +487,7 @@ public class Server extends AbstractServer {
 			break;
 		}
 
-		case "finishExam": {
+		case "finishExam": {/*finish the exam and set the data in the DB (answers,isFinish*/
 			String[] details = ((String[]) message[1]);
 			con.finishExam(details, (HashMap<String, Integer>) message[2], (boolean) message[3]);
 			con.checkIfAllStudentFinishedExam(details[0]);
@@ -499,12 +497,12 @@ public class Server extends AbstractServer {
 			break;
 		}
 
-		case "confirmExecutedExam": {
+		case "confirmExecutedExam": {/*when the teacher confirm the exam grade*/
 			con.confirmExecutedExam(message[1], message[2]);
 			break;
 		}
 
-		case "getAllExecutedExams": {
+		case "getAllExecutedExams": {/*send back to the user akk the executed exams*/
 			ArrayList<ExecutedExam> executedexams;
 			executedexams = con.getAllExecutedExams(message[1]);
 			serverMessage[0] = "getAllExecutedExams";
@@ -513,18 +511,13 @@ public class Server extends AbstractServer {
 			break;
 		}
 
-		/*
-		 * case "getExecutedExamCodeList" :{// for using on confirm request of adding
-		 * time to exam con.getRequestsList(message[1]); break; }
-		 */
+		/*the default case*/
 		default: {
 			System.out.println("Error on switch case ");
 		}
 		}
 
-		// saveUserToDB(con, (ArrayList<String>)msg);
-		/* System.out.println("Message received: " + msg + " from " + client); */
-		// this.sendToAllClients(msg);
+		
 		System.out.println("Handle massege success  " + (String) message[0]);
 	}
 
@@ -571,12 +564,16 @@ public class Server extends AbstractServer {
 			System.out.println("ERROR - Could not listen for clients!");
 		}
 	}
-
+	/**
+	  * createManualExam(Exam exam, ArrayList<Question> qustionsInExam)
+	  * 
+	  * @param Exam exam, ArrayList<Question> qustionsInExam
+	  * @throws 
+	  * @author Aviv Mahulya
+	  * The method recieves exam details and create WORD file with the relevant details
+	  */
 	public static void createManualExam(Exam exam, ArrayList<Question> qustionsInExam) {
-		/*
-		 * who ever touch this function,notice that: the function recieves Exam the
-		 * function recieves arraylist of Question
-		 */
+		
 		int i = 1;
 		System.out.println("Im here");
 		XWPFDocument wordExam = new XWPFDocument();
