@@ -1596,7 +1596,7 @@ public class MysqlConnection {
 		}
 
 	}
-	
+	  
 	@SuppressWarnings("deprecation")
 	public Time timeToAddFunction(Time timeToAdd,Time time) {
 		timeToAdd.setHours(time.getHours()+timeToAdd.getHours());
