@@ -969,7 +969,7 @@ public class TeacherControl extends UserControl implements Initializable {
 		if (getMyUser().getRole().equals("teacher"))
 			openScreen("boundary", "HomeScreenTeacher");
 		else
-			openScreen("directorBoundary", "HomeScreenDirector");
+			openScreen("directorBoundary", "systemInformationDirector");
 	}
 
 	/**************************************************
