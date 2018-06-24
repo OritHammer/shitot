@@ -264,24 +264,25 @@ public class MysqlConnection {
 			if (!rs.first()) {
 				ResultSet rs1 = stmt.executeQuery("SELECT * FROM users WHERE username=\"" + userID + "\" AND password=\""
 						+ userPass + "\"" + "AND status = \"connected\";");
+				object[0] = null;
 				rs1.next();
 					if(rs1.first())
-					{
-					object[0] = null;
 					object[1] = "connected";
-					}
+					
 					else
-					{
-						object[0] = null;
 						object[1] = "wrong";
-					}
+						
+					return object;
 			}
 			// if the user is existing
+			else
+			{
 			User newUser = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
 					rs.getString(6)); // in section 5 need to insert "connected"
 			object[0] = newUser;
 			performLogin(userID);
 			return object;
+			}
 			// in the end userDetails will have the UserID,userName,role
 		} catch (SQLException e) {
 			e.printStackTrace();

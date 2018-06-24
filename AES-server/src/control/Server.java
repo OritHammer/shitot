@@ -322,8 +322,8 @@ public class Server extends AbstractServer {
 		case "checkUserDetails": {/*check if the user details exists and if the iser is logged in or not*/
 			Object[] objectFromServer = new Object[2];
 			objectFromServer = con.checkUserDetails(message[1], message[2]);
-			serverMessage[1] = objectFromServer[0];
-			serverMessage[1] = objectFromServer[1];
+			serverMessage[1] = (User)objectFromServer[0];
+			serverMessage[2] = (String)objectFromServer[1];
 			serverMessage[5] = msgCounter;
 			this.sendToAllClients(serverMessage);
 			msgCounter++;
