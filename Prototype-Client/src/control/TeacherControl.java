@@ -732,10 +732,6 @@ public class TeacherControl extends UserControl implements Initializable {
 						studnetInExamTableView.setItems(observablelistOfStudentInExam);
 						break;
 					}
-
-					default: {
-						System.out.println("Error in input");
-					}
 					}
 				});
 			}

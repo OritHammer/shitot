@@ -117,7 +117,6 @@ public class Server extends AbstractServer {
 			serverMessage[5] = msgCounter;
 			this.sendToAllClients(serverMessage);
 			msgCounter++;
-			System.out.println("arraylist to deliver");
 			break;
 		}
 		
@@ -314,7 +313,7 @@ public class Server extends AbstractServer {
 				this.sendToAllClients(serverMessage);
 				msgCounter++;
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 			break;
@@ -575,7 +574,6 @@ public class Server extends AbstractServer {
 	public static void createManualExam(Exam exam, ArrayList<Question> qustionsInExam) {
 		
 		int i = 1;
-		System.out.println("Im here");
 		XWPFDocument wordExam = new XWPFDocument();
 		try {
 			FileOutputStream out = new FileOutputStream(new File("Exams/" + exam.getE_id() + ".docx"));
@@ -600,7 +598,6 @@ public class Server extends AbstractServer {
 			XWPFRun runSolutionTime = title.createRun();
 			runSolutionTime.setText(exam.getSolutionTime());
 			runSolutionTime.addCarriageReturn();
-			System.out.println("Im here123");
 			for (Question q : qustionsInExam) {
 
 				title = wordExam.createParagraph();
@@ -623,7 +620,6 @@ public class Server extends AbstractServer {
 				title.setAlignment(ParagraphAlignment.RIGHT);
 				i++;
 			}
-			System.out.println("Im here34");
 			title = wordExam.createParagraph();
 			run = title.createRun();
 			run.setText("Good luck!");
@@ -633,12 +629,10 @@ public class Server extends AbstractServer {
 			wordExam.write(out);
 			out.close();
 			wordExam.close();
-			System.out.println("now im hehre");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}
