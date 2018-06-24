@@ -252,7 +252,8 @@ public class MysqlConnection {
 	 * 
 	 * @author Lior Hammer 
 	 */
-	public User checkUserDetails(Object userID, Object userPass) {
+	public Object[] checkUserDetails(Object userID, Object userPass) {
+		Object[] object = new Object[2];
 		try {
 			stmt = conn.createStatement();
 			// query check existent of such details base on user name and password
@@ -261,18 +262,30 @@ public class MysqlConnection {
 			// if there is no user with given details
 			rs.next();
 			if (!rs.first()) {
-				return null;
+				ResultSet rs1 = stmt.executeQuery("SELECT * FROM users WHERE username=\"" + userID + "\" AND password=\""
+						+ userPass + "\"" + "AND status = \"connected\";");
+				rs1.next();
+					if(rs1.first())
+					{
+					object[0] = null;
+					object[1] = "connected";
+					}
+					else
+					{
+						object[0] = null;
+						object[1] = "wrong";
+					}
 			}
 			// if the user is existing
 			User newUser = new User(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
 					rs.getString(6)); // in section 5 need to insert "connected"
-
+			object[0] = newUser;
 			performLogin(userID);
-			return newUser;
+			return object;
 			// in the end userDetails will have the UserID,userName,role
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
+			return object;
 		}
 	}
 	/**

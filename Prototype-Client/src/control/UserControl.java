@@ -145,7 +145,11 @@ public class UserControl implements Initializable {
 			if (user == null) {
 			
 			Platform.runLater(() -> {
-				errorMsg("not valid details or you already connected");
+				String strError = (String)msg[2];
+				if(strError.equals("wrong"))
+					errorMsg("not valid details");
+				if(strError.equals("connected"))
+					errorMsg("The user is already connected");
 				openScreen("boundary", "LoginGui");
 
 			});
