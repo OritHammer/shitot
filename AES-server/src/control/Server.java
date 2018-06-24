@@ -507,7 +507,9 @@ public class Server extends AbstractServer {
 			executedexams = con.getAllExecutedExams(message[1]);
 			serverMessage[0] = "getAllExecutedExams";
 			serverMessage[1] = executedexams;
+			serverMessage[5] = msgCounter;
 			this.sendToAllClients(serverMessage);
+			msgCounter++;
 			break;
 		}
 
