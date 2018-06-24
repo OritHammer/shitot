@@ -802,7 +802,7 @@ public class TeacherControl extends UserControl implements Initializable {
 					subjectsComboBox.setVisible(false);
 					coursesComboBox.setVisible(false);
 					executedExamsComboBox.setVisible(false);
-					studnetInExamTableView.setPrefHeight(500);
+					studnetInExamTableView.setPrefHeight(470);
 					studnetInExamTableView.setLayoutY(80);
 					confirmButton.setVisible(false);
 					changeGradeButton.setVisible(false);
