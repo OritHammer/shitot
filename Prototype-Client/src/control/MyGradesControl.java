@@ -82,6 +82,7 @@ public class MyGradesControl extends StudentControl implements Initializable {
 						root = loader
 								.load(getClass().getResource("/studentBoundary/ComputerizedExam.fxml").openStream());
 						Scene scene = new Scene(root);
+						scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 						primaryStage.setScene(scene);
 						primaryStage.show();
 					} catch (IOException e) {
