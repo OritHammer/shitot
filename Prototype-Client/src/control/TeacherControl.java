@@ -232,9 +232,9 @@ public class TeacherControl extends UserControl implements Initializable {
 	private Button changeGradeButton;
 
 	/**
-	 * loadExamCopy(MouseEvent event) Arguments:MouseEvent event The method order
-	 * exam Copy of spesific student
-	 * 
+	 * loadExamCopy(MouseEvent event) 
+	 * @param MouseEvent event The method order
+	 * exam Copy of specific student
 	 * @author Or Edri
 	 */
 	@SuppressWarnings("static-access")
@@ -267,7 +267,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/**
-	 * confirmExecutedExam(ActionEvent event) Arguments:ActionEvent event The method
+	 * confirmExecutedExam(ActionEvent event) 
+	 * @param ActionEvent event The method
 	 * send message to server with the exam details in order to confirm grade of
 	 * executed exam of spesific student
 	 * 
@@ -295,9 +296,9 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/**
-	 * closeChange(ActionEvent event) Arguments:ActionEvent event The method exit
+	 * closeChange(ActionEvent event) 
+	 * @param ActionEvent event The method exit
 	 * from the changeGrade window.
-	 * 
 	 * @author Or Edri
 	 */
 	public void closeChange(ActionEvent event) {
@@ -308,7 +309,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/**
-	 * finalChange(ActionEvent event) Arguments:ActionEvent event The method changs
+	 * finalChange(ActionEvent event) 
+	 * @param ActionEvent event The method changs
 	 * the grade of the student The method handle grade change
 	 * 
 	 * @author Or Edri
@@ -430,7 +432,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/**
-	 * checkMessage(Object message) Arguments:Object message The method handle the
+	 * checkMessage(Object message) 
+	 * @param Object message The method handle the
 	 * message from server
 	 * 
 	 * @author Aviv Mahulya
@@ -1193,7 +1196,10 @@ public class TeacherControl extends UserControl implements Initializable {
 			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 		}
 	}
-
+/**
+ * this listener set in comboBox the courses from system
+ * @param event
+ */
 	public void coursesToList(ActionEvent event) {
 
 		try {
@@ -1210,7 +1216,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/**
-	 * removeCoursesFromList(ActionEvent event) Arguments:ActionEvent event If there
+	 * removeCoursesFromList(ActionEvent event) 
+	 * @param ActionEvent event If there
 	 * are no items in the Courses combobox remove the subject combobox
 	 * 
 	 * @author Or Edri
@@ -1261,7 +1268,8 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/**
-	 * loadStudenstInExam(ActionEvent e) Arguments:ActionEvent event The method send
+	 * loadStudenstInExam(ActionEvent e) 
+	 * @param ActionEvent event The method send
 	 * request of the student who performed specific exam
 	 * 
 	 * @author Or Edri

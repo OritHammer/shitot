@@ -581,7 +581,9 @@ public class StudentControl extends UserControl implements Initializable {
 	}
 
 	/**
-	 * setQuestion() setting the context of the relevant question on the screen
+	 * setQuestion()
+	 *  setting the context of the relevant question on the screen
+	 *  @author lior hammer
 	 */
 	private void setQuestion() {
 
