@@ -32,7 +32,7 @@
             <Font name="Footlight MT Light" size="21.0" />
          </font>
       </TextField>
-      <Label fx:id="courseName" layoutX="64.0" layoutY="29.0" prefHeight="17.0" prefWidth="82.0" text="courseName" />
+      <Label fx:id="courseName" layoutX="64.0" layoutY="29.0" prefHeight="17.0" prefWidth="82.0" />
       <Button fx:id="prevBTN" layoutX="191.0" layoutY="364.0" mnemonicParsing="false" onAction="#previousQuestion" text="previous" visible="false" />
       <Button fx:id="nextBTN" layoutX="285.0" layoutY="364.0" mnemonicParsing="false" onAction="#nextQuestion" prefHeight="25.0" prefWidth="62.0" text="Next" />
       <Button fx:id="finishButton" layoutX="474.0" layoutY="364.0" mnemonicParsing="false" onAction="#finishExam" prefHeight="25.0" prefWidth="71.0" text="Finish" />
