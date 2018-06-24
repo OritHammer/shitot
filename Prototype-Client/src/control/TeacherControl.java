@@ -60,7 +60,7 @@ public class TeacherControl extends UserControl implements Initializable {
 																													// for
 																													// saving
 																													// the
-													 																// questions
+																													// questions
 																													// in
 																													// exam
 																													// and
@@ -232,9 +232,10 @@ public class TeacherControl extends UserControl implements Initializable {
 	private Button changeGradeButton;
 
 	/**
-	 * loadExamCopy(MouseEvent event) 
-	 * @param MouseEvent event The method order
-	 * exam Copy of specific student
+	 * loadExamCopy(MouseEvent event)
+	 * 
+	 * @param MouseEvent
+	 *            event The method order exam Copy of specific student
 	 * @author Or Edri
 	 */
 	@SuppressWarnings("static-access")
@@ -267,10 +268,11 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/**
-	 * confirmExecutedExam(ActionEvent event) 
-	 * @param ActionEvent event The method
-	 * send message to server with the exam details in order to confirm grade of
-	 * executed exam of spesific student
+	 * confirmExecutedExam(ActionEvent event)
+	 * 
+	 * @param ActionEvent
+	 *            event The method send message to server with the exam details in
+	 *            order to confirm grade of executed exam of spesific student
 	 * 
 	 * @author Or Edri
 	 */
@@ -296,9 +298,10 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/**
-	 * closeChange(ActionEvent event) 
-	 * @param ActionEvent event The method exit
-	 * from the changeGrade window.
+	 * closeChange(ActionEvent event)
+	 * 
+	 * @param ActionEvent
+	 *            event The method exit from the changeGrade window.
 	 * @author Or Edri
 	 */
 	public void closeChange(ActionEvent event) {
@@ -309,9 +312,11 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/**
-	 * finalChange(ActionEvent event) 
-	 * @param ActionEvent event The method changs
-	 * the grade of the student The method handle grade change
+	 * finalChange(ActionEvent event)
+	 * 
+	 * @param ActionEvent
+	 *            event The method changs the grade of the student The method handle
+	 *            grade change
 	 * 
 	 * @author Or Edri
 	 */
@@ -432,9 +437,10 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/**
-	 * checkMessage(Object message) 
-	 * @param Object message The method handle the
-	 * message from server
+	 * checkMessage(Object message)
+	 * 
+	 * @param Object
+	 *            message The method handle the message from server
 	 * 
 	 * @author Aviv Mahulya
 	 */
@@ -513,7 +519,8 @@ public class TeacherControl extends UserControl implements Initializable {
 							a3.setCellValueFactory(new PropertyValueFactory<>("answer3"));
 							a4.setCellValueFactory(new PropertyValueFactory<>("answer4"));
 							correctAns.setCellValueFactory(new PropertyValueFactory<>("correctAnswer"));
-							questionTableView.setEditable(true);
+							if (getMyUser().getRole().equals("teacher"))
+								questionTableView.setEditable(true);
 							ObservableList<String> numbers = FXCollections.observableArrayList("1", "2", "3", "4");
 							qtext.setCellFactory(TextFieldTableCell.forTableColumn());
 							a1.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -936,7 +943,7 @@ public class TeacherControl extends UserControl implements Initializable {
 	 * @author Tom Zarhin
 	 */
 	public void openLockExamScreen(ActionEvent e) throws IOException {
-		openScreen(e,"LockExam");
+		openScreen(e, "LockExam");
 	}
 
 	/**
@@ -1196,10 +1203,12 @@ public class TeacherControl extends UserControl implements Initializable {
 			chat.handleMessageFromClientUI(messageToServer); // ask from server the list of question of this subject
 		}
 	}
-/**
- * this listener set in comboBox the courses from system
- * @param event
- */
+
+	/**
+	 * this listener set in comboBox the courses from system
+	 * 
+	 * @param event
+	 */
 	public void coursesToList(ActionEvent event) {
 
 		try {
@@ -1216,9 +1225,11 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/**
-	 * removeCoursesFromList(ActionEvent event) 
-	 * @param ActionEvent event If there
-	 * are no items in the Courses combobox remove the subject combobox
+	 * removeCoursesFromList(ActionEvent event)
+	 * 
+	 * @param ActionEvent
+	 *            event If there are no items in the Courses combobox remove the
+	 *            subject combobox
 	 * 
 	 * @author Or Edri
 	 */
@@ -1268,9 +1279,11 @@ public class TeacherControl extends UserControl implements Initializable {
 	}
 
 	/**
-	 * loadStudenstInExam(ActionEvent e) 
-	 * @param ActionEvent event The method send
-	 * request of the student who performed specific exam
+	 * loadStudenstInExam(ActionEvent e)
+	 * 
+	 * @param ActionEvent
+	 *            event The method send request of the student who performed
+	 *            specific exam
 	 * 
 	 * @author Or Edri
 	 */
