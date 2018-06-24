@@ -33,7 +33,7 @@ import javafx.stage.Stage;
 
 public class DirectorControl extends UserControl implements Initializable {
 	ObservableList<RequestForChangingTimeAllocated> addingTimeRequestsObservable = FXCollections.observableArrayList();
-	/// HOME TAB
+	/// HOME page
 	@FXML
 	private Label userText1;
 	@FXML
@@ -109,9 +109,10 @@ public class DirectorControl extends UserControl implements Initializable {
 	@FXML
 	private JFXButton btnExamStock;
 
-	/******************************************************************
-	 * homePageButtons
-	 **********************************************************/
+	/**
+	 * initialize(URL url, ResourceBundle rb)
+	 * 
+	 */
 	public void initialize(URL url, ResourceBundle rb) {
 		messageToServer[4] = getMyUser().getUsername();
 		if (pageLabel.getText().equals("Home screen")) {
@@ -142,7 +143,11 @@ public class DirectorControl extends UserControl implements Initializable {
 		}
 
 	}
-
+/**
+ * void initWindow()
+ * initialize the parameter in statistic window
+ * @author Orit Hammer
+ */
 	public void initWindow() {
 		// init the labels and comboBox
 		if (histogram == null)
@@ -156,7 +161,11 @@ public class DirectorControl extends UserControl implements Initializable {
 		}
 	}
 
-	// open window of buttons in home page
+	/**
+	 * openTimeRequestTable(ActionEvent e)
+	 * listener that open window of approve time request from teacher
+	 * @param e
+	 */
 	public void openTimeRequestTable(ActionEvent e) {
 		Platform.runLater(() -> {
 			final Node source = (Node) e.getSource();
@@ -166,18 +175,33 @@ public class DirectorControl extends UserControl implements Initializable {
 			openScreen("directorBoundary", "TimeRequestTable");
 		});
 	}
-
+/**
+ * openStatisticReport(ActionEvent e)
+ * listener that open window of Report
+ * @param e
+ * @author Orit Hammer
+ */
 	public void openStatisticReport(ActionEvent e) {
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding homePage window
 		openScreen("directorBoundary", "statisticReportDirector");
 	}
-
+	/**
+	 * openStatisticReport(ActionEvent e)
+	 * listener that open window of Report
+	 * @param e
+	 * @author Orit Hammer
+	 */
 	public void openSystemInformation(ActionEvent e) {
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding homePage window
 		openScreen("directorBoundary", "systemInformationDirector");
 	}
 
-	/* cancel button was pressed */
+
+	/**
+	 * backButtonPressed(ActionEvent e)
+	 * listener of cancel button was pressed
+	 * @author Orit Hammer
+	 */
 	public void backButtonPressed(ActionEvent e) throws IOException, SQLException {
 		final Node source = (Node) e.getSource();
 		Stage stage = (Stage) source.getScene().getWindow();
@@ -185,7 +209,11 @@ public class DirectorControl extends UserControl implements Initializable {
 		openScreen("directorBoundary", "HomeScreenDirector");
 	}
 
-	// ***********check the message that arrived from server**************//
+	/**
+	 * void checkMessage(Object message)
+	 * check the message that arrived from server
+	 * @author Orit Hammer
+	 */
 	@SuppressWarnings("unchecked")
 	public void checkMessage(Object message) {
 		try {
@@ -295,12 +323,22 @@ public class DirectorControl extends UserControl implements Initializable {
 	/*******************************************************
 	 * listeners on TimeRequestTable
 	 ***********************************************************/
+	/**
+	 * void showDetailsButtonPressed(ActionEvent e)
+	 * @param e
+	 * @author Orit Hammer
+	 */
 	public void showDetailsButtonPressed(ActionEvent e) {
 		requestId = (requestsTable.getSelectionModel().getSelectedItems().get(0).getRequestID());
 		((Node) e.getSource()).getScene().getWindow().hide(); // hiding homePage window
 		openScreen("directorBoundary", "addingTimeRequest");
 	}
-
+/**
+ * void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList)
+ * @param requestsList
+ * @throws NullPointerException
+ * @author Orit Hammer
+ */
 	@SuppressWarnings("unchecked") // showing list of request that waiting to answer
 	public void initAddingTimeRequests(ArrayList<RequestForChangingTimeAllocated> requestsList)
 			throws NullPointerException {
@@ -322,10 +360,14 @@ public class DirectorControl extends UserControl implements Initializable {
 	}
 
 	// initialize the field in details of request
+	/**
+	 * void initAddingTimeRequestDetails(RequestForChangingTimeAllocated request)
+	 * @param request
+	 * @author lior hammer
+	 */
 	public void initAddingTimeRequestDetails(RequestForChangingTimeAllocated request) {
 		try {
 			txtFATRTeachName.setText(request.getTeacherName());
-
 			txtFATRTimeAdded.setText(request.getTimeAdded());
 			txtFATRreasonAddingTime.setText(request.getReason());
 			txtFATRrequestId.setText(request.getRequestID());
@@ -343,6 +385,12 @@ public class DirectorControl extends UserControl implements Initializable {
 	/*******************************************************
 	 * listeners on addingTimeRequest
 	 ***********************************************************/
+	/**
+	 * void answerRequest(ActionEvent e)
+	 * this function the director approve an extra time to executed exam
+	 * @param e
+	 * @author Or Edri
+	 */
 	@FXML
 	public void answerRequest(ActionEvent e) {
 		String requestID = txtFATRrequestId.getText();
@@ -360,6 +408,13 @@ public class DirectorControl extends UserControl implements Initializable {
 	/*******************************************************
 	 *********** listeners on statistic Report**************
 	 *******************************************************/
+	/**
+	 * void showListForChooseObject(ActionEvent e)
+	 * this function ask from server a list of student/teachers/courses to director
+	 * @param e
+	 * @throws Exception
+	 * @author Or Edri
+	 */
 	@FXML
 	public void showListForChooseObject(ActionEvent e) throws Exception {// display the list of student/courses/teachers
 		reportByChoose = reportByComboBox.getValue();
@@ -396,7 +451,13 @@ public class DirectorControl extends UserControl implements Initializable {
 			chat.handleMessageFromClientUI(messageToServer);
 		}
 	}
-
+/**
+ * void loadCourses(ActionEvent e)
+ * this function ask from server a list of courses in a specific subject
+ * @param e
+ * @throws IOException
+ * @author Or Edri
+ */
 	@FXML
 	public void loadCourses(ActionEvent e) throws IOException {// load list of courses to combobox
 		String subject = subjectsComboBox.getValue(); // get the subject code
@@ -407,7 +468,12 @@ public class DirectorControl extends UserControl implements Initializable {
 			loadCourses("All", subject);
 		}
 	}
-
+/**
+ * void getReportUser(ActionEvent e)
+ * this function ask from server details for report by user(student/teacher)
+ * @param e
+ * @author Orit Hammer
+ */
 	@FXML
 	public void getReportUser(ActionEvent e) {// load Statistic details of user on window
 		String userName = chooseUserComboBox.getValue();
@@ -423,7 +489,12 @@ public class DirectorControl extends UserControl implements Initializable {
 			chat.handleMessageFromClientUI(messageToServer);
 		}
 	}
-
+/**
+ * void getReportByCourseCode(ActionEvent e)
+ * this listener ask from server details to statistic report by course code
+ * @param e
+ * @author Orit Hammer
+ */
 	@FXML
 	public void getReportByCourseCode(ActionEvent e) {// load Statistic details of course on window
 		String courseName = coursesComboBox.getValue();
@@ -437,16 +508,23 @@ public class DirectorControl extends UserControl implements Initializable {
 			chat.handleMessageFromClientUI(messageToServer);
 		}
 	}
-
+/**
+ *  void clearData()
+ * this function clear data from statistic report barChart
+ * @author Orit Hammer
+ */
 	public void clearData() {
 		barChart.getData().clear();
 		histogram.getData().clear();
 		medianTextField.clear();
 		averageTextField.clear();
 	}
-
+/**
+ * void refreshPress()
+ * this function clear the window of statistic report
+ *@author lior hammer
+ */
 	public void refreshPress() {
-
 		chooseUserComboBox.getSelectionModel().clearSelection();
 		reportByComboBox.getSelectionModel().clearSelection();
 		subjectsComboBox.getSelectionModel().clearSelection();
@@ -465,27 +543,41 @@ public class DirectorControl extends UserControl implements Initializable {
 		averageTextField.clear();
 		initWindow();
 	}
-
+/**
+ * refreshPressListener(ActionEvent e)
+ * this listener call the function that clear the window of statistic report 
+ * @param e
+ * @author lior hammer
+ */
 	@FXML
 	public void refreshPressListener(ActionEvent e) {
-
 		refreshPress();
 	}
 
 	/*******************************************************
 	 *********** system information functions **************
 	 *******************************************************/
+	/**
+	 * void openQuestionStock(ActionEvent e)
+	 * this listener open the question stock
+	 * @param e
+	 * @author Tom Zarhin
+	 */
 	@FXML
 	public void openQuestionStock(ActionEvent e) {
 		Platform.runLater(() -> {
 			final Node source = (Node) e.getSource();
 			Stage stage = (Stage) source.getScene().getWindow();
-			// stage.close();
 			stage.close();
 			openScreen("directorBoundary", "QuestionStock");
 		});
 	}
-
+/**
+ * void GetQuestionStock(ActionEvent e)
+ * this listener let the director see the question stock
+ * @param e
+ * @author Orit Hammer
+ */
 	@FXML
 	public void GetQuestionStock(ActionEvent e) {
 		TeacherControl tcontroller = new TeacherControl();
@@ -498,7 +590,12 @@ public class DirectorControl extends UserControl implements Initializable {
 			}
 		});
 	}
-
+	/**
+	 * void GetExamsStock(ActionEvent e)
+	 * this listener let the director see the exam stock
+	 * @param e
+	 * @author Tom Zarhin
+	 */
 	@FXML
 	void GetExamsStock(ActionEvent e) {
 		TeacherControl tcontroller = new TeacherControl();
@@ -510,7 +607,14 @@ public class DirectorControl extends UserControl implements Initializable {
 			}
 		});
 	}
-
+	
+	/**
+	 *  void getExecutedExamsStock(ActionEvent e)
+	 * this listener let the director see the executed exams in system
+	 * @param e
+	 * @author Aviv Mahulia
+	 */
+	@FXML
 	public void getExecutedExamsStock(ActionEvent e) {
 		TeacherSeeExamsControl tcontroller = new TeacherSeeExamsControl();
 		try {
@@ -520,3 +624,4 @@ public class DirectorControl extends UserControl implements Initializable {
 		}
 	}
 }
+
