@@ -1441,7 +1441,8 @@ public class MysqlConnection {
 			stmt.executeUpdate("UPDATE studentperformedexam " + "SET isApproved=\"approved\" , grade=\""
 					+ ((StudentPerformExam) studentInExam).getGrade() + "\" , " + "reasonForChangeGrade=\""
 					+ ((StudentPerformExam) studentInExam).getReasonForChangeGrade() + "\" "
-					+ " WHERE student_UserName=\"" + ((StudentPerformExam) studentInExam).getUserName() + "\";");
+					+ " WHERE student_UserName=\"" + ((StudentPerformExam) studentInExam).getUserName() + "\" AND executedexam_id=\""+
+					eid+"\";");
 			if (flagExamChecked == true) {
 				stmt.executeUpdate("UPDATE executedexam " + "SET status=\"checked\" WHERE executedExamID=\""
 						+ ((StudentPerformExam) studentInExam).getExcecutedExamID() + "\";");

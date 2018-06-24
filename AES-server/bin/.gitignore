@@ -1,6 +1,8 @@
 /Owl.png
 /boundary/
+/control/
 /curvesapi-1.04.jar
+/entity/
 /jfoenix-8.0.4.jar
 /mysql-connector-java-5.1.19-bin.jar
 /poi-3.17.jar
@@ -9,6 +11,4 @@
 /poi-ooxml-schemas-3.17.jar
 /poi-scratchpad-3.17.jar
 /style.css
-/control/
-/entity/
 /xmlbeans-2.6.0.jar
